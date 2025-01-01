@@ -1,0 +1,493 @@
+a {
+    text-decoration: none;
+}
+
+body {
+    background-color: rgb(215, 229, 232);
+    color: rgb(19, 93, 102);
+    width: 1220px;
+    margin: 0 auto;
+}
+
+input {
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(19, 93, 102);
+    border-radius: 4px;
+}
+
+.header a {
+    color: rgb(255, 255, 255);
+}
+
+.left {
+    display: flex;
+}
+
+.left>div {
+    margin: 24px;
+}
+
+.logo {
+    width: 200px;
+}
+
+.right {
+    display: flex;
+    float: right;
+}
+
+.right>div {
+    margin: 24px;
+}
+
+.account {
+    display: inline-block;
+    position: relative;
+}
+
+.dropbox {
+    display: none;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    padding-bottom: 2px;
+    width: 100%;
+}
+
+.dropbox p {
+    padding: 12px;
+    margin: 0 auto;
+}
+
+.dropbox p a {
+    color: rgb(19, 93, 102);
+}
+
+.dropbox p:hover {
+    border-bottom: 1px solid rgb(19, 93, 102);
+}
+
+.account:hover .dropbox {
+    display: block;
+}
+
+.container {
+    display: flex;
+}
+
+.menu {
+    text-align: center;
+    width: 248px;
+    margin: 24px;
+}
+
+.menu a {
+    color: rgb(19, 93, 102);
+}
+
+.menu div {
+    background-color: rgb(215, 229, 232);
+    color: rgb(19, 93, 102);
+    padding: 12px;
+    margin: 2px 0px;
+    border-radius: 4px;
+    border: 1px solid rgb(19, 93, 102);
+}
+
+.menu div.active {
+    background-color: rgb(19, 93, 102);
+    color: rgb(255, 255, 255);
+}
+
+.menu div.active a {
+    color: rgb(255, 255, 255);
+}
+
+.menu div:hover {
+    background-color: rgb(19, 93, 102);
+    color: rgb(255, 255, 255);
+}
+
+.menu div:hover a {
+    color: rgb(255, 255, 255);
+}
+
+.separator {
+    background-color: rgb(19, 93, 102);
+    width: 1px;
+}
+
+.separator_x {
+    background-color: rgb(19, 93, 102);
+    margin-bottom: 12px;
+    height: 1px;
+}
+
+.main {
+    display: flex;
+    width: 100%;
+    margin: 24px;
+}
+
+.content {
+    width: 100%;
+    margin: 0px 24px;
+    margin-bottom: 24px;
+}
+
+.content a {
+    color: rgb(19, 93, 102);
+}
+
+.content button {
+    background-color: rgb(19, 93, 102);
+    color: rgb(255, 255, 255);
+    border: none;
+}
+
+.head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.head>button {
+    padding: 12px;
+    margin: 12px;
+    border-radius: 4px;
+}
+
+.head>button a {
+    color: rgb(255, 255, 255);
+}
+
+.title {
+    margin: 12px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.search {
+    margin: 12px;
+}
+
+.search input {
+    width: 248px;
+}
+
+.search button {
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.content select {
+    background-color: rgb(19, 93, 102);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 8px;
+    width: 130px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    float: right;
+}
+
+.content option {
+    background-color: rgb(215, 229, 232);
+    color: rgb(19, 93, 102);
+    text-align: left;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.tabs div {
+    background-color: rgb(215, 229, 232);
+    color: rgb(19, 93, 102);
+    padding: 8.5px 12px;
+    margin-right: 4px;
+    border-radius: 4px;
+    border: 1px solid rgb(19, 93, 102);
+}
+
+.tabs div.active {
+    background-color: rgb(19, 93, 102);
+    color: rgb(255, 255, 255);
+}
+
+.tabs div:hover {
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table tr th {
+    background-color: rgb(19, 93, 102);
+    color: rgb(255, 255, 255);
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgb(215, 229, 232);
+}
+
+table tr td {
+    background-color: rgb(255, 255, 255);
+    padding: 8px;
+    border: 1px solid rgb(19, 93, 102);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination a {
+    background-color: rgb(215, 229, 232);
+    color: rgb(19, 93, 102);
+    padding: 10px 15px;
+    margin: 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: rgb(19, 93, 102);
+    color: rgb(215, 229, 232);
+}
+
+.pagination a.active {
+    background-color: rgb(19, 93, 102);
+    color: rgb(215, 229, 232);
+}
+
+.static {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 0px;
+}
+
+.see {
+    display: flex;
+    border-radius: 4px;
+    border: 1px solid rgb(19, 93, 102);
+}
+
+.icon {
+    width: 140px;
+    margin: 10px;
+}
+
+.number {
+    text-align: center;
+    width: 120px;
+}
+
+.number p {
+    margin: 12px;
+}
+
+.num {
+    background-color: rgb(19, 93, 102);
+    color: rgb(215, 229, 232);
+    font-size: 36px;
+    border-radius: 24px;
+}
+
+.go {
+    background-color: rgb(19, 93, 102);
+    text-align: right;
+    padding: 12px;
+    width: 260px;
+    border-radius: 4px;
+}
+
+.go a {
+    color: rgb(255, 255, 255);
+}
+
+.area {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    width: 100%;
+}
+
+.infor div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.infor p {
+    margin: 10px 0px;
+    margin-right: 12px;
+}
+
+.infor input {
+    width: 476px;
+    margin-bottom: 12px;
+}
+
+.infor button {
+    padding: 12px;
+    width: 100%;
+    margin-right: 12px;
+    border-radius: 4px;
+}
+
+.avatar {
+    width: 248px;
+}
+
+.avatar div {
+    width: 200px;
+    height: 88px;
+}
+
+.avatar input {
+    padding: 10px 0px !important;
+    width: 100%;
+    margin: 12px 0px;
+}
+
+.avatar button {
+    padding: 12px;
+    width: 100%;
+    margin-right: 12px;
+    border-radius: 4px;
+}
+
+#alert {
+    color: red;
+}
+
+.popup_admin {
+    display: none;
+    background-color: rgb(19, 93, 102);
+    text-align: center;
+    position: fixed;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    top: 33%;
+    left: 55%;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.popup_admin button {
+    background-color: rgb(215, 229, 232);
+    color: rgb(19, 93, 102);
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.g-recaptcha {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.button {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.form-category {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.form-group:first-child {
+    width: 50%;
+}
+
+.col {
+    margin: 8px 0;
+}
+
+.form-group:nth-child(2) {
+    width: 20%;
+}
+
+.form-group:nth-child(3) {
+    width: 20%;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group input {
+    width: 95%;
+}
+
+.btn-goback {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.btn-goback button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 1rem 1rem 0;
+}
+
+.col:last-child>select {
+    background-color: rgb(19, 93, 102);
+    color: white;
+    margin-top: 3px;
+    padding: 10px;
+    display: inline;
+    margin-left: 0px;
+    float: left;
+}
+
+.form-product {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.form-groups:first-child {
+    width: 60%;
+}
+
+.form-groups:first-child>.form-group-product>.col>input {
+    width: 100%;
+}
+
+.form-groups:first-child>.form-group-product:nth-child(2)>textarea {
+    width: 100%;
+    padding: 10px;
+    height: 70px;
+}
+
+.form-groups:first-child>.form-group-product:nth-child(3) {
+    display: flex;
+}
+
+.form-groups:first-child>.form-group-product:nth-child(3)>div {
+    width: 50%;
+}
+
+.form-groups:last-child {
+    width: 40%;
+}
+
+.form-groups:last-child>.form-group-product>input {
+    width: 100%;
+}
+.button-product {
+    width: 50%;
+}
