@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+
+class ImageProduct extends Model
 {
     //
     use HasFactory;
-    
+
+    public $fillable = ['image','product_id'];
+    public $timestamps = false;
 }
