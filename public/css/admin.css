@@ -345,9 +345,9 @@ table tr td {
     width: 248px;
 }
 
-.avatar div {
-    width: 200px;
-    height: 88px;
+.avatar img {
+    width: 248px;
+    height: 237px;
 }
 
 .avatar input {

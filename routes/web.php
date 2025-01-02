@@ -73,7 +73,8 @@ Route::get('/admin/contact',function(){
 Route::get('/admin',function(){
     return view('admin.pages.index');
 });
-Route::post('/admin', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
+Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
+Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->name('admin.editLogo');
 
 Route::get('/admin/product',function(){
     return view('admin.product.product');

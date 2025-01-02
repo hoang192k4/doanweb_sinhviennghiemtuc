@@ -123,13 +123,26 @@
         <div class="separator"></div>
         <div class="avatar">
             <div>
-                <img src="" alt="Logo">
+                <img id="logoPreview" src="{{ asset('images/' . App\Models\About::first()->logo) }}" alt="Logo">
             </div>
-            <form>
-                <input type="file">
+            <form action="{{ route('admin.editLogo') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input id="logoInput" type="file" name="logo">
                 <button type="submit">Đổi logo</button>
             </form>
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('logoInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('logoPreview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 @endsection
