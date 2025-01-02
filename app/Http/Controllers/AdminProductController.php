@@ -22,7 +22,6 @@ class AdminProductController extends Controller
     {
         //
         $danhSachSanPham = Product::where('status',1)->get();
-
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPham]);
     }
 
@@ -33,7 +32,7 @@ class AdminProductController extends Controller
     {
         //
         $danhSachPhanLoai = Category::where('status',1)->get();
-        $danhSachThuongHieu = Brand::where('status',1)->get();
+        $danhSachThuongHieu = Brand::filter(1);
         return view('admin.product.addproduct',['danhSachPhanLoai'=>$danhSachPhanLoai,'danhSachThuongHieu'=>$danhSachThuongHieu]);
     }
 
@@ -42,10 +41,12 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $validate = $request->validate([
             'name'=>'required|unique:products|max:255',
             'description'=>'required',
-            'image'=>'required',
+            'image.*'=>'required',
             'display'=>'required',
             'technic_screen'=>'required',
             'resolution'=>'required',
@@ -59,7 +60,7 @@ class AdminProductController extends Controller
             'variants.*.stock'=>'required',
             'variants.*.internal_memory'=>'required',
             'variants.*.price'=>'required',
-            'variants.*.image'=>'required'
+            'variants.*.image_variant'=>'required'
         ],[
             'name.required'=> 'Vui lòng nhập tên sản phẩm!',
             'name.unique'=>'Tên sản phẩm đã tồn tại!',
@@ -67,51 +68,49 @@ class AdminProductController extends Controller
             'image.required'=>'Vui lòng thêm hình ảnh!',
         ]);
 
-        // //thêm sản phẩm
-        // $product = Product::create([
-        //     'name'=>$request->input('name'),
-        //     'slug'=>Str::slug($request->input('name')),
-        //     'description'=>$request->input('description'),
-        //     'brand_id'=>$request->input('brand'),
-        //     'category_id'=>$request->input('category')
-        // ]);
-        // //thêm hình ảnh sản phẩm từ id sản phẩm ở $product
-        // if($request->has('image'))
-        // {
-        //     $file = $request->file('image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $fileName = 'product_'.time().'.'.$extension;
-        //     $request->image->move(public_path('images'), $fileName);
-        //     ImageProduct::create([
-        //         'image'=>'images/'.$fileName,
-        //         'product_id'=> $product->id
-        //     ]);
-        // }
-        // //thêm thông số kĩ thuật cho sản phẩm từ id của $product
-        // ProductSpecification::create([
-        //     'display'=>$request->input('display'),
-        //     'technic_screen'=>$request->input('technic_screen'),
-        //     'resolution'=>$request->input('resolution'),
-        //     'chipset'=>$request->input('chipset'),
-        //     'ram'=>$request->input('ram'),
-        //     'camera'=>$request->input('camera'),
-        //     'operating_system'=>$request->input('os'),
-        //     'size'=>$request->input('size'),
-        //     'launch_time'=>$request->input('launch_time'),
-        //     'product_Id'=>$product->id
-        // ]);
-        //b2: lấy id của sản phẩm đã thêm thêm cho variant
+        //thêm sản phẩm
+        $product = Product::create([
+            'name'=>$request->input('name'),
+            'slug'=>Str::slug($request->input('name')),
+            'description'=>$request->input('description'),
+            'brand_id'=>$request->input('brand'),
+        ]);
+        // //thêm nhiều hình ảnh sản phẩm từ id sản phẩm ở $product
+        foreach($request->image as $image){
+            $extension = $image->getClientOriginalExtension();
+            $fileName = 'product_'.time().'.'.$extension;
+            $image->move(public_path('images'), $fileName);
+            ImageProduct::create([
+                'image'=>'images/'.$fileName,
+                'product_id'=> $product->id
+            ]);
+        }
+
+        //thêm thông số kĩ thuật cho sản phẩm từ id của $product
+        ProductSpecification::create([
+            'display'=>$request->input('display'),
+            'technic_screen'=>$request->input('technic_screen'),
+            'resolution'=>$request->input('resolution'),
+            'chipset'=>$request->input('chipset'),
+            'ram'=>$request->input('ram'),
+            'camera'=>$request->input('camera'),
+            'operating_system'=>$request->input('os'),
+            'size'=>$request->input('size'),
+            'launch_time'=>$request->input('launch_time'),
+            'product_Id'=>$product->id
+        ]);
+
         //Thêm nhiều variant
-        // foreach($request->variants as $variant){
-        //     ProductVariant::create([
-        //         'color'=>$variant['color'],
-        //         'stock'=>$variant['stock'],
-        //         'price'=>$variant['price'],
-        //         'internal_memory'=>$variant['internal_memory'],
-        //         'product_id'=>$product->id,
-        //         'image'=>null
-        //     ]);
-        // }
+        foreach($request->variants as $variant){
+            ProductVariant::create([
+                'color'=>$variant['color'],
+                'stock'=>$variant['stock'],
+                'price'=>$variant['price'],
+                'internal_memory'=>$variant['internal_memory'],
+                'product_id'=>10,
+                'image'=> $this->uploadImageVariant($variant['image_variant'])
+                ]);
+        }
 
         //b3:
         return redirect()->route('product.index')->with('msg','Thêm sản phẩm thành công!');
@@ -167,5 +166,27 @@ class AdminProductController extends Controller
         }
 
         return  $danhSachSanPham;
+    }
+
+    public function uploadImageVariant($file){
+        $extension = $file->getClientOriginalExtension();
+        $fileName = 'product_variant_'.time().'.'.$extension;
+        $file->move(public_path('images'), $fileName);
+        return 'images/'.$fileName;
+    }
+
+    public function getListProductsUnapproved(){
+        $danhSachSanPham = Product::where('status',2)->get();
+        $danhSachSanPhamBiAn = Product::where('status',0)->get();
+        return view('admin.product.product_approved',['danhSachSanPham'=>$danhSachSanPham,'danhSachSanPhamBiAn'=>$danhSachSanPhamBiAn]);
+    }
+
+    public function active($id){
+        $product = Product::find($id);
+        if($product->status!=1){
+            $product->status=1;
+            $product->save();
+        }
+        return back()->with('msg','Sản phẩm '.$product->name.' đã được hiển thị!');
     }
 }

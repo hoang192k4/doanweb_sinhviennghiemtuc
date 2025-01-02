@@ -5,7 +5,7 @@
         <div class="head">
             <div class="title">Quản Lý Sản Phẩm</div>
             <button><a href="{{ route('product.create') }}"><i class="fa-solid fa-plus"></i> Thêm</a></button>
-            <button><a href="ql_sanpham_duyet.html"><i class="fa-solid fa-check-to-slot"></i> Duyệt</a></button>
+            <button><a href="{{route('admin.product.unapproved')}}"><i class="fa-solid fa-check-to-slot"></i> Duyệt</a></button>
             <div class="search">
                 <form action="{{ route('admin.product.search') }}">
                     <input type="text" name="key" id="key">

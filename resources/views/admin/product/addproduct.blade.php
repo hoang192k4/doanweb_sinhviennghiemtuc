@@ -35,7 +35,7 @@
                                     <div>
                                         <div class="col"><label>Danh mục:</label></div>
                                         <div class="col">
-                                            <select name="category">
+                                            <select name="category" onchange="loadBrands(this)">
                                                 @foreach ($danhSachPhanLoai as $phanLoai)
                                                     <option value="{{ $phanLoai->id }}">{{ $phanLoai->name }}</option>
                                                 @endforeach
@@ -45,7 +45,7 @@
                                     <div>
                                         <div class="col"><label>Thương hiệu:</label></div>
                                         <div class="col">
-                                            <select name="brand">
+                                            <select name="brand" id="brands">
                                                 @foreach ($danhSachThuongHieu as $thuongHieu)
                                                     <option value="{{ $thuongHieu->id }}">{{ $thuongHieu->name }}</option>
                                                 @endforeach
@@ -57,10 +57,11 @@
                                     <div class="col">
                                         <label>Hình ảnh:</label>
                                     </div>
-                                    <div class="col">
-                                        <img id="output" />
-                                        <input type="file" onchange="loadFile(event)" class="form-control"
-                                            style="background-color:white" name="image">
+                                    <div> <button type="button" data-idx=1 onclick="addImage(this)">Thêm hình ảnh</button> </div>
+                                    <div class="col" id="image-products">
+                                        <img id="output-1" />
+                                        <input type="file" data-index=1 onchange="loadFile(event,this)" class="form-control"
+                                            style="background-color:white" name="image[0]">
                                     </div>
                                     @error('image')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -148,6 +149,15 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class=" form-group-product">
+                                    <div class="col"><label>Ngày ra mắt</label></div>
+                                    <div class="col">
+                                        <input type="date" class="form-control" name="launch_time">
+                                        @error('launch_time')
+                                            <div class="text-danger" style="color:red">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
                             </div>
                             @csrf
@@ -199,10 +209,11 @@
 
 @section('script')
     <script>
-        var loadFile = function(event) {
+        var loadFile = function(event,img) {
+            const idx = img.dataset.index;
             var reader = new FileReader();
             reader.onload = function() {
-                var output = document.getElementById('output');
+                var output = document.getElementById('output-'+idx);
                 output.src = reader.result;
                 output.style.width = "150px";
                 output.style.height = "150px";
@@ -249,6 +260,33 @@
 
                         </div>`;
             variants.insertAdjacentHTML('beforeend', variant);
+        }
+    </script>
+    <script>
+        function loadBrands(category){
+            const opt = category.value;
+            $.ajax({
+                method: "GET",
+                url:`/admin/brand/filter/${opt}`
+            })
+            .done((data)=>{
+                const brands = data.map((brand)=>{
+                    return `<option value="${brand.id}">${brand.name}</option>`;
+                });
+                const brandsHtml = document.getElementById('brands');
+                brandsHtml.innerHTML = brands.join('');
+            })
+        }
+    </script>
+    <script>
+        function addImage(btn){
+            let idx = Number(++btn.dataset.idx);
+            const image = `<div class="col">
+                                        <img id="output-${idx}" />
+                                        <input type="file" data-index=${idx} onchange="loadFile(event,this)" class="form-control"
+                                            style="background-color:white" name="image[${idx-1}]">
+                            </div>`;
+            document.getElementById('image-products').insertAdjacentHTML('beforeend',image);
         }
     </script>
 @endsection

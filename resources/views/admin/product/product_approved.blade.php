@@ -5,9 +5,9 @@
     <div class="content">
         <div class="head">
             <div class="title">Duyệt Sản Phẩm</div>
-            <button><a href="all.html"><i class="fa-solid fa-arrow-left"></i>
+            <button><a href="{{route('product.index')}}"><i class="fa-solid fa-arrow-left"></i>
                     Trở về</a></button>
-            <button><i class="fa-solid fa-plus"></i> Thêm</button>
+           <button>  <a href="{{route('product.create')}}"> <i class="fa-solid fa-plus"></i> Thêm </a></button>
             <div class="search">
                 <input>
                 <button><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -23,6 +23,9 @@
             <div class="active">Chờ duyệt</div>
             <div>Tạm ẩn</div>
         </div>
+        @if (session('msg'))
+            <p id="message" style="display: block; color: green;">{{ session('msg') }}</p>
+        @endif
         <div class="table" id="choduyet">
             <table>
                 <thead>
@@ -34,20 +37,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="text-align: center;">1</td>
-                        <td>Nguyễn Thùy</td>
-                        <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">2</td>
-                        <td>Anh Thư</td>
-                        <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
-                        </td>
-                    </tr>
+                    @foreach ($danhSachSanPham as $sanPham)
+                        <tr>
+                            <td style="text-align: center;">{{ $sanPham->id }}</td>
+                            <td> {{ $sanPham->name }}</td>
+                            <td style="text-align: center;"><a
+                                    href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
+                                        class="fa-solid fa-check"></i></a></td>
+                            <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -62,20 +62,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="text-align: center;">1</td>
-                        <td>Nguyễn Thùy</td>
-                        <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">2</td>
-                        <td>Anh Thư</td>
-                        <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
-                        </td>
-                    </tr>
+                    @foreach ($danhSachSanPhamBiAn as $sanPham)
+                        <tr>
+                            <td style="text-align: center;">{{ $sanPham->id }}</td>
+                            <td> {{ $sanPham->name }}</td>
+                            <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
+                            <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -99,4 +94,12 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+<script>
+    const message = document.getElementById('message');
+    setTimeout(() => {
+        message.style.display = 'none';
+    }, 3000);
+</script>
 @endsection
