@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-black-thumb-600x600.jpg"
+                            <a href=""><img src="images/samsung_galaxy_s23_blue.png"
                                     alt="Lỗi hiển thị"></a>
                             <div class="product_best_seller_item_info">
                                 <ul>
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-pro-white-thumb-600x600.jpg"
+                            <a href=""><img src="images/samsung_galaxy_s23_black.png"
                                     alt="Lỗi hiển thị"></a>
                             <div class="product_best_seller_item_info">
                                 <ul>

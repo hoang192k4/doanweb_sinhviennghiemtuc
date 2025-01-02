@@ -1,4 +1,8 @@
 <header>
+    @php
+        $danhSachPhanLoai = DB::table('brands')->get();
+        $danhSachDanhMuc = DB::table('categories')->get();
+    @endphp
     <nav class="container_css navbar navbar-top">
         <div>
             <ul>
@@ -8,7 +12,8 @@
         </div>
         <div>
             <ul>
-                <li><a href=""  onclick="handleLogin(event)"><i class="far fa-user-circle" style="margin-right:5px"></i>Đăng nhập</a></li>
+                <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
+                            style="margin-right:5px"></i>Đăng nhập</a></li>
             </ul>
         </div>
     </nav>
@@ -22,20 +27,16 @@
                 <li><a href="">Trang chủ</a></li>
                 <li>Danh mục<i class="fas fa-angle-down" style="margin-left:5px"></i>
                     <ul class="popup popup__category">
-                        <li class="thuong__hieu"><a href="">Điện thoại</a><i class="fas fa-angle-right"></i>
+                        @foreach($danhSachDanhMuc as $item)
+                        <li class="thuong__hieu"><a href="{{ route('timkiemsanpham', ['slug' => $item->slug])}}">{{ $item->name }}</a> <i
+                            class="fas fa-angle-right"></i>
                             <ul class="popup popup__thuonghieu">
-                               <li><a href="">SamSung</a></li>
-                               <li><a href="">Apple</a></li>
-                               <li><a href="">Oppo</a></li>
+                                @foreach ($danhSachPhanLoai as $item)
+                                <li><a href="{{ route('timkiemsanpham', ['slug' => $item->name])}}">{{ $item->name }}</a></li>
+                            @endforeach
                             </ul>
                         </li>
-                        <li class="thuong__hieu"><a href="">LapTop</a><i class="fas fa-angle-right"></i>
-                            <ul class="popup popup__thuonghieu">
-                                <li><a href="">Asus</a></li>
-                                <li><a href="">MSI</a></li>
-                                <li><a href="">Lenovo</a></li>
-                            </ul>
-                        </li>
+                        @endforeach
                     </ul>
                 </li>
             </ul>
@@ -53,7 +54,8 @@
                     <li class="popup__category__ml__tl"><a href="">LapTop</a></li>
                     <li><a href="">About Us</a></li>
                     <li><a href="">Contact Us</a></li>
-                    <li><a href=""  onclick="handleLogin(event)"><i class="far fa-user-circle" style="margin-right:5px"></i>Đăng nhập</a></li>
+                    <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
+                                style="margin-right:5px"></i>Đăng nhập</a></li>
                 </ul>
             </nav>
             <ul>
