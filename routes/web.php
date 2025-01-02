@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminProductController;
+
 
 Route::get('/', function () {
     return view('user.pages.index');
@@ -84,3 +86,9 @@ Route::get('/admin/editproduct',function(){
 Route::get('/admin/statistical',function(){
     return view('admin.pages.statistical');
 });
+
+//Route quan ly san pham
+Route::get('/admin/product/search',[AdminProductController::class,'search'])->name('admin.product.search');
+Route::resource('/admin/product',AdminProductController::class);
+
+
