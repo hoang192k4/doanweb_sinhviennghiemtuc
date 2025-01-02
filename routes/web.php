@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminProductController;
 
 
@@ -43,9 +44,6 @@ Route::get('/giohang', function(){
 Route::get('/thanhtoan', function(){
     return view('user.profile.payment');
 });
-Route::get('/admin',function(){
-    return view('admin.pages.index');
-});
 Route::get('/admin/category',function(){
     return view('admin.category.category');
 });
@@ -71,6 +69,11 @@ Route::get('/admin/contact',function(){
     return view('admin.pages.contact');
 });
 
+//Route dashboard
+Route::get('/admin',function(){
+    return view('admin.pages.index');
+});
+Route::post('/admin', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
 
 Route::get('/admin/product',function(){
     return view('admin.product.product');

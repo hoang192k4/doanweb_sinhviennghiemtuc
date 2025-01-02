@@ -97,15 +97,25 @@
     <div class="separator_x"></div>
     <div class="area">
         <div class="infor">
-            <form>
+            <form action="{{ route('admin.editWebsite') }}" method="POST">
+                @csrf
                 <div>
-                    <p>Địa chỉ : </p><input>
+                    <p>Tên : </p><input name="name" value="{{App\Models\About::first()->name}}">
                 </div>
                 <div>
-                    <p>Số điện thoại : </p><input>
+                    <p>Facebook : </p><input name="facebook" value="{{App\Models\About::first()->facebook}}">
                 </div>
                 <div>
-                    <p>Email : </p><input>
+                    <p>Youtube : </p><input name="youtube" value="{{App\Models\About::first()->youtube}}">
+                </div>
+                <div>
+                    <p>Số điện thoại : </p><input name="phone" value="{{App\Models\About::first()->phone}}">
+                </div>
+                <div>
+                    <p>Email : </p><input name="email" value="{{App\Models\About::first()->email}}">
+                </div>
+                <div>
+                    <p>Địa chỉ : </p><input name="address" value="{{App\Models\About::first()->address}}">
                 </div>
                 <button type="submit">Lưu thông tin</button>
             </form>
