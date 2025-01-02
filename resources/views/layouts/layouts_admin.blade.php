@@ -38,6 +38,7 @@
         {{-- main --}}
     </div>
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     @yield('script')
 </body>
 

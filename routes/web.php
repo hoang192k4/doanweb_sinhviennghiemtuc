@@ -71,9 +71,7 @@ Route::get('/admin/contact',function(){
     return view('admin.pages.contact');
 });
 
-Route::get('/admin/approved',function(){
-    return view('admin.pages.product_approved');
-});
+
 Route::get('/admin/product',function(){
     return view('admin.product.product');
 });
@@ -89,6 +87,7 @@ Route::get('/admin/statistical',function(){
 
 //Route quan ly san pham
 Route::get('/admin/product/search',[AdminProductController::class,'search'])->name('admin.product.search');
+Route::get('/admin/product/filter',[AdminProductController::class,'filter'])->name('admin.product.filter');
 Route::resource('/admin/product',AdminProductController::class);
 
 

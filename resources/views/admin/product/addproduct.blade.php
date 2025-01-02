@@ -13,32 +13,41 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <form action="" id="formAddProduct" class="form-product">
+
+                        <form action="{{route('product.store')}}" method="POST" id="formAddProduct" class="form-product">
                             <div class=" form-groups">
                                 <div class="form-group-product">
                                     <div class="col"><label>Tên sản phẩm:</label></div>
-                                    <div class="col"><input type="text" class="form-control" id="nameProduct"></div>
+                                    <div class="col"><input type="text" class="form-control" id="name" name="name"></div>
+                                    @error('name')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group-product">
                                     <div class="col"><label>Mô tả:</label></div>
-                                    <textarea name="Decription"></textarea>
+                                    <textarea name="description"></textarea>
+                                    @error('description')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group-product">
                                     <div>
                                         <div class="col"><label>Danh mục:</label></div>
                                         <div class="col">
-                                            <select>
-                                                <option value="">Điện thoại</option>
-                                                <option value="">Laptop</option>
+                                            <select name="category">
+                                                @foreach ( $danhSachPhanLoai as $phanLoai )
+                                                    <option value="{{$phanLoai->id}}">{{$phanLoai->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div>
                                         <div class="col"><label>Thương hiệu:</label></div>
                                         <div class="col">
-                                            <select>
-                                                <option value="">iPhone</option>
-                                                <option value="">SamSung</option>
+                                            <select name="brand">
+                                                @foreach ( $danhSachThuongHieu as $thuongHieu )
+                                                    <option value="{{$thuongHieu->id}}">{{$thuongHieu->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -48,55 +57,20 @@
                                         <label>Hình ảnh:</label>
                                     </div>
                                     <div class="col">
-                                        <img src="" alt="error">
-                                        <input type="file" class="form-control" style="background-color:white" name="image">
+                                        <img id="output"/>
+                                        <input type="file" onchange="loadFile(event)" class="form-control" style="background-color:white" name="image">
                                     </div>
+                                    @error('image')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class=" form-groups">
-                                <div class=" form-group-product">
-                                    <div class="col">
-                                        <label>Màu sắc</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="colorProduct">
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col">
-                                        <label>Dung lượng</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="storageProduct">
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col">
-                                        <label>Số lượng</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="number" class="form-control" name="amountProduct">
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Giá tiền</label></div>
-                                    <div class="col">
-                                        <input type="number" class="form-control" name="priceProduct">
-                                    </div>
 
-                                </div>
-                                <div class="form-group-product">
-                                    <div class="col"><label>Trạng thái:</label></div>
-                                    <div class="col">
-                                        <select name="status" class="form-control">
-                                            <option value="status-1">status 1</option>
-                                            <option value="status-2">status 2</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
+                            @csrf
                             <div class="btn-goback button-product">
-                                <button type="button">Xác nhận</button>
+                                <button type="submit">Xác nhận</button>
                                 <button type="button">Hủy</button>
                             </div>
                         </form>
@@ -105,4 +79,27 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+<script>
+    var loadFile = function(event) {
+      var reader = new FileReader();
+      reader.onload = function(){
+        var output = document.getElementById('output');
+        output.src = reader.result;
+        output.style.width = "150px";
+        output.style.height = "150px";
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    };
+  </script>
+  <script>
+    function notification(){
+        setTimeout(() => {
+        message.style.display = 'none';
+    }, 3000);
+    }
+
+  </script>
 @endsection
