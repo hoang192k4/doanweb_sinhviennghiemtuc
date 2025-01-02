@@ -43,7 +43,7 @@ Route::get('/giohang', function(){
 Route::get('/thanhtoan', function(){
     return view('user.profile.payment');
 });
-Route::get('/admin/index',function(){
+Route::get('/admin',function(){
     return view('admin.pages.index');
 });
 Route::get('/admin/category',function(){
