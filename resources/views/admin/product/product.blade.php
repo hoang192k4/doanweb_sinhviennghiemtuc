@@ -34,13 +34,13 @@
             </thead>
             <tbody id="table">
                 @foreach ($danhSachSanPham as $sanPham)
-                    <tr>
+                    <tr id="product-{{$sanPham->id}}">
                         <td style="text-align: center;"> {{ $sanPham->id }}</td>
                         <td>{{ $sanPham->name }}</td>
                         <td style="text-align: center;"><a href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
                                     class="fa-regular fa-pen-to-square"></i></a>
                         </td>
-                        <td style="text-align: center;"><a onclick="popup('sp')"><i class="fa-regular fa-trash-can"></i></a>
+                        <td style="text-align: center;"><a onclick="showPopupProduct({{$sanPham}})"><i class="fa-regular fa-trash-can"></i></a>
                         </td>
                     </tr>
                 @endforeach
@@ -60,7 +60,7 @@
             <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
             <p id="alert"></p>
             <div class="button">
-                <button onclick="submit()">Submit</button>
+                <button onclick="submitHideProduct(this.dataset.id)">Submit</button>
                 <button onclick="cancel('sp')">Cancel</button>
             </div>
         </div>
@@ -68,10 +68,34 @@
 @endsection
 @section('script')
     <script>
+        function showPopupProduct(product){
+            const popupProduct = document.getElementById('popupsp');
+            popupProduct.children[0].textContent = `Bạn có thật sự muốn ẩn sản phẩm ${product.name}?`;
+            popupProduct.children[3].children[0].dataset.id = product.id;
+            popupProduct.style.display = 'block';
+        }
+        function submitHideProduct(id){
+            document.getElementById('popupsp').style.display = "none";
+            $.ajax({
+                method:"GET",
+                url:`/admin/product/deactive/${id}`
+            })
+            .done((data)=>{
+                const row = document.getElementById(`product-${id}`);
+                let table = row.parentNode;
+                table.removeChild(row);
+                alert(data);
+            })
+        }
+    </script>
+    <script>
         const message = document.getElementById('message');
-        setTimeout(() => {
+        if(message!==null){
+            setTimeout(() => {
             message.style.display = 'none';
         }, 3000);
+        }
+
     </script>
     <script>
         function findProduct(opt) {

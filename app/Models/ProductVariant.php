@@ -8,5 +8,5 @@ class ProductVariant extends Model
 {
     //
     use HasFactory;
-    protected $fillable = ['color','price','stock','internal_memory','image','product_id'];
+    protected $fillable = ['color','price','stock','internal_memory','image','product_id','status'];
 }

@@ -492,3 +492,10 @@ table tr td {
 .button-product {
     width: 50%;
 }
+
+.cursor{
+    cursor: pointer;
+}
+.bg-white{
+    background-color: white;
+}

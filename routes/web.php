@@ -92,6 +92,7 @@ Route::get('/admin/statistical',function(){
 
 //Route quan ly san pham
 Route::get('/admin/product/active/{id}',[AdminProductController::class,'active'])->name('admin.product.active');
+Route::get('/admin/product/deactive/{id}',[AdminProductController::class,'deactive'])->name('admin.product.deactive');
 Route::get('/admin/proudct/list-product-unapproved',[AdminProductController::class,'getListProductsUnapproved'])->name('admin.product.unapproved');
 Route::get('/admin/product/search',[AdminProductController::class,'search'])->name('admin.product.search');
 Route::get('/admin/product/filter',[AdminProductController::class,'filter'])->name('admin.product.filter');

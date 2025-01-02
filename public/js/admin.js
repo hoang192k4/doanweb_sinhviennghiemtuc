@@ -59,8 +59,6 @@ tabs.forEach(tab => {
 function popup(name) {
     if (name == 'dm') {
         document.getElementById('popupdm').style.display = 'block'
-    } else if (name == 'sp') {
-        document.getElementById('popupsp').style.display = 'block'
     } else if (name == 'huy') {
         document.getElementById('popuphuy').style.display = 'block'
     } else if (name == 'xoa') {

@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
     //
     use HasFactory;
-    protected $fillable = ['name','slug','brand_id','description'];
+    protected $fillable = ['name','slug','brand_id','description','status'];
 
     public function brand(): BelongsTo
     {
@@ -26,5 +27,13 @@ class Product extends Model
     public function product_variants():HasMany
     {
         return $this->hasMany(ProductVariant::class);
+    }
+    public function image_products():HasMany
+    {
+        return $this->hasMany(ImageProduct::class);
+    }
+    public function product_specification():HasOne
+    {
+        return $this->hasOne(ProductSpecification::class);
     }
 }

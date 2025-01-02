@@ -76,14 +76,16 @@ class AdminProductController extends Controller
             'brand_id'=>$request->input('brand'),
         ]);
         // //thêm nhiều hình ảnh sản phẩm từ id sản phẩm ở $product
+        $idx = 0;
         foreach($request->image as $image){
             $extension = $image->getClientOriginalExtension();
-            $fileName = 'product_'.time().'.'.$extension;
+            $fileName = 'product_'.$idx.time().'.'.$extension;
             $image->move(public_path('images'), $fileName);
             ImageProduct::create([
                 'image'=>'images/'.$fileName,
                 'product_id'=> $product->id
             ]);
+            $idx++;
         }
 
         //thêm thông số kĩ thuật cho sản phẩm từ id của $product
@@ -107,7 +109,7 @@ class AdminProductController extends Controller
                 'stock'=>$variant['stock'],
                 'price'=>$variant['price'],
                 'internal_memory'=>$variant['internal_memory'],
-                'product_id'=>10,
+                'product_id'=>$product->id,
                 'image'=> $this->uploadImageVariant($variant['image_variant'])
                 ]);
         }
@@ -146,6 +148,18 @@ class AdminProductController extends Controller
     public function destroy(string $id)
     {
         //
+
+        $product = Product::find($id);
+        $name = $product->name;
+        if($product){
+            $product->product_variants()->forceDelete();
+            $product->product_specification()->forceDelete();
+            $product->image_products()->forceDelete();
+            $product->forceDelete();
+
+            return 'Xóa sản phẩm '.$name.' thành công!';
+        }
+        return 'Xóa sản phẩm '.$name.' không thành công!';
     }
 
     public function search(Request $request){
@@ -184,9 +198,20 @@ class AdminProductController extends Controller
     public function active($id){
         $product = Product::find($id);
         if($product->status!=1){
-            $product->status=1;
-            $product->save();
+            $product->update(['status'=>1]);
+            $product->product_variants()->update([
+                'status'=>1
+            ]);
         }
         return back()->with('msg','Sản phẩm '.$product->name.' đã được hiển thị!');
+    }
+
+    public function deactive($id){
+        $product = Product::find($id);
+        $product->update(['status'=>0]);
+        $product->product_variants()->update([
+            'status'=>0
+        ]);
+        return 'Ẩn sản phẩm thành công!';
     }
 }

@@ -5,9 +5,9 @@
     <div class="content">
         <div class="head">
             <div class="title">Duyệt Sản Phẩm</div>
-            <button><a href="{{route('product.index')}}"><i class="fa-solid fa-arrow-left"></i>
+            <button><a href="{{ route('product.index') }}"><i class="fa-solid fa-arrow-left"></i>
                     Trở về</a></button>
-           <button>  <a href="{{route('product.create')}}"> <i class="fa-solid fa-plus"></i> Thêm </a></button>
+            <button> <a href="{{ route('product.create') }}"> <i class="fa-solid fa-plus"></i> Thêm </a></button>
             <div class="search">
                 <input>
                 <button><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -44,7 +44,7 @@
                             <td style="text-align: center;"><a
                                     href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
                                         class="fa-solid fa-check"></i></a></td>
-                            <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
+                            <td style="text-align: center;"><button class="cursor" style="background-color: white;color:rgb(19, 93, 102)" onclick="showPopupDelete({{$sanPham}})"><i class="fa-solid fa-x"></i></button>
                             </td>
                         </tr>
                     @endforeach
@@ -66,8 +66,13 @@
                         <tr>
                             <td style="text-align: center;">{{ $sanPham->id }}</td>
                             <td> {{ $sanPham->name }}</td>
-                            <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                            <td style="text-align: center;"><a onclick="popup('duyet')"><i class="fa-solid fa-x"></i></a>
+                            <td style="text-align: center;"><a
+                                    href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
+                                        class="fa-solid fa-check"></i></a></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
+                                    onclick="showPopupDelete({{ $sanPham }})"><i
+                                        class="fa-solid fa-x"></i></button>
                             </td>
                         </tr>
                     @endforeach
@@ -89,17 +94,50 @@
             <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
             <p id="alert"></p>
             <div class="button">
-                <button onclick="submit()">Submit</button>
-                <button onclick="cancel('duyet')">Cancel</button>
+                <button class="cursor" onclick="submitDelete(this.dataset.id)">Submit</button>
+                <button class="cursor" onclick="cancel('duyet')">Cancel</button>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
-<script>
-    const message = document.getElementById('message');
-    setTimeout(() => {
-        message.style.display = 'none';
-    }, 3000);
-</script>
+    <script>
+        function showPopupDelete(product) {
+            let popupDelete = document.getElementById('popupduyet');
+            popupDelete.children[0].textContent = `Bạn có thật sự muốn xóa sản phẩm ${product.name} ?`;
+            popupDelete.children[4].children[0].dataset.id = product.id;
+            popupDelete.style.display = "block";
+        }
+
+        function submitDelete(id) {
+            $.ajax({
+                method:"POST",
+                url: `/admin/product/${id}`,
+                data: {
+                    _token: '{{csrf_token()}}',
+                    _method: 'delete'
+                }
+            })
+            .done((data)=>{
+                alert(data);
+                location.reload();
+            })
+
+            document.getElementById('popupduyet').style.display = "none";
+        }
+    </script>
+    <script>
+        const message = document.getElementById('message');
+        if (message !== null) {
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+@endsection
+@section('css')
+<style>
+
+</style>
+
 @endsection
