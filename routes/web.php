@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminBrandController;
 
@@ -63,9 +64,7 @@ Route::get('/admin/addcategory',function(){
 Route::get('/admin/comment',function(){
     return view('admin.pages.review');
 });
-Route::get('/admin/order',function(){
-    return view('admin.pages.order');
-});
+
 Route::get('/admin/contact',function(){
     return view('admin.pages.contact');
 });
@@ -76,6 +75,13 @@ Route::get('/admin',function(){
 });
 Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
 Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->name('admin.editLogo');
+
+//Route quan ly don hang
+Route::get('/admin/order',function(){
+    return view('admin.pages.order');
+});
+Route::get('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
+Route::get('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
 
 Route::get('/admin/product',function(){
     return view('admin.product.product');
