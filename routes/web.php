@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
-Route::get('/',[UserController::class,"index"]);
-
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
     Route::get('/contact',"LienHe")->name('user.contact');
