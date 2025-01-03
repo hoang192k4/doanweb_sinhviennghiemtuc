@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Product;
+use App\Models\ProductUser;
 
 class UserController extends Controller
 {
@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function TimKiemSanPhamFH($slug, $id = null)
     {
-        $danhSachSanPham = Product::TimKiemSanPham($slug,$id);
+        $danhSachSanPham = ProductUser::TimKiemSanPham($slug,$id);
         return view('user.pages.search')->with('danhSachSanPham',$danhSachSanPham);
     }
     public function GioiThieu(){

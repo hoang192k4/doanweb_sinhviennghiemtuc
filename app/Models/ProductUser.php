@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Product extends Model
+class ProductUser extends Model
 {
     use HasFactory;
     public static function TimKiemSanPham($slug,$brandName = null){
