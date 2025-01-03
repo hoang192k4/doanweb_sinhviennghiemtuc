@@ -12,13 +12,13 @@ class AdminOrderController extends Controller
         $order = Order::find($id);
         $order->order_status_id = 5;
         $order->save();
-        return redirect()->back();
+        return response()->json(['message' => 'Cập nhật đơn hàng thành công.']);
     }
     public function updateVanChuyen($id)
     {
         $order = Order::find($id);
         $order->order_status_id = 6;
         $order->save();
-        return redirect()->back();
+        return response()->json(['message' => 'Cập nhật đơn hàng thành công.']);
     }
 }

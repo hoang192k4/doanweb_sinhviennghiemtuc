@@ -80,8 +80,8 @@ Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->name('admi
 Route::get('/admin/order',function(){
     return view('admin.pages.order');
 });
-Route::get('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
-Route::get('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
+Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
+Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
 
 Route::get('/admin/product',function(){
     return view('admin.product.product');

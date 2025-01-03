@@ -30,19 +30,23 @@
             </thead>
             <tbody>
                 @foreach (App\Models\Order::whereIn('order_status_id', [1, 2, 3])->get() as $order)
-                    <tr>
-                        <td style="text-align: center;">{{$order->order_code}}</td>
-                        <td>{{$order->full_name}}</td>
-                        <td style="text-align: center;">{{$order->phone}}</td>
-                        <td>{{$order->address}}</td>
-                        <td style="text-align: center;">{{$order->total_price}}</td>
-                        <td style="text-align: center;">
-                            {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
-                        </td>
-                        <td style="text-align: center;"><a href="{{route('admin.updateChuanBi', ['id' => $order->id])}}"><i
-                                    class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                    </tr>
+                                <tr>
+                                    <td style="text-align: center;">{{$order->order_code}}</td>
+                                    <td>{{$order->full_name}}</td>
+                                    <td style="text-align: center;">{{$order->phone}}</td>
+                                    <td>{{$order->address}}</td>
+                                    <td style="text-align: center;">{{$order->total_price}}</td>
+                                    <td style="text-align: center;">
+                                        {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button style="background-color: rgb(255, 255, 255); color: rgb(19, 93, 102); font-size: 16px; padding: 0px;"
+                                        class="btnChuanBi" data-id="{{ $order->id }}">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </td>
+                                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
+                                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -72,7 +76,12 @@
                         <td style="text-align: center;">
                             {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
                         </td>
-                        <td style="text-align: center;"><a href="{{route('admin.updateVanChuyen', ['id' => $order->id])}}"><i class="fa-solid fa-check"></i></a></td>
+                        <td style="text-align: center;">
+                            <button style="background-color: rgb(255, 255, 255); color: rgb(19, 93, 102); font-size: 16px; padding: 0px;"
+                            class="btnVanChuyen" data-id="{{ $order->id }}">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </td>
                         <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
                     </tr>
                 @endforeach
@@ -200,4 +209,43 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.btnChuanBi').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/admin/updateChuanBi/' + id,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    alert('Có lỗi xảy ra: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.btnVanChuyen').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/admin/updateVanChuyen/' + id,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    alert('Có lỗi xảy ra: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 @endsection
