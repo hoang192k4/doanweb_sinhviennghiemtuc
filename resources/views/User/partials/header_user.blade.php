@@ -6,8 +6,8 @@
     <nav class="container_css navbar navbar-top">
         <div>
             <ul>
-                <li><a href="">Giới thiệu</a></li>
-                <li><a href="">Liên hệ</a></li>
+                <li><a href="{{route('user.blog')}}">Giới thiệu</a></li>
+                <li><a href="{{route('user.contact')}}">Liên hệ</a></li>
             </ul>
         </div>
         <div>
@@ -52,12 +52,14 @@
                 <ul>
                     <li><a href="">Trang chủ</a></li>
                     <li id="show__category">Danh mục<i class="fas fa-angle-down" style="margin-left:20px"></i></li>
-                    <li class="popup__category__ml__tl"><a href="">Điện thoại</a></li>
-                    <li class="popup__category__ml__tl"><a href="">LapTop</a></li>
-                    <li><a href="">About Us</a></li>
-                    <li><a href="">Contact Us</a></li>
+                    @foreach( $danhSachDanhMuc as $category)
+                    <li class="popup__category__ml__tl"><a href="{{ route('timkiemsanpham', ['slug' => $category->slug])}}">{{ $category->name }}</a></li>
+                    @endforeach
+                    <li><a href="{{ route('user.blog') }}">Giới Thiệu</a></li>
+                    <li><a href="{{ route('user.contact') }}">Liên Hệ</a></li>
                     <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
                                 style="margin-right:5px"></i>Đăng nhập</a></li>
+                    
                 </ul>
             </nav>
             <ul>
@@ -67,9 +69,9 @@
                         <button><i class="fas fa-search"></i></button>
                     </form>
                 </li>
-                <li class="cart__header_desktop"><a href=""><i class="fas fa-shopping-cart"
+                <li class="cart__header_desktop"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"
                             style="margin-right:5px"><span class="number_cart">0</span></i>Giỏ hàng</a></li>
-                <li class="cart__header_mb_tl"><a href=""><i class="fas fa-shopping-cart"><span
+                <li class="cart__header_mb_tl"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"><span
                                 class="number_cart_mb_tl">0</span></i></a></li>
             </ul>
         </div>
