@@ -1,8 +1,8 @@
 <footer>
     @php
          $lienKetWebsite = DB::table('about')->first();
-         $danhSachDanhMuc = DB::table('categories')->get();
-         $danhSachPhanLoai = DB::table('brands')->take(6)->get();
+         $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug')->get();
+         $danhSachPhanLoai = DB::table('brands')->select('brands.name')->distinct()->groupBy('brands.name')->take(6)->get();
     @endphp
     <div class="footer_top container_css">
         <div class="footer_top_left_items">
@@ -34,7 +34,6 @@
                     <li><a href="{{$lienKetWebsite->facebook}}"><i class="fab fa-facebook"></i>Facebook</a>
                     </li>
                     <li><a href="{{$lienKetWebsite->youtube}}"><i class="fab fa-youtube"></i>Youtube</a></li>
-                    <li><a href=""><i class="fab fa-linkedin"></i>Linkedln</a></li>
                 </ul>
             </div>
             <div class="footer_top_item">
@@ -58,7 +57,7 @@
         </div>
         <div class="footer_top_right">
             <div class="footer_top_logo">
-                <a href=""><img src="" style="max-width: 100px;" alt="Lỗi hiển thị"></a>
+                <a href=""><img src="{{$lienKetWebsite->logo}}" style="max-width: 100px;" alt="Lỗi hiển thị"></a>
             </div>
             <div class="footer_top_slogan">
                 <a href="">Slogan</a>

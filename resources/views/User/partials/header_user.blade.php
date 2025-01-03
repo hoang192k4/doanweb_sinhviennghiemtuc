@@ -1,7 +1,7 @@
 <header>
     @php
-        $danhSachPhanLoai = DB::table('brands')->get();
-        $danhSachDanhMuc = DB::table('categories')->get();
+        $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug','categories.id')->get();
+        $lienKetWebsite = DB::table('about')->select('about.logo')->first();
     @endphp
     <nav class="container_css navbar navbar-top">
         <div>
@@ -20,19 +20,21 @@
     <nav class="container_css navbar navbar-bottom">
         <div class="navbar_item_first">
             <div>
-                <a href="" style="font-size: 14px; color: rgb(233, 239, 236);"><img src=""
+                <a href="{{route('user.index')}}" style="font-size: 14px; color: rgb(233, 239, 236);"><img src="{{$lienKetWebsite->logo}}"
                         alt="Lỗi hiển thị"></a>
             </div>
             <ul>
-                <li><a href="">Trang chủ</a></li>
+                <li><a href="{{route('user.index')}}">Trang chủ</a></li>
                 <li>Danh mục<i class="fas fa-angle-down" style="margin-left:5px"></i>
                     <ul class="popup popup__category">
-                        @foreach($danhSachDanhMuc as $item)
-                        <li class="thuong__hieu"><a href="{{ route('timkiemsanpham', ['slug' => $item->slug])}}">{{ $item->name }}</a> <i
+                        @foreach( $danhSachDanhMuc as $category)
+                        <li class="thuong__hieu"><a href="{{ route('timkiemsanpham', ['slug' => $category->slug])}}">{{ $category->name }}</a> <i
                             class="fas fa-angle-right"></i>
                             <ul class="popup popup__thuonghieu">
-                                @foreach ($danhSachPhanLoai as $item)
-                                <li><a href="{{ route('timkiemsanpham', ['slug' => $item->name])}}">{{ $item->name }}</a></li>
+                                @foreach (DB::table('brands')->select('brands.name')
+                                ->join('categories','brands.category_id','=','categories.id')
+                                ->where('categories.id',$category->id)->get() as $brand)
+                                <li><a href="{{ route('timkiemsanpham', ['slug' => $category->slug ,'id' => $brand->name ])}}">{{ $brand->name }}</a></li>
                             @endforeach
                             </ul>
                         </li>

@@ -6,8 +6,8 @@ use App\Http\Controllers\UserController;
 Route::get('/',[UserController::class,"index"]);
 
 Route::controller(UserController::class)->group(function(){
-    Route::get('/',"index");
-    Route::get('/timkiemtheodanhmuc/{slug}',"TimKiemSanPham")->name('timkiemsanpham');
+    Route::get('/',"index")->name('user.index');
+    Route::get('/{slug}/{id?}',"timkiemsanpham")->name('timkiemsanpham');
 });
 Route::get('/detail', function(){
     return view('user.pages.detail');
