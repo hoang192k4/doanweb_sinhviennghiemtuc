@@ -31,6 +31,9 @@
                                 <input type="text" name="name" placeholder="Họ và tên của bạn" />
                             </div>
                             <div class="col">
+                                <input type="text" name="phone" placeholder="Số điện thoại" />
+                            </div>
+                            <div class="col">
                                 <input type="text" name="email" placeholder="E-mail" />
                             </div>
                             <div class="col">

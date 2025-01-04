@@ -21,26 +21,35 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
-                    <th>Name</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($danhSachLienHeChuaDuyet as $lienHe)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
+                    <td style="text-align: center;">{{$lienHe->id}} </td>
+                    <td> {{$lienHe->name}} </td>
+                    <td> {{$lienHe->phone}} </td>
+                    <td>{{$lienHe->email}} </td>
+                    <td>{{$lienHe->title}} </td>
+                    <td>{{$lienHe->content}} </td>
+                    <td style="text-align: center;">
+                        <a href="">
+                            <i class="fa-solid fa-check"></i>
+                        </a>
+                    </td>
+                    <td style="text-align: center;"><button onclick="showDeletePopup('{{$lienHe->name}}',{{$lienHe->id}})"><i
+                        class="fa-solid fa-x"></i></button></td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @endforeach
+               
+                
             </tbody>
         </table>
     </div>
@@ -49,23 +58,28 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
-                    <th>Name</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($danhSachLienHeDaDuyet as $lienHe)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
+                    <td style="text-align: center;">{{$lienHe->id}} </td>
+                    <td> {{$lienHe->name}} </td>
+                    <td> {{$lienHe->phone}} </td>
+                    <td>{{$lienHe->email}} </td>
+                    <td>{{$lienHe->title}} </td>
+                    <td>{{$lienHe->content}} </td>
+                    <td style="text-align: center;">
+                        <button onclick="showDeletePopup('{{$lienHe->name}}',{{$lienHe->id}})"><i
+                                class="fa-solid fa-x"></i></button></td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @endforeach           
             </tbody>
         </table>
     </div>
@@ -78,15 +92,41 @@
         <a href="#">5</a>
         <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
     </div>
-    <div class="popup_admin" id="popuplh">
+    <div class="popup_admin" id="popuplh" >
         <h3 style="color: white;">Bạn có thật sự muốn xóa liên hệ ... ?</h3>
         <p style="color: white;">* Liên hệ bị xóa sẽ không thể khôi phục nữa *</p>
         <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
         <p id="alert"></p>
         <div class="button">
-            <button onclick="submit()">Submit</button>
+            <button onclick="deleteContact(this.dataset.id)">Submit</button>
             <button onclick="cancel('lh')">Cancel</button>
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+    <script>
+        function showDeletePopup(name,id){
+            let popup = document.getElementById('popuplh');
+            popup.children[0].textContent = `Bạn có thật sự muốn xóa liên hệ ${name} ?`;
+            popup.children[4].children[0].dataset.id = id;
+            popup.style.display = "block";
+        }
+
+        function deleteContact(id){
+            $.ajax({
+                method:"POST",
+                url: `/admin/contact/delete/${id}`,
+                data: {
+                    _token: '{{csrf_token()}}',
+                    _method: 'delete'
+                }
+            })
+            .done((data)=>{
+                alert(data);
+                location.reload();
+            })
+            document.getElementById('popuplh').style.display="none";
+        }
+    </script>
 @endsection
