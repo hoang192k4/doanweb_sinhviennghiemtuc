@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductUser;
-
+use App\Models\Brand;
 class UserController extends Controller
 {
-    public function index()
-    {
-        return view('user.pages.index');
-    }
 
+    public function index(){
+        $thuongHieu = Brand::index();
+
+        return View('User.pages.index')->with([
+            "thuongHieu"=>$thuongHieu
+        ]);
+    }
     public function TimKiemSanPhamFH($slug, $id = null)
     {
         $danhSachSanPham = ProductUser::TimKiemSanPham($slug,$id);

@@ -1,3 +1,35 @@
+.pagination {
+    display: flex;
+    justify-content: center; /* Canh giữa */
+    list-style: none; /* Bỏ dấu chấm */
+    padding: 0; /* Bỏ padding */
+}
+
+.pagination .page-link {
+    padding: 10px 15px;
+    margin: 0 10px;
+    border: 1px solid rgb(19, 93, 102); /* Màu viền */
+    color: rgb(19, 93, 102); /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 5px; /* Bo góc */
+    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi */
+}
+
+.pagination .page-link:hover {
+    background-color: rgb(19, 93, 102); /* Màu nền khi hover */
+    color: #fff; /* Màu chữ khi hover */
+}
+
+.pagination .page-item.active .page-link {
+    background-color: rgb(19, 93, 102); /* Màu nền cho trang hiện tại */
+    color: #fff; /* Màu chữ cho trang hiện tại */
+    border: 1px solid rgb(19, 93, 102); /* Viền cho trang hiện tại */
+}
+
+.pagination .disabled {
+    color: #6c757d; /* Màu cho trang bị vô hiệu hóa */
+    pointer-events: none; /* Không cho click */
+}
 .change_password {
     padding-top: 10px;
     padding-bottom: 10px;

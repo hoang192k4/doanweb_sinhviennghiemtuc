@@ -1,6 +1,10 @@
 @extends('layouts.layouts_user')
 @section('title', 'Trang tìm kiếm')
 @section('content')
+    @php
+        $danhSachDanhMuc = DB::table('categories')->where('status',1)->select('name','slug','id')->get();
+        $danhSachThuongHieu = DB::table('brands')->where('status',1)->select('name')->get();
+    @endphp
     <section class="container_css product_searchs">
         <div class="product_search_lists">
             <div class="product_search_list_left">
@@ -9,21 +13,23 @@
                     <div class="product_search product_search_list_category">
                         <p>Danh mục<i class="fas fa-sort-down"></i></p>
                         <div class="product_search_list_category_popup">
-                            <a href="">Laptop</a>
-                            <a href="">Điện thoại</a>
+                            @foreach ($danhSachDanhMuc as $danhMuc)
+                                <a href="{{ route('timkiemsanpham', ['slug' => $danhMuc->slug])}}">{{$danhMuc->name}}</a>
+                            @endforeach
                         </div>
                     </div>
                     <div class="product_search product_search_list_branch">
                         <p>Thương hiệu<i class="fas fa-sort-down"></i></p>
                         <div class="product_search_list_branch_popup">
-                            <p>Điện thoại</p>
-                            <a href="">Samsung</a>
-                            <a href="">Apple</a>
-                            <a href="">Oppo</a>
-                            <p>Laptop</p>
-                            <a href="">Asus</a>
-                            <a href="">MSI</a>
-                            <a href="">Lenovo</a>
+                            @foreach ($danhSachDanhMuc as $danhMuc )
+                                <p>{{$danhMuc->name}}</p>
+                                @foreach (DB::table('brands')->select('brands.name')
+                                    ->join('categories','brands.category_id','=','categories.id')
+                                    ->where('categories.id',$danhMuc->id)->get() as $brand)
+                                    <a href="{{ route('timkiemsanpham', ['slug' => $danhMuc->slug ,'id' => $brand->name ])}}">{{ $brand->name }}</a>
+                                @endforeach
+
+                            @endforeach
                         </div>
                     </div>
                     <div class="product_search product_search_list_price">
@@ -69,6 +75,7 @@
                     <h5>Không có sản phẩm tương tự</h5>
                     @endif
                 </div>
+                {{-- {{$danhSachSanPham->links()}} --}}
             </div>
         </div>
         </div>
