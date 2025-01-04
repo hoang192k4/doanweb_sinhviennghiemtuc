@@ -69,37 +69,13 @@
     <section class="container_css main_branch ">
         <h4>THƯƠNG HIỆU NỔI BẬT</h4>
         <div class="list_branch">
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_59.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_60.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_61.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_62.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_63.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/macbook.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Lenovo.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/MSI.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_67.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Dell.png"
-                    alt="Lỗi hiển thị"></a>
+            @foreach ($thuongHieu as $item )
+            <a href="{{ route('timkiemsanpham', ['slug' => $item->name])}}"><img
+                src="{{asset('images/'.$item->image)}}"
+                alt="Lỗi hiển thị"></a>
+            @endforeach
         </div>
+
     </section>
 
     <!-- Điện thoại bán chạy -->
