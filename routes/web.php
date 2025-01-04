@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminContactController;
 
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
@@ -68,9 +69,7 @@ Route::get('/admin/comment',function(){
     return view('admin.pages.review');
 });
 
-Route::get('/admin/contact',function(){
-    return view('admin.pages.contact');
-});
+ 
 
 //Route dashboard
 Route::get('/admin',function(){
@@ -111,3 +110,6 @@ Route::resource('/admin/product',AdminProductController::class);
 Route::get('/admin/brand/filter/{opt}',[AdminBrandController::class,'filter']);
 
 
+//Route quan li lien he
+
+Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');

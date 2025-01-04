@@ -21,26 +21,31 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
-                    <th>Name</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($danhSachLienHeChuaDuyet as $lienHe)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
+                    <td style="text-align: center;">{{$lienHe->id}} </td>
+                    <td> {{$lienHe->name}} </td>
+                    <td> {{$lienHe->phone}} </td>
+                    <td>{{$lienHe->email}} </td>
+                    <td>{{$lienHe->title}} </td>
+                    <td>{{$lienHe->content}} </td>
                     <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
                     <td style="text-align: center;"><a onclick="popup('lh')"><i
                                 class="fa-solid fa-x"></i></a></td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @endforeach
+               
+                
             </tbody>
         </table>
     </div>
@@ -49,23 +54,31 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
-                    <th>Name</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
+                    <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($danhSachLienHeDaDuyet as $lienHe)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
+                    <td style="text-align: center;">{{$lienHe->id}} </td>
+                    <td> {{$lienHe->name}} </td>
+                    <td> {{$lienHe->phone}} </td>
+                    <td>{{$lienHe->email}} </td>
+                    <td>{{$lienHe->title}} </td>
+                    <td>{{$lienHe->content}} </td>
+                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
                     <td style="text-align: center;"><a onclick="popup('lh')"><i
                                 class="fa-solid fa-x"></i></a></td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @endforeach
+               
+                
             </tbody>
         </table>
     </div>

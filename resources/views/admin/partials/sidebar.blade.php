@@ -5,5 +5,5 @@
     <div><a href="">Quản lý Đơn hàng</a></div>
     <div><a href="">Quản lý Thống kê</a></div>
     <div><a href="">Quản lý Đánh giá</a></div>
-    <div><a href="">Quản lý Liên hệ</a></div>
+    <div><a href="{{route('admin.contact')}}">Quản lý Liên hệ</a></div>
 </div>
