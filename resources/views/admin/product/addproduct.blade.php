@@ -68,7 +68,6 @@
                                     @enderror
                                 </div>
                             </div>
-                            </div>
 
                             <div class="form-groups">
                                 <div class=" form-group-product">

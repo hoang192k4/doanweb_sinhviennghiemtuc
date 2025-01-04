@@ -132,6 +132,12 @@ class AdminProductController extends Controller
     public function edit(string $id)
     {
         //
+        $danhSachPhanLoai = Category::where('status',1)->get();
+        $sanPham = Product::with('brand.category')->find($id);
+        $danhSachThuongHieu = $sanPham->brand->category->brands;
+        $thongSoKyThuat = $sanPham->product_specification;
+
+        return view('admin.product.editproduct',['danhSachPhanLoai'=>$danhSachPhanLoai,'danhSachThuongHieu'=>$danhSachThuongHieu,'sanPham'=>$sanPham]);
     }
 
     /**
@@ -140,6 +146,56 @@ class AdminProductController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validate = $request->validate([
+            'description'=>'required',
+            'display'=>'required',
+            'technic_screen'=>'required',
+            'resolution'=>'required',
+            'chipset'=>'required',
+            'os'=>'required',
+            'ram'=>'required',
+            'size'=>'required',
+            'launch_time'=>'required',
+            'camera'=>'required',
+
+        ],[
+            'name.required'=> 'Vui lòng nhập tên sản phẩm!',
+            'name.unique'=>'Tên sản phẩm đã tồn tại!',
+            'description.required'=>'Vui lòng nhập mô tả!',
+            'image.required'=>'Vui lòng thêm hình ảnh!',
+        ]);
+
+        $product = Product::find($request->id);
+        //chỉnh và thêm các ảnh của sản phẩm
+        for($i = 0; $i < count($request->image_id);$i++){
+            if(isset($request->image[$i]))
+            {
+                if($request->image_id[$i]!=-1)
+                {
+                    $image = $request->image[$i];
+                    $extension = $image->getClientOriginalExtension();
+                    $fileName = 'product_'.$i.time().'.'.$extension;
+                    $image->move(public_path('images'), $fileName);
+                    ImageProduct::where('product_id',$product->id)
+                                ->where('id',$request->image_id[$i])
+                                ->update([
+                                    'image'=>$fileName,
+                                ]);
+                }else{
+                    $image = $request->image[$i];
+                    $extension = $image->getClientOriginalExtension();
+                    $fileName = 'product_'.$i.time().'.'.$extension;
+                    $image->move(public_path('images'), $fileName);
+                    ImageProduct::create(['image'=>$fileName,'product_id'=>$product->id]);
+                }
+
+            }
+        }
+
+        $product->update(['name'=>$request->input('name'),'slug'=>Str::slug($request->input('name')),'description'=>$request->description,'brand_id'=>$request->brand]);
+        $product->product_specification->update(['display'=>$request->input('display'),
+        'technic_screen'=>$request->technic_screen,'resolution'=>$request->resolution,'chipset'=>$request->chipset,'ram'=>$request->ram,'operating_system'=>$request->os,'camera'=>$request->camera,'launch_time'=>$request->launch_time,'size'=>$request->size]);
+        return back()->with('msg','chỉnh sửa sản phẩm thành công!');
     }
 
     /**
