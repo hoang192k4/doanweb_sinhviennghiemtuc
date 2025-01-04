@@ -113,3 +113,4 @@ Route::get('/admin/brand/filter/{opt}',[AdminBrandController::class,'filter']);
 //Route quan li lien he
 
 Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
+Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('admin.contact.delete');
