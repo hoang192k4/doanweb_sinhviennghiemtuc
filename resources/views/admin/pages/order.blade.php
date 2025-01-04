@@ -5,18 +5,14 @@
     <div class="head">
         <div class="title">Quản Lý Đơn Hàng</div>
         <button><i class="fa-regular fa-file-excel"></i> Xuất file</button>
-        <div class="search">
-            <input>
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
     </div>
     <div class="separator_x"></div>
     <div class="tabs">
         <div class="active">Chuẩn bị</div>
         <div>Vận chuyển</div>
         <div>Thành công</div>
-        <div>Trả hàng</div>
         <div>Đã hủy</div>
+        <div>Trả hàng</div>
     </div>
     <div class="table" id="chuanbi">
         <table>
@@ -24,23 +20,34 @@
                 <tr>
                     <th style="width: 48px;">ID</th>
                     <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Total</th>
+                    <th>Payment</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Hủy</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @foreach (App\Models\Order::whereIn('order_status_id', [1, 2, 3])->get() as $order)
+                                <tr>
+                                    <td style="text-align: center;">{{$order->order_code}}</td>
+                                    <td>{{$order->full_name}}</td>
+                                    <td style="text-align: center;">{{$order->phone}}</td>
+                                    <td>{{$order->address}}</td>
+                                    <td style="text-align: center;">{{$order->total_price}}</td>
+                                    <td style="text-align: center;">
+                                        {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button style="background-color: rgb(255, 255, 255); color: rgb(19, 93, 102); font-size: 16px; padding: 0px;"
+                                        class="btnChuanBi" data-id="{{ $order->id }}">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </td>
+                                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
+                                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -50,23 +57,34 @@
                 <tr>
                     <th style="width: 48px;">ID</th>
                     <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Total</th>
+                    <th>Payment</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Hủy</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @foreach (App\Models\Order::whereIn('order_status_id', [4, 5])->get() as $order)
+                    <tr>
+                        <td style="text-align: center;">{{$order->order_code}}</td>
+                        <td>{{$order->full_name}}</td>
+                        <td style="text-align: center;">{{$order->phone}}</td>
+                        <td>{{$order->address}}</td>
+                        <td style="text-align: center;">{{$order->total_price}}</td>
+                        <td style="text-align: center;">
+                            {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
+                        </td>
+                        <td style="text-align: center;">
+                            <button style="background-color: rgb(255, 255, 255); color: rgb(19, 93, 102); font-size: 16px; padding: 0px;"
+                            class="btnVanChuyen" data-id="{{ $order->id }}">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </td>
+                        <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -76,20 +94,58 @@
                 <tr>
                     <th style="width: 48px;">ID</th>
                     <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Total</th>
+                    <th>Payment</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach (App\Models\Order::where('order_status_id', 6)->get() as $order)
+                    <tr>
+                        <td style="text-align: center;">{{$order->order_code}}</td>
+                        <td>{{$order->full_name}}</td>
+                        <td style="text-align: center;">{{$order->phone}}</td>
+                        <td>{{$order->address}}</td>
+                        <td style="text-align: center;">{{$order->total_price}}</td>
+                        <td style="text-align: center;">
+                            {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
+                        </td>
+                        <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table" id="dahuy" style="display: none;">
+        <table>
+            <thead>
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
+                    <th style="width: 48px;">ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Total</th>
+                    <th>Payment</th>
+                    <th style="width: 48px;">Xóa</th>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+            </thead>
+            <tbody>
+                @foreach (App\Models\Order::where('order_status_id', 7)->get() as $order)
+                    <tr>
+                        <td style="text-align: center;">{{$order->order_code}}</td>
+                        <td>{{$order->full_name}}</td>
+                        <td style="text-align: center;">{{$order->phone}}</td>
+                        <td>{{$order->address}}</td>
+                        <td style="text-align: center;">{{$order->total_price}}</td>
+                        <td style="text-align: center;">
+                            {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
+                        </td>
+                        <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -99,43 +155,27 @@
                 <tr>
                     <th style="width: 48px;">ID</th>
                     <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Total</th>
+                    <th>Payment</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="table" id="dahuy" style="display: none;">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 48px;">ID</th>
-                    <th>Name</th>
-                    <th style="width: 48px;">Xóa</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @foreach (App\Models\Order::where('order_status_id', 8)->get() as $order)
+                    <tr>
+                        <td style="text-align: center;">{{$order->order_code}}</td>
+                        <td>{{$order->full_name}}</td>
+                        <td style="text-align: center;">{{$order->phone}}</td>
+                        <td>{{$order->address}}</td>
+                        <td style="text-align: center;">{{$order->total_price}}</td>
+                        <td style="text-align: center;">
+                            {{App\Models\PaymentMethod::find($order->payment_method)->name_method}}
+                        </td>
+                        <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -169,4 +209,43 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.btnChuanBi').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/admin/updateChuanBi/' + id,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    alert('Có lỗi xảy ra: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.btnVanChuyen').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/admin/updateVanChuyen/' + id,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    alert('Có lỗi xảy ra: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 @endsection

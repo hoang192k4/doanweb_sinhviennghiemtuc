@@ -10,10 +10,10 @@
         <div class="count">
             <div class="see">
                 <div class="icon">
-                    <img src="" alt="icon">
+                    <img src="/images/icondanhmuc.png" alt="icon">
                 </div>
                 <div class="number">
-                    <p class="num">2</p>
+                    <p class="num">{{count(App\Models\Category::all())}}</p>
                     <p>Danh mục</p>
                 </div>
             </div>
@@ -24,10 +24,10 @@
         <div class="count">
             <div class="see">
                 <div class="icon">
-                    <img src="" alt="icon">
+                    <img src="/images/iconsanpham.png" alt="icon">
                 </div>
                 <div class="number">
-                    <p class="num">20</p>
+                    <p class="num">{{count(App\Models\Product::all())}}</p>
                     <p>Sản phẩm</p>
                 </div>
             </div>
@@ -38,10 +38,10 @@
         <div class="count">
             <div class="see">
                 <div class="icon">
-                    <img src="" alt="icon">
+                    <img src="/images/icondonhang.png" alt="icon">
                 </div>
                 <div class="number">
-                    <p class="num">20</p>
+                    <p class="num">{{count(App\Models\Order::all())}}</p>
                     <p>Đơn hàng</p>
                 </div>
             </div>
@@ -54,11 +54,11 @@
         <div class="count">
             <div class="see">
                 <div class="icon">
-                    <img src="" alt="icon">
+                    <img src="/images/iconthuonghieu.png" alt="icon">
                 </div>
                 <div class="number">
-                    <p class="num">2</p>
-                    <p>Thống kê</p>
+                    <p class="num">{{count(App\Models\Brand::all())}}</p>
+                    <p>Thương hiệu</p>
                 </div>
             </div>
             <div class="go">
@@ -68,10 +68,10 @@
         <div class="count">
             <div class="see">
                 <div class="icon">
-                    <img src="" alt="icon">
+                    <img src="/images/icondanhgia.png" alt="icon">
                 </div>
                 <div class="number">
-                    <p class="num">20</p>
+                    <p class="num">{{count(App\Models\Rating::all())}}</p>
                     <p>Đánh giá</p>
                 </div>
             </div>
@@ -82,10 +82,10 @@
         <div class="count">
             <div class="see">
                 <div class="icon">
-                    <img src="" alt="icon">
+                    <img src="/images/iconlienhe.png" alt="icon">
                 </div>
                 <div class="number">
-                    <p class="num">20</p>
+                    <p class="num">{{count(App\Models\Contact::all())}}</p>
                     <p>Liên hệ</p>
                 </div>
             </div>
@@ -97,15 +97,25 @@
     <div class="separator_x"></div>
     <div class="area">
         <div class="infor">
-            <form>
+            <form action="{{ route('admin.editWebsite') }}" method="POST">
+                @csrf
                 <div>
-                    <p>Địa chỉ : </p><input>
+                    <p>Tên : </p><input name="name" value="{{App\Models\About::first()->name}}">
                 </div>
                 <div>
-                    <p>Số điện thoại : </p><input>
+                    <p>Facebook : </p><input name="facebook" value="{{App\Models\About::first()->facebook}}">
                 </div>
                 <div>
-                    <p>Email : </p><input>
+                    <p>Youtube : </p><input name="youtube" value="{{App\Models\About::first()->youtube}}">
+                </div>
+                <div>
+                    <p>Số điện thoại : </p><input name="phone" value="{{App\Models\About::first()->phone}}">
+                </div>
+                <div>
+                    <p>Email : </p><input name="email" value="{{App\Models\About::first()->email}}">
+                </div>
+                <div>
+                    <p>Địa chỉ : </p><input name="address" value="{{App\Models\About::first()->address}}">
                 </div>
                 <button type="submit">Lưu thông tin</button>
             </form>
@@ -113,13 +123,26 @@
         <div class="separator"></div>
         <div class="avatar">
             <div>
-                <img src="" alt="Logo">
+                <img id="logoPreview" src="{{ asset('images/' . App\Models\About::first()->logo) }}" alt="Logo">
             </div>
-            <form>
-                <input type="file">
+            <form action="{{ route('admin.editLogo') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input id="logoInput" type="file" name="logo">
                 <button type="submit">Đổi logo</button>
             </form>
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('logoInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('logoPreview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 @endsection

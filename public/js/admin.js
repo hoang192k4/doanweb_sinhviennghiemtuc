@@ -40,10 +40,10 @@ tabs.forEach(tab => {
             document.getElementById('vanchuyen').style.display = 'block'
         } else if (tab.textContent === 'Thành công') {
             document.getElementById('thanhcong').style.display = 'block'
-        } else if (tab.textContent === 'Trả hàng') {
-            document.getElementById('trahang').style.display = 'block'
         } else if (tab.textContent === 'Đã hủy') {
             document.getElementById('dahuy').style.display = 'block'
+        } else if (tab.textContent === 'Trả hàng') {
+            document.getElementById('trahang').style.display = 'block'
         } else if (tab.textContent === 'Chưa liên hệ') {
             document.getElementById('chualh').style.display = 'block'
         } else if (tab.textContent === 'Đã liên hệ') {
@@ -59,8 +59,6 @@ tabs.forEach(tab => {
 function popup(name) {
     if (name == 'dm') {
         document.getElementById('popupdm').style.display = 'block'
-    } else if (name == 'sp') {
-        document.getElementById('popupsp').style.display = 'block'
     } else if (name == 'huy') {
         document.getElementById('popuphuy').style.display = 'block'
     } else if (name == 'xoa') {

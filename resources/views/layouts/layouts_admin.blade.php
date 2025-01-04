@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    @yield('css')
+
     <title>@yield('title') - Sinh viên nghiêm túc</title>
 </head>
 
@@ -38,6 +40,8 @@
         {{-- main --}}
     </div>
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    @yield('script')
 </body>
 
 </html>

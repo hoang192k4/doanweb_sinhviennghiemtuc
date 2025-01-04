@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\UserController;
 
 Route::controller(UserController::class)->group(function(){
@@ -8,7 +12,7 @@ Route::controller(UserController::class)->group(function(){
     Route::get('/contact',"LienHe")->name('user.contact');
     Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');    
     Route::get('/',"index")->name('user.index');
-    Route::get('/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
+    Route::get('search/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
 });
 Route::get('/detail', function(){
     return view('user.pages.detail');
@@ -45,9 +49,6 @@ Route::get('/giohang', function(){
 Route::get('/thanhtoan', function(){
     return view('user.profile.payment');
 });
-Route::get('/admin/index',function(){
-    return view('admin.pages.index');
-});
 Route::get('/admin/category',function(){
     return view('admin.category.category');
 });
@@ -66,16 +67,25 @@ Route::get('/admin/addcategory',function(){
 Route::get('/admin/comment',function(){
     return view('admin.pages.review');
 });
-Route::get('/admin/order',function(){
-    return view('admin.pages.order');
-});
+
 Route::get('/admin/contact',function(){
     return view('admin.pages.contact');
 });
 
-Route::get('/admin/approved',function(){
-    return view('admin.pages.product_approved');
+//Route dashboard
+Route::get('/admin',function(){
+    return view('admin.pages.index');
 });
+Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
+Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->name('admin.editLogo');
+
+//Route quan ly don hang
+Route::get('/admin/order',function(){
+    return view('admin.pages.order');
+});
+Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
+Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
+
 Route::get('/admin/product',function(){
     return view('admin.product.product');
 });
@@ -88,3 +98,16 @@ Route::get('/admin/editproduct',function(){
 Route::get('/admin/statistical',function(){
     return view('admin.pages.statistical');
 });
+
+//Route quan ly san pham
+Route::get('/admin/product/active/{id}',[AdminProductController::class,'active'])->name('admin.product.active');
+Route::get('/admin/product/deactive/{id}',[AdminProductController::class,'deactive'])->name('admin.product.deactive');
+Route::get('/admin/proudct/list-product-unapproved',[AdminProductController::class,'getListProductsUnapproved'])->name('admin.product.unapproved');
+Route::get('/admin/product/search',[AdminProductController::class,'search'])->name('admin.product.search');
+Route::get('/admin/product/filter',[AdminProductController::class,'filter'])->name('admin.product.filter');
+Route::resource('/admin/product',AdminProductController::class);
+
+//Route quan ly thuong hieu
+Route::get('/admin/brand/filter/{opt}',[AdminBrandController::class,'filter']);
+
+
