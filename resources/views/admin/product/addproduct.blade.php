@@ -180,12 +180,12 @@
                                 </span>
                                 <span>
                                     Giá
-                                    <input type="text" name="variants[0][price]" required>
+                                    <input type="number" min="0" name="variants[0][price]" required>
                                 </span>
                                 <div>
                                     <span>
                                         Số lượng
-                                        <input type="text" name="variants[0][stock]" required>
+                                        <input type="number" min="0" name="variants[0][stock]" required>
                                     </span>
                                     <span>
                                         Hình ảnh
@@ -245,12 +245,12 @@
                             </span>
                             <span>
                                 Giá
-                                <input type="text" name="variants[${Number(btn.dataset.index)}][price]" required>
+                                <input type="number" min="0" name="variants[${Number(btn.dataset.index)}][price]" required>
                             </span>
                             <div>
                                 <span>
                                     Số lượng
-                                    <input type="text" name="variants[${Number(btn.dataset.index)}][stock]" required>
+                                    <input type="number" min="0" name="variants[${Number(btn.dataset.index)}][stock]" required>
                                 </span>
                                 <span>
                                     Hình ảnh

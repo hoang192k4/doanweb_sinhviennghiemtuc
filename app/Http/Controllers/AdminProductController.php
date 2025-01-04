@@ -57,9 +57,9 @@ class AdminProductController extends Controller
             'launch_time'=>'required',
             'camera'=>'required',
             'variants.*.color'=>'required',
-            'variants.*.stock'=>'required',
+            'variants.*.stock'=>'required|min:0',
             'variants.*.internal_memory'=>'required',
-            'variants.*.price'=>'required',
+            'variants.*.price'=>'required|min:0',
             'variants.*.image_variant'=>'required'
         ],[
             'name.required'=> 'Vui lòng nhập tên sản phẩm!',
@@ -82,7 +82,7 @@ class AdminProductController extends Controller
             $fileName = 'product_'.$idx.time().'.'.$extension;
             $image->move(public_path('images'), $fileName);
             ImageProduct::create([
-                'image'=>'images/'.$fileName,
+                'image'=>$fileName,
                 'product_id'=> $product->id
             ]);
             $idx++;
@@ -186,7 +186,7 @@ class AdminProductController extends Controller
         $extension = $file->getClientOriginalExtension();
         $fileName = 'product_variant_'.time().'.'.$extension;
         $file->move(public_path('images'), $fileName);
-        return 'images/'.$fileName;
+        return $fileName;
     }
 
     public function getListProductsUnapproved(){
