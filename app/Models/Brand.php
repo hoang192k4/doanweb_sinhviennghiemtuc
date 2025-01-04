@@ -12,11 +12,16 @@ class Brand extends Model
 {
     //
     use HasFactory;
-
+    protected $fillable=['id','name','image','status','category_id'];
 
     public function products():HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function category():BeLongsTo
+    {
+        return $this->beLongsTo(Category::class);
     }
 
     static public function filter($category){
