@@ -77,4 +77,46 @@ class ProductUser extends Model
         ->paginate(1);
         return $danhSachSanPham;
     }
+    public static function HinhAnhSamPham($slug){
+        return DB::table('image_products')
+        ->join('product','products.id','=','image_products.product_id')
+        ->select('image_products.image')
+        ->where('products.slug',$slug)
+        ->get();
+    }
+    public static function LuotThichSanPham($slug){
+        return DB::table('like_products')
+        ->join('product','products.id','=','like_products.product_id')
+        ->select('like_products.id')
+        ->where('products.slug',$slug)
+        ->get();
+    }
+    public static function ThongSoKiThuatSanPham($slug){
+        return DB::table('product_specifications')
+        ->join('product','products.id','=','product_specifications.product_id')
+        ->where('products.slug',$slug)
+        ->get();
+    }
+    public static function BoNhoTrongSanPham($slug){
+        return DB::table('product_variants')
+        ->join('product','products.id','=','product_variants.product_id')
+        ->select('internal_memory , price')
+        ->where('product.slug',$slug)
+        ->orderBy('internal_memory')
+        ->get();
+    }
+    public static function MauSanPham($slug,$internal_memory){
+        return DB::table('product_variants')
+        ->join('product','products.id','=','product_variants.product_id')
+        ->select('coler','price,stockstock')
+        ->where('product.slug',$slug)
+        ->where('product_variants',$internal_memory)
+        ->get();
+    }
+    public static function ThongTinSanPham($slug){
+        return DB::table('products')
+        ->select('name','view','description')
+        ->where('slug',$slug);
+    }
+
 }
