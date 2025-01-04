@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminContactController;
+use App\Http\Controllers\AdminOrderController;
+
 
 Route::get('/', function () {
     return view('user.pages.index');
@@ -62,12 +65,23 @@ Route::get('/admin/addcategory',function(){
 Route::get('/admin/comment',function(){
     return view('admin.pages.review');
 });
-Route::get('/admin/order',function(){
-    return view('admin.pages.order');
+
+Route::prefix('/admin')->group(function () {
+    Route::get('order',[AdminOrderController::class,'hienThiDanhSachDonHang'])->name('admin.pages.order');
 });
-Route::get('/admin/contact',function(){
-    return view('admin.pages.contact');
+
+// Route::get('/admin/order',function(){
+//     return view('admin.pages.order');
+// });
+//->middleware(['auth', 'isAdmin'])
+Route::prefix('admin')->group(function () {
+    Route::get('/contact',[AdminContactController::class,'hienThiLienHe'])->name('admin.pages.contact');
+    Route::delete('/contact/{id}',[AdminContactController::class,'chucNangXoaLienHe']);
 });
+
+// Route::get('/admin/contact',function(){
+//     return view('admin.pages.contact');
+// });
 
 Route::get('/admin/approved',function(){
     return view('admin.pages.product_approved');

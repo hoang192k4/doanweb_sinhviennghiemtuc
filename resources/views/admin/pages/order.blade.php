@@ -20,77 +20,107 @@
     </div>
     <div class="table" id="chuanbi">
         <table>
+            @isset($chuanBiDonHangs)
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>total price</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Hủy</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($chuanBiDonHangs as $donHang)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
+                    <td style="text-align: center;">{{$donHang->id}}</td>
+                    <td>{{$donHang->order_code}}</td>
+                    <td>{{$donHang->full_name}}</td>
+                    <td>{{$donHang->phone}}</td>
+                    <td>{{$donHang->address}}</td>
+                    <td>{{$donHang->total_price}}</td>
                     <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
                     <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @endforeach
+
             </tbody>
+            @endisset
         </table>
     </div>
     <div class="table" id="vanchuyen" style="display: none;">
         <table>
+            @isset($vanChuyenDonHangs)
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>total price</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Hủy</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($vanChuyenDonHangs as $donHang)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
+                    
+                    <td style="text-align: center;">{{$donHang->id}}</td>
+                    <td>{{$donHang->order_code}}</td>
+                    <td>{{$donHang->full_name}}</td>
+                    <td>{{$donHang->phone}}</td>
+                    <td>{{$donHang->address}}</td>
+                    <td>{{$donHang->total_price}}</td>
                     <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
                     <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-                <tr>
+                </tr>                                    
+                @endforeach
+                {{-- <tr>
                     <td style="text-align: center;">2</td>
                     <td>Anh Thư</td>
                     <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
                     <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+                </tr> --}}
             </tbody>
+            @endisset
         </table>
     </div>
     <div class="table" id="thanhcong" style="display: none;">
         <table>
+            @isset($giaoHangThanhCong)
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
-                    <th style="width: 48px;">Xóa</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>total price</th>
+                    <th style="width: 48px;">Xong</th>
+                    <th style="width: 48px;">Hủy</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($giaoHangThanhCong as $donHang)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a onclick="popup('xoa')"><i class="fa-solid fa-x"></i></a></td>
-                </tr>
+                    
+                    <td style="text-align: center;">{{$donHang->id}}</td>
+                    <td>{{$donHang->order_code}}</td>
+                    <td>{{$donHang->full_name}}</td>
+                    <td>{{$donHang->phone}}</td>
+                    <td>{{$donHang->address}}</td>
+                    <td>{{$donHang->total_price}}</td>
+                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
+                    <td style="text-align: center;"><a onclick="popup('huy')"><i class="fa-solid fa-x"></i></a></td>
+                </tr>                                    
+                @endforeach
             </tbody>
+            @endisset
         </table>
     </div>
     <div class="table" id="trahang" style="display: none;">

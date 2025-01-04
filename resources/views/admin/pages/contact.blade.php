@@ -18,30 +18,36 @@
     </div>
     <div class="table" id="chualh">
         <table>
+            @isset($danhSachLienHe)
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
-                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
                     <th style="width: 48px;">Xong</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($danhSachLienHe as $lienHe)
                 <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
+                    <td style="text-align: center;">{{$lienHe->id}}</td>
+                    <td>{{$lienHe->email}}</td>
+                    <td>{{$lienHe->phone}}</td>
+                    <td style="text-align: center;">
+                        <a href="">
+                            <i class="fa-solid fa-check"></i>
+                        </a>
+                    </td>
+                    <td style="text-align: center;">
+                        <button onclick="showDeletePopup()">
+                        <i class="fa-solid fa-x"></i>
+                        </button>
+                    </td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('lh')"><i
-                                class="fa-solid fa-x"></i></a></td>
-                </tr>
+                @endforeach
             </tbody>
+            @endisset
         </table>
     </div>
     <div class="table" id="dalh" style="display: none;">
@@ -84,9 +90,22 @@
         <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
         <p id="alert"></p>
         <div class="button">
-            <button onclick="submit()">Submit</button>
+            <form action="" method="">
+                @csrf
+                <button type="submit" onclick="submit()">Submit</button>
+            </form>
             <button onclick="cancel('lh')">Cancel</button>
         </div>
     </div>
 </div>
 @endsection
+@section('script')
+    <script>
+        function showDeletePopup(){
+            document.getElementById("popuplh").style.display="block";
+        }
+    </script>
+     <script>
+    </script>
+@endsection
+
