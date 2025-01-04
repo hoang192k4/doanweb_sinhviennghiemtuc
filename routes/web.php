@@ -15,6 +15,7 @@ Route::controller(UserController::class)->group(function(){
     Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');
     Route::get('/',"index")->name('user.index');
     Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
+    Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
 });
 
 Route::get('/detail', function(){

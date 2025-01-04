@@ -21,6 +21,11 @@ class UserController extends Controller
         $danhSachSanPham = ProductUser::TimKiemSanPham($slug,$id);
         return view('user.pages.search')->with('danhSachSanPham',$danhSachSanPham);
     }
+    public function TimKiemTheoTuKhoa(Request $request){
+        $key = $request->input('seachbykey');
+        $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
+        return view('user.pages.search')->with('danhSachSanPham',$danhSachSanPham);
+    }
     public function GioiThieu(){
         return view('user.pages.blog');
     }
@@ -30,4 +35,5 @@ class UserController extends Controller
     public function GioHang(){
         return view('user.profile.shoppingcart');
     }
+
 }

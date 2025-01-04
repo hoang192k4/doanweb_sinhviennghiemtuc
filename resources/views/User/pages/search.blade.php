@@ -75,7 +75,7 @@
                     <h5>Không có sản phẩm tương tự</h5>
                     @endif
                 </div>
-                {{-- {{$danhSachSanPham->links()}} --}}
+                {{$danhSachSanPham->links()}}
             </div>
         </div>
         </div>
