@@ -59,14 +59,14 @@
                     <li><a href="{{ route('user.contact') }}">Liên Hệ</a></li>
                     <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
                                 style="margin-right:5px"></i>Đăng nhập</a></li>
-                    
+
                 </ul>
             </nav>
             <ul>
                 <li>
-                    <form action="" method="GET">
-                        <input type="search" placeholder="Tìm kiếm...">
-                        <button><i class="fas fa-search"></i></button>
+                    <form action="{{route("timkiemtheotukhoa")}}" method="GET">
+                        <input type="search"  name = "seachbykey"placeholder="Tìm kiếm...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
                     </form>
                 </li>
                 <li class="cart__header_desktop"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"

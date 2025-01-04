@@ -6,15 +6,26 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\UserController;
+<<<<<<< HEAD
 use App\Http\Controllers\AdminContactController;
+=======
+use App\Http\Controllers\HomeController;
+
+>>>>>>> long
 
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
     Route::get('/contact',"LienHe")->name('user.contact');
     Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');
     Route::get('/',"index")->name('user.index');
+<<<<<<< HEAD
     Route::get('search/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
+=======
+    Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
+    Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
+>>>>>>> long
 });
+
 Route::get('/detail', function(){
     return view('user.pages.detail');
 });
@@ -88,7 +99,7 @@ Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'update
 Route::get('/admin/product',function(){
     return view('admin.product.product');
 });
-Route::get('/admin/addproduct',function(){
+Route::get('/admin/addproduct',function( ){
     return view('admin.product.addproduct');
 });
 Route::get('/admin/editproduct',function(){
