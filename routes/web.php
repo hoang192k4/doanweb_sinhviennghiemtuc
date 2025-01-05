@@ -72,9 +72,7 @@ Route::get('/admin/comment', function () {
 Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
 Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
-Route::get('/lichsudonhang', function () {
-    return view('user.profile.order_history');
-});
+Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
 Route::get('/sanphamyeuthich', function () {
     return view('user.profile.favourite_product');
 });

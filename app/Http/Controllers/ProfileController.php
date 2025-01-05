@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -45,5 +46,9 @@ class ProfileController extends Controller
             $user->save();
             return redirect()->back();
         }
+    }
+    public function order_history()
+    {
+        return view('user.profile.order_history')->with('orders', Order::where('user_id', 3)->get());
     }
 }
