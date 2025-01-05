@@ -110,7 +110,7 @@ class AdminProductController extends Controller
                 'price'=>$variant['price'],
                 'internal_memory'=>$variant['internal_memory'],
                 'product_id'=>$product->id,
-                'image'=> $this->uploadImageVariant($variant['image_variant'])
+                'image'=> ProductVariant::uploadImageVariant($variant['image_variant'])
                 ]);
         }
 
@@ -170,6 +170,8 @@ class AdminProductController extends Controller
         for($i = 0; $i < count($request->image_id);$i++){
             if(isset($request->image[$i]))
             {
+                //kiểm tra nếu request->image[$i] có hình ảnh thì tiếp tục thao tác
+                //đồng thời kiểm tra image_id của hình ảnh nếu là có id rùi thì cập nhật, id trả về -1 thì thêm mới hình ảnh
                 if($request->image_id[$i]!=-1)
                 {
                     $image = $request->image[$i];
@@ -191,7 +193,7 @@ class AdminProductController extends Controller
 
             }
         }
-
+        //cập nhật specification
         $product->update(['name'=>$request->input('name'),'slug'=>Str::slug($request->input('name')),'description'=>$request->description,'brand_id'=>$request->brand]);
         $product->product_specification->update(['display'=>$request->input('display'),
         'technic_screen'=>$request->technic_screen,'resolution'=>$request->resolution,'chipset'=>$request->chipset,'ram'=>$request->ram,'operating_system'=>$request->os,'camera'=>$request->camera,'launch_time'=>$request->launch_time,'size'=>$request->size]);
@@ -238,12 +240,7 @@ class AdminProductController extends Controller
         return  $danhSachSanPham;
     }
 
-    public function uploadImageVariant($file){
-        $extension = $file->getClientOriginalExtension();
-        $fileName = 'product_variant_'.time().'.'.$extension;
-        $file->move(public_path('images'), $fileName);
-        return $fileName;
-    }
+
 
     public function getListProductsUnapproved(){
         $danhSachSanPham = Product::where('status',2)->get();

@@ -4,26 +4,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminProductVariantController;
 use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\UserController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\AdminContactController;
-=======
+
 use App\Http\Controllers\HomeController;
 
->>>>>>> long
+
 
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
     Route::get('/contact',"LienHe")->name('user.contact');
     Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');
     Route::get('/',"index")->name('user.index');
-<<<<<<< HEAD
-    Route::get('search/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
-=======
+
     Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
->>>>>>> long
+
 });
 
 Route::get('/detail', function(){
@@ -80,7 +79,7 @@ Route::get('/admin/comment',function(){
     return view('admin.pages.review');
 });
 
- 
+
 
 //Route dashboard
 Route::get('/admin',function(){
@@ -96,15 +95,7 @@ Route::get('/admin/order',function(){
 Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
 Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
 
-Route::get('/admin/product',function(){
-    return view('admin.product.product');
-});
-Route::get('/admin/addproduct',function( ){
-    return view('admin.product.addproduct');
-});
-Route::get('/admin/editproduct',function(){
-    return view('admin.product.editproduct');
-});
+
 Route::get('/admin/statistical',function(){
     return view('admin.pages.statistical');
 });
@@ -115,6 +106,8 @@ Route::get('/admin/product/deactive/{id}',[AdminProductController::class,'deacti
 Route::get('/admin/proudct/list-product-unapproved',[AdminProductController::class,'getListProductsUnapproved'])->name('admin.product.unapproved');
 Route::get('/admin/product/search',[AdminProductController::class,'search'])->name('admin.product.search');
 Route::get('/admin/product/filter',[AdminProductController::class,'filter'])->name('admin.product.filter');
+Route::get('/admin/product-variant/{id}',[AdminProductVariantController::class,'index'])->name('admin.product_variant.index');
+Route::resource('/admin/product-variant',AdminProductVariantController::class)->except(['index']);
 Route::resource('/admin/product',AdminProductController::class);
 
 //Route quan ly thuong hieu

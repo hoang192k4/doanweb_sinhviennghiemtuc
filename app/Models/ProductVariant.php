@@ -9,4 +9,11 @@ class ProductVariant extends Model
     //
     use HasFactory;
     protected $fillable = ['color','price','stock','internal_memory','image','product_id','status'];
+
+    static public function uploadImageVariant($file){
+        $extension = $file->getClientOriginalExtension();
+        $fileName = 'product_variant_'.time().'.'.$extension;
+        $file->move(public_path('images'), $fileName);
+        return $fileName;
+    }
 }

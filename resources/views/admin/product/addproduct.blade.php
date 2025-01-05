@@ -159,7 +159,7 @@
                                 </div>
 
                             </div>
-                            @csrf
+
                         </div>
                         <p>Thêm các biến thể</p>
                         <div>
@@ -194,6 +194,7 @@
 
                             </div>
                         </div>
+                        @csrf
                         <div class="btn-goback button-product">
                             <button type="submit">Xác nhận</button>
                             <button type="button">Hủy</button>
