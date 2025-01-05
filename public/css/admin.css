@@ -28,12 +28,15 @@ input {
     display: flex;
 }
 
-.left>div {
-    margin: 24px;
+.logo img {
+    width: 252px;
+    height: 60px;
+    margin-top: 4px;
+    margin-left: 4px;
 }
 
-.logo {
-    width: 200px;
+.website {
+    margin: 24px;
 }
 
 .right {
@@ -347,7 +350,6 @@ table tr td {
 
 .avatar img {
     width: 248px;
-    height: 237px;
 }
 
 .avatar input {
@@ -489,13 +491,15 @@ table tr td {
 .form-groups:last-child>.form-group-product>input {
     width: 100%;
 }
+
 .button-product {
     width: 50%;
 }
 
-.cursor{
+.cursor {
     cursor: pointer;
 }
-.bg-white{
+
+.bg-white {
     background-color: white;
 }
