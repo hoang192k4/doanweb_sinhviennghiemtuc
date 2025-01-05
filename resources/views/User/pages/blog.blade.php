@@ -140,4 +140,6 @@
             </div>
         </div>
     </div>
+        {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
+        @include('user.partials.service')
 @endsection

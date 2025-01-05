@@ -71,11 +71,11 @@
                                 </div>
                             </div>
                         @endforeach
+                        {{$danhSachSanPham->links()}}
                     @else
                     <h5>Không có sản phẩm tương tự</h5>
                     @endif
                 </div>
-                {{$danhSachSanPham->links()}}
             </div>
         </div>
         </div>
