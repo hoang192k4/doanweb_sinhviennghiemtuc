@@ -4,40 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Blog;
 use App\Models\ProductUser;
 use App\Models\Brand;
+
 class UserController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         $thuongHieu = Brand::index();
         $danhSachDTHot = ProductUser::LayThongTinSanPham('Điện Thoại');
         $danhSachLapTopMoi = ProductUser::LayThongTinSanPham('Laptop');
         return View('User.pages.index')->with([
-            "thuongHieu"=>$thuongHieu,
+            "thuongHieu" => $thuongHieu,
             "danhSachDTHot" => $danhSachDTHot,
             "danhSachLapTopMoi" => $danhSachLapTopMoi
         ]);
     }
     public function TimKiemSanPhamFH($slug, $id = null)
     {
-        $danhSachSanPham = ProductUser::TimKiemSanPham($slug,$id);
-        return view('user.pages.search')->with('danhSachSanPham',$danhSachSanPham);
+        $danhSachSanPham = ProductUser::TimKiemSanPham($slug, $id);
+        return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
-    public function TimKiemTheoTuKhoa(Request $request){
+    public function TimKiemTheoTuKhoa(Request $request)
+    {
         $key = $request->input('seachbykey');
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
-        return view('user.pages.search')->with('danhSachSanPham',$danhSachSanPham);
+        return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
-    public function GioiThieu(){
-        return view('user.pages.blog');
+    public function GioiThieu()
+    {
+        $danhSachBaiViet = Blog::layTatCaBaiViet();
+        return view('user.pages.blog')->with('danhSachBaiViet', $danhSachBaiViet);
     }
-    public function LienHe(){
+    public function LienHe()
+    {
         return view('user.pages.contact');
     }
-    public function GioHang(){
+    public function GioHang()
+    {
         return view('user.profile.shoppingcart');
     }
-
-    
 }

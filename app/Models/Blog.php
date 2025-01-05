@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Blog extends Model
 {
     //
-    public static function getAllBlog()
+    public static function layTatCaBaiViet()
     {
         return DB::table('blogs')->get();
     }
