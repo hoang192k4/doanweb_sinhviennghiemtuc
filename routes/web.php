@@ -115,3 +115,4 @@ Route::get('/admin/brand/filter/{opt}',[AdminBrandController::class,'filter']);
 Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
 Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('contact.delete');
 Route::get('/admin/contact/update/{id}',[AdminContactController::class,'updateContact'])->name('contact.update');
+Route::post('/addContact',[AdminContactController::class,'addContact']);

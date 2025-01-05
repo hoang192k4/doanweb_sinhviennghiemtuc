@@ -21,4 +21,15 @@ class AdminContactController extends Controller
         Contact::where('id',$id)->update(['status'=>1]);
         return back()->with('liên hệ đã được hiển thị ở mục đã liên hệ');
     }
+    public function addContact(Request $req){
+        $data = new Contact();
+        $data->id=$req['id'];
+        $data->name=$req['name'];
+        $data->title=$req['title'];
+        $data->content=$req['content'];
+        $data->email=$req['email'];
+        $data->phone=$req['phone'];
+        $data->save();
+        return view('user.pages.contact')->with('contact',$data);
+    }
 }
