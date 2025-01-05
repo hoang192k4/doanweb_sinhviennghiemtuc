@@ -1,7 +1,7 @@
 <div class="header">
     <div class="left">
         <div class="logo">
-            <a href=""><img src="" alt="Logo"></a>
+            <a href="/admin"><img src="{{ asset('images/' . App\Models\About::first()->logo) }}" alt="Logo"></a>
         </div>
         <div class="website">
             <a href=""><i class="fa-solid fa-globe"></i> Website</a>
