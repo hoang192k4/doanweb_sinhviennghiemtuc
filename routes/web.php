@@ -6,21 +6,16 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminProductVariantController;
 use App\Http\Controllers\AdminBrandController;
-use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\AdminContactController;
-
-use App\Http\Controllers\HomeController;
-
-
+use App\Http\Controllers\UserController;
 
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
     Route::get('/contact',"LienHe")->name('user.contact');
-    Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');
+    Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');    
     Route::get('/',"index")->name('user.index');
-
-    Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
+    
+    Route::get('search/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
 
 });
@@ -29,21 +24,11 @@ Route::get('/detail', function(){
     return view('user.pages.detail');
 });
 
-Route::get('/search', function(){
-    return view('user.pages.search');
-});
-Route::get('/blog', function(){
-    return view('user.pages.blog');
-});
-
 Route::get('/changepassword', function(){
     return view('user.profile.changepassword');
 });
 Route::get('/lichsudonhang', function(){
     return view('user.profile.order_history');
-});
-Route::get('/lienhe', function(){
-    return view('user.pages.contact');
 });
 Route::get('/trangcanhan', function(){
     return view('user.profile.profile');
@@ -79,7 +64,9 @@ Route::get('/admin/comment',function(){
     return view('admin.pages.review');
 });
 
-
+Route::get('/admin/contact',function(){
+    return view('admin.pages.contact');
+});
 
 //Route dashboard
 Route::get('/admin',function(){
@@ -95,7 +82,15 @@ Route::get('/admin/order',function(){
 Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
 Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
 
-
+Route::get('/admin/product',function(){
+    return view('admin.product.product');
+});
+Route::get('/admin/addproduct',function(){
+    return view('admin.product.addproduct');
+});
+Route::get('/admin/editproduct',function(){
+    return view('admin.product.editproduct');
+});
 Route::get('/admin/statistical',function(){
     return view('admin.pages.statistical');
 });

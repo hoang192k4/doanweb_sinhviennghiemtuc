@@ -122,4 +122,28 @@ class ProductUser extends Model
         ->where('slug',$slug);
     }
 
+    public static function LayThongTinSanPham($category){
+        if($category === 'Điện Thoại')
+             $tam = 'rating';
+        else
+            $tam = 'created_at';
+        return DB::table('products')
+        ->select(
+            'products.id',
+            'products.name',
+            'products.rating',
+            'categories.name as category_name',
+            'brands.name as brand_name',
+            DB::raw('MIN(image_products.image) as image'),
+            DB::raw('MIN(product_variants.price) as price')
+        )
+        ->join('image_products', 'products.id', '=', 'image_products.product_id')
+        ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+        ->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->join('categories', 'brands.category_id', '=', 'categories.id')
+        ->where('products.status', 1)
+        ->where('categories.name',$category)->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name')
+        ->orderBy('products.'.$tam,'desc')->take(8)->get();
+    }
+
 }
