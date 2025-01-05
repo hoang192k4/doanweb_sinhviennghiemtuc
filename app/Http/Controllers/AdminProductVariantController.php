@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
+use App\Models\Product;
 class AdminProductVariantController extends Controller
 {
     /**
@@ -12,11 +13,14 @@ class AdminProductVariantController extends Controller
     public function index($product_id)
     {
         //
-        $danhSachBienThe = ProductVariant::where('product_id',$product_id)->get();
-
+        $danhSachBienThe = ProductVariant::with('product')->where('product_id',$product_id)->where('status',1)->get();
         return view('admin.product.product_variant',['danhSachBienThe'=>$danhSachBienThe]);
     }
-
+    public function showListVariantsHide($product_id){
+        $product = Product::find($product_id);
+        $danhSachBienThe = ProductVariant::with('product')->where('product_id',$product_id)->where('status',0)->get();
+        return view('admin.product.product_variant_hide',['danhSachBienThe'=>$danhSachBienThe,'product'=>$product]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -31,6 +35,15 @@ class AdminProductVariantController extends Controller
     public function store(Request $request)
     {
         //
+        $variant = ProductVariant::create([
+            'color'=>$request->color,
+            'stock'=>$request->stock,
+            'internal_memory'=>$request->internal_memory,
+            'price'=>$request->price,
+            'image'=>'default.jpg',
+            'product_id'=>$request->product_id,
+        ]);
+        return $variant;
     }
 
     /**
@@ -81,5 +94,13 @@ class AdminProductVariantController extends Controller
     public function destroy(string $id)
     {
         //
+        ProductVariant::where('id',$id)->update(['status'=>0]);
+        return 'Ẩn variant '.$id.' thành công!';
+    }
+
+    public function active(string $id)
+    {
+        ProductVariant::where('id',$id)->update(['status'=>1]);
+        return 'Hiển thị variant '.$id.' thành công!';
     }
 }

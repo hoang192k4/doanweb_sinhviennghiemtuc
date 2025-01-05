@@ -18,8 +18,9 @@
                             <div class=" form-groups">
                                 <div class="form-group-product">
                                     <div class="col"><label>Tên sản phẩm:</label></div>
-                                    <div class="col"><input type="text" class="form-control" id="name"
+                                    <div class="col"><input type="text" onkeyup="checkProduct(this.value)" class="form-control" id="name"
                                             name="name"></div>
+                                    <span id="isset-product"></span>
                                     @error('name')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -208,6 +209,36 @@
 @endsection
 
 @section('script')
+    <script>
+        function checkProduct(name){
+            let issetSpan = document.getElementById('isset-product');
+            name = name.trim();
+            if(name===""){
+                issetSpan.style.color = "red";
+                issetSpan.textContent = "Tên sản phẩm không được bỏ trống";
+            }else{
+                $.ajax({
+                method:"POST",
+                url:'/admin/product/is_isset',
+                data:{
+                    name,
+                    _token:'{{csrf_token()}}',
+                }
+            }).done((data)=>{
+
+                if(data==0){
+                    issetSpan.style.color = "green";
+                    issetSpan.textContent = "Tên sản phẩm hợp lệ!";
+                }else{
+                    issetSpan.style.color = "red";
+                    issetSpan.textContent = "Tên sản phẩm đã tồn tại!";
+                }
+            })
+            }
+
+        }
+
+    </script>
     <script>
         var loadFile = function(event,img) {
             const idx = img.dataset.index;
