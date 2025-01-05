@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\AdminContactController;
 use App\Http\Controllers\UserController;
 
+
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
     Route::get('/contact',"LienHe")->name('user.contact');
@@ -19,6 +20,7 @@ Route::controller(UserController::class)->group(function(){
 
     Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
+
 
 });
 
@@ -70,6 +72,19 @@ Route::get('/admin/comment', function () {
 
 
 
+//Route profile
+Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
+Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
+Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
+Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
+Route::get('/sanphamyeuthich', function () {
+    return view('user.profile.favourite_product');
+});
+Route::get('/lichsudanhgia', function () {
+    return view('user.profile.review_history');
+});
+
+
 //Route dashboard
 Route::get('/admin', function () {
     return view('admin.pages.index');
@@ -107,5 +122,8 @@ Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter'])
 
 //Route quan li lien he
 
+
 Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
 Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('admin.contact.delete');
+
+
