@@ -18,7 +18,7 @@ class AdminContactController extends Controller
         return view('admin.pages.contact')->with('liên hệ của'.$contact->name.'đã xóa thành công');
     }
     public function updateContact($id){
-        Contact::where('id',$id)->update(['status'=>0]);
+        Contact::where('id',$id)->update(['status'=>1]);
         return back()->with('liên hệ đã được hiển thị ở mục đã liên hệ');
     }
 }
