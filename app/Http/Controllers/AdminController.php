@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function editWebsite(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'facebook' => 'required|url|max:255',
             'youtube' => 'required|url|max:255',

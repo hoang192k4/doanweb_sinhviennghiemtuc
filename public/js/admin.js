@@ -40,10 +40,10 @@ tabs.forEach(tab => {
             document.getElementById('vanchuyen').style.display = 'block'
         } else if (tab.textContent === 'Thành công') {
             document.getElementById('thanhcong').style.display = 'block'
-        } else if (tab.textContent === 'Trả hàng') {
-            document.getElementById('trahang').style.display = 'block'
         } else if (tab.textContent === 'Đã hủy') {
             document.getElementById('dahuy').style.display = 'block'
+        } else if (tab.textContent === 'Trả hàng') {
+            document.getElementById('trahang').style.display = 'block'
         } else if (tab.textContent === 'Chưa liên hệ') {
             document.getElementById('chualh').style.display = 'block'
         } else if (tab.textContent === 'Đã liên hệ') {

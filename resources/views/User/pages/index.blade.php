@@ -69,37 +69,12 @@
     <section class="container_css main_branch ">
         <h4>THƯƠNG HIỆU NỔI BẬT</h4>
         <div class="list_branch">
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_59.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_60.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_61.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_62.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_63.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/macbook.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Lenovo.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/MSI.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_67.png"
-                    alt="Lỗi hiển thị"></a>
-            <a href=""><img
-                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Dell.png"
-                    alt="Lỗi hiển thị"></a>
+            @foreach ($thuongHieu as $item)
+                <a href="{{ route('timkiemsanpham', ['slug' => $item->name]) }}"><img
+                        src="{{ asset('images/' . $item->image) }}" alt="Lỗi hiển thị"></a>
+            @endforeach
         </div>
+
     </section>
 
     <!-- Điện thoại bán chạy -->
@@ -109,158 +84,94 @@
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="10000">
                     <div class="product_best_seller_items">
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/iphone-15-promax.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">iPhone 15 Pro Max</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
+                        @if (isset($danhSachDTHot))
+                            @for ($i = 0; $i < count($danhSachDTHot); $i++)
+                                @if ($i > 3)
+                                @break
+                            @endif
+                            <div class="product_best_seller_item">
+                                <a href=""><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
+                                        alt="Lỗi hiển thị"></a>
+                                <div class="product_best_seller_item_info">
+                                    <ul>
+                                        <li><a href="">{{ $danhSachDTHot[$i]->name }}</a></li>
+                                        <li>{{ number_format($danhSachDTHot[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                        </li>
+                                        <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
+                                        <li>
+                                            <a href=""><button>Mua ngay</button></a>
+                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/16pro.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">iPhone 16 Pro</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-black-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">Điện thoại OPPO Find X8 5G 12GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-pro-white-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">OPPO Find X8 Pro5G 16GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                        @endfor
+                    @endif
                 </div>
+            </div>
+            @if (isset($danhSachDTHot) && count($danhSachDTHot) > 4)
                 <div class="carousel-item" data-bs-interval="2000">
                     <div class="product_best_seller_items">
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/iphone-15-promax.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">iPhone 15 Pro Max</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
+                        @for ($i = 4; $i < count($danhSachDTHot); $i++)
+                            <div class="product_best_seller_item">
+                                <a href=""><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
+                                        alt="Lỗi hiển thị"></a>
+                                <div class="product_best_seller_item_info">
+                                    <ul>
+                                        <li><a href="">{{ $danhSachDTHot[$i]->name }}</a></li>
+                                        <li>{{ number_format($danhSachDTHot[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                        </li>
+                                        <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
+                                        <li>
+                                            <a href=""><button>Mua ngay</button></a>
+                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/16pro.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">iPhone 16 Pro</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-black-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">Điện thoại OPPO Find X8 5G 12GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-pro-white-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">OPPO Find X8 Pro5G 16GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        @endfor
                     </div>
                 </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            @else
         </div>
-    </section>
+        @endif
+    </div>
+</section>
 
 
-    <!-- Laptop mới nhất -->
-    <section class="container_css product_lt_new">
-        <h4>LAPTOP MỚI NHẤT</h4>
-        <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-dark" data-bs-touch="false"
-            data-bs-interval="false">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
+
+<!-- Laptop mới nhất -->
+<section class="container_css product_lt_new">
+    <h4>LAPTOP MỚI NHẤT</h4>
+    <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-dark" data-bs-touch="false"
+        data-bs-interval="false">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                @if (isset($danhSachLapTopMoi))
                     <div class="product_lt_new_items">
+                        @for ($i = 0; $i < count($danhSachLapTopMoi); $i++)
+                            @if ($i > 3)
+                            @break
+                        @endif
                         <div class="product_lt_new_item">
-                            <a href=""><img src="images/tufgamming.jpg" alt="Lỗi hiển thị"></a>
+                            <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
+                                    alt="Lỗi hiển thị"></a>
                             <div class="product_lt_new_item_info">
                                 <ul>
-                                    <li><a href="">Asus Gaming TUF Dash F15 FX517ZC i55 12450H (HN077W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
+                                    <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
+                                    <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
+                                        <sup>đ</sup></li>
+                                    <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
                                         <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
@@ -268,121 +179,50 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images/asus_vivobook.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Vivobook 14X OLED A1403Za i5 12500H (KM065W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images//tufgamming.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Gaming TUF Dash F15 FX517ZC i55 12450H (HN077W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images/asus_vivobook.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Vivobook 14X OLED A1403Za i5 12500H (KM065W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    @endfor
                 </div>
-                <div class="carousel-item">
-                    <div class="product_lt_new_items">
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images//tufgamming.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Gaming TUF Dash F15 FX517ZC i55 12450H (HN077W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images/asus_vivobook.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Vivobook 14X OLED A1403Za i5 12500H (KM065W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images//tufgamming.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Gaming TUF Dash F15 FX517ZC i55 12450H (HN077W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_lt_new_item">
-                            <a href=""><img src="images/asus_vivobook.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_lt_new_item_info">
-                                <ul>
-                                    <li><a href="">Asus Vivobook 14X OLED A1403Za i5 12500H (KM065W)</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            @endif
         </div>
-    </section>
+        @if (isset($danhSachLapTopMoi) && count($danhSachLapTopMoi) > 4)
+            <div class="carousel-item">
+                <div class="product_lt_new_items">
+                    @for ($i = 4; $i < count($danhSachLapTopMoi); $i++)
+                    <div class="product_lt_new_item">
+                        <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
+                                alt="Lỗi hiển thị"></a>
+                        <div class="product_lt_new_item_info">
+                            <ul>
+                                <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
+                                <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
+                                    <sup>đ</sup></li>
+                                <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
+                                <li>
+                                    <a href=""><button>Mua ngay</button></a>
+                                    <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+        </div>
+</div>
+<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+    data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+    data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+</button>
+</div>
+@else
+</div>
+@endif
+
+</section>
+{{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
+@include('user.partials.service')
 @endsection

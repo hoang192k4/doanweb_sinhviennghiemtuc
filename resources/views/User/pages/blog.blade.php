@@ -117,16 +117,18 @@
                     </div>
                     <div class="technology_content">
                         <div class="row_news">
-                            @foreach ($danhSachBaiViet as $item)
+                            {{-- @foreach ($danhSachBaiViet as $item)
                                 <div class="col_news">
                                     <img src="/images/16pro.jpg" alt="Image 1">
                                     <p class="mt-3">{{ $item->title }}</p>
                                 </div>
-                            @endforeach
+                            @endforeach --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
+    @include('user.partials.service')
 @endsection
