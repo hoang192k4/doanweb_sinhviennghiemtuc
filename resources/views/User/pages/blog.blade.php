@@ -110,8 +110,8 @@
                 <div class="technology">
                     <div class="technology_search technology_news">
                         <h4 style="margin-bottom:0">Tin công nghệ</h4>
-                        <form class="search_blog" action="" method="GET">
-                            <input type="search" placeholder="Tìm kiếm bài viết">
+                        <form class="search_blog" action="{{ route('searchBlog') }}" method="GET">
+                            <input type="search" name="keyBlog" placeholder="Tìm kiếm bài viết">
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </div>

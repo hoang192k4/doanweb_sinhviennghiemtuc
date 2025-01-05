@@ -12,4 +12,8 @@ class Blog extends Model
     {
         return DB::table('blogs')->get();
     }
+    public static function timKiemBaiViet($key)
+    {
+        return DB::table('blogs')->where('title', 'like', '%' . $key . '%')->get();
+    }
 }

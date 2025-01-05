@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
+    Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
     Route::get('/shoppingcart', "GioHang")->name('user.shoppingcart');
     Route::get('/', "index")->name('user.index');

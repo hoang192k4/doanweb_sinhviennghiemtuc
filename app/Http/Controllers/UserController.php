@@ -33,11 +33,21 @@ class UserController extends Controller
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
+
+    //Trang Giới Thiệu
     public function GioiThieu()
     {
         $danhSachBaiViet = Blog::layTatCaBaiViet();
         return view('user.pages.blog')->with('danhSachBaiViet', $danhSachBaiViet);
     }
+    public function timKiemBaiVietTheoTuKhoa(Request $request)
+    {
+        $key = $request->input('keyBlog');
+        $danhSachBaiViet = Blog::timKiemBaiViet($key);
+        return view('user.pages.blog')->with('danhSachBaiViet', $danhSachBaiViet);
+    }
+
+    //Trang Liên Hệ
     public function LienHe()
     {
         return view('user.pages.contact');
