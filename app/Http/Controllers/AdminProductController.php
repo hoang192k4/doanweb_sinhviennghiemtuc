@@ -8,7 +8,7 @@ use App\Models\ProductVariant;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\ImageProduct;
-
+use Illuminate\Support\Facades\File;
 use App\Models\ProductSpecification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -41,8 +41,6 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $validate = $request->validate([
             'name'=>'required|unique:products|max:255',
             'description'=>'required',
@@ -114,7 +112,6 @@ class AdminProductController extends Controller
                 ]);
         }
 
-        //b3:
         return redirect()->route('product.index')->with('msg','Thêm sản phẩm thành công!');
     }
 
@@ -210,6 +207,18 @@ class AdminProductController extends Controller
         $product = Product::find($id);
         $name = $product->name;
         if($product){
+            $variants = $product->product_variants;
+            foreach($variants as $variant){
+                if ($variant->image && File::exists(public_path('images/' . $variant->image))) {
+                    File::delete(public_path('images/' . $variant->image));
+                }
+            }
+            $image_products = $product->image_products;
+            foreach( $image_products as $image_product){
+                if ($image_product->image && File::exists(public_path('images/' . $image_product->image))) {
+                    File::delete(public_path('images/' . $image_product->image));
+                }
+            }
             $product->product_variants()->forceDelete();
             $product->product_specification()->forceDelete();
             $product->image_products()->forceDelete();

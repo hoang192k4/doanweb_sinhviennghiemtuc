@@ -6,7 +6,7 @@
     <div class="content">
         <div class="head">
             <div class="title"> Quản lí biến thể</div>
-            <button><a href="{{ route('product_variant_hide', [$danhSachBienThe[0]->product->id]) }}"><i
+            <button><a href="{{ route('product_variant_hide', [$product->id]) }}"><i
                         class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
         </div>
         <div class="btn-goback">
@@ -26,7 +26,7 @@
                                 <p id="msg" style="display: block; color: green;">{{ session('msg') }}</p>
                             @endif
                         </div>
-
+                        @if(isset($danhSachBienThe) && count($danhSachBienThe)>0)
                         <table>
                             <thead>
                                 <th>#</th>
@@ -70,7 +70,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-
+                        @else
+                        <p style="text-align: center;font-size:25px">Không có variant của sản phẩm {{$product->name}} được hiển thị!!!</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -193,7 +195,7 @@
                     price,
                     stock,
                     internal_memory: internalMemory,
-                    product_id: '{{$danhSachBienThe[0]->product->id}}',
+                    product_id: '{{$product->id}}',
                 }
             }).done((data)=>{
                 alert(`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);

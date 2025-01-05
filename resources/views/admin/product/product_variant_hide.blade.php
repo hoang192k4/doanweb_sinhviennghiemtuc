@@ -5,8 +5,8 @@
     </div>
     <div class="content">
         <div class="head">
-            <div class="title"> Quản lí biến thể</div>
-            <button><a href=" "><i class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
+            <div class="title"> Quản lí biến thể bị ẩn</div>
+            <button><a href="{{route('product_variant_hide',[$product->id])}}"><i class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
         </div>
         <div class="btn-goback">
             <a href="{{ route('admin.product_variant.index',[$product->id]) }}" type="button"> <button>&laquo; Trở lại</button></a>
