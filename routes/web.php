@@ -8,13 +8,8 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminProductVariantController;
 use App\Http\Controllers\AdminBrandController;
-use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\AdminContactController;
-
-use App\Http\Controllers\HomeController;
-
-
+use App\Http\Controllers\UserController;
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
@@ -31,21 +26,26 @@ Route::get('/detail', function () {
     return view('user.pages.detail');
 });
 
-Route::get('/search', function () {
-    return view('user.pages.search');
-});
-Route::get('/blog', function () {
-    return view('user.pages.blog');
-});
 Route::get('/changepassword', function () {
     return view('user.profile.changepassword');
 });
-Route::get('/lienhe', function () {
-    return view('user.pages.contact');
+
+Route::get('/changepassword', function(){
+    return view('user.profile.changepassword');
 });
-Route::get('/giohang', function () {
-    return view('user.profile.shoppingcart');
+Route::get('/lichsudonhang', function(){
+    return view('user.profile.order_history');
 });
+Route::get('/trangcanhan', function(){
+    return view('user.profile.profile');
+});
+Route::get('/lichsudanhgia', function(){
+    return view('user.profile.review_history');
+});
+Route::get('/sanphamyeuthich', function(){
+    return view('user.profile.favourite_product');
+});
+
 Route::get('/thanhtoan', function () {
     return view('user.profile.payment');
 });
@@ -67,6 +67,7 @@ Route::get('/admin/addcategory', function () {
 Route::get('/admin/comment', function () {
     return view('admin.pages.review');
 });
+
 
 //Route profile
 Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
@@ -93,7 +94,6 @@ Route::get('/admin/order', function () {
 });
 Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
 Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
-
 
 Route::get('/admin/statistical', function () {
     return view('admin.pages.statistical');

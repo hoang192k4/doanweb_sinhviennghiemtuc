@@ -11,9 +11,12 @@ class UserController extends Controller
 
     public function index(){
         $thuongHieu = Brand::index();
-
+        $danhSachDTHot = ProductUser::LayThongTinSanPham('Điện Thoại');
+        $danhSachLapTopMoi = ProductUser::LayThongTinSanPham('Laptop');
         return View('User.pages.index')->with([
-            "thuongHieu"=>$thuongHieu
+            "thuongHieu"=>$thuongHieu,
+            "danhSachDTHot" => $danhSachDTHot,
+            "danhSachLapTopMoi" => $danhSachLapTopMoi
         ]);
     }
     public function TimKiemSanPhamFH($slug, $id = null)
