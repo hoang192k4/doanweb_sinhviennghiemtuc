@@ -267,4 +267,13 @@ class AdminProductController extends Controller
         ]);
         return 'Ẩn sản phẩm thành công!';
     }
+
+    public function isIssetProduct(Request $request)
+    {
+        $slug = Str::slug($request->name);
+        $sanPham = Product::where('slug',$slug)->first();
+        if(isset($sanPham))
+            return 1;
+        return 0;
+    }
 }

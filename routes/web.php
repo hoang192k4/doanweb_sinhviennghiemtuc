@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
@@ -107,6 +108,9 @@ Route::get('/admin/proudct/list-product-unapproved',[AdminProductController::cla
 Route::get('/admin/product/search',[AdminProductController::class,'search'])->name('admin.product.search');
 Route::get('/admin/product/filter',[AdminProductController::class,'filter'])->name('admin.product.filter');
 Route::get('/admin/product-variant/{id}',[AdminProductVariantController::class,'index'])->name('admin.product_variant.index');
+Route::get('/admin/product-variant-hidden/{id}',[AdminProductVariantController::class,'showListVariantsHide'])->name('product_variant_hide');
+Route::PUT('/admin/product-variant/active/{id}',[AdminProductVariantController::class,'active']);
+Route::post('/admin/product/is_isset',[AdminProductController::class,'isIssetProduct']);
 Route::resource('/admin/product-variant',AdminProductVariantController::class)->except(['index']);
 Route::resource('/admin/product',AdminProductController::class);
 
@@ -118,3 +122,4 @@ Route::get('/admin/brand/filter/{opt}',[AdminBrandController::class,'filter']);
 
 Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
 Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('admin.contact.delete');
+

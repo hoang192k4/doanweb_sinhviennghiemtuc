@@ -6,16 +6,14 @@
     <div class="content">
         <div class="head">
             <div class="title"> Quản lí biến thể</div>
-            <button><a href="{{ route('product_variant_hide', [$danhSachBienThe[0]->product->id]) }}"><i
-                        class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
+            <button><a href=" "><i class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
         </div>
         <div class="btn-goback">
-            <a href="{{ route('product.index') }}" type="button"> <button>&laquo; Trở lại</button></a>
+            <a href="{{ route('admin.product_variant.index',[$product->id]) }}" type="button"> <button>&laquo; Trở lại</button></a>
         </div>
         <div class="row">
             <div>
-                <button type="button" class="cursor" data-id=0 id="btn-add"onclick="addVariant(this.dataset.id)">Thêm
-                    biến thể</button>
+                <button type="button" class="cursor" onclick="addVariant()">Thêm biến thể</button>
             </div>
 
             <div class="col-lg-12">
@@ -26,7 +24,9 @@
                                 <p id="msg" style="display: block; color: green;">{{ session('msg') }}</p>
                             @endif
                         </div>
-
+                        @if(count($danhSachBienThe)==0)
+                            <p style="text-align: center;font-size:25px">Không có variant của sản phẩm {{$product->name}} bị ẩn!!!</p>
+                        @else
                         <table>
                             <thead>
                                 <th>#</th>
@@ -35,18 +35,18 @@
                                 <th>Giá</th>
                                 <th>Tồn kho</th>
                                 <th>Hình ảnh</th>
-                                <th colspan="2">Thao tác</th>
+                                <th>Cập nhật</th>
+                                <th>Hiển thị</th>
                             </thead>
                             <tbody id="table-variants">
                                 @foreach ($danhSachBienThe as $bienTheId => $bienThe)
-                                    <form action="{{ route('product-variant.update', [$bienThe]) }}" method="POST"
-                                        id="formAddProduct" class="form-product" enctype="multipart/form-data">
-                                        <tr id="variant-{{ $bienThe->id }}">
+                                    <form action="{{route('product-variant.update',[$bienThe])}}" method="POST" id="formAddProduct" class="form-product"
+                                        enctype="multipart/form-data">
+                                        <tr id="variant-{{$bienThe->id}}">
                                             @csrf
                                             @method('put')
                                             <td>{{ $bienThe->id }}</td>
-                                            <td> <input class="input-variant" type="text" value="{{ $bienThe->color }}"
-                                                    name="color">
+                                            <td> <input class="input-variant" type="text" value="{{ $bienThe->color }}" name="color">
                                             </td>
                                             <td> <input class="input-variant" type="text"
                                                     value="{{ $bienThe->internal_memory }}" name="internal_memory"></td>
@@ -62,14 +62,14 @@
                                             </td>
 
                                             <td><button>Cập nhật</button> </td>
-                                            <td style="text-align:center"> <i class="fa-solid fa-x cursor"
-                                                    onclick="showVariantHiddenForm({{ $bienThe->id }})"></i> </td>
+                                            <td style="text-align:center"> <i class="fa-regular fa-eye cursor" onclick="showVariantHiddenForm({{$bienThe->id}})" ></i> </td>
                                         </tr>
 
                                     </form>
                                 @endforeach
                             </tbody>
                         </table>
+                        @endif
 
                     </div>
                 </div>
@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="popup_admin" id="variant-popup">
-        <h3 style="color: white;" id="variant-text">Bạn có thật sự muốn ẩn sản phẩm ... ?</h3>
+        <h3 style="color: white;" id="variant-text">Bạn có thật sự muốn hiển thị sản phẩm ... ?</h3>
         <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
         <p id="alert"></p>
         <div class="button">
@@ -88,31 +88,29 @@
 @endsection
 @section('script')
     <script>
-        function showVariantHiddenForm(id) {
+        function showVariantHiddenForm(id){
             document.getElementById('submit-hidden').dataset.id = id;
-            document.getElementById('variant-text').textContent = `Bạn thật sự muốn ẩn variant ${id}?`;
+            document.getElementById('variant-text').textContent = `Bạn thật sự muốn hiển thị variant ${id}?`;
             document.getElementById('variant-popup').style.display = "block";
         }
-
-        function submitHideVariant(id) {
+        function submitHideVariant(id){
             $.ajax({
-                    method: "POST",
-                    url: `/admin/product-variant/${id}`,
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        _method: 'delete'
-                    }
+                method:"POST",
+                url:`/admin/product-variant/active/${id}`,
+                data:{
+                    _token: '{{csrf_token()}}',
+                    _method:'put'
+                }
 
-                })
-                .done((data) => {
-                    const row = document.getElementById(`variant-${id}`);
-                    row.parentNode.removeChild(row);
-                    alert(data);
-                })
+            })
+            .done((data)=>{
+                const row = document.getElementById(`variant-${id}`);
+                row.parentNode.removeChild(row);
+                alert(data);
+            })
             document.getElementById('variant-popup').style.display = "none";
         }
-
-        function cancel() {
+        function cancel(){
             document.getElementById('variant-popup').style.display = "none";
         }
     </script>
@@ -127,7 +125,6 @@
                 output.style.height = "150px";
             };
             reader.readAsDataURL(event.target.files[0]);
-
         };
     </script>
     <script>
@@ -144,25 +141,6 @@
             }, 3000);
         }
 
-        function addVariant(id) {
-            id++;
-            const variant = `  <form action="{{ route('product-variant.store') }}" method="POST" id="formAddProduct" class="form-product" enctype="multipart/form-data">
-                                        <tr>
-                                                <td>@csrf</td>
-                                                <td> <input class="input-variant" type="text" value="" id="color-${id}" name="color"></td>
-                                                <td> <input class="input-variant" type="text" value="" id="internal_memory-${id}" name="internal_memory"></td>
-                                                <td> <input class="input-variant" type="number" min="0" id="price-${id}" value="" name="price"></td>
-                                                <td> <input class="input-variant" type="number" min="0" id="stock-${id}" value="" name="stock"></td>
-                                                <td><img id="image"style="max-width:50px;"src="" alt=""> <input type="file" class="input-variant" name="image" id="image-input-${id}" onchange="reviewImage(event,'image');"></td>
-                                                <td  colspan="2"><button type="submit" class="cursor" data-id="${id}"onclick="addVariantProduct(this.dataset.id)">Thêm</button> </td>
-
-                                        </tr>
-                             </form> `;
-            document.getElementById('btn-add').dataset.id = id;
-            document.getElementById('table-variants').insertAdjacentHTML('beforeend', variant);
-        }
-
-
         function reviewImage(event, id) {
             let reader = new FileReader();
             reader.onload = function() {
@@ -172,34 +150,6 @@
                 output.style.height = "50px";
             };
             reader.readAsDataURL(event.target.files[0]);
-        }
-
-
-        function addVariantProduct(id) {
-            const color = document.getElementById(`color-${id}`).value;
-            const price = document.getElementById(`price-${id}`).value;
-            const stock = document.getElementById(`stock-${id}`).value;
-            const internalMemory = document.getElementById(`internal_memory-${id}`).value;
-            const fileUpload = document.getElementById(`image-input-${id}`);
-            fileUpload.addEventListener('change',(event)=>{
-                const images = event.target.images;
-            })
-            $.ajax({
-                method: "POST",
-                url: '/admin/product-variant',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    color,
-                    price,
-                    stock,
-                    internal_memory: internalMemory,
-                    product_id: '{{$danhSachBienThe[0]->product->id}}',
-                }
-            }).done((data)=>{
-                alert(`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
-                location.reload();
-            })
-
         }
     </script>
 @endsection
