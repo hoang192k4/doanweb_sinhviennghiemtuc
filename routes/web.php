@@ -77,12 +77,9 @@ Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.i
 Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
 Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
 Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
-Route::get('/sanphamyeuthich', function () {
-    return view('user.profile.favourite_product');
-});
-Route::get('/lichsudanhgia', function () {
-    return view('user.profile.review_history');
-});
+Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
+Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
+Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
 
 
 //Route dashboard
