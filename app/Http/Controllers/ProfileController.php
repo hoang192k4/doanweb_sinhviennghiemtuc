@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LikeProduct;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -66,6 +67,6 @@ class ProfileController extends Controller
     }
     public function review_history()
     {
-        return view('user.profile.review_history')->with('ratings', );
+        return view('user.profile.review_history')->with('reviews', Rating::where('user_id', 3)->get());
     }
 }
