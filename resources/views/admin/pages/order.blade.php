@@ -19,6 +19,7 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Address</th>
@@ -31,6 +32,7 @@
             <tbody>
                 @foreach (App\Models\Order::whereIn('order_status_id', [1, 2, 3])->get() as $order)
                                 <tr>
+                                    <td style="text-align: center;">{{$order->id}}</td>
                                     <td style="text-align: center;">{{$order->order_code}}</td>
                                     <td>{{$order->full_name}}</td>
                                     <td style="text-align: center;">{{$order->phone}}</td>
@@ -56,6 +58,7 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Address</th>
@@ -68,6 +71,7 @@
             <tbody>
                 @foreach (App\Models\Order::whereIn('order_status_id', [4, 5])->get() as $order)
                     <tr>
+                        <td style="text-align: center;">{{$order->id}}</td>
                         <td style="text-align: center;">{{$order->order_code}}</td>
                         <td>{{$order->full_name}}</td>
                         <td style="text-align: center;">{{$order->phone}}</td>
@@ -93,6 +97,7 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Address</th>
@@ -104,6 +109,7 @@
             <tbody>
                 @foreach (App\Models\Order::where('order_status_id', 6)->get() as $order)
                     <tr>
+                        <td style="text-align: center;">{{$order->id}}</td>
                         <td style="text-align: center;">{{$order->order_code}}</td>
                         <td>{{$order->full_name}}</td>
                         <td style="text-align: center;">{{$order->phone}}</td>
@@ -124,6 +130,7 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Address</th>
@@ -135,6 +142,7 @@
             <tbody>
                 @foreach (App\Models\Order::where('order_status_id', 7)->get() as $order)
                     <tr>
+                        <td style="text-align: center;">{{$order->id}}</td>
                         <td style="text-align: center;">{{$order->order_code}}</td>
                         <td>{{$order->full_name}}</td>
                         <td style="text-align: center;">{{$order->phone}}</td>
@@ -154,6 +162,7 @@
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
+                    <th>Order code</th>
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Address</th>
@@ -165,6 +174,7 @@
             <tbody>
                 @foreach (App\Models\Order::where('order_status_id', 8)->get() as $order)
                     <tr>
+                        <td style="text-align: center;">{{$order->id}}</td>
                         <td style="text-align: center;">{{$order->order_code}}</td>
                         <td>{{$order->full_name}}</td>
                         <td style="text-align: center;">{{$order->phone}}</td>

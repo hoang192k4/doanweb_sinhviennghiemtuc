@@ -35,14 +35,18 @@ class ValidateAddContact extends FormRequest
             'name.required'=>'không được trống',
             'name.regex'=>'tên không chứa ký đặc biệt va và số',
             'name.max' =>'tối đa chỉ 50 ký tự',
+
             'email.required' => 'Trường email là bắt buộc.',
             'email.email' => 'Địa chỉ email không hợp lệ.',
             'email.max' => 'Email không được vượt quá 255 ký tự.',
+
             'phone.required'=>'không được bỏ trống',
             'phone.digits'=>'chỉ đc nhập 10 ký tự số',
+
             'title.required'=>'không được bỏ trống',
             'title.regex'=>'không được chứa ký tự đặc biệt',
             'title.max'=>'tối đã 255 ký tự',
+            
             'content.required'=>'không được bỏ trống',
             'content.regex'=>'không được chứa ký tự đặc biệt',
     ];
