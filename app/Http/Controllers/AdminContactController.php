@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use App\Http\Requests\ValidateAddContact;
+
 class AdminContactController extends Controller
 {
     //
@@ -21,7 +23,8 @@ class AdminContactController extends Controller
         Contact::where('id',$id)->update(['status'=>1]);
         return back()->with('liên hệ đã được hiển thị ở mục đã liên hệ');
     }
-    public function addContact(Request $req){
+    public function addContact(Request $req)
+    {
         $data = new Contact();
         $data->id=$req['id'];
         $data->name=$req['name'];
