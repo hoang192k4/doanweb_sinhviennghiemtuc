@@ -115,7 +115,7 @@
 }
 
 
-.profile .row_profile .col_profile .col_profile_second_2 .change_image>button {
+.profile .row_profile .col_profile .col_profile_second_2 .change_image button {
     padding: 5px 25px;
     border: none;
     margin-top: 30px;
@@ -124,7 +124,7 @@
     color: white;
 }
 
-.profile .row_profile .col_profile .col_profile_second_2 .change_image>button:hover {
+.profile .row_profile .col_profile .col_profile_second_2 .change_image button:hover {
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -710,7 +710,7 @@
         display: flex;
         justify-content: center;
     }
-    .profile .row_profile .col_profile .col_profile_second_2 .change_image>button {
+    .profile .row_profile .col_profile .col_profile_second_2 .change_image button {
         margin: 0;
         margin-top: 5px;
     }

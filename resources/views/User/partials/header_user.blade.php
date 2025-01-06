@@ -50,7 +50,7 @@
             <nav class="navbar_hidden_mb_tl">
                 <label for="checkbox_hidden"><i class="fas fa-times"></i></label>
                 <ul>
-                    <li><a href="">Trang chủ</a></li>
+                    <li><a href="{{ route('user.index') }}">Trang chủ</a></li>
                     <li id="show__category">Danh mục<i class="fas fa-angle-down" style="margin-left:20px"></i></li>
                     @foreach( $danhSachDanhMuc as $category)
                     <li class="popup__category__ml__tl"><a href="{{ route('timkiemsanpham', ['slug' => $category->slug])}}">{{ $category->name }}</a></li>
@@ -59,14 +59,14 @@
                     <li><a href="{{ route('user.contact') }}">Liên Hệ</a></li>
                     <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
                                 style="margin-right:5px"></i>Đăng nhập</a></li>
-                    
+
                 </ul>
             </nav>
             <ul>
                 <li>
-                    <form action="" method="GET">
-                        <input type="search" placeholder="Tìm kiếm...">
-                        <button><i class="fas fa-search"></i></button>
+                    <form action="{{route("timkiemtheotukhoa")}}" method="GET">
+                        <input type="search"  name = "seachbykey" placeholder="Tìm kiếm...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
                     </form>
                 </li>
                 <li class="cart__header_desktop"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"
