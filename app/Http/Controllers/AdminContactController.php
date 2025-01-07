@@ -25,6 +25,27 @@ class AdminContactController extends Controller
     }
     public function addContact(Request $req)
     {
+        $validate=$req->validate([
+            'name'=>'required|max:50',//bắt buộc nhập, chỉ đc ký từ thường và hoa và chỉ nhập đc 50 ký tự
+            'email'=>'required|email|max:255',
+            'phone'=>'required|digits:10',
+            'title'=>'required|max:255',
+            'content'=>'required',
+        ],[
+            'name.required'=>'không được trống',
+                'name.max' =>'tối đa chỉ 50 ký tự',
+                'email.required' => 'Trường email là bắt buộc.',
+                'email.email' => 'Địa chỉ email không hợp lệ.',
+                'email.max' => 'Email không được vượt quá 255 ký tự.',
+
+                'phone.required'=>'không được bỏ trống',
+                'phone.digits'=>'chỉ đc nhập 10 ký tự số',
+                'title.required'=>'không được bỏ trống',
+                'title.max'=>'tối đã 255 ký tự',
+                
+                'content.required'=>'không được bỏ trống',
+        ]);
+       
         $data = new Contact();
         $data->id=$req['id'];
         $data->name=$req['name'];
@@ -33,6 +54,6 @@ class AdminContactController extends Controller
         $data->email=$req['email'];
         $data->phone=$req['phone'];
         $data->save();
-        return view('user.pages.contact')->with('contact',$data);
+        return redirect()->route('user.contact')->with('msg','Gửi liên hệ thành công!');
     }
 }

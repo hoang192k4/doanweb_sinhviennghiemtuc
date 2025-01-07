@@ -29,20 +29,27 @@
                         <form class="form_contact" action="/addContact" method="POST" style="padding-left: 30px;">
                             @csrf @method('POST')
                             <div class="col">
-                                <input type="text" name="name" placeholder="Họ và tên của bạn" value="@isset($contact){{$contact->name}}@endisset"/>
+                                <input type="text" name="name" placeholder="Họ và tên của bạn @error('name'){{$message}}@enderror"
+                                    value="@isset($contact){{ $contact->name }}@endisset" />
+                             
+     
+                                
                             </div>
                             <div class="col">
-                                <input type="text" name="phone" placeholder="Số điện thoại" value="@isset($contact){{$contact->phone}}@endisset"/>
+                                <input type="text" name="phone" placeholder="Số điện thoại @error('phone'){{$message}}@enderror"
+                                    value="@isset($contact){{ $contact->phone }}@endisset" />
                             </div>
                             <div class="col">
-                                <input type="text" name="email" placeholder="E-mail" value="@isset($contact){{$contact->email}}@endisset"/>
+                                <input type="text" name="email" placeholder="E-mail @error('email'){{$message}}@enderror"
+                                    value="@isset($contact){{ $contact->email }}@endisset" />
                             </div>
                             <div class="col">
-                                <input type="text" name="title" placeholder="Tiêu đề" value="@isset($contact){{$contact->title}}@endisset"/>
+                                <input type="text" name="title" placeholder="Tiêu đề @error('title'){{$message}}@enderror"
+                                    value="@isset($contact){{ $contact->title }}@endisset" />
                             </div>
                             <div class="col">
-                                <textarea name="content" placeholder="Nội dung"
-                                    style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;" value="@isset($contact){{$contact->content}}@endisset"></textarea>
+                                <textarea name="content" placeholder="Nội dung @error('content'){{$message}}@enderror" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
+                                    value="@isset($contact){{ $contact->content }}@endisset"></textarea>
                             </div>
                             <button type="submit" class="sendMessage">
                                 Gửi</button>
@@ -52,4 +59,21 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        const message = "{{ session('msg') }}";
+        console.log(message)
+        if (message) {
+            alertify.success(message);
+        }
+    </script>
+
+    <script>
+        const message = "{{ session('msg') }}";
+        console.log(message)
+        if (message) {
+            alertify.error(message);
+        }
+    </script>
 @endsection
