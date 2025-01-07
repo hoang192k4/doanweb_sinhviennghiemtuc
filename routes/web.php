@@ -24,7 +24,7 @@ Route::controller(UserController::class)->group(function(){
 
 });
 
-Route::get('/detail', function () {
+Route::get('/', function () {
     return view('user.pages.detail');
 });
 

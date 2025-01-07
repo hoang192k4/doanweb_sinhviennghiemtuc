@@ -65,7 +65,7 @@
             <ul>
                 <li>
                     <form action="{{route("timkiemtheotukhoa")}}" method="GET">
-                        <input type="search"  name = "seachbykey" placeholder="Tìm kiếm...">
+                        <input type="search"  name = "seachbykey" placeholder="Tìm kiếm..." value="{{ request('seachbykey')}}">
                         <button type="submit"><i class="fas fa-search"></i></button>
                     </form>
                 </li>
