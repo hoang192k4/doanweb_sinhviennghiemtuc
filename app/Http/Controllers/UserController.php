@@ -58,11 +58,6 @@ class UserController extends Controller
     {
         return view('user.pages.contact');
     }
-<<<<<<< HEAD
-    public function GioHang()
-    {
-        return view('user.profile.shoppingcart');
-    }
 
     public function DangKy(Request $request)
     {
@@ -103,6 +98,5 @@ class UserController extends Controller
         ]);
         return response()->json(['message' => 'Đăng ký thành công']);
     }
-=======
->>>>>>> dong
+
 }
