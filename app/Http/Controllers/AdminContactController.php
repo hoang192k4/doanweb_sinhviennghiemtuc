@@ -26,24 +26,22 @@ class AdminContactController extends Controller
     public function addContact(Request $req)
     {
         $validate=$req->validate([
-            'name'=>'required|max:50',//bắt buộc nhập, chỉ đc ký từ thường và hoa và chỉ nhập đc 50 ký tự
-            'email'=>'required|email|max:255',
-            'phone'=>'required|digits:10',
+            'name'=>'required|string|max:50',
+            'email'=>'required|email|max:25',
+            'phone'=>'required|string|regex:/^[0-9]{10}$/',
             'title'=>'required|max:255',
-            'content'=>'required',
+            'content'=>'required|string',
         ],[
             'name.required'=>'không được trống',
-                'name.max' =>'tối đa chỉ 50 ký tự',
-                'email.required' => 'Trường email là bắt buộc.',
-                'email.email' => 'Địa chỉ email không hợp lệ.',
-                'email.max' => 'Email không được vượt quá 255 ký tự.',
-
-                'phone.required'=>'không được bỏ trống',
-                'phone.digits'=>'chỉ đc nhập 10 ký tự số',
-                'title.required'=>'không được bỏ trống',
-                'title.max'=>'tối đã 255 ký tự',
-                
-                'content.required'=>'không được bỏ trống',
+            'name.max' =>'tối đa chỉ 50 ký tự',
+            'email.required' => 'không được trống.',
+            'email.email' => 'không hợp lệ.',
+            'email.max' => 'không được vượt quá 255 ký tự.',
+            'phone.required'=>'không được bỏ trống',
+            'phone.digits'=>'chỉ đc nhập 10 ký tự số',
+            'title.required'=>'không được bỏ trống',
+            'title.max'=>'tối đã 255 ký tự',                
+            'content.required'=>'không được bỏ trống',
         ]);
        
         $data = new Contact();
