@@ -202,7 +202,7 @@
                                 {{ App\Models\PaymentMethod::find($order->payment_method)->name_method }}
                             </td>
                             <td style="text-align: center;">
-                                <button onclick="showDeletePopup({{ $order->full_name }},{{ $order->id }})"><i
+                                <button onclick="showDeletePopup('{{ $order->full_name }}',{{ $order->id }})"><i
                                         class="fa-solid fa-x"></i>
                                 </button>
                             </td>
@@ -295,7 +295,7 @@
         function deleteOrder(id) {
             $.ajax({
                     type: "POST",
-                    url: `admin/order/delete/${id}`,
+                    url: `/admin/order/delete/${id}`,
                     data: {
                         _token: '{{ csrf_token() }}',
 
@@ -319,7 +319,7 @@
         function cancelOrder(id) {
             $.ajax({
                     method: "POST",
-                    url: `admin/order/cancel/${id}`,
+                    url: `/admin/order/cancel/${id}`,
                     data: {
                         _token: '{{ csrf_token() }}',
                     }
