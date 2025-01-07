@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Models\Product;
+use Illuminate\Support\Facades\File;
+
 class AdminProductVariantController extends Controller
 {
     /**
@@ -13,8 +15,9 @@ class AdminProductVariantController extends Controller
     public function index($product_id)
     {
         //
+        $product = Product::find($product_id);
         $danhSachBienThe = ProductVariant::with('product')->where('product_id',$product_id)->where('status',1)->get();
-        return view('admin.product.product_variant',['danhSachBienThe'=>$danhSachBienThe]);
+        return view('admin.product.product_variant',['danhSachBienThe'=>$danhSachBienThe,'product'=>$product]);
     }
     public function showListVariantsHide($product_id){
         $product = Product::find($product_id);

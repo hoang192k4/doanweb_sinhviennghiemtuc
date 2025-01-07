@@ -42,7 +42,7 @@
                         <td style="text-align: center;"><a href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
                                     class="fa-regular fa-pen-to-square"></i></a>
                         </td>
-                        <td style="text-align: center;"><a onclick="showPopupProduct({{$sanPham}})"><i class="fa-regular fa-trash-can"></i></a>
+                        <td style="text-align: center;"><a onclick="showPopupProduct({{$sanPham}})" class="cursor"><i class="fa-regular fa-trash-can"></i></a>
                         </td>
                     </tr>
                 @endforeach
@@ -71,6 +71,7 @@
 @section('script')
     <script>
         function showPopupProduct(product){
+
             const popupProduct = document.getElementById('popupsp');
             popupProduct.children[0].textContent = `Bạn có thật sự muốn ẩn sản phẩm ${product.name}?`;
             popupProduct.children[3].children[0].dataset.id = product.id;
@@ -109,12 +110,14 @@
                 .done((danhSachSanPham) => {
                     const table = document.getElementById('table');
                     const danhSach = danhSachSanPham.map((sanpham) => {
-                        return ` <tr>
+                        console.log(sanpham);
+                        return ` <tr id="product-${sanpham.id}">
                         <td style="text-align: center;"> ${sanpham.id} </td>
                         <td> ${sanpham.name}</td>
+                                                <td style="text-align: center;"> <a href="{{route('admin.product_variant.index',[$sanPham->id])}}"> <i class="fa-solid fa-code"></i></a> </td>
                         <td style="text-align: center;"><a href="/admin/product/${sanpham.id}/edit"><i class="fa-regular fa-pen-to-square"></i></a>
                         </td>
-                        <td style="text-align: center;"><a onclick="popup('sp')"><i class="fa-regular fa-trash-can"></i></a>
+                        <td style="text-align: center;"><a class="cursor" onclick='showPopupProduct({"id":${sanpham.id},"name":"${sanpham.name}"})'><i class="fa-regular fa-trash-can"></i></a>
                         </td>
                     </tr>`
                     });
