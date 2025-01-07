@@ -8,12 +8,14 @@
             align-items: center;
             padding: 8px 12px;
         }
-        .technology_search > form {
+
+        .technology_search>form {
             width: 30%;
             display: flex;
             align-items: center;
         }
-        .technology_search > form > input{
+
+        .technology_search>form>input {
             border: none;
             padding: 5px 2px 5px 10px;
             outline: none;
@@ -22,12 +24,18 @@
             border-bottom-left-radius: 15px;
             border-top-left-radius: 15px;
         }
-        .technology_search > form > button {
-            padding:5px 10px 5px 0;
-            border : none;
-            background-color:white;
+
+        .technology_search>form>button {
+            padding: 5px 10px 5px 0;
+            border: none;
+            background-color: white;
             border-bottom-right-radius: 15px;
             border-top-right-radius: 15px;
+        }
+
+        .technology_content .pagination a {
+            color: black;
+            padding: 10px;
         }
     </style>
     <div class="container_css" style="padding:10px;">
@@ -107,39 +115,27 @@
                 <div class="technology">
                     <div class="technology_search technology_news">
                         <h4 style="margin-bottom:0">Tin công nghệ</h4>
-                        <form class="search_blog" action="" method="GET">
-                            <input type="search" placeholder="Tìm kiếm bài viết">
+                        <form class="search_blog" action="{{ route('searchBlog') }}" method="GET">
+                            <input type="search" name="keyBlog" id="keyBlog" placeholder="Tìm kiếm bài viết"
+                                value="{{ request('keyBlog') }}">
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </div>
                     <div class="technology_content">
                         <div class="row_news">
-                            <div class="col_news">
-                                <img src="/images/16pro.jpg" alt="Image 1">
-                                <p class="mt-3">Trường ĐH Sư phạm, ĐH Huế đăng cai tổ chức hội thảo khoa học quốc
-                                    gia về công nghệ thông tin (CNTT)</p>
-                            </div>
-                            <div class="col_news">
-                                <img src="/images/16pro.jpg" alt="Image 1">
-                                <p class="mt-3">Thay đổi tiêu chuẩn chủ nhiệm đề tài khoa học và công nghệ cấp bộ
-                                </p>
-                            </div>
-                            <div class="col_news">
-                                <img src="/images/16pro.jpg" alt="Image 1">
-                                <p class="mt-3">Thay đổi tiêu chuẩn chủ nhiệm đề tài khoa học và công nghệ cấp bộ
-                                </p>
-                            </div>
-                            <div class="col_news">
-                                <img src="/images/16pro.jpg" alt="Image 1">
-                                <p class="mt-3">Thay đổi tiêu chuẩn chủ nhiệm đề tài khoa học và công nghệ cấp bộ
-                                </p>
-                            </div>
+                            @foreach ($danhSachBaiViet as $item)
+                                <div class="col_news">
+                                    <img src="/images/16pro.jpg" alt="Image 1">
+                                    <p class="mt-3">{{ $item->title }}</p>
+                                </div>
+                            @endforeach
                         </div>
+                        {{ $danhSachBaiViet->appends(request()->all())->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
-        @include('user.partials.service')
+    {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
+    @include('user.partials.service')
 @endsection
