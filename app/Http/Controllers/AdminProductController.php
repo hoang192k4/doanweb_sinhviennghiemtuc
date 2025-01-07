@@ -112,7 +112,7 @@ class AdminProductController extends Controller
                 ]);
         }
 
-        return redirect()->route('product.index')->with('msg','Thêm sản phẩm thành công!');
+        return redirect()->route('product.index')->with(' ','Thêm sản phẩm thành công!');
     }
 
     /**

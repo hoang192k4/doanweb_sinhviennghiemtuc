@@ -32,9 +32,4 @@ class UserController extends Controller
     public function LienHe(){
         return view('user.pages.contact');
     }
-    public function GioHang(){
-        return view('user.profile.shoppingcart');
-    }
-
-    
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminProductVariantController;
 use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 
 use App\Http\Controllers\AdminContactController;
 
@@ -18,12 +19,15 @@ use App\Http\Controllers\HomeController;
 Route::controller(UserController::class)->group(function(){
     Route::get('/gioithieu',"GioiThieu")->name('user.blog');
     Route::get('/contact',"LienHe")->name('user.contact');
-    Route::get('/shoppingcart',"GioHang")->name('user.shoppingcart');
-    Route::get('/',"index")->name('user.index');
 
+    Route::get('/',"index")->name('user.index');
     Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
+});
 
+Route::controller(CartController::class)->group(function(){
+    Route::get('/shopping-cart',"index")->name('user.shoppingcart');
+    Route::get('/add-to-cart/{id}',"addToCart")->name('cart.add');
 });
 
 Route::get('/detail', function(){
