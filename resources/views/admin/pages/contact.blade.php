@@ -40,7 +40,7 @@
                     <td>{{$lienHe->title}} </td>
                     <td>{{$lienHe->content}} </td>
                     <td style="text-align: center;">
-                        <a href="">
+                        <a href="{{route('contact.update',['id'=>$lienHe->id])}}">
                             <i class="fa-solid fa-check"></i>
                         </a>
                     </td>

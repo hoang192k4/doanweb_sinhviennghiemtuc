@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LikeProduct;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -50,5 +53,20 @@ class ProfileController extends Controller
     public function order_history()
     {
         return view('user.profile.order_history')->with('orders', Order::where('user_id', 3)->get());
+    }
+    public function favourite_product()
+    {
+        return view('user.profile.favourite_product')->with('products', Product::whereIn('id', LikeProduct::where('user_id', 3)->pluck('product_id'))->get());
+    }
+    public function unLike($id)
+    {
+        $like = LikeProduct::where('user_id', 3)->where('product_id', $id)->first();
+        if ($like)
+            $like->delete();
+        return redirect()->back();
+    }
+    public function review_history()
+    {
+        return view('user.profile.review_history')->with('reviews', Rating::where('user_id', 3)->get());
     }
 }

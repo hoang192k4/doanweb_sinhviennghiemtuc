@@ -19,8 +19,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/shoppingcart', "GioHang")->name('user.shoppingcart');
     Route::get('/', "index")->name('user.index');
 
+
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
+
+    Route::post('/dangky', "DangKy")->name('dangky');
 });
 
 Route::get('/detail', function () {
@@ -75,12 +78,9 @@ Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.i
 Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
 Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
 Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
-Route::get('/sanphamyeuthich', function () {
-    return view('user.profile.favourite_product');
-});
-Route::get('/lichsudanhgia', function () {
-    return view('user.profile.review_history');
-});
+Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
+Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
+Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
 
 
 //Route dashboard
@@ -123,4 +123,6 @@ Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter'])
 
 
 Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
-Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('admin.contact.delete');
+Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
+Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
+Route::post('/addContact', [AdminContactController::class, 'addContact']);
