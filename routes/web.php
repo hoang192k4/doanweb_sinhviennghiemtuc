@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminProductVariantController;
 use App\Http\Controllers\AdminBrandController;
 use App\Http\Controllers\AdminContactController;
+use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\UserController;
 
 
@@ -69,9 +70,9 @@ Route::get('/admin/editbrand', function () {
 Route::get('/admin/addcategory', function () {
     return view('admin.category.addcategory');
 });
-Route::get('/admin/comment', function () {
-    return view('admin.pages.review');
-});
+// Route::get('/admin/comment', function () {
+//     return view('admin.pages.review');
+// });
 
 
 //Route profile
@@ -132,3 +133,6 @@ Route::post('/addContact',[AdminContactController::class,'addContact']);
 Route::post('/admin/order/delete/{id}',[AdminOrderController::class,'deleteOrder'])->name('order.delete');
 Route::post('/admin/order/cancel/{id}',[AdminOrderController::class,'cancelOrder'])->name('order.cancel');
 
+//quản lý đánh giá
+Route::get('/admin/review',[AdminReviewController::class,'showListReviews'])->name('admin.pages.review');
+Route::delete('/admin/review/delete/{id}',[AdminReviewController::class,'deleteReviews'])->name('admin.review.delete');

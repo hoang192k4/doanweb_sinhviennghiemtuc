@@ -24,8 +24,8 @@ class AdminOrderController extends Controller
     
 
     public function cancelOrder($id){
-        $order=Order::where('id',$id)->update(['order_status_id'=>7]);//status=7 đơn hàng đã huy
-        return view('admin.pages.order');
+        Order::where('id',$id)->update(['order_status_id'=>7]);//status=7 đơn hàng đã huy
+        return redirect()->route('order.cancel');
     }
     public function deleteOrder($id){
         $order = Order::find($id);

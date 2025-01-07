@@ -285,13 +285,6 @@
 @section('script')
 
     <script>
-        function showCancelPopup(full_name, id) {
-            let popup = document.getElementById('popuphuy');
-            popup.children[0].textContent = `Bạn có thật sự muốn hủy đơn hàng của khách hàng ${full_name} ?`;
-            popup.children[4].children[0].dataset.id = id;
-            popup.style.display = "block";
-        }
-
         function showDeletePopup(full_name, id) {
             let popup = document.getElementById('popupxoa');
             popup.children[0].textContent = `Bạn có thật sự muốn ẩn đơn hàng của khách hàng ${full_name} ?`;
@@ -313,6 +306,15 @@
                     location.reload();
                 })
                 document.getElementById('popupxoa').style.display = "none";
+        }
+        
+    </script>
+    <script>
+        function showCancelPopup(full_name, id) {
+            let popup = document.getElementById('popuphuy');
+            popup.children[0].textContent = `Bạn có thật sự muốn hủy đơn hàng của khách hàng ${full_name} ?`;
+            popup.children[4].children[0].dataset.id = id;
+            popup.style.display = "block";
         }
         function cancelOrder(id) {
             $.ajax({
