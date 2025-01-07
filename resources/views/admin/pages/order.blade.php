@@ -312,7 +312,7 @@
                     alert(data);
                     location.reload();
                 })
-
+                document.getElementById('popupxoa').style.display = "none";
         }
         function cancelOrder(id) {
             $.ajax({
@@ -326,9 +326,7 @@
                     alert(data);
                     location.reload();
                 })
-            document.getElementById('popupxoa').style.display = "none";
             document.getElementById('popuphuy').style.display = "none";
-
         }
     </script>
 @endsection
