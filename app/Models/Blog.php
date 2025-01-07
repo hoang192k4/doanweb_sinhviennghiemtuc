@@ -10,10 +10,10 @@ class Blog extends Model
     //
     public static function layTatCaBaiViet()
     {
-        return DB::table('blogs')->get();
+        return DB::table('blogs')->paginate(4);
     }
     public static function timKiemBaiViet($key)
     {
-        return DB::table('blogs')->where('title', 'like', '%' . $key . '%')->get();
+        return DB::table('blogs')->where('title', 'like', '%' . $key . '%')->paginate(1);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Blog;
@@ -9,6 +10,7 @@ use App\Models\ProductUser;
 use App\Models\Brand;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
@@ -24,6 +26,7 @@ class UserController extends Controller
             "danhSachLapTopMoi" => $danhSachLapTopMoi
         ]);
     }
+
     public function TimKiemSanPhamFH($slug, $id = null)
     {
         $danhSachSanPham = ProductUser::TimKiemSanPham($slug, $id);

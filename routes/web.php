@@ -23,6 +23,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
 
+
     Route::post('/dangky', "DangKy")->name('dangky');
 });
 
