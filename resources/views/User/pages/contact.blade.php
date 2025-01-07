@@ -26,24 +26,25 @@
                 </div>
                 <div class="col_contact">
                     <div class="col_contact_2">
-                        <form class="form_contact" action="" method="" style="padding-left: 30px;">
+                        <form class="form_contact" action="/addContact" method="POST" style="padding-left: 30px;">
+                            @csrf @method('POST')
                             <div class="col">
-                                <input type="text" name="name" placeholder="Họ và tên của bạn" />
+                                <input type="text" name="name" placeholder="Họ và tên của bạn" value="@isset($contact){{$contact->name}}@endisset"/>
                             </div>
                             <div class="col">
-                                <input type="text" name="phone" placeholder="Số điện thoại" />
+                                <input type="text" name="phone" placeholder="Số điện thoại" value="@isset($contact){{$contact->phone}}@endisset"/>
                             </div>
                             <div class="col">
-                                <input type="text" name="email" placeholder="E-mail" />
+                                <input type="text" name="email" placeholder="E-mail" value="@isset($contact){{$contact->email}}@endisset"/>
                             </div>
                             <div class="col">
-                                <input type="text" name="subject" placeholder="Tiêu đề" />
+                                <input type="text" name="title" placeholder="Tiêu đề" value="@isset($contact){{$contact->title}}@endisset"/>
                             </div>
                             <div class="col">
-                                <textarea name="message" placeholder="Nội dung"
-                                    style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"></textarea>
+                                <textarea name="content" placeholder="Nội dung"
+                                    style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;" value="@isset($contact){{$contact->content}}@endisset"></textarea>
                             </div>
-                            <button class="sendMessage">
+                            <button type="submit" class="sendMessage">
                                 Gửi</button>
                         </form>
                     </div>

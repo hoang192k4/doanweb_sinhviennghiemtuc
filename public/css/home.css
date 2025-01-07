@@ -1,3 +1,7 @@
+.alert_error_validate{
+    color: red;
+    font-size: 12px;
+}
 /* section slide show */
 .main_slideshow{
     display: flex;

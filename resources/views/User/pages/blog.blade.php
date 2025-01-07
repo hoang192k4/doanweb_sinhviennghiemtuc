@@ -32,6 +32,11 @@
             border-bottom-right-radius: 15px;
             border-top-right-radius: 15px;
         }
+
+        .technology_content .pagination a {
+            color: black;
+            padding: 10px;
+        }
     </style>
     <div class="container_css" style="padding:10px;">
         <div class="content">
@@ -111,7 +116,8 @@
                     <div class="technology_search technology_news">
                         <h4 style="margin-bottom:0">Tin công nghệ</h4>
                         <form class="search_blog" action="{{ route('searchBlog') }}" method="GET">
-                            <input type="search" name="keyBlog" placeholder="Tìm kiếm bài viết">
+                            <input type="search" name="keyBlog" id="keyBlog" placeholder="Tìm kiếm bài viết"
+                                value="{{ request('keyBlog') }}">
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </div>
@@ -124,6 +130,7 @@
                                 </div>
                             @endforeach
                         </div>
+                        {{ $danhSachBaiViet->appends(request()->all())->links() }}
                     </div>
                 </div>
             </div>
