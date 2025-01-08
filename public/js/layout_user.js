@@ -1,4 +1,7 @@
-
+document.addEventListener("DOMContentLoaded", () => {
+    kt(); // Khởi tạo danh sách sản phẩm
+    SeachProduct(); // Gọi hàm tìm kiếm sản phẩm ngay khi tải trang
+});
 const element_category = document.querySelector('#show__category');
 const element_categorys = document.querySelectorAll('.popup__category__ml__tl')
 element_category.onclick = function () {
@@ -292,7 +295,6 @@ if (btn_payment) {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    SeachProduct();
     const minusButtons = document.querySelectorAll(".minus");
     const plusButtons = document.querySelectorAll(".plus");
     const deleteButtons = document.querySelectorAll(".btn_delete_product");
@@ -359,9 +361,16 @@ popup.addEventListener('click', function (e) {
         togglePopup();
     }
 })
-
-function SeachProduct(min = 0, max = Infinity, itemsPage = 4) {
-    const products = document.querySelectorAll('.product_search_list_right_item');
+document.addEventListener("DOMContentLoaded", () => {
+    kt(); // Khởi tạo danh sách sản phẩm
+    SeachProduct(); // Gọi hàm tìm kiếm sản phẩm ngay khi tải trang
+});
+function kt(){
+     const products=document.querySelectorAll('.product_search_list_right_item');
+    return products;
+}
+function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
+    const products = Array.from(kt());
     const seachProduct = [];
     products.forEach(function (product) {
         const priceText = product.querySelector('.price').innerHTML;
@@ -391,17 +400,18 @@ function SeachProduct(min = 0, max = Infinity, itemsPage = 4) {
         page.innerHTML = '';
 
         // Nút "Pre"
-        if(index!=1){
-            const pre = document.createElement('a');
+        // if(index!=1){
+            const pre = document.createElement('button');
             pre.innerHTML = "Pre";
+            pre.disabled = index === 1;
             pre.addEventListener('click', () => LoadPage(index - 1));
             page.appendChild(pre);
-        }
+
 
 
         // Nút số trang
         for (let i = 1; i <= countPage; i++) {
-            const button = document.createElement('a');
+            const button = document.createElement('button');
             button.innerHTML = i;
             button.className = i === index ? 'active' : '';
             button.addEventListener('click', () => LoadPage(i));
@@ -409,23 +419,19 @@ function SeachProduct(min = 0, max = Infinity, itemsPage = 4) {
         }
 
         // Nút "Next"
-        if(index!=countPage){
-            const next = document.createElement('');
+        // if(index!=countPage){
+            const next = document.createElement('button');
             next.innerHTML = "Next";
+            next.disabled = index === countPage ;
             next.addEventListener('click', () => LoadPage(index + 1));
             page.appendChild(next);
-        }
 
     }
 
-    if (seachProduct.length > itemsPage ) {
+    if (seachProduct.length > 0 ) {
         LoadPage(index);
     }
-    else if (seachProduct.length>0 && seachProduct.length<=itemsPage+1){
-        LoadPage(index);
-        document.getElementById('page').style.display="none";
-    }
-    else if(seachProduct.length<=0)
+    else
     {
         document.getElementById('page').innerHTML =
             '<p>Không có sản phẩm nào phù hợp.</p>';
