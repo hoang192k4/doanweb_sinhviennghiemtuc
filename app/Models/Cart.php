@@ -33,4 +33,11 @@ class Cart extends Model
         $this->totalPrice += $quantity*$variant->price;
         $this->totalQuantity+=$quantity;
     }
+    public function deleteItemCart($variant_id)
+    {
+        $this->totalQuantity -= $this->listProductVariants[$variant_id]['quantity'];
+        $this->totalPrice -= $this->listProductVariants[$variant_id]['price'];
+        unset($this->listProductVariants[$variant_id]);
+    }
+
 }
