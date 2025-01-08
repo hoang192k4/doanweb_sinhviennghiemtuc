@@ -29,6 +29,7 @@ Route::controller(CartController::class)->group(function(){
     Route::get('/add-to-cart/{id}/{quantity}',"addToCart")->name('cart.add');
     Route::get('/cart-delete-item/{id}','deleteItemCart')->name('cart.delete_item');
     Route::get('/cart-delete-all','deleteAllItem');
+    Route::get('/cart-minus-one-variant/{id}','minusOnQuantity');
 });
 
 Route::get('/detail', function () {

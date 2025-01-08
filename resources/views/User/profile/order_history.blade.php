@@ -144,7 +144,7 @@
         }
     }
 
-    //Khi nhấn số sao 
+    //Khi nhấn số sao
     const form_rating = document.querySelectorAll('.popup_form  ')
 
     form_rating.forEach((item) => {

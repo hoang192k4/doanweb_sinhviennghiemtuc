@@ -40,4 +40,12 @@ class Cart extends Model
         unset($this->listProductVariants[$variant_id]);
     }
 
+    public function minusOnQuantity($variant_id)
+    {
+        $this->totalQuantity -=1;
+        $this->totalPrice -= $this->listProductVariants[$variant_id]['variant_info']->price;
+        $this->listProductVariants[$variant_id]['quantity']-=1;
+        $this->listProductVariants[$variant_id]['price']-=$this->listProductVariants[$variant_id]['variant_info']->price;
+    }
+
 }

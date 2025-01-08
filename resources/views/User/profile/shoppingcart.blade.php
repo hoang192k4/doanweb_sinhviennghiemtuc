@@ -23,9 +23,15 @@
                                 <div class="cart_item_info_bottom">
                                     <div>{{ number_format($item['variant_info']->price) }} <sup>đ</sup></div>
                                     <div>
-                                        <button class="minus amount"><i class="fas fa-minus"></i></button>
-                                        <input class="amount" type="text" min="1" value="{{ $item['quantity'] }}">
-                                        <button class="plus amount"><i class="fas fa-plus"></i></button>
+                                        <button class="minus amount"
+                                            onclick="minusOneQuantity({{ $item['variant_info']->id }})"><i
+                                                class="fas fa-minus"></i></button>
+                                        <input class="amount" disabled type="text" min="1"
+                                            value="{{ $item['quantity'] }}"
+                                            id="quantity-variant-{{ $item['variant_info']->id }}">
+                                        <button class="plus amount"
+                                            onclick="addOneQuantity({{ $item['variant_info']->id }})"><i
+                                                class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -60,6 +66,7 @@
 @endsection
 @section('script')
     <script>
+        //xóa một sản phẩm
         function deleteItemCart(id) {
             $.ajax({
                 method: "GET",
@@ -67,13 +74,13 @@
             }).done((data) => {
                 alertify.success(data.message);
                 $(`#list-product-variant #variant-${id}`).remove();
-                if($('#list-product-variant').children().length==0)
+                if ($('#list-product-variant').children().length == 0)
                     afterDeleteAll();
                 else
-                    $(`#total-price`).text(data.cart.totalPrice);
+                    $(`#total-price`).text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
             })
         }
-
+        //xóa tất cả sản phẩm
         function deleteAll() {
             $.ajax({
                 method: "GET",
@@ -84,17 +91,46 @@
                 afterDeleteAll();
             })
         }
-
+        //xử lý giao diện khi xóa sản phẩm
         function afterDeleteAll() {
-                $('#cart-main #cart-bottom').remove();
-                $('#list-product-variant')
-                    .append($('<h3>')
-                        .text('Giỏ hàng chưa có sản phẩm')
-                        .css({
-                            height: '150px',
-                            textAlign: 'center',
-                            marginTop: '69px'
-                        }));
+            $('#cart-main #cart-bottom').remove();
+            $('#list-product-variant')
+                .append($('<h3>')
+                    .text('Giỏ hàng chưa có sản phẩm')
+                    .css({
+                        height: '150px',
+                        textAlign: 'center',
+                        marginTop: '69px'
+                    }));
+        }
+
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        //Thêm số lượng là một khi nhấn nút +
+        function addOneQuantity(id) {
+            $(`#quantity-variant-${id}`).val(parseInt($(`#quantity-variant-${id}`).val()) + 1);
+            $.ajax({
+                    method: "GET",
+                    url: `/add-to-cart/${id}/1`
+                })
+                .done((data) => {
+                    $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                });
+        }
+        //Trừ một số lượng khi nhấn nút -
+        function minusOneQuantity(id) {
+            if ($(`#quantity-variant-${id}`).val() > 1){
+                $(`#quantity-variant-${id}`).val(parseInt($(`#quantity-variant-${id}`).val()) - 1);
+                $.ajax({
+                        method: "GET",
+                        url: `/cart-minus-one-variant/${id}`
+                    })
+                    .done((data) => {
+                        console.log(data)
+                        $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                    });
+            }
         }
     </script>
 @endsection
