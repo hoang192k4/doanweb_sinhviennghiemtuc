@@ -1,38 +1,22 @@
-.pagination {
-    margin-top: 8px;
+#page{
     display: flex;
-    justify-content: center; /* Canh giữa */
-    list-style: none; /* Bỏ dấu chấm */
-    padding: 0; /* Bỏ padding */
+    justify-content: center;
 }
-
-.pagination .page-link {
-    font-weight: 900;
-    font-size: 11px;
+#page a{
+    font-size: 12px;
+    color: rgb(19, 93, 102);
     padding: 8px 12px;
-    margin: 0 5px;
-    border: 1px solid rgb(22,66,60); /* Màu viền */
-    color: black; /* Màu chữ */
-    text-decoration: none; /* Bỏ gạch chân */
-    border-radius: 5px; /* Bo góc */
-    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi */
-
+    margin:8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s, color 0.3s;
 }
-
-.pagination .page-link:hover {
-    background-color: rgb(22, 66, 60); /* Màu nền khi hover */
-    color: #fff; /* Màu chữ khi hover */
+#page a:hover{
+    background-color: rgb(22,66,60) ;
+    color: #ffff;
 }
-
-.pagination .page-item.active .page-link {
-    background-color: rgb(22,66,60); /* Màu nền cho trang hiện tại */
-    color: #fff; /* Màu chữ cho trang hiện tại */
-    border: 1px solid rgb(19, 93, 102); /* Viền cho trang hiện tại */
-}
-
-.pagination .disabled {
-    color: #6c757d; /* Màu cho trang bị vô hiệu hóa */
-    pointer-events: none; /* Không cho click */
+#page .active{
+    background-color: rgb(19, 93, 102);
+    color: rgb(215, 229, 232);
 }
 .change_password {
     padding-top: 10px;

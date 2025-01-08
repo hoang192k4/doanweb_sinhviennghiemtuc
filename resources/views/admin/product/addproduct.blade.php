@@ -116,7 +116,7 @@
                                 <div class=" form-group-product">
                                     <div class="col"><label>Ram</label></div>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="ram">
+                                        <input type="text" class="form-control" name="ram" >
                                         @error('ram')
                                             <div class="text-danger" style="color:red">{{ $message }}</div>
                                         @enderror

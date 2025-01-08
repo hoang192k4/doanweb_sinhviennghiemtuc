@@ -77,7 +77,7 @@ class ProductUser extends Model
         ->orWhere('product_variants.price', 'LIKE', '%' . $key . '%')
         ->Where('products.status',1)
         ->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name') // Nhóm theo các cột cần thiết
-        ->paginate(8);
+        ->get();
         return $danhSachSanPham;
     }
     public static function HinhAnhSamPham($slug){

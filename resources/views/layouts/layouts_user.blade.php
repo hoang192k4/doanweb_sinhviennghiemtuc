@@ -48,9 +48,10 @@
     <!-- Footer -->
     @include('user.partials.footer_user')
     <!-- Footer -->
-    @yield('script')
+
     <script src="{{ asset('js/layout_user.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @yield('script')
 </body>
 
 </html>
