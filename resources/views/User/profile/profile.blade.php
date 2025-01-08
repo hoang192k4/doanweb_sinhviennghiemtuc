@@ -7,8 +7,7 @@
             @include('user.profile.sidebar')
             <div class="col_profile" style="width: 79%;">
                 <div class="item_profile" style="text-align: center;font-weight: bold;font-size: 20px;">
-                    Hồ
-                    sơ của bạn</div>
+                    Hồ sơ của bạn</div>
                 <hr style="margin-left: 20px ;">
                 <div class="col_profile_2">
                     <div class="col_profile_second_1" style="width: 70%;">
