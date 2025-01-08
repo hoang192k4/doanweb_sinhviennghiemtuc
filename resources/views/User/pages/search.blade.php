@@ -33,12 +33,12 @@
                     <div class="product_search product_search_list_price">
                         <p>Mức giá</p>
                         <div class="product_search_list_price_popup">
-                            <button class="active_price">Tất cả</button>
-                            <button>Dưới 2 triệu</button>
-                            <button>Từ 2 đến 4 triệu</button>
-                            <button>Từ 4 đến 8 triệu</button>
-                            <button>Từ 8 đến 15 triệu</button>
-                            <button>Trên 15 triệu</button>
+                            <button onclick="SeachProduct()" class="active_price">Tất cả</button>
+                            <button onclick="SeachProduct(0,2000000)">Dưới 2 triệu</button>
+                            <button onclick="SeachProduct(2000000,4000000)">Từ 2 đến 4 triệu</button>
+                            <button onclick="SeachProduct(4000000,8000000)">Từ 4 đến 8 triệu</button>
+                            <button onclick="SeachProduct(8000000,15000000)">Từ 8 đến 15 triệu</button>
+                            <button onclick="SeachProduct(15000000)">Trên 15 triệu</button>
                             {{-- <div>
                                 <p>Hoặc nhập mức giá phù hợp</p>
                                 <div class="price_about">
@@ -59,7 +59,7 @@
                                 <div class="product_search_list_item_info">
                                     <ul>
                                         <li><a href="">{{ $item->name }}</a></li>
-                                        <li>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></li>
+                                        <li class = "price">{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></li>
                                         <li>{{ $item->rating }} <i class="fas fa-star"></i></li>
                                         <li>
                                             <a href=""><button>Mua ngay</button></a>
@@ -70,7 +70,8 @@
                             </div>
                         @endforeach
                 </div>
-                {{ $danhSachSanPham->appends(request()->all())->links() }}
+                <div class="page" id="page"></div>
+
                  @else
                 <div style="color: black; text-align:center; width:100%; margin-top:10px">
                     <h5>Không có sản phẩm tương tự</h5>
@@ -81,3 +82,4 @@
         </div>
     </section>
 @endsection
+

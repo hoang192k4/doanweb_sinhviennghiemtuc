@@ -1,3 +1,4 @@
+
 const element_category = document.querySelector('#show__category');
 const element_categorys = document.querySelectorAll('.popup__category__ml__tl')
 element_category.onclick = function () {
@@ -99,15 +100,15 @@ if (branch_search) {
     };
 }
 
-const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
-if (active_color_price) {
-    active_color_price.forEach((element) => {
-        element.onclick = function () {
-            active_color_price.forEach(btn => btn.classList.remove('active_price'));
-            this.classList.add('active_price');
-        }
-    });
-}
+// const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
+// if (active_color_price) {
+//     active_color_price.forEach((element) => {
+//         element.onclick = function () {
+//             active_color_price.forEach(btn => btn.classList.remove('active_price'));
+//             this.classList.add('active_price');
+//         }
+//     });
+// }
 
 //API địa chỉ trang thanh toán
 fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
@@ -166,7 +167,7 @@ pwd_login.oninput = function () {
     if (pwd_login.value.length > 0) {
         icon_hs_pwd.style.display = "block";
         document.getElementById('lock_pwd').style.display = "none";
-    } else 
+    } else
     {
         icon_hs_pwd.style.display = "none";
         document.getElementById('lock_pwd').style.display = "block";
@@ -190,7 +191,7 @@ pwd_register.oninput = function () {
     if (pwd_register.value.length > 0) {
         icon_hs_pwd_register.style.display = "block";
         document.getElementById('lock_pwd_register').style.display = "none";
-    } else 
+    } else
     {
         icon_hs_pwd_register.style.display = "none";
         document.getElementById('lock_pwd_register').style.display = "block";
@@ -213,7 +214,7 @@ pwd_confirm_register.oninput = function () {
     if (pwd_confirm_register.value.length > 0) {
         icon_hs_pwd_cf_register.style.display = "block";
         document.getElementById('lock_pwd_cf_register').style.display = "none";
-    } else 
+    } else
     {
         icon_hs_pwd_cf_register.style.display = "none";
         document.getElementById('lock_pwd_cf_register').style.display = "block";
@@ -270,7 +271,7 @@ if (btn_payment) {
         radio_checked_method.forEach((item) => {
             if (item.checked === true && item.value === "Banking") {
                 popup_payment_banking.style.display = "block";
-            } 
+            }
             else popup_payment_cod.style.display = "block";
         })
     }
@@ -291,6 +292,7 @@ if (btn_payment) {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    SeachProduct();
     const minusButtons = document.querySelectorAll(".minus");
     const plusButtons = document.querySelectorAll(".plus");
     const deleteButtons = document.querySelectorAll(".btn_delete_product");
@@ -358,4 +360,74 @@ popup.addEventListener('click', function (e) {
     }
 })
 
+function SeachProduct(min = 0, max = Infinity, itemsPage = 4) {
+    const products = document.querySelectorAll('.product_search_list_right_item');
+    const seachProduct = [];
+    products.forEach(function (product) {
+        const priceText = product.querySelector('.price').innerHTML;
+        const price = parseInt(priceText.replace(/[^0-9]/g, ''));
+        if (price >= min && price <= max) {
+            seachProduct.push(product);
+        } else {
+            product.style.display = "none";
+        }
+    });
 
+    const countPage = Math.ceil(seachProduct.length / itemsPage);
+    let index = 1;
+
+    function LoadPage(page) {
+        seachProduct.forEach(product => product.style.display = "none");
+        const begin = (page - 1) * itemsPage;
+        const end = begin + itemsPage;
+        seachProduct.slice(begin, end).forEach(product => {
+            product.style.display = 'block';
+        });
+        LoadPageButton(countPage, page);
+    }
+
+    function LoadPageButton(countPage, index) {
+        const page = document.getElementById('page');
+        page.innerHTML = '';
+
+        // Nút "Pre"
+        if(index!=1){
+            const pre = document.createElement('a');
+            pre.innerHTML = "Pre";
+            pre.addEventListener('click', () => LoadPage(index - 1));
+            page.appendChild(pre);
+        }
+
+
+        // Nút số trang
+        for (let i = 1; i <= countPage; i++) {
+            const button = document.createElement('a');
+            button.innerHTML = i;
+            button.className = i === index ? 'active' : '';
+            button.addEventListener('click', () => LoadPage(i));
+            page.appendChild(button);
+        }
+
+        // Nút "Next"
+        if(index!=countPage){
+            const next = document.createElement('');
+            next.innerHTML = "Next";
+            next.addEventListener('click', () => LoadPage(index + 1));
+            page.appendChild(next);
+        }
+
+    }
+
+    if (seachProduct.length > itemsPage ) {
+        LoadPage(index);
+    }
+    else if (seachProduct.length>0 && seachProduct.length<=itemsPage+1){
+        LoadPage(index);
+        document.getElementById('page').style.display="none";
+    }
+    else if(seachProduct.length<=0)
+    {
+        document.getElementById('page').innerHTML =
+            '<p>Không có sản phẩm nào phù hợp.</p>';
+    }
+}
