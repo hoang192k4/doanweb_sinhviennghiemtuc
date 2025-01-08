@@ -18,7 +18,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
     Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
-    Route::get('/', "index")->name('user.index');
+    Route::get('/',"index")->name('user.index');
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
     Route::post('/dangky', "DangKy")->name('dangky');
@@ -26,8 +26,8 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(CartController::class)->group(function(){
     Route::get('/shopping-cart',"index")->name('user.shoppingcart');
-    Route::get('/add-to-cart/{id}',"addToCart")->name('cart.add');
-
+    Route::get('/add-to-cart/{id}/{quantity}',"addToCart")->name('cart.add');
+    Route::get('/cart-delete-item/{id}','deleteItemCart')->name('cart.delete_item');
 });
 
 Route::get('/detail', function () {

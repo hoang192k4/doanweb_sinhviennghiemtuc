@@ -198,7 +198,7 @@
                                 <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                 <li>
                                     <a href=""><button>Mua ngay</button></a>
-                                    <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                    <div><a href="{{route('cart.add',['id'=>$danhSachLapTopMoi[$i]->id])}}"><i class="fas fa-cart-plus"></i></a></div>
                                 </li>
                             </ul>
                         </div>

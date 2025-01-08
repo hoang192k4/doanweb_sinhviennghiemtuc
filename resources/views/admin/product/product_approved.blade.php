@@ -23,9 +23,7 @@
             <div class="active">Chờ duyệt</div>
             <div>Tạm ẩn</div>
         </div>
-        @if (session('msg'))
-            <p id="message" style="display: block; color: green;">{{ session('msg') }}</p>
-        @endif
+
         <div class="table" id="choduyet">
             @if(isset($danhSachSanPham)&& count($danhSachSanPham)>0)
             <table>
@@ -139,8 +137,7 @@
                     }
                 })
                 .done((data) => {
-                    alert(data);
-                    location.reload();
+                    alertify.success(data);
                 })
 
             document.getElementById('popupduyet').style.display = "none";
@@ -153,6 +150,11 @@
                 message.style.display = 'none';
             }, 3000);
         }
+    </script>
+    <script>
+        @if (session('msg'))
+            alertify.success('{{ session('msg') }}');
+        @endif
     </script>
 @endsection
 @section('css')

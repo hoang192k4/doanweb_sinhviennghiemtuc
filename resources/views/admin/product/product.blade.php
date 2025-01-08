@@ -5,7 +5,8 @@
         <div class="head">
             <div class="title">Quản Lý Sản Phẩm</div>
             <button><a href="{{ route('product.create') }}"><i class="fa-solid fa-plus"></i> Thêm</a></button>
-            <button><a href="{{route('admin.product.unapproved')}}"><i class="fa-solid fa-check-to-slot"></i> Duyệt</a></button>
+            <button><a href="{{ route('admin.product.unapproved') }}"><i class="fa-solid fa-check-to-slot"></i>
+                    Duyệt</a></button>
             <div class="search">
                 <form action="{{ route('admin.product.search') }}">
                     <input type="text" name="key" id="key">
@@ -14,9 +15,7 @@
             </div>
         </div>
         <div class="separator_x">
-            @if (session('msg'))
-                <p id="message" style="display: block; color: green;">{{ session('msg') }}</p>
-            @endif
+
         </div>
         <select onchange="findProduct(this)">
             <option value="all">Tất cả</option>
@@ -35,14 +34,18 @@
             </thead>
             <tbody id="table">
                 @foreach ($danhSachSanPham as $sanPham)
-                    <tr id="product-{{$sanPham->id}}">
+                    <tr id="product-{{ $sanPham->id }}">
                         <td style="text-align: center;"> {{ $sanPham->id }}</td>
                         <td>{{ $sanPham->name }}</td>
-                        <td style="text-align: center;"> <a href="{{route('admin.product_variant.index',[$sanPham->id])}}"> <i class="fa-solid fa-code"></i></a> </td>
-                        <td style="text-align: center;"><a href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
+                        <td style="text-align: center;"> <a
+                                href="{{ route('admin.product_variant.index', [$sanPham->id]) }}"> <i
+                                    class="fa-solid fa-code"></i></a> </td>
+                        <td style="text-align: center;"><a
+                                href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
                                     class="fa-regular fa-pen-to-square"></i></a>
                         </td>
-                        <td style="text-align: center;"><a onclick="showPopupProduct({{$sanPham}})" class="cursor"><i class="fa-regular fa-trash-can"></i></a>
+                        <td style="text-align: center;"><a onclick="showPopupProduct({{ $sanPham }})" class="cursor"><i
+                                    class="fa-regular fa-trash-can"></i></a>
                         </td>
                     </tr>
                 @endforeach
@@ -70,36 +73,29 @@
 @endsection
 @section('script')
     <script>
-        function showPopupProduct(product){
+        function showPopupProduct(product) {
 
             const popupProduct = document.getElementById('popupsp');
             popupProduct.children[0].textContent = `Bạn có thật sự muốn ẩn sản phẩm ${product.name}?`;
             popupProduct.children[3].children[0].dataset.id = product.id;
             popupProduct.style.display = 'block';
         }
-        function submitHideProduct(id){
+
+        function submitHideProduct(id) {
             document.getElementById('popupsp').style.display = "none";
             $.ajax({
-                method:"GET",
-                url:`/admin/product/deactive/${id}`
-            })
-            .done((data)=>{
-                const row = document.getElementById(`product-${id}`);
-                let table = row.parentNode;
-                table.removeChild(row);
-                alert(data);
-            })
+                    method: "GET",
+                    url: `/admin/product/deactive/${id}`
+                })
+                .done((data) => {
+                    const row = document.getElementById(`product-${id}`);
+                    let table = row.parentNode;
+                    table.removeChild(row);
+                    alertify.success(data);
+                })
         }
     </script>
-    <script>
-        const message = document.getElementById('message');
-        if(message!==null){
-            setTimeout(() => {
-            message.style.display = 'none';
-        }, 3000);
-        }
 
-    </script>
     <script>
         function findProduct(opt) {
             const key = document.getElementById('key').value;
@@ -114,7 +110,7 @@
                         return ` <tr id="product-${sanpham.id}">
                         <td style="text-align: center;"> ${sanpham.id} </td>
                         <td> ${sanpham.name}</td>
-                                                <td style="text-align: center;"> <a href="{{route('admin.product_variant.index',[$sanPham->id])}}"> <i class="fa-solid fa-code"></i></a> </td>
+                                                <td style="text-align: center;"> <a href="{{ route('admin.product_variant.index', [$sanPham->id]) }}"> <i class="fa-solid fa-code"></i></a> </td>
                         <td style="text-align: center;"><a href="/admin/product/${sanpham.id}/edit"><i class="fa-regular fa-pen-to-square"></i></a>
                         </td>
                         <td style="text-align: center;"><a class="cursor" onclick='showPopupProduct({"id":${sanpham.id},"name":"${sanpham.name}"})'><i class="fa-regular fa-trash-can"></i></a>
@@ -124,5 +120,11 @@
                     table.innerHTML = danhSach.join('');
                 })
         }
+    </script>
+
+    <script>
+        @if (session('msg'))
+            alertify.success('{{ session('msg') }}');
+        @endif
     </script>
 @endsection
