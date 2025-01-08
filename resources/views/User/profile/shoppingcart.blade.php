@@ -3,67 +3,31 @@
 @section('content')
     <div class="shopping_cart container_css">
         <div class="shopping_cart_main">
+
+
             <div class="shopping_cart_items">
+                @foreach($cart->listProductVariants as $item)
                 <div class="shopping_cart_item">
                     <div class="cart_item_img">
-                        <a href=""><img src="images/16pro.jpg" alt=""></a>
+                        <a href=""><img src="{{asset('images/'.$item['variant_info']->image)}}" alt=""></a>
                     </div>
                     <div class="cart_item_info">
                         <div class="cart_item_info_top">
-                            <h4>Iphone 16 Pro Max</h4>
+                            <h4>{{$item['product_info']->name}}</h4>
                             <button><i class="fas fa-trash"></i></button>
                         </div>
-                        <p>Titan, 256GB</p>
+                        <p>{{$item['variant_info']->color}}, {{$item['variant_info']->internal_memory}}</p>
                         <div class="cart_item_info_bottom">
-                            <div>33.000.000 <sup>đ</sup></div>
+                            <div>{{number_format($item['variant_info']->price)}} <sup>đ</sup></div>
                             <div>
                                 <button class="minus amount"><i class="fas fa-minus"></i></button>
-                                <input class="amount" type="text" value="1" min="1">
+                                <input class="amount" type="text"  min="1" value="{{$item['quantity']}}">
                                 <button class="plus amount"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="shopping_cart_item">
-                    <div class="cart_item_img">
-                        <a href=""><img src="images/tufgamming.jpg" alt=""></a>
-                    </div>
-                    <div class="cart_item_info">
-                        <div class="cart_item_info_top">
-                            <h4>Asus Gaming TUF Dash F15 FX517ZC i55 12450H (HN077W)</h4>
-                            <button><i class="fas fa-trash"></i></button>
-                        </div>
-                        <p>Bạc, 256GB</p>
-                        <div class="cart_item_info_bottom">
-                            <div>16.000.000 <sup>đ</sup></div>
-                            <div>
-                                <button class="minus amount"><i class="fas fa-minus"></i></button>
-                                <input class="amount" type="text" value="1" min="1">
-                                <button class="plus amount"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="shopping_cart_item">
-                    <div class="cart_item_img">
-                        <a href=""><img src="images/16pro.jpg" alt=""></a>
-                    </div>
-                    <div class="cart_item_info">
-                        <div class="cart_item_info_top">
-                            <h4>Iphone 16 Pro Max</h4>
-                            <button><i class="fas fa-trash"></i></button>
-                        </div>
-                        <p>Titan, 256GB</p>
-                        <div class="cart_item_info_bottom">
-                            <div>33.000.000 <sup>đ</sup></div>
-                            <div>
-                                <button class="minus amount"><i class="fas fa-minus"></i></button>
-                                <input class="amount" type="text" value="1" min="1">
-                                <button class="plus amount"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="shopping_cart_bottom">
                 <div class="shopping_cart_bottom_left">
@@ -82,7 +46,7 @@
                     </div> --}}
                     <div class="shopping_cart_bottom_price">
                         <h4>Tổng cộng</h4>
-                        <p>55.000.000 <sup>đ</sup></p>
+                        <p> {{number_format($cart->totalPrice)}}<sup>đ</sup></p>
                         <button><a href="">Thanh toán</a></button>
                     </div>
                 </div>

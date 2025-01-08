@@ -44,7 +44,7 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'name'=>'required|unique:products|max:255',
             'description'=>'required',
-            'image.*'=>'required',
+            'image.*'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'display'=>'required',
             'technic_screen'=>'required',
             'resolution'=>'required',
@@ -112,7 +112,7 @@ class AdminProductController extends Controller
                 ]);
         }
 
-        return redirect()->route('product.index')->with(' ','Thêm sản phẩm thành công!');
+        return redirect()->route('product.index')->with('msg','Thêm sản phẩm thành công!');
     }
 
     /**
@@ -194,7 +194,7 @@ class AdminProductController extends Controller
         $product->update(['name'=>$request->input('name'),'slug'=>Str::slug($request->input('name')),'description'=>$request->description,'brand_id'=>$request->brand]);
         $product->product_specification->update(['display'=>$request->input('display'),
         'technic_screen'=>$request->technic_screen,'resolution'=>$request->resolution,'chipset'=>$request->chipset,'ram'=>$request->ram,'operating_system'=>$request->os,'camera'=>$request->camera,'launch_time'=>$request->launch_time,'size'=>$request->size]);
-        return back()->with('msg','chỉnh sửa sản phẩm thành công!');
+        return redirect()->route('product.index')->with('msg','chỉnh sửa sản phẩm thành công!');
     }
 
     /**
