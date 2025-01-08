@@ -408,3 +408,12 @@
         </div>
     </section>
 @endsection
+@section('script')
+
+    <script>
+        function addToCart()
+        {
+            
+        }
+    </script>
+@endsection

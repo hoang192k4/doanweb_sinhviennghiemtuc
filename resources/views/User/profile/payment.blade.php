@@ -36,36 +36,27 @@
         <div class="payment">
             <div class="payment_left">
                 <div class="payment_products">
-                    <div class="payment_product">
-                        <a href=""><img src="./images/tufgamming.jpg" alt="Lỗi hiển thị"></a>
-                        <div>
-                            <div>
-                                <a href="">
-                                    <h6>Laptop msi</h6>
-                                </a>
-                                <p>15.000.000 <sup>đ</sup></p>
+                    @if (session('cart') != null)
+                        @foreach (session('cart')->listProductVariants as $item)
+                            <div class="payment_product">
+                                <a href=""><img src="{{ asset('images/' . $item['variant_info']->image) }}"
+                                        alt="Lỗi hiển thị"></a>
+                                <div>
+                                    <div>
+                                        <a href="">
+                                            <h6>{{ $item['product_info']->name }}</h6>
+                                        </a>
+                                        <p>{{ $item['variant_info']->price }}<sup>đ</sup></p>
+                                    </div>
+                                    <div>
+                                        <h6>{{ $item['variant_info']->color }} {{ $item['variant_info']->internal_memory }}
+                                        </h6>
+                                        <p>x{{ $item['quantity'] }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h6>Đen 256GB</h6>
-                                <p>x1</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="payment_product">
-                        <a href=""><img src="./images/16pro.jpg" alt="Lỗi hiển thị"></a>
-                        <div>
-                            <div>
-                                <a href="">
-                                    <h6>iphone 16 pro</h6>
-                                </a>
-                                <p>35.000.000 <sup>đ</sup></p>
-                            </div>
-                            <div>
-                                <h6>Đen 256GB</h6>
-                                <p>x1</p>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @endif
                 </div>
                 <div class="payment_action">
                     <form class="voucher_payment" action="" method="get">
@@ -75,7 +66,7 @@
                     <div class="payment_action_temporary">
                         <div>
                             <p>Tạm tính </p>
-                            <p>50.000.000 <sup>đ</sup></p>
+                            <p> {{ number_format(session('cart')->totalPrice) }}<sup>đ</sup></p>
                         </div>
                         <div>
                             <p>Phí vận chuyển </p>
@@ -88,7 +79,7 @@
                     </div>
                     <div class="total_price">
                         <p>Tổng cộng </p>
-                        <p><span>VNĐ </span>48.000.000 <sup>đ</sup></p>
+                        <p><span>VNĐ </span> {{ number_format(session('cart')->totalPrice) }} <sup>đ</sup></p>
                     </div>
                 </div>
             </div>
@@ -124,24 +115,25 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 10%;"><input type="radio" style="font-size: 14px;" checked
-                                            name="method_payment" value="COD"></td>
+                                    <td style="width: 10%;"><input id="cod"type="radio" style="font-size: 14px;"
+                                            checked name="method_payment" value="COD"></td>
                                     <td style="width: 10%;"><img src="./images/iconcod.jpg" alt="Lỗi"
                                             style="height: 35px"></td>
                                     <td>
-                                        <h6>Thanh toán khi nhận hàng (COD)</h6>
+                                        <label for="cod" style="font-weight:500">Thanh toán khi nhận hàng (COD)</label>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 10%;"><input type="radio"
-                                            style="font-size: 14px; "name="method_payment" value="Banking"></td>
+                                    <td style="width: 10%;"><input type="radio" style="font-size: 14px;"
+                                            id="method_payment"name="method_payment" value="banking"></td>
                                     <td style="width: 10%;"><img src="./images/iconbanking.jpg" alt="Lỗi"
                                             style="height: 35px"></td>
                                     <td>
-                                        <h6>Chuyển khoản qua ngân hàng (Banking)</h6>
+                                        <label for="method_payment" style="font-weight:500">Chuyển khoản qua ngân hàng
+                                            (Banking)</label>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr  >
                                     <td colspan="3">
                                         <p>Thông tin thanh toán của Sinh Viên Nghiêm Túc</p>
                                         <p>Ngân hàng : TECKCOMBANK</p>
@@ -160,4 +152,10 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+
+    </script>
+
 @endsection
