@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminProductVariantController;
 use App\Http\Controllers\AdminBrandController;
+use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminContactController;
 use App\Http\Controllers\UserController;
 
@@ -127,3 +128,10 @@ Route::get('/admin/contact', [AdminContactController::class, 'showListContacts']
 Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
 Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
 Route::post('/addContact', [AdminContactController::class, 'addContact']);
+
+//Route quan li danh mục
+Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
+Route::post('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
+Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
+Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');
+Route::post('/admin/addbrand/store', [AdminBrandController::class, 'store'])->name('admin.addbrand.store');

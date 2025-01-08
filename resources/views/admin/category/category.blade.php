@@ -4,9 +4,9 @@
     <div class="content" id="danhmuc">
         <div class="head">
             <div class="title">Quản Lý Danh Mục</div>
-            <button><a href=""><i class="fa-solid fa-plus"></i> Phân
+            <button><a href="{{ route('admin.category.addCategory') }}"><i class="fa-solid fa-plus"></i> Phân
                     loại</a></button>
-            <button><a href=""><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
+            <button><a href="{{ route('admin.addbrand.index') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
                 <form>
                     <input>
@@ -30,20 +30,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Nguyễn Thùy</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('dm')"><i class="fa-solid fa-x"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Anh Thư</td>
-                    <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
-                    <td style="text-align: center;"><a onclick="popup('dm')"><i class="fa-solid fa-x"></i></a>
-                    </td>
-                </tr>
+                @foreach ($danhSachDanhMuc as $item)
+                    <tr>
+                        <td style="text-align: center;">{{ $item->id }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
+                        <td style="text-align: center;"><a onclick="popup('dm')"><i class="fa-solid fa-x"></i></a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
         <div class="pagination">

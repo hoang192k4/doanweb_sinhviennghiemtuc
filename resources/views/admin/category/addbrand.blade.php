@@ -11,43 +11,49 @@
         </div>
         <div class="separator_x">
             <div class="row">
-                <form action="" id="formAddCategory" class="form-category">
+                @if (session('msg'))
+                    <div class="alert alert-success">
+                        {{ session('msg') }}
+                    </div>
+                @endif
+                <form action="{{ route('admin.addbrand.store') }}" method="POST" id="formAddCategory" class="form-category">
                     <div class="form-group">
                         <div class="col">
                             <label>Tên thương hiệu:</label>
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" id="nameCategory">
+                            <input type="text" class="form-control" id="nameBrand" name="nameBrand">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col">
-                            <label >Tên phân loại:</label>
+                            <label>Tên phân loại:</label>
                         </div>
                         <div class="col">
-                            <select name="status" class="form-control">
-                                <option value="status-1">Laptop</option>
-                                <option value="status-2">SmartPhone</option>
-                                <option value="status-2">PC</option>
-                                <option value="status-2">Phu kien</option>
+                            <select name="nameCategory" class="form-control">
+                                @foreach ($danhSachTenDanhMuc as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
+
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col">
-                            <label >Trạng thái:</label>
+                            <label>Trạng thái:</label>
                         </div>
                         <div class="col">
                             <select name="status" class="form-control">
-                                <option value="status-1">status 1</option>
-                                <option value="status-2">status 2</option>
+                                <option value="1">Hiện</option>
+                                <option value="0">Ẩn</option>
                             </select>
                         </div>
-                </div>
-                <div class="btn-goback">
-                    <button type="submit">Xác nhận thêm</button>
-                    <button>Hủy</button>
-                </div>
+                    </div>
+                    <div class="btn-goback">
+                        @csrf
+                        <button type="submit">Xác nhận thêm</button>
+                        <button>Hủy</button>
+                    </div>
                 </form>
             </div>
         </div>
