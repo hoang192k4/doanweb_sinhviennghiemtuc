@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminContactController;
 use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 
 Route::controller(UserController::class)->group(function () {
@@ -30,6 +31,10 @@ Route::controller(CartController::class)->group(function(){
     Route::get('/cart-delete-item/{id}','deleteItemCart')->name('cart.delete_item');
     Route::get('/cart-delete-all','deleteAllItem');
     Route::get('/cart-minus-one-variant/{id}','minusOnQuantity');
+});
+
+Route::controller(OrderController::class)->group(function(){
+    Route::get('/payment','index')->name('user.payment');
 });
 
 Route::get('/detail', function () {
@@ -56,9 +61,7 @@ Route::get('/lichsudanhgia', function () {
 Route::get('/sanphamyeuthich', function () {
     return view('user.profile.favourite_product');
 });
-Route::get('/thanhtoan', function () {
-    return view('user.profile.payment');
-});
+
 Route::get('/admin/category', function () {
     return view('admin.category.category');
 });

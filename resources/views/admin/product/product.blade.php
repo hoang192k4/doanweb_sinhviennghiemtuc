@@ -91,7 +91,11 @@
                     const row = document.getElementById(`product-${id}`);
                     let table = row.parentNode;
                     table.removeChild(row);
-                    alertify.success(data);
+
+                    alertify
+                        .alert(data, function(data) {
+                            alertify.message(data);
+                        });
                 })
         }
     </script>
@@ -124,7 +128,11 @@
 
     <script>
         @if (session('msg'))
-            alertify.success('{{ session('msg') }}');
+
+            alertify
+                .alert("{{ session('msg') }}", function() {
+                    alertify.message('{{ session('msg') }}');
+                });
         @endif
     </script>
 @endsection
