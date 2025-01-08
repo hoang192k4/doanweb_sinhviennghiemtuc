@@ -28,6 +28,7 @@ Route::controller(CartController::class)->group(function(){
     Route::get('/shopping-cart',"index")->name('user.shoppingcart');
     Route::get('/add-to-cart/{id}/{quantity}',"addToCart")->name('cart.add');
     Route::get('/cart-delete-item/{id}','deleteItemCart')->name('cart.delete_item');
+    Route::get('/cart-delete-all','deleteAllItem');
 });
 
 Route::get('/detail', function () {
