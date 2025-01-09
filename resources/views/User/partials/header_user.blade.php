@@ -93,7 +93,7 @@
                     </form>
                 </li>
                 <li class="cart__header_desktop"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"
-                            style="margin-right:5px"><span class="number_cart">@if(session('cart')==null)0 @else {{session('cart')->totalQuantity}} @endif</span></i>Giỏ hàng</a></li>
+                            style="margin-right:5px"><span id="cart-quantity" class="number_cart">@if(session('cart')==null)0 @else {{session('cart')->totalQuantity}} @endif</span></i>Giỏ hàng</a></li>
                 <li class="cart__header_mb_tl"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"><span
                                 class="number_cart_mb_tl">0</span></i></a></li>
             </ul>
