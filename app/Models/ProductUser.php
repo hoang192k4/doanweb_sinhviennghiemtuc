@@ -126,8 +126,10 @@ class ProductUser extends Model
     }
     public static function ThongTinSanPham($slug){
         return DB::table('products')
-        ->select('name','views','description')
-        ->where('slug',$slug)->get();
+        ->join('brands','brand_id','=','brands.id')
+        ->join('categories','category_id','=','categories.id')
+        ->select('products.name','views','description','brands.name as brand','categories.slug')
+        ->where('products.slug',$slug)->get();
     }
     public static function UpdateView($slug){
         DB::table('products')
@@ -174,6 +176,24 @@ class ProductUser extends Model
         ->where('categories.name',$category)->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name')
         ->orderBy('products.'.$tam,'desc')->take(8)->get();
     }
-
-
+    public static function SanPhamTuongDuong($category,$brand){
+        return DB::table('products')
+        ->select(
+            'products.name',
+            'products.rating',
+            'products.slug',
+            DB::raw('MIN(image_products.image) as image'),
+            DB::raw('MIN(product_variants.price) as price')
+        )
+        ->join('image_products', 'products.id', '=', 'image_products.product_id')
+        ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+        ->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->join('categories', 'brands.category_id', '=', 'categories.id')
+        ->where('products.status', 1)
+        ->where('brands.name',$brand)
+        ->where('products.status', 1)
+        ->where('product_variants.status',1)
+        ->where('categories.slug',$category)->groupBy( 'products.name', 'products.rating' ,'products.slug')
+        ->take(8)->get();
+    }
 }

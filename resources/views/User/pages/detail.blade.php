@@ -64,7 +64,6 @@
                         <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
                     @endauth
-
                     <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                     </p>
                     <p><i class="fas fa-thumbs-up"></i>{{$luotThichSanPham}} lượt thích</p>
@@ -239,13 +238,14 @@
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="10000">
                     <div class="product_best_seller_items">
+                        @for ($i=0;$i<=3;$i++)
                         <div class="product_best_seller_item">
-                            <a href=""><img src="images/iphone-15-promax.jpg" alt="Lỗi hiển thị"></a>
+                            <a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
                             <div class="product_best_seller_item_info">
                                 <ul>
-                                    <li><a href="">iPhone 15 Pro Max</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
+                                    <li><a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
+                                    <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup></li>
+                                    <li>{{$sanPhamTuongTu[$i]->rating}}<i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
                                         <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
@@ -253,61 +253,19 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/16pro.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">iPhone 16 Pro</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-black-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">Điện thoại OPPO Find X8 5G 12GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-pro-white-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">OPPO Find X8 Pro5G 16GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        @endfor
                     </div>
                 </div>
                 <div class="carousel-item" data-bs-interval="2000">
                     <div class="product_best_seller_items">
+                        @for ($i=4;$i<=7;$i++)
                         <div class="product_best_seller_item">
-                            <a href=""><img src="images/iphone-15-promax.jpg" alt="Lỗi hiển thị"></a>
+                            <a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
                             <div class="product_best_seller_item_info">
                                 <ul>
-                                    <li><a href="">iPhone 15 Pro Max</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
+                                    <li><a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
+                                    <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup></li>
+                                    <li>{{$sanPhamTuongTu[$i]->rating}}<i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
                                         <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
@@ -315,50 +273,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/16pro.jpg" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">iPhone 16 Pro</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-black-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">Điện thoại OPPO Find X8 5G 12GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_best_seller_item">
-                            <a href=""><img src="images/oppo-find-x8-pro-white-thumb-600x600.jpg"
-                                    alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="">OPPO Find X8 Pro5G 16GB/512GB</a></li>
-                                    <li>16.000.000 <sup>đ</sup></li>
-                                    <li>4.5 <i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        @endfor
                     </div>
                 </div>
             </div>
@@ -377,10 +292,6 @@
 @endsection
 @section('script')
     <script>
-        document.getElementById('number_input').addEventListener('change', function() {
-            const stock = document.getElementById('stock').value
-
-        });
         function LayThongTinSanPhamTheoMau(url,btn)
         {
             const button_color = document.querySelectorAll('.product_detail_right_color button')

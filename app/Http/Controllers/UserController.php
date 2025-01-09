@@ -133,9 +133,11 @@ class UserController extends Controller
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
+        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand);
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
+        
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
             'slug'=>$slug,
@@ -145,10 +147,11 @@ class UserController extends Controller
             "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
+            "sanPhamTuongTu"=>$sanPhamTuongTu
         ]);
     }
     public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
-        ProductUser::UpdateView($slug);
+
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
