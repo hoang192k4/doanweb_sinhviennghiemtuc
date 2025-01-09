@@ -138,7 +138,6 @@ class UserController extends Controller
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
-        
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
             'slug'=>$slug,

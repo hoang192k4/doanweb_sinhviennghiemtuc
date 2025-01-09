@@ -95,47 +95,23 @@ Route::middleware(['role:QL,NV,KH'])->group(function () {
 });
 //phân quyền khách hàng
 Route::middleware(['role:KH'])->group(function () {
+    //xác nhận đặt hàng và thanh toán
+    Route::controller(OrderController::class)->group(function(){
+        Route::get('/payment','index')->name('user.payment');
+    });
 
-
+    //Route profile
+    Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
+    Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
+    Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
+    Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
+    Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
+    Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
 });
 
-Route::controller(OrderController::class)->group(function(){
-    Route::get('/payment','index')->name('user.payment');
-});
 
 
-Route::get('/detail', function () {
-    return view('user.pages.detail');
-});
-
-Route::get('/admin/category', function () {
-    return view('admin.category.category');
-});
-Route::get('/admin/editcategory', function () {
-    return view('admin.category.editcategory');
-});
-Route::get('/admin/addbrand', function () {
-    return view('admin.category.addbrand');
-});
-Route::get('/admin/editbrand', function () {
-    return view('admin.category.editbrand');
-});
-Route::get('/admin/addcategory', function () {
-    return view('admin.category.addcategory');
-});
-// Route::get('/admin/comment', function () {
-//     return view('admin.pages.review');
-// });
-
-
-//Route profile
-Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
-Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
-Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
-Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
-Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
-Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
-Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
 
 
 

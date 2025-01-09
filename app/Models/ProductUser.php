@@ -16,6 +16,7 @@ class ProductUser extends Model
                 ->select(
                     'products.id',
                     'products.name',
+                    'products.slug',
                     'products.rating',
                     'categories.name as category_name',
                     'brands.name as brand_name',
@@ -29,13 +30,14 @@ class ProductUser extends Model
                 ->where('products.status', 1)
                 ->Where('categories.slug', '=', $slug)
                 ->Where('brands.name', '=', $brandName)
-                ->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name')
+                ->groupBy('products.id', 'products.name', 'products.slug','products.rating', 'categories.name', 'brands.name')
                 ->get();
         } else {
             $danhSachSanPham =  DB::table('products')
                 ->select(
                     'products.id',
                     'products.name',
+                    'products.slug',
                     'products.rating',
                     'categories.name as category_name',
                     'brands.name as brand_name',
@@ -50,7 +52,7 @@ class ProductUser extends Model
                 ->where(function ($query) use ($slug) {
                     $query->Where('categories.slug', '=', $slug)
                         ->orWhere('brands.name', '=', $slug);
-                })->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name')
+                })->groupBy('products.id', 'products.name','products.slug','products.rating', 'categories.name', 'brands.name')
                 ->get();
         }
         return $danhSachSanPham;
@@ -60,6 +62,7 @@ class ProductUser extends Model
         ->select(
             'products.id',
             'products.name',
+            'products.slug',
             'products.rating',
             'categories.name as category_name',
             'brands.name as brand_name',
@@ -78,7 +81,7 @@ class ProductUser extends Model
                   ->orWhere('products.description', 'LIKE', '%' . $key . '%')
                   ->orWhere('product_variants.price', 'LIKE', '%' . $key . '%');
         })
-        ->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name')
+        ->groupBy('products.id', 'products.name', 'products.slug','products.rating', 'categories.name', 'brands.name')
         ->orderBy('products.name')
         ->get();
 
@@ -162,6 +165,7 @@ class ProductUser extends Model
         ->select(
             'products.id',
             'products.name',
+            'products.slug',
             'products.rating',
             'categories.name as category_name',
             'brands.name as brand_name',
@@ -173,7 +177,7 @@ class ProductUser extends Model
         ->join('brands', 'products.brand_id', '=', 'brands.id')
         ->join('categories', 'brands.category_id', '=', 'categories.id')
         ->where('products.status', 1)
-        ->where('categories.name',$category)->groupBy('products.id', 'products.name', 'products.rating', 'categories.name', 'brands.name')
+        ->where('categories.name',$category)->groupBy('products.id', 'products.name', 'products.slug','products.rating', 'categories.name', 'brands.name')
         ->orderBy('products.'.$tam,'desc')->take(8)->get();
     }
     public static function SanPhamTuongDuong($category,$brand){
