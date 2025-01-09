@@ -34,8 +34,8 @@
     <nav class="container_css navbar navbar-bottom">
         <div class="navbar_item_first">
             <div>
-                <a href="{{ route('user.index') }}" style="font-size: 14px; color: rgb(233, 239, 236);"><img
-                        src="{{ $lienKetWebsite->logo }}" alt="Lỗi hiển thị"></a>
+                <a href="{{ route('user.index') }}" style="font-size: 14px; color: rgb(233, 239, 236);"><img style="width:99px;height:39px"
+                        src="{{ asset('images/'.$lienKetWebsite->logo) }}" alt="Lỗi hiển thị"></a>
             </div>
             <ul>
                 <li><a href="{{ route('user.index') }}">Trang chủ</a></li>

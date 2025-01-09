@@ -44,7 +44,7 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'name'=>'required|unique:products|max:255',
             'description'=>'required',
-            'image.*'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image.*'=>'required|image|mimes:jpeg,png,jpg|max:2048',
             'display'=>'required',
             'technic_screen'=>'required',
             'resolution'=>'required',
@@ -58,12 +58,21 @@ class AdminProductController extends Controller
             'variants.*.stock'=>'required|min:0',
             'variants.*.internal_memory'=>'required',
             'variants.*.price'=>'required|min:0',
-            'variants.*.image_variant'=>'required'
+            'variants.*.image_variant'=>'required|image|mimes:jpeg,png,jpg|max:2048'
         ],[
             'name.required'=> 'Vui lòng nhập tên sản phẩm!',
             'name.unique'=>'Tên sản phẩm đã tồn tại!',
             'description.required'=>'Vui lòng nhập mô tả!',
             'image.required'=>'Vui lòng thêm hình ảnh!',
+            'display.required'=>'Vui lòng nhập hình kích thước màn hình!',
+            'technic_screen'=>'Vui lòng nhập công nghệ màn hình!',
+            'resolution' =>'Vui lòng nhập độ phân giải màn hình!',
+            'chipset'=>'Vui lòng nhập chipset!',
+            'os'=>'Vui lòng nhập hệ điều hành!',
+            'ram'=>'Vui lòng nhập ram!',
+            'size'=>'Vui lòng nhập kích thước sản phẩm',
+            'launch_time'=>'Vui lòng nhập ngày ra mắt sản phẩm',
+            'camera'=>'Vui lòng nhập thông tin camera của sản phẩm!'
         ]);
 
         //thêm sản phẩm
@@ -159,7 +168,6 @@ class AdminProductController extends Controller
             'name.required'=> 'Vui lòng nhập tên sản phẩm!',
             'name.unique'=>'Tên sản phẩm đã tồn tại!',
             'description.required'=>'Vui lòng nhập mô tả!',
-            'image.required'=>'Vui lòng thêm hình ảnh!',
         ]);
 
         $product = Product::find($request->id);

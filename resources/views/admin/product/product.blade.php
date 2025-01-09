@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý sản phẩm')
+@section('active-product','active')
 @section('content')
     <div class="content" id="sanpham">
         <div class="head">

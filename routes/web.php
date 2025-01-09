@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminRoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\ProfileController;
@@ -41,8 +42,49 @@ Route::controller(CartController::class)->group(function(){
 });
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
+      //Route dashboard
+    Route::get('/admin', [AdminController::class,'index'])->name('admin.index');
+    Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->middleware(AdminRoleMiddleware::class)->name('admin.editWebsite');
+    Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->middleware(AdminRoleMiddleware::class)->name('admin.editLogo');
+
+    //Route quan ly don hang
+    Route::get('/admin/order', [AdminOrderController::class, 'index'])->name('admin.order');
+    Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
+    Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
+    Route::post('/admin/order/delete/{id}',[AdminOrderController::class,'deleteOrder'])->name('order.delete');
+    Route::post('/admin/order/cancel/{id}',[AdminOrderController::class,'cancelOrder'])->name('order.cancel');
+    //Route quan li thong ke
+    Route::get('/admin/statistical', function () {
+        return view('admin.pages.statistical');
+    });
+    //Route quan ly san pham
+    Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->middleware(AdminRoleMiddleware::class)->name('admin.product.active');
+    Route::get('/admin/product/deactive/{id}', [AdminProductController::class, 'deactive'])->middleware(AdminRoleMiddleware::class)->name('admin.product.deactive');
+    Route::get('/admin/product/search', [AdminProductController::class, 'search'])->name('admin.product.search');
+    Route::get('/admin/proudct/list-product-unapproved', [AdminProductController::class, 'getListProductsUnapproved'])->middleware(AdminRoleMiddleware::class)->name('admin.product.unapproved');
+    Route::get('/admin/product/filter', [AdminProductController::class, 'filter'])->name('admin.product.filter');
+    Route::get('/admin/product-variant/{id}', [AdminProductVariantController::class, 'index'])->name('admin.product_variant.index');
+    Route::get('/admin/product-variant-hidden/{id}', [AdminProductVariantController::class, 'showListVariantsHide'])->name('product_variant_hide');
+    Route::PUT('/admin/product-variant/active/{id}', [AdminProductVariantController::class, 'active'])->middleware(AdminRoleMiddleware::class);
+    Route::post('/admin/product/is_isset', [AdminProductController::class, 'isIssetProduct']);
+    Route::resource('/admin/product-variant', AdminProductVariantController::class)->except(['index']);
+    Route::resource('/admin/product', AdminProductController::class);
+
+    //Route quan ly thuong hieu
+    Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter']);
+
+    //Route quan li lien he
+    Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
+    Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('contact.delete');
+    Route::get('/admin/contact/update/{id}',[AdminContactController::class,'updateContact'])->name('contact.update');
+    Route::post('/addContact',[AdminContactController::class,'addContact']);
+
+    //quản lý đánh giá
+    Route::get('/admin/review',[AdminReviewController::class,'showListReviews'])->name('admin.review');
+    Route::delete('/admin/review/delete/{id}',[AdminReviewController::class,'deleteReviews'])->name('admin.review.delete');
 
 });
+
 //Phân quyền quản lý
 Route::middleware(['role:QL'])->group(function () {
 
@@ -96,54 +138,9 @@ Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])
 Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
 
 
-//Route dashboard
-Route::get('/admin', function () {
-    return view('admin.pages.index');
-});
-Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
-Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->name('admin.editLogo');
 
 
-//Route quan ly don hang
-Route::get('/admin/order', function () {
-    return view('admin.pages.order');
-});
-Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
-Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
-
-Route::get('/admin/statistical', function () {
-    return view('admin.pages.statistical');
-});
-
-//Route quan ly san pham
-Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->name('admin.product.active');
-Route::get('/admin/product/deactive/{id}', [AdminProductController::class, 'deactive'])->name('admin.product.deactive');
-Route::get('/admin/proudct/list-product-unapproved', [AdminProductController::class, 'getListProductsUnapproved'])->name('admin.product.unapproved');
-Route::get('/admin/product/search', [AdminProductController::class, 'search'])->name('admin.product.search');
-Route::get('/admin/product/filter', [AdminProductController::class, 'filter'])->name('admin.product.filter');
-Route::get('/admin/product-variant/{id}', [AdminProductVariantController::class, 'index'])->name('admin.product_variant.index');
-Route::get('/admin/product-variant-hidden/{id}', [AdminProductVariantController::class, 'showListVariantsHide'])->name('product_variant_hide');
-Route::PUT('/admin/product-variant/active/{id}', [AdminProductVariantController::class, 'active']);
-Route::post('/admin/product/is_isset', [AdminProductController::class, 'isIssetProduct']);
-Route::resource('/admin/product-variant', AdminProductVariantController::class)->except(['index']);
-Route::resource('/admin/product', AdminProductController::class);
-
-//Route quan ly thuong hieu
-Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter']);
 
 
-//Route quan li lien he
-
-Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
-Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('contact.delete');
-Route::get('/admin/contact/update/{id}',[AdminContactController::class,'updateContact'])->name('contact.update');
-Route::post('/addContact',[AdminContactController::class,'addContact']);
 
 
-//Quản lý đơn hàng.
-Route::post('/admin/order/delete/{id}',[AdminOrderController::class,'deleteOrder'])->name('order.delete');
-Route::post('/admin/order/cancel/{id}',[AdminOrderController::class,'cancelOrder'])->name('order.cancel');
-
-//quản lý đánh giá
-Route::get('/admin/review',[AdminReviewController::class,'showListReviews'])->name('admin.pages.review');
-Route::delete('/admin/review/delete/{id}',[AdminReviewController::class,'deleteReviews'])->name('admin.review.delete');

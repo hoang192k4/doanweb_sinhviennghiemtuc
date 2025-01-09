@@ -106,7 +106,7 @@
                 </div>
                 <div class="product_detail_right_buy">
                     <div><button>Mua ngay</button></div>
-                    <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)"> Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
+                    <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)" data-id="{{$mauSanPham[0]->id}}"> Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
             </div>
         </div>
@@ -384,7 +384,6 @@
                 method:"GET",
                 url:`/add-to-cart/${id}/${quantity}`
             }).done((data)=>{
-                console.log(data);
                 $('#cart-quantity').text(`${data.cart.totalQuantity}`);
                 alertify.success(data.message);
             })

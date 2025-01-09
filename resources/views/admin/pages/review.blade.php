@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý đánh giá')
+@section('active-review', 'active')
 @section('content')
     <div class="content" id="danhgia">
         <div class="head">
@@ -41,7 +42,7 @@
                             <td>{{ App\Models\Product::find($review->product_id)->name }}</td>
                             <td>{{ $review->point }}</td>
                             <td style="text-align: center;">
-                                <button
+                                <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
                                     onclick="showDeletePopup({{ $review->id }},'{{ App\Models\User::find($review->user_id)->full_name }}')"><i
                                         class="fa-regular fa-trash-can"></i>
                                 </button>
@@ -92,8 +93,10 @@
                     }
                 })
                 .done((data) => {
-                    alert(data);
-                    location.reload();
+                    alertify.alert(data.message);
+                    setTimeout(()=>{
+                        location.reload();
+                    },1500);
                 })
             document.getElementById('popupdg').style.display = "none";
         }

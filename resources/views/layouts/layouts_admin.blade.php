@@ -42,6 +42,11 @@
     <script src="{{ asset('js/admin.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     @yield('script')
+    <script>
+        @if(session('message'))
+            alertify.alert('{{session('message')}}');
+        @endif
+    </script>
 </body>
 
 </html>

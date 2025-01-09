@@ -73,6 +73,9 @@ if (input_number) {
         input_number.value = parseInt(input_number.value) + 1;
     });
 }
+
+
+
 const button_rating = document.querySelectorAll('#button_rating button');
 if (button_rating) {
     button_rating.forEach((element) => {

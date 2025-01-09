@@ -7,6 +7,9 @@ use App\Models\About;
 
 class AdminController extends Controller
 {
+    public function index(){
+        return view('admin.pages.index');
+    }
     public function editWebsite(Request $request)
     {
         $request->validate([
@@ -34,7 +37,7 @@ class AdminController extends Controller
         ]);
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $filename = 'logo.' . $file->getClientOriginalExtension();
+            $filename = 'logo.'.$file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $about = About::first();
             $about->logo = $filename;

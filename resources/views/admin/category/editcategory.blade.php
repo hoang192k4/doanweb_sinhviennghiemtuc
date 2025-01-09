@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang cập nhật danh mục')
+@section('active','active')
 @section('content')
     <div class="separator"></div>
     <div class="content">

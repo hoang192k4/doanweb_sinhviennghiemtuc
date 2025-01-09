@@ -118,7 +118,7 @@ class ProductUser extends Model
     public static function MauSanPham($slug,$internal_memory){
         return DB::table('product_variants')
         ->join('products','product_variants.product_id','=','products.id')
-        ->select('product_variants.color','product_variants.price','product_variants.stock','product_variants.image','product_variants.internal_memory')
+        ->select('product_variants.id','product_variants.color','product_variants.price','product_variants.stock','product_variants.image','product_variants.internal_memory')
         ->where('products.slug',$slug)
         ->where('product_variants.internal_memory',$internal_memory)
         ->where('product_variants.status',1)

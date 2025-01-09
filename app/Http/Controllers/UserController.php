@@ -116,7 +116,8 @@ class UserController extends Controller
         );
          if(Auth::attempt(['email' => $request->email_login, 'password' =>$request->password_login]))
         {
-
+            if(Auth::user()->role=="NV" || Auth::user()->role=="QL")
+                return redirect()->route('admin.index');
             return response()->json(['message' => 'Đăng nhập thành công']);
         }
         else {
