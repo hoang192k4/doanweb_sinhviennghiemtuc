@@ -45,15 +45,15 @@ if (button_rams) {
     })
 }
 
-const button_color = document.querySelectorAll('.product_detail_right_color button')
-if (button_color) {
-    button_color.forEach(element => {
-        element.onclick = function () {
-            button_color.forEach(btn => btn.classList.remove('color_active'));
-            element.classList.add('color_active');
-        }
-    })
-}
+// const button_color = document.querySelectorAll('.product_detail_right_color button')
+// if (button_color) {
+//     button_color.forEach(element => {
+//         element.onclick = function () {
+//             button_color.forEach(btn => btn.classList.remove('color_active'));
+//             element.classList.add('color_active');
+//         }
+//     })
+// }
 
 const button_minus = document.getElementById('button_minus_value');
 const button_plus = document.getElementById('button_plus_value');
@@ -103,15 +103,6 @@ if (branch_search) {
     };
 }
 
-// const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
-// if (active_color_price) {
-//     active_color_price.forEach((element) => {
-//         element.onclick = function () {
-//             active_color_price.forEach(btn => btn.classList.remove('active_price'));
-//             this.classList.add('active_price');
-//         }
-//     });
-// }
 
 //API địa chỉ trang thanh toán
 fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
@@ -412,15 +403,23 @@ popup.addEventListener('click', function (e) {
         togglePopup();
     }
 })
-document.addEventListener("DOMContentLoaded", () => {
-    kt(); // Khởi tạo danh sách sản phẩm
-    SeachProduct(); // Gọi hàm tìm kiếm sản phẩm ngay khi tải trang
-});
+
+// const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
+// if (active_color_price) {
+//     active_color_price.forEach((element) => {
+//         element.onclick = function () {
+//             active_color_price.forEach(btn => btn.classList.remove('active_price'));
+//             this.classList.add('active_price');
+//         }
+//     });
+// }
 function kt(){
      const products=document.querySelectorAll('.product_search_list_right_item');
     return products;
 }
 function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
+
+
     const products = Array.from(kt());
     const seachProduct = [];
     products.forEach(function (product) {
@@ -478,7 +477,6 @@ function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
             page.appendChild(next);
 
     }
-
     if (seachProduct.length > 0 ) {
         LoadPage(index);
     }

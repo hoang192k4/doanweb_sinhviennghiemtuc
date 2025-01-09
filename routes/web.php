@@ -25,6 +25,10 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/dangky', "DangKy")->name('dangky');
     Route::post('/dangnhap',"DangNhap")->name('dangnhap');
     Route::get('/logout',"Logout")->name('logout');
+    Route::get('detail/{slug}',"ChiTietSanPham")->name("detail");
+    Route::get('detail/{slug}/{internal_memory}',"ChiTietSanPhamTheoBoNho")->name("ChiTietSanPhamTheoBoNho");
+    Route::get('detail/{slug}/{internal_memory}/{color}',"LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
+
 });
 
 Route::controller(CartController::class)->group(function(){
@@ -33,14 +37,15 @@ Route::controller(CartController::class)->group(function(){
     Route::get('/cart-delete-item/{id}','deleteItemCart')->name('cart.delete_item');
     Route::get('/cart-delete-all','deleteAllItem');
     Route::get('/cart-minus-one-variant/{id}','minusOnQuantity');
+
 });
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
-    
+
 });
 //Phân quyền quản lý
 Route::middleware(['role:QL'])->group(function () {
- 
+
 });
 //Phân quyền quản lý , nhân viên và khách hàng
 Route::middleware(['role:QL,NV,KH'])->group(function () {
