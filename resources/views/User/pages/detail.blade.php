@@ -292,8 +292,6 @@
 @endsection
 @section('script')
     <script>
-<<<<<<< HEAD
-=======
         function addToCart(id)
         {
             const quantity = $('#number_input').val();
@@ -312,7 +310,6 @@
             const stock = document.getElementById('stock').value
 
         });
->>>>>>> e82555865c0ae28bc64f44532ff246f765a073ec
         function LayThongTinSanPhamTheoMau(url,btn)
         {
             const button_color = document.querySelectorAll('.product_detail_right_color button')
