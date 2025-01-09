@@ -240,6 +240,11 @@ login_background_hidden.onclick = function(){
     login_background_hidden.style.display="none";
     login.style.display = "none";
     register.style.display = "none";
+};
+
+function handleLoginAuth(){
+    login_background_hidden.style.display="block";
+    login.style.display = "block";
 }
 
 function handleLogin(event){

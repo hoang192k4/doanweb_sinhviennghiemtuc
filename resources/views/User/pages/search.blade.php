@@ -62,7 +62,7 @@
                                         <li>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></li>
                                         <li>{{ $item->rating }} <i class="fas fa-star"></i></li>
                                         <li>
-                                            <a href=""><button>Mua ngay</button></a>
+                                            <a href="{{ route('detail')}} "><button>Mua ngay</button></a>
                                             <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                         </li>
                                     </ul>

@@ -21,37 +21,31 @@ Route::controller(UserController::class)->group(function(){
     Route::get('seach/{slug}/{id?}',"TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach',"TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
 
-
+    Route::post('/dangnhap',"DangNhap")->name('dangnhap');
     Route::post('/dangky',"DangKy")->name('dangky');
+    Route::get('/logout',"Logout")->name('logout');
+});
+//Phân quyền quản lý và nhân viên
+Route::middleware(['role:QL,NV'])->group(function () {
+    
+});
+//Phân quyền quản lý
+Route::middleware(['role:QL'])->group(function () {
+ 
+});
+//Phân quyền quản lý , nhân viên và khách hàng
+Route::middleware(['role:QL,NV,KH'])->group(function () {
+
+});
+//phân quyền khách hàng
+Route::middleware(['role:KH'])->group(function () {
+
 });
 
 Route::get('/detail', function () {
     return view('user.pages.detail');
-});
+})->name('detail');
 
-Route::get('/changepassword', function () {
-    return view('user.profile.changepassword');
-});
-
-Route::get('/changepassword', function(){
-    return view('user.profile.changepassword');
-});
-Route::get('/lichsudonhang', function(){
-    return view('user.profile.order_history');
-});
-Route::get('/trangcanhan', function(){
-    return view('user.profile.profile');
-});
-Route::get('/lichsudanhgia', function(){
-    return view('user.profile.review_history');
-});
-Route::get('/sanphamyeuthich', function(){
-    return view('user.profile.favourite_product');
-});
-
-Route::get('/thanhtoan', function () {
-    return view('user.profile.payment');
-});
 Route::get('/admin/category', function () {
     return view('admin.category.category');
 });
