@@ -105,39 +105,7 @@ if (branch_search) {
 
 
 //API địa chỉ trang thanh toán
-fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
-    .then(response => response.json())
-    .then(data => {
-        let provinces = data.data;
-        if (provinces !== undefined) {
-            provinces.map(item => document.getElementById('provinces').innerHTML += `<option value="${item.id}">${item.full_name}</option>`);
-        }
-    });
 
-function hadelChangeProvince(provinceId) {
-    fetch(`https://esgoo.net/api-tinhthanh/2/${provinceId.value}.htm`)
-        .then(response => response.json())
-        .then(data => {
-            let districts = data.data;
-            document.getElementById('districts').innerHTML = '<option value="">Quận Huyện</option>';
-            document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
-            if (districts !== undefined) {
-                districts.map(item => document.getElementById('districts').innerHTML += `<option value="${item.id}">${item.full_name}</option>`);
-            }
-        });
-
-}
-function hadelChangeDistrict(districtId) {
-    fetch(`https://esgoo.net/api-tinhthanh/3/${districtId.value}.htm`)
-        .then(response => response.json())
-        .then(data => {
-            let wards = data.data;
-            document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
-            if (wards !== undefined) {
-                wards.map(item => document.getElementById('wards').innerHTML += `<option value="${item.code}">${item.full_name}</option>`);
-            }
-        });
-}
 //popup chat
 const room_chat  = document.getElementById('room_chat');
 const popup_chat = document.querySelector('.chat');
@@ -336,54 +304,7 @@ if (btn_payment) {
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    const minusButtons = document.querySelectorAll(".minus");
-    const plusButtons = document.querySelectorAll(".plus");
-    const deleteButtons = document.querySelectorAll(".btn_delete_product");
-    const inputFields = document.querySelectorAll("input[type='text']");
 
-    function updateCart() {
-        const rows = document.querySelectorAll("tbody tr");
-        let total = 0;
-
-        rows.forEach(row => {
-            const price = parseInt(row.cells[3].textContent.replace(/\./g, "").replace("đ", ""), 10);
-            const quantity = parseInt(row.cells[4].querySelector("input").value, 10);
-            const subtotal = price * quantity;
-            row.cells[5].textContent = `${subtotal.toLocaleString()}đ`;
-            total += subtotal;
-        });
-
-        document.querySelector(".summary span").textContent = `${total.toLocaleString()}đ`;
-    }
-
-    minusButtons.forEach((btn, idx) => {
-        btn.addEventListener("click", () => {
-            const input = inputFields[idx];
-            if (input.value > 1) {
-                input.value--;
-                updateCart();
-            }
-        });
-    });
-
-    plusButtons.forEach((btn, idx) => {
-        btn.addEventListener("click", () => {
-            const input = inputFields[idx];
-            input.value++;
-            updateCart();
-        });
-    });
-
-    deleteButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            btn.closest("tr").remove();
-            updateCart();
-        });
-    });
-
-    updateCart();
-});
 
 
 var btnOpen = document.querySelector('.complete-order')
@@ -396,13 +317,16 @@ function togglePopup(e) {
     console.log(e.target);
     popup.classList.toggle('hide');
 }
-btnOpen.addEventListener('click', togglePopup)
-iconClose.addEventListener('click', togglePopup)
-popup.addEventListener('click', function (e) {
-    if (e.target == e.currentTarget) {
-        togglePopup();
-    }
-})
+if(btnOpen){
+    btnOpen.addEventListener('click', togglePopup)
+    iconClose.addEventListener('click', togglePopup)
+    popup.addEventListener('click', function (e) {
+        if (e.target == e.currentTarget) {
+            togglePopup();
+        }
+    })
+}
+
 
 // const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
 // if (active_color_price) {
@@ -482,7 +406,11 @@ function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
     }
     else
     {
-        document.getElementById('page').innerHTML =
+        if(document.getElementById('page'))
+        {
+            document.getElementById('page').innerHTML =
             '<p>Không có sản phẩm nào phù hợp.</p>';
+        }
+
     }
 }

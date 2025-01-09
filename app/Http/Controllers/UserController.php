@@ -168,6 +168,7 @@ class UserController extends Controller
     public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
         $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
         return response()->json([
+            "variant_id"=>$data->id,
             "image"=>$data->image,
             "stock"=>$data->stock,
             "price"=>$data->price

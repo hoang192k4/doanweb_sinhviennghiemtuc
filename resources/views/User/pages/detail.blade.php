@@ -100,13 +100,13 @@
                     <p>Cửa hàng hiện có <span id="stock">{{$mauSanPham[0]->stock}}</span> sản phẩm</p>
                     <div>
                         <button id="button_minus_value"><i class="fas fa-minus"></i></button>
-                        <input type="text" id="number_input" value="1">
+                        <input type="text" id="number_input" min="1" value="1">
                         <button id="button_plus_value"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <div class="product_detail_right_buy">
                     <div><button>Mua ngay</button></div>
-                    <div><button>Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
+                    <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)"> Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
             </div>
         </div>
@@ -377,6 +377,20 @@
 @endsection
 @section('script')
     <script>
+        function addToCart(id)
+        {
+            const quantity = $('#number_input').val();
+            $.ajax({
+                method:"GET",
+                url:`/add-to-cart/${id}/${quantity}`
+            }).done((data)=>{
+                console.log(data);
+                $('#cart-quantity').text(`${data.cart.totalQuantity}`);
+                alertify.success(data.message);
+            })
+        }
+    </script>
+    <script>
         document.getElementById('number_input').addEventListener('change', function() {
             const stock = document.getElementById('stock').value
 
@@ -407,7 +421,9 @@
                         $('#status').text('(Hết hàng)');
                     }
                     $('#price').text(price);
-                    $('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
+                    //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
+
+                    document.getElementById('add-to-cart').dataset.id=`${response.variant_id}`;
                 }
             });
         }

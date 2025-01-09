@@ -147,7 +147,7 @@ class ProductUser extends Model
         ->where('products.slug',$slug)
         ->where('product_variants.internal_memory',$internal_memory)
         ->where('product_variants.color',$color)
-        ->select('product_variants.price','product_variants.image','product_variants.stock')
+        ->select('product_variants.id','product_variants.price','product_variants.image','product_variants.stock')
         ->first();
     }
 
