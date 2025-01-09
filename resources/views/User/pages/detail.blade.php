@@ -64,8 +64,7 @@
                         <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
                     @endauth
-                    <p><i class="fas fa-thumbs-up"></i>50 lượt thích</p>
-                    <p><i class="fas fa-eye"></i>100 lượt xem</p>
+
                     <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                     </p>
                     <p><i class="fas fa-thumbs-up"></i>{{$luotThichSanPham}} lượt thích</p>
