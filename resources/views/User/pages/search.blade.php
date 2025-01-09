@@ -55,7 +55,7 @@
                     @if (isset($danhSachSanPham) && $danhSachSanPham->isNotEmpty())
                         @foreach ($danhSachSanPham as $item)
                             <div class="product_search_list_right_item">
-                                <a href=""><img src="{{ asset('images/' . $item->image) }}" alt="Lỗi hiển thị"></a>
+                                <a href="{{route('detail',[$item->slug])}}"><img src="{{ asset('images/' . $item->image) }}" alt="Lỗi hiển thị"></a>
                                 <div class="product_search_list_item_info">
                                     <ul>
                                         <li><a href="">{{ $item->name }}</a></li>

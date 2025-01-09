@@ -90,11 +90,11 @@
                                 @break
                             @endif
                             <div class="product_best_seller_item">
-                                <a href=""><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
+                                <a href="{{route('detail',[$danhSachDTHot[$i]->slug])}}"><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
                                         alt="Lỗi hiển thị"></a>
                                 <div class="product_best_seller_item_info">
                                     <ul>
-                                        <li><a href="">{{ $danhSachDTHot[$i]->name }}</a></li>
+                                        <li><a href="{{route('detail',[$danhSachDTHot[$i]->slug])}}">{{ $danhSachDTHot[$i]->name }}</a></li>
                                         <li>{{ number_format($danhSachDTHot[$i]->price, 0, ',', '.') }}<sup>đ</sup>
                                         </li>
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
@@ -114,11 +114,11 @@
                     <div class="product_best_seller_items">
                         @for ($i = 4; $i < count($danhSachDTHot); $i++)
                             <div class="product_best_seller_item">
-                                <a href=""><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
+                                <a href="{{route('detail',[$danhSachDTHot[$i]->slug])}}"><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
                                         alt="Lỗi hiển thị"></a>
                                 <div class="product_best_seller_item_info">
                                     <ul>
-                                        <li><a href="">{{ $danhSachDTHot[$i]->name }}</a></li>
+                                        <li><a href="{{route('detail',[$danhSachDTHot[$i]->slug])}}">{{ $danhSachDTHot[$i]->name }}</a></li>
                                         <li>{{ number_format($danhSachDTHot[$i]->price, 0, ',', '.') }}<sup>đ</sup>
                                         </li>
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
@@ -164,7 +164,7 @@
                             @break
                         @endif
                         <div class="product_lt_new_item">
-                            <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
+                            <a href="{{route('detail',[$danhSachLapTopMoi[$i]->slug])}}"><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
                                     alt="Lỗi hiển thị"></a>
                             <div class="product_lt_new_item_info">
                                 <ul>

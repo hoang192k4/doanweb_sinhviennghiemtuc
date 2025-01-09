@@ -240,10 +240,10 @@
                     <div class="product_best_seller_items">
                         @for ($i=0;$i<=3;$i++)
                         <div class="product_best_seller_item">
-                            <a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
+                            <a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
                             <div class="product_best_seller_item_info">
                                 <ul>
-                                    <li><a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
+                                    <li><a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
                                     <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup></li>
                                     <li>{{$sanPhamTuongTu[$i]->rating}}<i class="fas fa-star"></i></li>
                                     <li>
@@ -260,10 +260,10 @@
                     <div class="product_best_seller_items">
                         @for ($i=4;$i<=7;$i++)
                         <div class="product_best_seller_item">
-                            <a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
+                            <a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
                             <div class="product_best_seller_item_info">
                                 <ul>
-                                    <li><a href="{{Route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
+                                    <li><a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
                                     <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup></li>
                                     <li>{{$sanPhamTuongTu[$i]->rating}}<i class="fas fa-star"></i></li>
                                     <li>
