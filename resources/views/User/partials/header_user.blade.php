@@ -1,43 +1,58 @@
 <header>
     @php
-        $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug','categories.id')->get();
+        $danhSachDanhMuc = DB::table('categories')
+            ->select('categories.name', 'categories.slug', 'categories.id')
+            ->get();
         $lienKetWebsite = DB::table('about')->select('about.logo')->first();
     @endphp
     <nav class="container_css navbar navbar-top">
         <div>
             <ul>
-                <li><a href="{{route('user.blog')}}">Giới thiệu</a></li>
-                <li><a href="{{route('user.contact')}}">Liên hệ</a></li>
+                <li><a href="{{ route('user.blog') }}">Giới thiệu</a></li>
+                <li><a href="{{ route('user.contact') }}">Liên hệ</a></li>
             </ul>
         </div>
         <div>
             <ul>
-                <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
-                            style="margin-right:5px"></i>Đăng nhập</a></li>
+                @guest
+                    <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
+                                style="margin-right:5px"></i>Đăng nhập</a></li>
+                @endguest
+                @auth
+                    <li class="handleDropbox"><a href="" onclick="event.preventDefault();"><i class="far fa-user-circle"
+                                style="margin-right:5px"></i></a>
+                        <ul class="dropbox_login">
+                            <li><a href="{{ route('profile.index')}} ">Thông tin cá nhân</a></li>
+                            <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                @endauth
+
             </ul>
         </div>
     </nav>
     <nav class="container_css navbar navbar-bottom">
         <div class="navbar_item_first">
             <div>
-                <a href="{{route('user.index')}}" style="font-size: 14px; color: rgb(233, 239, 236);"><img src="{{$lienKetWebsite->logo}}"
-                        alt="Lỗi hiển thị"></a>
+                <a href="{{ route('user.index') }}" style="font-size: 14px; color: rgb(233, 239, 236);"><img
+                        src="{{ $lienKetWebsite->logo }}" alt="Lỗi hiển thị"></a>
             </div>
             <ul>
-                <li><a href="{{route('user.index')}}">Trang chủ</a></li>
+                <li><a href="{{ route('user.index') }}">Trang chủ</a></li>
                 <li>Danh mục<i class="fas fa-angle-down" style="margin-left:5px"></i>
                     <ul class="popup popup__category">
-                        @foreach( $danhSachDanhMuc as $category)
-                        <li class="thuong__hieu"><a href="{{ route('timkiemsanpham', ['slug' => $category->slug])}}">{{ $category->name }}</a> <i
-                            class="fas fa-angle-right"></i>
-                            <ul class="popup popup__thuonghieu">
-                                @foreach (DB::table('brands')->select('brands.name')
-                                ->join('categories','brands.category_id','=','categories.id')
-                                ->where('categories.id',$category->id)->get() as $brand)
-                                <li><a href="{{ route('timkiemsanpham', ['slug' => $category->slug ,'id' => $brand->name ])}}">{{ $brand->name }}</a></li>
-                            @endforeach
-                            </ul>
-                        </li>
+                        @foreach ($danhSachDanhMuc as $category)
+                            <li class="thuong__hieu"><a
+                                    href="{{ route('timkiemsanpham', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
+                                <i class="fas fa-angle-right"></i>
+                                <ul class="popup popup__thuonghieu">
+                                    @foreach (DB::table('brands')->select('brands.name')->join('categories', 'brands.category_id', '=', 'categories.id')->where('categories.id', $category->id)->get() as $brand)
+                                        <li><a
+                                                href="{{ route('timkiemsanpham', ['slug' => $category->slug, 'id' => $brand->name]) }}">{{ $brand->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
                         @endforeach
                     </ul>
                 </li>
@@ -52,13 +67,21 @@
                 <ul>
                     <li><a href="{{ route('user.index') }}">Trang chủ</a></li>
                     <li id="show__category">Danh mục<i class="fas fa-angle-down" style="margin-left:20px"></i></li>
-                    @foreach( $danhSachDanhMuc as $category)
-                    <li class="popup__category__ml__tl"><a href="{{ route('timkiemsanpham', ['slug' => $category->slug])}}">{{ $category->name }}</a></li>
+                    @foreach ($danhSachDanhMuc as $category)
+                        <li class="popup__category__ml__tl"><a
+                                href="{{ route('timkiemsanpham', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
+                        </li>
                     @endforeach
                     <li><a href="{{ route('user.blog') }}">Giới Thiệu</a></li>
                     <li><a href="{{ route('user.contact') }}">Liên Hệ</a></li>
-                    <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
-                                style="margin-right:5px"></i>Đăng nhập</a></li>
+                    @guest
+                        <li><a href="" onclick="handleLogin(event)"><i class="far fa-user-circle"
+                                    style="margin-right:5px"></i>Đăng nhập</a></li>
+                    @endguest
+                    @auth
+                        <li><a href="{{ route('profile.index')}} ">Thông tin cá nhân</a></li>
+                        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                    @endauth
 
                 </ul>
             </nav>

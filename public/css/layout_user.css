@@ -81,6 +81,38 @@ p{
     color: black;
 }
 
+.dropbox_login {
+    display: none;
+    position: absolute;
+    background-color: rgb(233, 239, 236);
+    top:100%;
+    right: 0;
+    width: 140px;
+    padding:10px 5px ;
+    z-index: 100;
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    transition: all linear 0.3s;
+}
+.dropbox_login >li {
+    padding: 2px 5px;
+}
+.dropbox_login >li:hover {
+    border-bottom: 1px solid grey;
+}
+.handleDropbox {
+    position: relative;
+}
+.handleDropbox:hover {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.handleDropbox:hover .dropbox_login{
+    display: block;
+}
+.dropbox_login > li > a {
+    color: black;
+}
 /* navbar - bottom */
 .navbar-bottom{
     align-items: center;
