@@ -2,25 +2,28 @@
     <div class="overflow_hidden_login"></div>
     <div class="login login_register">
         <h2>ĐĂNG NHẬP</h2>
-        <form action="">
+        <form  method="POST">
+            @csrf
             <div class="form_ground">
                 <input type="email" name="email_login" id="email_login" placeholder="Nhập email của bạn..">
                 <span><i class="fas fa-envelope"></i></span>
+                <div class="alert_error_validate" id="email_login_error"></div>
             </div>
             <div class="form_ground">
                 <input type="password" name="password_login" id="password_login" placeholder="Nhập password của bạn...">
                 <span id="hide_pwd"><i class="fas fa-eye-slash"></i></span>
                 <span id="lock_pwd"><i class="fas fa-lock"></i></span>
+                <div class="alert_error_validate" id="password_login_error"></div>
             </div>
             <div class="action">
                 <button type="button" onclick="handleRegister()">Đăng ký</button>
-                <button type="submit">Đăng nhập</button>
+                <button type="button" onclick="Login()">Đăng nhập</button>
             </div>
         </form>
     </div>
     <div class="register login_register">
         <h2>ĐĂNG KÝ</h2>
-        <form  method="POST" class="form_register">
+        <form method="POST" class="form_register">
             @csrf
             <div class="form_ground">
                 <input type="text" name="username" id="username_register" placeholder="Nhập username của bạn..">
@@ -64,6 +67,35 @@
 </div>
 @section('script')
     <script>
+        function Login() {
+            $('.alert_error_validate').text('');
+            $.ajax({
+                'url': "{{ route('dangnhap') }} ",
+                'type': "POST",
+                'data': {
+                    _token: '{{ csrf_token() }}',
+                    email_login: $('#email_login').val(),
+                    password_login: $('#password_login').val()
+                },
+                success: function(response) {
+                    alertify.success(response.message);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr) {
+                    const error = xhr.responseJSON.errors;
+                    if (error) {
+                        if (error.email_login)
+                            $('#email_login_error').text(error.email_login);
+                        if (error.password_login)
+                            $('#password_login_error').text(error.password_login);
+                    } else if (xhr.responseJSON.msg_error)
+                        alertify.error(xhr.responseJSON.msg_error)
+                }
+            })
+        }
+
         function Register() {
             $('.alert_error_validate').text('');
             if ($('#password_register').val() !== $('#pwd_comfirm').val()) {
@@ -85,9 +117,9 @@
                 success: function(response) {
                     alertify.success(response.message);
                     handleTargetLogin();
-                   document.querySelectorAll('.form_register .form_ground input').forEach(element => {
-                    element.value = '';
-                   });
+                    document.querySelectorAll('.form_register .form_ground input').forEach(element => {
+                        element.value = '';
+                    });
                 },
                 error: function(xhr) {
                     const error = xhr.responseJSON.errors;

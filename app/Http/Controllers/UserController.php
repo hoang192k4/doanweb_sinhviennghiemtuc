@@ -11,6 +11,7 @@ use App\Models\Brand;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -38,7 +39,6 @@ class UserController extends Controller
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
-
 
     //Trang Giới Thiệu
     public function GioiThieu()
@@ -97,6 +97,35 @@ class UserController extends Controller
             'status' => 1
         ]);
         return response()->json(['message' => 'Đăng ký thành công']);
+    }
+
+    public function DangNhap(Request $request)
+    {
+         $request->validate(
+            [ 
+                'email_login' => 'required|email|string|max:255|exists:users,email',
+                'password_login' => 'required|string'
+            ],
+            [
+                'email_login.required' => 'Bạn chưa nhập email',
+                'email_login.exists' => 'Email chưa được đăng ký',
+                'email_login.email' => 'Bạn chưa nhập đúng định đạng email',
+                'email_login.max' => 'Email không được quá 255 ký tự',
+                'password_login.required' => 'Bạn chưa nhập password',
+            ]
+        );
+         if(Auth::attempt(['email' => $request->email_login, 'password' =>$request->password_login]))
+        {
+           
+            return response()->json(['message' => 'Đăng nhập thành công']);
+        }
+        else { 
+            return response()->json(['msg_error' => 'Mật khẩu chưa chính xác!'.'<br>'.' Vui lòng nhập lại mật khẩu'],401);
+        }
+    }
+    public function Logout(){
+        Auth::logout();
+        return redirect()->back();
     }
 
 }

@@ -170,7 +170,8 @@
                                 <ul>
                                     <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
                                     <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
-                                        <sup>đ</sup></li>
+                                        <sup>đ</sup>
+                                    </li>
                                     <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
@@ -187,6 +188,7 @@
             <div class="carousel-item">
                 <div class="product_lt_new_items">
                     @for ($i = 4; $i < count($danhSachLapTopMoi); $i++)
+<<<<<<< HEAD
                     <div class="product_lt_new_item">
                         <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
                                 alt="Lỗi hiển thị"></a>
@@ -201,22 +203,39 @@
                                     <div><a href="{{route('cart.add',['id'=>$danhSachLapTopMoi[$i]->id])}}"><i class="fas fa-cart-plus"></i></a></div>
                                 </li>
                             </ul>
+=======
+                        <div class="product_lt_new_item">
+                            <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
+                                    alt="Lỗi hiển thị"></a>
+                            <div class="product_lt_new_item_info">
+                                <ul>
+                                    <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
+                                    <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
+                                        <sup>đ</sup>
+                                    </li>
+                                    <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
+                                    <li>
+                                        <a href=""><button>Mua ngay</button></a>
+                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                    </li>
+                                </ul>
+                            </div>
+>>>>>>> hoang
                         </div>
-                    </div>
-                @endfor
+                    @endfor
+                </div>
             </div>
-        </div>
-</div>
-<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-    data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-</button>
-<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-    data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-</button>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
 @else
 </div>
@@ -225,4 +244,13 @@
 </section>
 {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
 @include('user.partials.service')
+@guest
+@if (session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            handleLoginAuth();
+        });
+    </script>
+@endif
+@endguest
 @endsection

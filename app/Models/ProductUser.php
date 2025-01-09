@@ -124,7 +124,7 @@ class ProductUser extends Model
 
     public static function LayThongTinSanPham($category){
         if($category === 'Điện Thoại')
-             $tam = 'rating';
+             $tam = 'views';
         else
             $tam = 'created_at';
         return DB::table('products')
