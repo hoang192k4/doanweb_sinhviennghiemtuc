@@ -111,7 +111,7 @@
         function addOneQuantity(id) {
             $(`#quantity-variant-${id}`).val(parseInt($(`#quantity-variant-${id}`).val()) + 1);
             $.ajax({
-                    method: "GET",
+                    method: "GET", 'm'
                     url: `/add-to-cart/${id}/1`
                 })
                 .done((data) => {
