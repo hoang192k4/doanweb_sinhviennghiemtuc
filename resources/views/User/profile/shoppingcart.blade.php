@@ -127,7 +127,6 @@
                         url: `/cart-minus-one-variant/${id}`
                     })
                     .done((data) => {
-                        console.log(data)
                         $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
                     });
             }
