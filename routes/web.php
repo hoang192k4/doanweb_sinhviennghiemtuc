@@ -44,22 +44,8 @@ Route::get('/changepassword', function () {
     return view('user.profile.changepassword');
 });
 
-
 Route::get('/changepassword', function () {
     return view('user.profile.changepassword');
-});
-Route::get('/lichsudonhang', function () {
-    return view('user.profile.order_history');
-});
-
-Route::get('/trangcanhan', function () {
-    return view('user.profile.profile');
-});
-Route::get('/lichsudanhgia', function () {
-    return view('user.profile.review_history');
-});
-Route::get('/sanphamyeuthich', function () {
-    return view('user.profile.favourite_product');
 });
 
 Route::get('/admin/category', function () {

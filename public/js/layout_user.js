@@ -162,12 +162,12 @@ room_chat.onclick = function(event){
 }
 
 const tabs = document.querySelectorAll('.tablinks');
-const tables = document.querySelectorAll('.rating');
+const rates = document.querySelectorAll('.rating');
 
 tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-        tables.forEach(table => {
-            table.style.display = 'none'
+        rates.forEach(rate => {
+            rate.style.display = 'none'
         })
         if (tab.textContent === 'Tất cả') {
             document.getElementById('all').style.display = 'block'
@@ -181,6 +181,30 @@ tabs.forEach(tab => {
             document.getElementById('2sao').style.display = 'block'
         } else if (tab.textContent === '1 sao') {
             document.getElementById('1sao').style.display = 'block'
+        }
+    })
+})
+
+const histories = document.querySelectorAll('.history');
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        histories.forEach(history => {
+            history.style.display = 'none'
+        })
+        if (tab.textContent === 'Tất cả') {
+            document.getElementById('all').style.display = 'block'
+        } else if (tab.textContent === 'Chờ thanh toán') {
+            document.getElementById('thanhtoan').style.display = 'block'
+        } else if (tab.textContent === 'Đang chuẩn bị') {
+            document.getElementById('chuanbi').style.display = 'block'
+        } else if (tab.textContent === 'Đang giao') {
+            document.getElementById('danggiao').style.display = 'block'
+        } else if (tab.textContent === 'Hoàn thành') {
+            document.getElementById('hoanthanh').style.display = 'block'
+        } else if (tab.textContent === 'Đã hủy') {
+            document.getElementById('dahuy').style.display = 'block'
+        } else if (tab.textContent === 'Trả hàng/Hoàn tiền') {
+            document.getElementById('trahang').style.display = 'block'
         }
     })
 })
