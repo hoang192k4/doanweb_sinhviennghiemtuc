@@ -381,7 +381,7 @@
     padding:10px 30px;
     background-color: white;
     border: none;
-} 
+}
 .product_detail_right_quantity > div {
     display: flex;
 }
@@ -426,7 +426,7 @@
 }
 .product_detail_right_buy >div:nth-child(2) > button{
     margin-top:10px;
-    border: 1px solid #dd2f2c; 
+    border: 1px solid #dd2f2c;
     color: #dd2f2c;
     background-color: white;
 }
@@ -446,7 +446,7 @@
 .product_detail_bottom_left_rating > div:nth-child(1) > a{
     color: #ee4d2d;
     text-align: center;
-   
+
 }
 .product_detail_bottom_left_rating > div:nth-child(1) > a > p > i{
     font-size:11px;

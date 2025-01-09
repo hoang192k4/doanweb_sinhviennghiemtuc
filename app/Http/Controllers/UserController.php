@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Blog;
 use App\Models\ProductUser;
 use App\Models\Brand;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -98,5 +99,49 @@ class UserController extends Controller
         ]);
         return response()->json(['message' => 'Đăng ký thành công']);
     }
-
+    public function ChiTietSanPham($slug){
+        ProductUser::UpdateView($slug);
+        $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
+        $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
+        $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
+        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
+        $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
+        $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
+        $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
+        return View('user.pages.detail')->with([
+            'slug'=>$slug,
+            "danhSachAnh"=>$danhSachAnh,
+            "danhSachBoNho"=>$danhSachBoNho,
+            "thongTinSanPham"=>$thongTinSanPham[0],
+            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
+            "luotThichSanPham"=>$luotThichSanPham,
+            "mauSanPham"=>$mauSanPham,
+        ]);
+    }
+    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
+        ProductUser::UpdateView($slug);
+        $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
+        $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
+        $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
+        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
+        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
+        $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
+        return View('user.pages.detail')->with([
+            'slug'=>$slug,
+            "danhSachAnh"=>$danhSachAnh,
+            "danhSachBoNho"=>$danhSachBoNho,
+            "thongTinSanPham"=>$thongTinSanPham[0],
+            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
+            "luotThichSanPham"=>$luotThichSanPham,
+            "mauSanPham"=>$mauSanPham,
+        ]);
+    }
+    public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
+        $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
+        return response()->json([
+            "image"=>$data->image,
+            "stock"=>$data->stock,
+            "price"=>$data->price
+        ]);
+    }
 }
