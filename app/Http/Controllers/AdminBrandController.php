@@ -31,20 +31,12 @@ class AdminBrandController extends Controller
      */
     public function store(Request $request)
     {
-        // Brand::create([
-        //     'name' => $request->input('nameBrand'),
-        //     'image' => $request->input('imageBrand'),
-        //     'category_id' => $request->input('nameCategory'),
-        //     'status' => $request->input('status'),
-        // ]);
-        $data = ([
+        Brand::create([
             'name' => $request->input('nameBrand'),
             'image' => $request->input('imageBrand'),
             'category_id' => $request->input('nameCategory'),
             'status' => $request->input('status'),
         ]);
-        dd($data);
-
         return redirect()->route('admin.addbrand.index')->with('msg', 'Thêm thương hiệu thành công');
     }
 

@@ -36,6 +36,11 @@ class AdminCategoryController extends Controller
     {
         $keyCategory = $request->input('keySearchCategory');
         $danhSachDanhMuc = Category::where('name', 'like', '%' . $keyCategory . '%')->get();
-        return redirect()->route('admin.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
+
+        if ($danhSachDanhMuc->isEmpty()) {
+            return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
+        }
+
+        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
 }

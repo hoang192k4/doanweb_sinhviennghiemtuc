@@ -1,5 +1,10 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang thêm thương hiệu')
+<style>
+    .btn-goback>button>a {
+        color: white;
+    }
+</style>
 @section('content')
     <div class="separator"></div>
     <div class="content">
@@ -7,7 +12,7 @@
             <div class="title">Thêm thương hiệu</div>
         </div>
         <div class="btn-goback">
-            <button type="button">&laquo; Trở lại</button>
+            <button type="button"><a href="{{ route('admin.category') }}">&laquo; Trở lại</a></button>
         </div>
         <div class="separator_x">
             @if (session('msg'))
@@ -16,7 +21,8 @@
                 </div>
             @endif
             <div class="row">
-                <form action="{{ route('admin.addbrand.store') }}" method="POST" id="formAddCategory" class="form-category">
+                <form action="{{ route('admin.addbrand.store') }}" method="POST" id="formAddCategory"
+                    class="form-category">
                     <div class="form-group">
                         <div class="col">
                             <label>Tên thương hiệu:</label>

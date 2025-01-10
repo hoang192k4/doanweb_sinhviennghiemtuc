@@ -15,17 +15,23 @@
             </div>
         </div>
         <div class="separator_x"></div>
+        {{-- @if (session('message'))
+            <div class="alert alert-warning">
+                {{ session('message') }}
+            </div>
+        @endif --}}
         <select>
             <option value="">Tất cả</option>
-            <option value="">Điện thoại</option>
-            <option value="">Laptop</option>
+            @foreach ($danhSachDanhMuc as $item)
+                <option value="">{{ $item->name }}</option>
+            @endforeach
         </select>
         <table>
             <thead>
                 <tr>
                     <th style="width: 48px;">ID</th>
                     <th>Name</th>
-                    <th style="width: 48px;">Xong</th>
+                    <th style="width: 48px;">Sửa</th>
                     <th style="width: 48px;">Xóa</th>
                 </tr>
             </thead>

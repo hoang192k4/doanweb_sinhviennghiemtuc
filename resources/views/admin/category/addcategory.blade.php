@@ -1,5 +1,10 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang thêm danh mục')
+<style>
+    .btn-goback>button>a {
+        color: white;
+    }
+</style>
 @section('content')
     <div class="separator"></div>
     <div class="content">
@@ -7,9 +12,14 @@
             <div class="title">Thêm phân loại</div>
         </div>
         <div class="btn-goback">
-            <button type="button">&laquo; Trở lại</button>
+            <button type="button"><a href="{{ route('admin.category') }}">&laquo; Trở lại</a></button>
         </div>
         <div class="separator_x">
+            @if (session('msg'))
+                <div class="alert alert-success">
+                    {{ session('msg') }}
+                </div>
+            @endif
             <div class="row">
                 <form action="{{ route('admin.category.store') }}" method="POST" id="formAddCategory">
                     <div class="form-group">
