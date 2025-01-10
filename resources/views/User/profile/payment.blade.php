@@ -88,12 +88,20 @@
                     <div class="logo_payment"><img src="" alt="Lỗi hiển thị"></div>
                     <h4>Thông tin giao hàng</h4>
                     <div class="profile_payment">
-                        <input type="text" name="full_name" id="full_name_payment" placeholder="Họ và tên">
-                        <div class="alert_error_validate" id="full_name_payment_error"></div>
+                        <input type="text" name="full_name" id="full_name_payment"
+                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset"
+                            placeholder="Họ và tên">
+                        <div class="alert_error_validate" id="full_name_payment_error">@error('full_name'){{$message}}@enderror</div>
 
                         <div>
-                            <input type="email" placeholder="Email">
-                            <input type="tel" placeholder="Số điện thoại">
+                            <input type="email" name="email" id="email_payment" placeholder="Email" 
+                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
+                            <div class="alert_error_validate" id="email_payment_error">@error('email'){{$message}}@enderror</div>
+
+                            <input type="tel" name="phone" placeholder="Số điện thoại" 
+                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
+                            <div class="alert_error_validate" id="phone_payment_error">@error('phone'){{$message}}@enderror</div>
+
                         </div>
                         <input type="text" placeholder="Địa chỉ - Số nhà, tên Đường">
                         <div class="css_select_div">
@@ -153,7 +161,7 @@
                             </table>
                         </div>
                     </div>
-                    <button id="payment_order">Hoàn tất đơn hàng</button>
+                    <button type="submit" id="payment_order">Hoàn tất đơn hàng</button>
                 </form>
             </div>
         </div>
