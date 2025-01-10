@@ -44,7 +44,7 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'name'=>'required|unique:products|max:255',
             'description'=>'required',
-            'image.*'=>'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image.*'=>'required|image|mimes:jpeg,png,jpg,webp|max:2048',
             'display'=>'required',
             'technic_screen'=>'required',
             'resolution'=>'required',
@@ -58,7 +58,7 @@ class AdminProductController extends Controller
             'variants.*.stock'=>'required|min:0',
             'variants.*.internal_memory'=>'required',
             'variants.*.price'=>'required|min:0',
-            'variants.*.image_variant'=>'required|image|mimes:jpeg,png,jpg|max:2048'
+            'variants.*.image_variant'=>'required|image|mimes:jpeg,png,jpg,webp|max:2048'
         ],[
             'name.required'=> 'Vui lòng nhập tên sản phẩm!',
             'name.unique'=>'Tên sản phẩm đã tồn tại!',

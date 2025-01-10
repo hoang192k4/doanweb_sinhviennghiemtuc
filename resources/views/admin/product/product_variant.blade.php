@@ -23,9 +23,6 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div>
-                            @if (session('msg'))
-                                <p id="msg" style="display: block; color: green;">{{ session('msg') }}</p>
-                            @endif
                         </div>
                         @if(isset($danhSachBienThe) && count($danhSachBienThe)>0)
                         <table>
@@ -62,7 +59,7 @@
                                                     class="input-variant" name="image">
                                             </td>
 
-                                            <td><button>Cập nhật</button> </td>
+                                            <td><button class="cursor">Cập nhật</button> </td>
                                             <td style="text-align:center"> <i class="fa-solid fa-x cursor"
                                                     onclick="showVariantHiddenForm({{ $bienThe->id }})"></i> </td>
                                         </tr>
@@ -199,11 +196,17 @@
                     product_id: '{{$product->id}}',
                 }
             }).done((data)=>{
-                alert(`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
-                location.reload();
+                alertify.alert(`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
+                setTimeout(()=>{ location.reload();},2000);
+
             })
 
         }
+    </script>
+    <script>
+        @if(session('msg'))
+            alertify.alert('{{session('msg')}}');
+        @endif
     </script>
 @endsection
 @section('css')

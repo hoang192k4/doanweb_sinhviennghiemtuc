@@ -139,6 +139,9 @@
                 })
                 .done((data) => {
                     alertify.success(data);
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },1000)
                 })
 
             document.getElementById('popupduyet').style.display = "none";
