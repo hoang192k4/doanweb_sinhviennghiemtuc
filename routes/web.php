@@ -132,6 +132,7 @@ Route::post('/addContact', [AdminContactController::class, 'addContact']);
 //Route quan li danh mục
 Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
 Route::post('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
+Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
 Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');
 Route::post('/admin/addbrand/store', [AdminBrandController::class, 'store'])->name('admin.addbrand.store');

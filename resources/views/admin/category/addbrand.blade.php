@@ -10,12 +10,12 @@
             <button type="button">&laquo; Trở lại</button>
         </div>
         <div class="separator_x">
+            @if (session('msg'))
+                <div class="alert alert-success">
+                    {{ session('msg') }}
+                </div>
+            @endif
             <div class="row">
-                @if (session('msg'))
-                    <div class="alert alert-success">
-                        {{ session('msg') }}
-                    </div>
-                @endif
                 <form action="{{ route('admin.addbrand.store') }}" method="POST" id="formAddCategory" class="form-category">
                     <div class="form-group">
                         <div class="col">
@@ -23,6 +23,10 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="nameBrand" name="nameBrand">
+                        </div>
+                        <div class="col">
+                            <input accept="image/*" type="file" name="imageBrand" id="imageBrand">
+                            <img id="previewImage" src="#" alt="Hình ảnh sản phẩm" width="100px" height="100px">
                         </div>
                     </div>
                     <div class="form-group">
@@ -59,3 +63,14 @@
         </div>
     </div>
 @endsection
+<script>
+    const imageBrand = document.getElementById('imageBrand');
+    const previewImage = document.getElementById('previewImage');
+
+    imageBrand.onchange = evt => {
+        const [file] = imageBrand.files;
+        if (file) {
+            previewImage.src = URL.createObjectURL(file);
+        }
+    }
+</script>

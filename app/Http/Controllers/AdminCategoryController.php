@@ -32,4 +32,10 @@ class AdminCategoryController extends Controller
         ]);
         return redirect()->route('admin.category.addCategory')->with('msg', 'Thêm phân loại thành công');
     }
+    public function searchCategory(Request $request)
+    {
+        $keyCategory = $request->input('keySearchCategory');
+        $danhSachDanhMuc = Category::where('name', 'like', '%' . $keyCategory . '%')->get();
+        return redirect()->route('admin.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
+    }
 }

@@ -11,10 +11,9 @@ class Category extends Model
     //
     use HasFactory;
 
-    protected $fillable = ['id','name','slug','status'];
-    public function brands():HasMany
+    protected $fillable = ['id', 'name', 'slug', 'status'];
+    public function brands(): HasMany
     {
         return $this->hasMany(Brand::class);
     }
-
 }

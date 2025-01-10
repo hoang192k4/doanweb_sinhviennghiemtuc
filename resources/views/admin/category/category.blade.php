@@ -8,8 +8,8 @@
                     loại</a></button>
             <button><a href="{{ route('admin.addbrand.index') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
-                <form>
-                    <input>
+                <form action="{{ route('admin.category.searchCategory') }}" method="GET">
+                    <input name="keySearchCategory">
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
