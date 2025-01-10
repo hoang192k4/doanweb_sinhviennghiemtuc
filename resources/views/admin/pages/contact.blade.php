@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý liên hệ')
+@section('active-contact', 'active')
 @section('content')
     <div class="content" id="lienhe">
         <div class="head">
@@ -44,7 +45,7 @@
                                     <i class="fa-solid fa-check"></i>
                                 </a>
                             </td>
-                            <td style="text-align: center;"><button
+                            <td style="text-align: center;"><button class="cursor" style="background-color: white;color:rgb(19, 93, 102)";
                                     onclick="showDeletePopup('{{ $lienHe->name }}',{{ $lienHe->id }})"><i
                                         class="fa-solid fa-x"></i></button></td>
                         </tr>
@@ -77,7 +78,7 @@
                             <td>{{ $lienHe->title }} </td>
                             <td>{{ $lienHe->content }} </td>
                             <td style="text-align: center;">
-                                <button onclick="showDeletePopup('{{ $lienHe->name }}',{{ $lienHe->id }})"><i
+                                <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)" onclick="showDeletePopup('{{ $lienHe->name }}',{{ $lienHe->id }})"><i
                                         class="fa-solid fa-x"></i></button>
                             </td>
                         </tr>
@@ -125,8 +126,11 @@
                     }
                 })
                 .done((data) => {
-                    alert(data);
-                    location.reload();
+                    console.log(data);
+                    alertify.alert(data.message);
+                    setTimeout(()=>{
+                        location.reload();
+                    },1500);
                 })
             document.getElementById('popuplh').style.display = "none";
         }

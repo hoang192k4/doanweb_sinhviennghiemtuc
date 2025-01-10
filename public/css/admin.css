@@ -503,3 +503,7 @@ table tr td {
 .bg-white {
     background-color: white;
 }
+.button-delete{
+    background-color: white;
+    color:rgb(19, 93, 102)
+}

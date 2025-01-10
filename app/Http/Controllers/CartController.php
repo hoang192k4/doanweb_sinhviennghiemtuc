@@ -10,14 +10,29 @@ use App\Models\ProductVariant;
 class CartController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
+        $cart = session('cart')?session('cart'):null;
+        if($cart!=null)
+        {
+            foreach($cart->listProductVariants as $item){
+                $var = ProductVariant::find($item['variant_info']->id);
+                if($var->status==0)
+                {
+                    $cart->deleteItemCart($var->id);
+                    if($cart->totalQuantity==0)
+                        $request->session()->forget('cart');
+                    else
+                        $request->session('cart')->put('cart',$cart);
+                }
+            }
+        }
         return view('User.profile.shoppingcart');
     }
 
     public function addToCart(Request $request, string $variant_id, $quantity)
     {
-        $variant = ProductVariant::find($variant_id);
+        $variant = ProductVariant::where('status',1)->find($variant_id);
         if($variant==null)
             return 'sản phẩm không tồn tại!';
         $product = $variant->product;

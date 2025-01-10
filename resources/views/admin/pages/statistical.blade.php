@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý thống kê')
+@section('active', 'active')
 @section('content')
 <div class="content" id="thongke">
     <div class="head">

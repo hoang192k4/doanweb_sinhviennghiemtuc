@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lí các biến thể')
+@section('active-product','active')
 @section('content')
     <div class="separator">
     </div>

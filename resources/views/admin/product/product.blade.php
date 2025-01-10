@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý sản phẩm')
+@section('active-product','active')
 @section('content')
     <div class="content" id="sanpham">
         <div class="head">
@@ -110,11 +111,11 @@
                 .done((danhSachSanPham) => {
                     const table = document.getElementById('table');
                     const danhSach = danhSachSanPham.map((sanpham) => {
-                        console.log(sanpham);
+
                         return ` <tr id="product-${sanpham.id}">
                         <td style="text-align: center;"> ${sanpham.id} </td>
                         <td> ${sanpham.name}</td>
-                                                <td style="text-align: center;"> <a href="{{ route('admin.product_variant.index', [$sanPham->id]) }}"> <i class="fa-solid fa-code"></i></a> </td>
+                        <td style="text-align: center;"> <a href="{{ route('admin.product_variant.index', [$sanPham->id]) }}"> <i class="fa-solid fa-code"></i></a> </td>
                         <td style="text-align: center;"><a href="/admin/product/${sanpham.id}/edit"><i class="fa-regular fa-pen-to-square"></i></a>
                         </td>
                         <td style="text-align: center;"><a class="cursor" onclick='showPopupProduct({"id":${sanpham.id},"name":"${sanpham.name}"})'><i class="fa-regular fa-trash-can"></i></a>

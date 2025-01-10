@@ -92,7 +92,7 @@
                         <div class="alert_error_validate" id="full_name_payment_error"></div>
 
                         <div>
-                            <input type="email" placeholder="Email" >
+                            <input type="email" placeholder="Email">
                             <input type="tel" placeholder="Số điện thoại">
                         </div>
                         <input type="text" placeholder="Địa chỉ - Số nhà, tên Đường">
@@ -160,6 +160,44 @@
     </div>
 @endsection
 @section('script')
-    <script></script>
+    <script>
+        fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
+            .then(response => response.json())
+            .then(data => {
+                let provinces = data.data;
+                if (provinces !== undefined) {
+                    provinces.map(item => document.getElementById('provinces').innerHTML +=
+                        `<option value="${item.id}">${item.full_name}</option>`);
+                }
+            });
+
+        function hadelChangeProvince(provinceId) {
+            fetch(`https://esgoo.net/api-tinhthanh/2/${provinceId.value}.htm`)
+                .then(response => response.json())
+                .then(data => {
+                    let districts = data.data;
+                    document.getElementById('districts').innerHTML = '<option value="">Quận Huyện</option>';
+                    document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
+                    if (districts !== undefined) {
+                        districts.map(item => document.getElementById('districts').innerHTML +=
+                            `<option value="${item.id}">${item.full_name}</option>`);
+                    }
+                });
+
+        }
+
+        function hadelChangeDistrict(districtId) {
+            fetch(`https://esgoo.net/api-tinhthanh/3/${districtId.value}.htm`)
+                .then(response => response.json())
+                .then(data => {
+                    let wards = data.data;
+                    document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
+                    if (wards !== undefined) {
+                        wards.map(item => document.getElementById('wards').innerHTML +=
+                            `<option value="${item.code}">${item.full_name}</option>`);
+                    }
+                });
+        }
+    </script>
 
 @endsection

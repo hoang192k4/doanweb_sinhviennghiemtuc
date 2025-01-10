@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang Dashboard')
+@section('active-dashboard', 'active')
 @section('content')
 <div class="content" id="dashboard">
     <div class="head">

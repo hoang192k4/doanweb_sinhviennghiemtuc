@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý danh mục')
+@section('active','active')
 @section('content')
     <div class="content" id="danhmuc">
         <div class="head">

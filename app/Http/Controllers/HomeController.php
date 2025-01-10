@@ -8,5 +8,5 @@ use App\Models\Brand;
 
 class HomeController extends Controller
 {
-  
+
 }

@@ -1,5 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý đơn hàng')
+@section('active-order', 'active')
 @section('content')
     <div class="content" id="donhang">
         <div class="head">
@@ -307,7 +308,7 @@
                 })
                 document.getElementById('popupxoa').style.display = "none";
         }
-        
+
     </script>
     <script>
         function showCancelPopup(full_name, id) {
