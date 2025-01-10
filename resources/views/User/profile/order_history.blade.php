@@ -14,7 +14,7 @@
                             phẩm yêu thích</a></div>
                     <div class="item"><a href="{{route('profile.review_history')}}"><i class="fas fa-gifts"></i>Sản phẩm
                             đã đánh giá</a></div>
-                    <div class="item"><a href="TrangDoiMatKhau.html"><i class="fas fa-unlock-alt"></i>Đổi mật khẩu</a>
+                    <div class="item"><a href="{{route('profile.changepassword')}}"><i class="fas fa-unlock-alt"></i>Đổi mật khẩu</a>
                     </div>
                 </div>
             </div>

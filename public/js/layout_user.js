@@ -110,15 +110,15 @@ if (branch_search) {
 //API địa chỉ trang thanh toán
 
 //popup chat
-const room_chat  = document.getElementById('room_chat');
+const room_chat = document.getElementById('room_chat');
 const popup_chat = document.querySelector('.chat');
 const btn_close_roomchat = document.querySelector('.chat_title span');
-btn_close_roomchat.addEventListener('click',function(){
-   popup_chat.style.display = "none"
+btn_close_roomchat.addEventListener('click', function () {
+    popup_chat.style.display = "none"
 })
-room_chat.onclick = function(event){
+room_chat.onclick = function (event) {
     event.preventDefault();
-    if(popup_chat.style.display == "block")
+    if (popup_chat.style.display == "block")
         popup_chat.style.display = "none"
     else popup_chat.style.display = "block"
 }
@@ -178,20 +178,19 @@ pwd_login.oninput = function () {
     if (pwd_login.value.length > 0) {
         icon_hs_pwd.style.display = "block";
         document.getElementById('lock_pwd').style.display = "none";
-    } else
-    {
+    } else {
         icon_hs_pwd.style.display = "none";
         document.getElementById('lock_pwd').style.display = "block";
     }
 }
 
-icon_hs_pwd.addEventListener('click',function(){
-    if(pwd_login.type === "password"){
-        pwd_login.type ="text";
+icon_hs_pwd.addEventListener('click', function () {
+    if (pwd_login.type === "password") {
+        pwd_login.type = "text";
         icon_hs_pwd.innerHTML = '<i class="far fa-eye">';
     }
     else {
-        pwd_login.type ="password";
+        pwd_login.type = "password";
         icon_hs_pwd.innerHTML = '<i class="fas fa-eye-slash"></i>';
     }
 })
@@ -202,19 +201,18 @@ pwd_register.oninput = function () {
     if (pwd_register.value.length > 0) {
         icon_hs_pwd_register.style.display = "block";
         document.getElementById('lock_pwd_register').style.display = "none";
-    } else
-    {
+    } else {
         icon_hs_pwd_register.style.display = "none";
         document.getElementById('lock_pwd_register').style.display = "block";
     }
 }
-icon_hs_pwd_register.addEventListener('click',function(){
-    if(pwd_register.type === "password"){
-        pwd_register.type ="text";
+icon_hs_pwd_register.addEventListener('click', function () {
+    if (pwd_register.type === "password") {
+        pwd_register.type = "text";
         icon_hs_pwd_register.innerHTML = '<i class="far fa-eye">';
     }
     else {
-        pwd_register.type ="password";
+        pwd_register.type = "password";
         icon_hs_pwd_register.innerHTML = '<i class="fas fa-eye-slash"></i>';
     }
 })
@@ -225,19 +223,18 @@ pwd_confirm_register.oninput = function () {
     if (pwd_confirm_register.value.length > 0) {
         icon_hs_pwd_cf_register.style.display = "block";
         document.getElementById('lock_pwd_cf_register').style.display = "none";
-    } else
-    {
+    } else {
         icon_hs_pwd_cf_register.style.display = "none";
         document.getElementById('lock_pwd_cf_register').style.display = "block";
     }
 }
-icon_hs_pwd_cf_register.addEventListener('click',function(){
-    if(pwd_confirm_register.type === "password"){
-        pwd_confirm_register.type ="text";
+icon_hs_pwd_cf_register.addEventListener('click', function () {
+    if (pwd_confirm_register.type === "password") {
+        pwd_confirm_register.type = "text";
         icon_hs_pwd_cf_register.innerHTML = '<i class="far fa-eye">';
     }
     else {
-        pwd_confirm_register.type ="password";
+        pwd_confirm_register.type = "password";
         icon_hs_pwd_cf_register.innerHTML = '<i class="fas fa-eye-slash"></i>';
     }
 })
@@ -248,29 +245,29 @@ icon_hs_pwd_cf_register.addEventListener('click',function(){
 const login_background_hidden = document.querySelector('.overflow_hidden_login');
 const login = document.querySelector('.login');
 const register = document.querySelector('.register');
-login_background_hidden.onclick = function(){
-    login_background_hidden.style.display="none";
+login_background_hidden.onclick = function () {
+    login_background_hidden.style.display = "none";
     login.style.display = "none";
     register.style.display = "none";
 };
 
-function handleLoginAuth(){
-    login_background_hidden.style.display="block";
+function handleLoginAuth() {
+    login_background_hidden.style.display = "block";
     login.style.display = "block";
 }
 
-function handleLogin(event){
+function handleLogin(event) {
     event.preventDefault();
-    login_background_hidden.style.display="block";
+    login_background_hidden.style.display = "block";
     login.style.display = "block";
 }
-function handleRegister(){
-    login_background_hidden.style.display="block";
-    register.style.display="block";
+function handleRegister() {
+    login_background_hidden.style.display = "block";
+    register.style.display = "block";
     login.style.display = "none";
 }
-function handleTargetLogin(){
-    register.style.display="none";
+function handleTargetLogin() {
+    register.style.display = "none";
     login.style.display = "block";
 }
 
@@ -320,7 +317,7 @@ function togglePopup(e) {
     console.log(e.target);
     popup.classList.toggle('hide');
 }
-if(btnOpen){
+if (btnOpen) {
     btnOpen.addEventListener('click', togglePopup)
     iconClose.addEventListener('click', togglePopup)
     popup.addEventListener('click', function (e) {
@@ -340,8 +337,8 @@ if(btnOpen){
 //         }
 //     });
 // }
-function kt(){
-     const products=document.querySelectorAll('.product_search_list_right_item');
+function kt() {
+    const products = document.querySelectorAll('.product_search_list_right_item');
     return products;
 }
 function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
@@ -378,11 +375,11 @@ function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
 
         // Nút "Pre"
         // if(index!=1){
-            const pre = document.createElement('button');
-            pre.innerHTML = "Pre";
-            pre.disabled = index === 1;
-            pre.addEventListener('click', () => LoadPage(index - 1));
-            page.appendChild(pre);
+        const pre = document.createElement('button');
+        pre.innerHTML = "Pre";
+        pre.disabled = index === 1;
+        pre.addEventListener('click', () => LoadPage(index - 1));
+        page.appendChild(pre);
 
 
 
@@ -397,22 +394,20 @@ function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
 
         // Nút "Next"
         // if(index!=countPage){
-            const next = document.createElement('button');
-            next.innerHTML = "Next";
-            next.disabled = index === countPage ;
-            next.addEventListener('click', () => LoadPage(index + 1));
-            page.appendChild(next);
+        const next = document.createElement('button');
+        next.innerHTML = "Next";
+        next.disabled = index === countPage;
+        next.addEventListener('click', () => LoadPage(index + 1));
+        page.appendChild(next);
 
     }
-    if (seachProduct.length > 0 ) {
+    if (seachProduct.length > 0) {
         LoadPage(index);
     }
-    else
-    {
-        if(document.getElementById('page'))
-        {
+    else {
+        if (document.getElementById('page')) {
             document.getElementById('page').innerHTML =
-            '<p>Không có sản phẩm nào phù hợp.</p>';
+                '<p>Không có sản phẩm nào phù hợp.</p>';
         }
 
     }
