@@ -134,7 +134,9 @@ class UserController extends Controller
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
-        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand);
+        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
+        $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
+        $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
@@ -147,7 +149,7 @@ class UserController extends Controller
             "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$sanPhamTuongTu
+            "sanPhamTuongTu"=>$arr
         ]);
     }
     public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){

@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
@@ -68,5 +71,35 @@ class ProfileController extends Controller
     public function review_history()
     {
         return view('user.profile.review_history')->with('reviews', Rating::where('user_id', 3)->get());
+    }
+    public function ChangePwd()
+    {
+        return view('user.profile.changepassword');
+    }
+    public function IsPasswordChange(Request $request)
+    {
+        if (!Hash::check($request->oldpassword, Auth::user()->password)) {
+            return response()->json(['error' => 'Mật khẩu hiện tại không đúng'], 401);
+        }
+        return response()->json(['success' => 'Mật khẩu hiện tại chính xác'], 200);
+    }
+    public function UpdatePassword(Request $request)
+    {
+        $request->validate(
+            [
+                'oldpassword' => 'required|string',
+                'newPassword' => 'required|string',
+            ],
+            [
+                'oldpassword.required' => 'Bạn chưa nhập password hiện tại',
+                'newPassword.required' => 'Bạn chưa nhập password mới'
+            ]
+        );
+        if (Hash::check($request->oldpassword, Auth::user()->password)) {
+            DB::table('users')
+                ->where('id', Auth::id())  // Điều kiện tìm người dùng hiện tại
+                ->update(['password' => Hash::make($request->newPassword)]);
+            return response()->json(['success' => 'Mật khẩu đã được thay đổi thành công'], 200);
+        }
     }
 }

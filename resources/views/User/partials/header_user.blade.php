@@ -20,7 +20,7 @@
                 @endguest
                 @auth
                     <li class="handleDropbox"><a href="" onclick="event.preventDefault();"><i class="far fa-user-circle"
-                                style="margin-right:5px"></i></a>
+                                style="margin-right:5px"></i>{{ Auth::user()->username}}</a>
                         <ul class="dropbox_login">
                             <li><a href="{{ route('profile.index')}} ">Thông tin cá nhân</a></li>
                             <li><a href="{{ route('logout') }}">Đăng xuất</a></li>

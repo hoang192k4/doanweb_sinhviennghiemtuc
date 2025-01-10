@@ -108,6 +108,9 @@ Route::middleware(['role:KH'])->group(function () {
     Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
     Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
     Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
+    Route::get('/doimatkhau',[ProfileController::class, 'ChangePwd'])->name('profile.changepassword');
+    Route::post('/kiemtrapassword',[ProfileController::class,'IsPasswordChange'])->name('profile.ispassword');
+    Route::post('/submitchange',[ProfileController::class,'UpdatePassword'])->name('profile.submitchange');
 });
 
 

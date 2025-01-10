@@ -84,110 +84,128 @@
                 </div>
             </div>
             <div class="payment_right">
-                <div class="logo_payment"><img src="" alt="Lỗi hiển thị"></div>
-                <h4>Thông tin giao hàng</h4>
-                <div class="profile_payment">
-                    <input type="text" placeholder="Họ và tên">
-                    <div>
-                        <input type="email" placeholder="Email">
-                        <input type="tel" placeholder="Số điện thoại">
+                <form action="/completePayment" class="form_payment" method="POST">
+                    <div class="logo_payment"><img src="" alt="Lỗi hiển thị"></div>
+                    <h4>Thông tin giao hàng</h4>
+                    <div class="profile_payment">
+                        <input type="text" name="full_name" id="full_name_payment"
+                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset"
+                            placeholder="Họ và tên">
+                        <div class="alert_error_validate" id="full_name_payment_error">@error('full_name'){{$message}}@enderror</div>
+
+                        <div>
+                            <input type="email" name="email" id="email_payment" placeholder="Email" 
+                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
+                            <div class="alert_error_validate" id="email_payment_error">@error('email'){{$message}}@enderror</div>
+
+                            <input type="tel" name="phone" placeholder="Số điện thoại" 
+                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
+                            <div class="alert_error_validate" id="phone_payment_error">@error('phone'){{$message}}@enderror</div>
+
+                        </div>
+                        <input type="text" placeholder="Địa chỉ - Số nhà, tên Đường">
+                        <div class="css_select_div">
+                            <select class="css_select" id="provinces" name="provinces" title="Chọn Tỉnh Thành"
+                                onchange=hadelChangeProvince(this)>
+                                <option value="">Tỉnh Thành</option>
+                            </select>
+                            <select class="css_select" id="districts" name="districts" title="Chọn Quận Huyện"
+                                onchange=hadelChangeDistrict(this)>
+                                <option value="">Quận Huyện</option>
+                            </select>
+                            <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã">
+                                <option value="">Phường Xã</option>
+                            </select>
+                        </div>
+                        <div class="method_payment">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h6>Phương thức thanh toán</h6>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%;"><input id="cod"type="radio" style="font-size: 14px;"
+                                                checked name="method_payment" value="COD"></td>
+                                        <td style="width: 10%;"><img src="./images/iconcod.jpg" alt="Lỗi"
+                                                style="height: 35px"></td>
+                                        <td>
+                                            <label for="cod" style="font-weight:500">Thanh toán khi nhận hàng
+                                                (COD)</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%;"><input type="radio" style="font-size: 14px;"
+                                                id="method_payment"name="method_payment" value="banking"></td>
+                                        <td style="width: 10%;"><img src="./images/iconbanking.jpg" alt="Lỗi"
+                                                style="height: 35px"></td>
+                                        <td>
+                                            <label for="method_payment" style="font-weight:500">Chuyển khoản qua ngân hàng
+                                                (Banking)</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <p>Thông tin thanh toán của Sinh Viên Nghiêm Túc</p>
+                                            <p>Ngân hàng : TECKCOMBANK</p>
+                                            <p>Số tài khoản : 999999999</p>
+                                            <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
+                                            <p style="margin-top: 8px;">Nội dung chuyển khoản : Số điện thoại đặt hàng + Mã
+                                                đơn
+                                                hàng</p>
+                                            <p>(Sẽ có nội dung mẫu sau khi hoàn tất đơn hàng)</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <input type="text" placeholder="Địa chỉ - Số nhà, tên Đường">
-                    <div class="css_select_div">
-                        <select class="css_select" id="provinces" name="provinces" title="Chọn Tỉnh Thành"
-                            onchange=hadelChangeProvince(this)>
-                            <option value="">Tỉnh Thành</option>
-                        </select>
-                        <select class="css_select" id="districts" name="districts" title="Chọn Quận Huyện"
-                            onchange=hadelChangeDistrict(this)>
-                            <option value="">Quận Huyện</option>
-                        </select>
-                        <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã">
-                            <option value="">Phường Xã</option>
-                        </select>
-                    </div>
-                    <div class="method_payment">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td colspan="3">
-                                        <h6>Phương thức thanh toán</h6>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 10%;"><input id="cod"type="radio" style="font-size: 14px;"
-                                            checked name="method_payment" value="COD"></td>
-                                    <td style="width: 10%;"><img src="./images/iconcod.jpg" alt="Lỗi"
-                                            style="height: 35px"></td>
-                                    <td>
-                                        <label for="cod" style="font-weight:500">Thanh toán khi nhận hàng (COD)</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 10%;"><input type="radio" style="font-size: 14px;"
-                                            id="method_payment"name="method_payment" value="banking"></td>
-                                    <td style="width: 10%;"><img src="./images/iconbanking.jpg" alt="Lỗi"
-                                            style="height: 35px"></td>
-                                    <td>
-                                        <label for="method_payment" style="font-weight:500">Chuyển khoản qua ngân hàng
-                                            (Banking)</label>
-                                    </td>
-                                </tr>
-                                <tr  >
-                                    <td colspan="3">
-                                        <p>Thông tin thanh toán của Sinh Viên Nghiêm Túc</p>
-                                        <p>Ngân hàng : TECKCOMBANK</p>
-                                        <p>Số tài khoản : 999999999</p>
-                                        <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
-                                        <p style="margin-top: 8px;">Nội dung chuyển khoản : Số điện thoại đặt hàng + Mã đơn
-                                            hàng</p>
-                                        <p>(Sẽ có nội dung mẫu sau khi hoàn tất đơn hàng)</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <button id="payment_order">Hoàn tất đơn hàng</button>
+                    <button type="submit" id="payment_order">Hoàn tất đơn hàng</button>
+                </form>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
     <script>
-fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
-    .then(response => response.json())
-    .then(data => {
-        let provinces = data.data;
-        if (provinces !== undefined) {
-            provinces.map(item => document.getElementById('provinces').innerHTML += `<option value="${item.id}">${item.full_name}</option>`);
+        fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
+            .then(response => response.json())
+            .then(data => {
+                let provinces = data.data;
+                if (provinces !== undefined) {
+                    provinces.map(item => document.getElementById('provinces').innerHTML +=
+                        `<option value="${item.id}">${item.full_name}</option>`);
+                }
+            });
+
+        function hadelChangeProvince(provinceId) {
+            fetch(`https://esgoo.net/api-tinhthanh/2/${provinceId.value}.htm`)
+                .then(response => response.json())
+                .then(data => {
+                    let districts = data.data;
+                    document.getElementById('districts').innerHTML = '<option value="">Quận Huyện</option>';
+                    document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
+                    if (districts !== undefined) {
+                        districts.map(item => document.getElementById('districts').innerHTML +=
+                            `<option value="${item.id}">${item.full_name}</option>`);
+                    }
+                });
+
         }
-    });
 
-function hadelChangeProvince(provinceId) {
-    fetch(`https://esgoo.net/api-tinhthanh/2/${provinceId.value}.htm`)
-        .then(response => response.json())
-        .then(data => {
-            let districts = data.data;
-            document.getElementById('districts').innerHTML = '<option value="">Quận Huyện</option>';
-            document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
-            if (districts !== undefined) {
-                districts.map(item => document.getElementById('districts').innerHTML += `<option value="${item.id}">${item.full_name}</option>`);
-            }
-        });
-
-}
-function hadelChangeDistrict(districtId) {
-    fetch(`https://esgoo.net/api-tinhthanh/3/${districtId.value}.htm`)
-        .then(response => response.json())
-        .then(data => {
-            let wards = data.data;
-            document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
-            if (wards !== undefined) {
-                wards.map(item => document.getElementById('wards').innerHTML += `<option value="${item.code}">${item.full_name}</option>`);
-            }
-        });
-}
+        function hadelChangeDistrict(districtId) {
+            fetch(`https://esgoo.net/api-tinhthanh/3/${districtId.value}.htm`)
+                .then(response => response.json())
+                .then(data => {
+                    let wards = data.data;
+                    document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
+                    if (wards !== undefined) {
+                        wards.map(item => document.getElementById('wards').innerHTML +=
+                            `<option value="${item.code}">${item.full_name}</option>`);
+                    }
+                });
+        }
     </script>
 
 @endsection

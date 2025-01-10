@@ -57,7 +57,7 @@
         </div>
         <div class="footer_top_right">
             <div class="footer_top_logo">
-                <a href=""><img src="{{$lienKetWebsite->logo}}" style="max-width: 100px;" alt="Lỗi hiển thị"></a>
+                <a href=""><img src="{{asset('images/'.$lienKetWebsite->logo)}}" style="max-width: 100px;" alt="Lỗi hiển thị"></a>
             </div>
             <div class="footer_top_slogan">
                 <a href="">Slogan</a>
