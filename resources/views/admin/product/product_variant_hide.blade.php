@@ -20,11 +20,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div>
-                            @if (session('msg'))
-                                <p id="msg" style="display: block; color: green;">{{ session('msg') }}</p>
-                            @endif
-                        </div>
+
                         @if(count($danhSachBienThe)==0)
                             <p style="text-align: center;font-size:25px">Không có variant của sản phẩm {{$product->name}} bị ẩn!!!</p>
                         @else
@@ -107,7 +103,7 @@
             .done((data)=>{
                 const row = document.getElementById(`variant-${id}`);
                 row.parentNode.removeChild(row);
-                alert(data);
+                alertify.alert(data);
             })
             document.getElementById('variant-popup').style.display = "none";
         }
@@ -152,6 +148,11 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         }
+    </script>
+     <script>
+        @if(session('msg'))
+            alertify.alert('{{session('msg')}}');
+        @endif
     </script>
 @endsection
 @section('css')
