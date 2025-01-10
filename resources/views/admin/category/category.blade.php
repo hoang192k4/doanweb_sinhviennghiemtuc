@@ -2,7 +2,16 @@
 @section('title', 'Trang quản lý danh mục')
 <style>
     #categoryForm>button {
-        text-align: end;
+        background-color: rgb(19, 93, 102);
+        color: rgb(255, 255, 255);
+        text-align: center;
+        padding: 8px;
+        width: 70px;
+        margin-bottom: 12px;
+        border-radius: 4px;
+        float: right;
+        margin-right: 10px;
+        margin-top: 1px;
     }
 </style>
 @section('content')
@@ -21,6 +30,7 @@
         </div>
         <div class="separator_x"></div>
         <form action="{{ route('admin.category.searchCategory') }}" method="GET" id="categoryForm">
+
             <select name="categoryFilter" onchange="filter()">
                 <option value="all">Tất cả</option>
                 @foreach ($danhSachDanhMuc as $item)
@@ -55,15 +65,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="pagination">
-            <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">...</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
-        </div>
+        {{ $danhSachDanhMuc->links() }}
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
