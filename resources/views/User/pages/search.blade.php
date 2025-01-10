@@ -58,7 +58,7 @@
                                 <a href="{{route('detail',[$item->slug])}}"><img src="{{ asset('images/' . $item->image) }}" alt="Lỗi hiển thị"></a>
                                 <div class="product_search_list_item_info">
                                     <ul>
-                                        <li><a href="">{{ $item->name }}</a></li>
+                                        <li><a href="{{route('detail',$item->slug )}}">{{ $item->name }}</a></li>
                                         <li class = "price">{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></li>
                                         <li>{{ $item->rating }} <i class="fas fa-star"></i></li>
                                         <li>

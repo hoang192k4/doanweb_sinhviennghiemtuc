@@ -233,61 +233,74 @@
 
     <!-- Sản phẩm tương tự -->
     <section class="container_css product_best_seller">
-        <h4>Sản phẩm tương tự</h4>
+        <h4>ĐIỆN THOẠI NỔI BẬT NHẤT</h4>
         <div id="carouselExampleInterval" class="carousel slide carousel-dark" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="10000">
                     <div class="product_best_seller_items">
-                        @for ($i=0;$i<=3;$i++)
-                        <div class="product_best_seller_item">
-                            <a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
-                                    <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup></li>
-                                    <li>{{$sanPhamTuongTu[$i]->rating}}<i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
+
+                        @if (isset($sanPhamTuongTu))
+                            @for ($i = 0; $i < count($sanPhamTuongTu); $i++)
+                                @if ($i > 3)
+                                @break
+                            @endif
+                            <div class="product_best_seller_item">
+                                <a href="{{route('detail',[$sanPhamTuongTu[$i]->slug])}}"><img src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
+                                        alt="Lỗi hiển thị"></a>
+                                <div class="product_best_seller_item_info">
+                                    <ul>
+                                        <li><a href="{{route('detail',[$sanPhamTuongTu[$i]->slug])}}">{{ $sanPhamTuongTu[$i]->name }}</a></li>
+                                        <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                        </li>
+                                        <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
+                                        <li>
+                                            <a href=""><button>Mua ngay</button></a>
+                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
                         @endfor
-                    </div>
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <div class="product_best_seller_items">
-                        @for ($i=4;$i<=7;$i++)
-                        <div class="product_best_seller_item">
-                            <a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}"><img src="{{asset('images/'.$sanPhamTuongTu[$i]->image)}}" alt="Lỗi hiển thị"></a>
-                            <div class="product_best_seller_item_info">
-                                <ul>
-                                    <li><a href="{{route('detail',$sanPhamTuongTu[$i]->slug)}}">{{$sanPhamTuongTu[$i]->name}}</a></li>
-                                    <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup></li>
-                                    <li>{{$sanPhamTuongTu[$i]->rating}}<i class="fas fa-star"></i></li>
-                                    <li>
-                                        <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        @endfor
-                    </div>
+                            @endif
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            @if (isset($sanPhamTuongTu) && count($sanPhamTuongTu) > 4)
+                <div class="carousel-item" data-bs-interval="2000">
+                    <div class="product_best_seller_items">
+                        @for ($i = 4; $i < 8; $i++)
+                            <div class="product_best_seller_item">
+                                <a href="{{route('detail',[$sanPhamTuongTu[$i]->slug])}}"><img src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
+                                        alt="Lỗi hiển thị"></a>
+                                <div class="product_best_seller_item_info">
+                                    <ul>
+                                        <li><a href="{{route('detail',[$sanPhamTuongTu[$i]->slug])}}">{{ $sanPhamTuongTu[$i]->name }}</a></li>
+                                        <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                        </li>
+                                        <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
+                                        <li>
+                                            <a href=""><button>Mua ngay</button></a>
+                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        @endfor
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            @else
         </div>
+        @endif
+    </div>
     </section>
 @endsection
 @section('script')
