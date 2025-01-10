@@ -1,5 +1,10 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý danh mục')
+<style>
+    #categoryForm>button {
+        text-align: end;
+    }
+</style>
 @section('content')
     <div class="content" id="danhmuc">
         <div class="head">
@@ -15,17 +20,20 @@
             </div>
         </div>
         <div class="separator_x"></div>
-        {{-- @if (session('message'))
+        <form action="{{ route('admin.category.searchCategory') }}" method="GET" id="categoryForm">
+            <select name="categoryFilter" onchange="filter()">
+                <option value="all">Tất cả</option>
+                @foreach ($danhSachDanhMuc as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+            <button type="submit">Lọc</button>
+        </form>
+        @if (session('message'))
             <div class="alert alert-warning">
                 {{ session('message') }}
             </div>
-        @endif --}}
-        <select>
-            <option value="">Tất cả</option>
-            @foreach ($danhSachDanhMuc as $item)
-                <option value="">{{ $item->name }}</option>
-            @endforeach
-        </select>
+        @endif
         <table>
             <thead>
                 <tr>
@@ -68,3 +76,8 @@
         </div>
     </div>
 @endsection
+<script>
+    function filter() {
+        document.getElementbyId('categoryForm').submit();
+    }
+</script>

@@ -12,6 +12,9 @@ class AdminCategoryController extends Controller
     public function index()
     {
         $danhSachDanhMuc = Category::all();
+        if ($danhSachDanhMuc->isEmpty()) {
+            return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
+        }
         return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
     public function addCategory()
@@ -35,7 +38,15 @@ class AdminCategoryController extends Controller
     public function searchCategory(Request $request)
     {
         $keyCategory = $request->input('keySearchCategory');
+        $categoryFilter = $request->input('categoryFilter');
+
         $danhSachDanhMuc = Category::where('name', 'like', '%' . $keyCategory . '%')->get();
+
+        if ($categoryFilter === 'all') {
+            $danhSachDanhMuc = Category::all();
+        } else {
+            $danhSachDanhMuc = Category::where('id', $categoryFilter)->get();
+        }
 
         if ($danhSachDanhMuc->isEmpty()) {
             return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
