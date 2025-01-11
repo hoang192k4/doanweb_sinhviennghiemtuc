@@ -23,6 +23,7 @@ class OrderController extends Controller
                 'full_name'=>'required|string|max:255',
                 'phone' => 'required|string|regex:/^[0-9]{10}$/',
                 'email' => 'required|email|max:50',
+                'address'=>'required|string|max:255'
             ],
             [
                 'full_name.required' => 'Bạn chưa nhập họ và tên',
@@ -32,6 +33,8 @@ class OrderController extends Controller
                 'email.max' => 'Email không được quá 50 ký tự',
                 'phone.required' => 'Bạn chưa nhập số điện thoại',
                 'phone.regex' => 'Vui lòng nhập ký tự số ( 0 đến 9 ) không quá 10 kí tự',
+                'address.required' => 'Bạn chưa nhập họ và tên',
+                'address.max' => 'Họ và tên không được quá 255 ký tự',
             ]
         );
         $orderPayment =new Order();
@@ -40,8 +43,8 @@ class OrderController extends Controller
         $orderPayment->full_name=$req['full_name'];
         $orderPayment->phone=$req['phone'];
         $orderPayment->email=$req['email'];
+        $orderPayment->address=$req['address'];
         $orderpayment->save();
-        return view('User.profile.payment')->witj('orderPayment',$orderPayment);
-
+        return redirect()->route('user.payment')->with('msg','Đặt hàng thàng công!');
     }
 }
