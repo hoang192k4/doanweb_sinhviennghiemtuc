@@ -92,7 +92,9 @@ Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
+        Route::post('/payment','completePayment')->name('complete-payment');
     });
+
 
     //Route profile
     Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
