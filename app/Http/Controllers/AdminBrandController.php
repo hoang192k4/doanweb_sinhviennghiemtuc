@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use App\Models\Category;
 
 class AdminBrandController extends Controller
 {
@@ -13,6 +14,8 @@ class AdminBrandController extends Controller
     public function index()
     {
         //
+        $danhSachTenDanhMuc = Category::all();
+        return view('admin.category.addbrand')->with('danhSachTenDanhMuc', $danhSachTenDanhMuc);
     }
 
     /**
@@ -28,7 +31,13 @@ class AdminBrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Brand::create([
+            'name' => $request->input('nameBrand'),
+            'image' => $request->input('imageBrand'),
+            'category_id' => $request->input('nameCategory'),
+            'status' => $request->input('status'),
+        ]);
+        return redirect()->route('admin.addbrand.index')->with('msg', 'Thêm thương hiệu thành công');
     }
 
     /**
@@ -62,7 +71,7 @@ class AdminBrandController extends Controller
     {
         //
     }
-    public function filter(Request $request,string $opt)
+    public function filter(Request $request, string $opt)
     {
         $brands = Brand::filter($opt);
         return $brands;
