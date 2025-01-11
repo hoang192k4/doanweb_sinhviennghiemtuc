@@ -37,6 +37,10 @@
             color: black;
             padding: 10px;
         }
+
+        .technology_content .row_news .col_news>a {
+            color: black;
+        }
     </style>
     <div class="container_css" style="padding:10px;">
         <div class="content">
@@ -125,8 +129,10 @@
                         <div class="row_news">
                             @foreach ($danhSachBaiViet as $item)
                                 <div class="col_news">
-                                    <img src="/images/16pro.jpg" alt="Image 1">
-                                    <p class="mt-3">{{ $item->title }}</p>
+                                    <a href="#"><img src="{{ $item->image }}" alt="Image 1"></a>
+                                    <a href="#">
+                                        <p class="mt-3">{{ $item->title }}</p>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
