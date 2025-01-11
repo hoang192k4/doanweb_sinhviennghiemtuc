@@ -16,7 +16,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('user.profile.profile')->with('user', User::first());
+        return view('user.profile.profile')->with('user', Auth::user());
     }
     public function editInfo(Request $request)
     {
@@ -28,7 +28,7 @@ class ProfileController extends Controller
             'gender' => 'required|string',
             'birthday' => 'required|date',
         ]);
-        $user = User::first();
+        $user = Auth::user();
         $user->username = $request->input('username');
         $user->full_name = $request->input('fullname');
         $user->email = $request->input('email');
@@ -47,7 +47,7 @@ class ProfileController extends Controller
             $file = $request->file('image');
             $filename = 'image.' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
-            $user = User::first();
+            $user = Auth::user();
             $user->image = $filename;
             $user->save();
             return redirect()->back();
@@ -55,22 +55,22 @@ class ProfileController extends Controller
     }
     public function order_history()
     {
-        return view('user.profile.order_history')->with('orders', Order::where('user_id', 3)->get());
+        return view('user.profile.order_history')->with('orders', Order::where('user_id', Auth::user()->id)->get());
     }
     public function favourite_product()
     {
-        return view('user.profile.favourite_product')->with('products', Product::whereIn('id', LikeProduct::where('user_id', 3)->pluck('product_id'))->get());
+        return view('user.profile.favourite_product')->with('products', Product::whereIn('id', LikeProduct::where('user_id', Auth::user()->id)->pluck('product_id'))->get());
     }
     public function unLike($id)
     {
-        $like = LikeProduct::where('user_id', 3)->where('product_id', $id)->first();
+        $like = LikeProduct::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
         if ($like)
             $like->delete();
         return redirect()->back();
     }
     public function review_history()
     {
-        return view('user.profile.review_history')->with('reviews', Rating::where('user_id', 3)->get());
+        return view('user.profile.review_history')->with('reviews', Rating::where('user_id', Auth::user()->id)->get());
     }
     public function ChangePwd()
     {
