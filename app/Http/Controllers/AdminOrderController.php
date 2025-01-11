@@ -7,6 +7,9 @@ use App\Models\Order;
 
 class AdminOrderController extends Controller
 {
+    public function index(){
+        return view('admin.pages.order');
+    }
     public function updateChuanBi($id)
     {
         $order = Order::find($id);

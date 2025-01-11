@@ -19,28 +19,29 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
     Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
-    Route::get('/',"index")->name('user.index');
+    Route::get('/', "index")->name('user.index');
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
     Route::post('/dangky', "DangKy")->name('dangky');
-    Route::post('/dangnhap',"DangNhap")->name('dangnhap');
-    Route::get('/logout',"Logout")->name('logout');
+    Route::post('/dangnhap', "DangNhap")->name('dangnhap');
+    Route::get('/logout', "Logout")->name('logout');
 });
 
-Route::controller(CartController::class)->group(function(){
-    Route::get('/shopping-cart',"index")->name('user.shoppingcart');
-    Route::get('/add-to-cart/{id}/{quantity}',"addToCart")->name('cart.add');
-    Route::get('/cart-delete-item/{id}','deleteItemCart')->name('cart.delete_item');
-    Route::get('/cart-delete-all','deleteAllItem');
-    Route::get('/cart-minus-one-variant/{id}','minusOnQuantity');
+Route::controller(CartController::class)->group(function () {
+    Route::get('/shopping-cart', "index")->name('user.shoppingcart');
+    Route::get('/add-to-cart/{id}/{quantity}', "addToCart")->name('cart.add');
+    Route::get('/cart-delete-item/{id}', 'deleteItemCart')->name('cart.delete_item');
+    Route::get('/cart-delete-all', 'deleteAllItem');
+    Route::get('/cart-minus-one-variant/{id}', 'minusOnQuantity');
 });
+
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
-    
+
 });
 //Phân quyền quản lý
 Route::middleware(['role:QL'])->group(function () {
- 
+
 });
 //Phân quyền quản lý , nhân viên và khách hàng
 Route::middleware(['role:QL,NV,KH'])->group(function () {
@@ -49,11 +50,10 @@ Route::middleware(['role:QL,NV,KH'])->group(function () {
 //phân quyền khách hàng
 Route::middleware(['role:KH'])->group(function () {
 
-
 });
 
-Route::controller(OrderController::class)->group(function(){
-    Route::get('/payment','index')->name('user.payment');
+Route::controller(OrderController::class)->group(function () {
+    Route::get('/payment', 'index')->name('user.payment');
 });
 
 
@@ -82,29 +82,30 @@ Route::get('/admin/addcategory', function () {
 
 
 //Route profile
-Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
-Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
-Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
-Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
-Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
-Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
-Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
-
+Route::controller(ProfileController::class)->group(function () {
+    Route::get('/trangcanhan', 'index')->name('profile.index');
+    Route::post('/trangcanhan/editInfo', 'editInfo')->name('profile.editInfo');
+    Route::post('/trangcanhan/editImage', 'editImage')->name('profile.editImage');
+    Route::get('/lichsudonhang', 'order_history')->name('profile.order_history');
+    Route::get('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
+    Route::get('/sanphamyeuthich', 'favourite_product')->name('profile.favourite_product');
+    Route::get('/sanphamyeuthich/unLike/{id}', 'unLike')->name('profile.unLike');
+    Route::get('/lichsudanhgia', 'review_history')->name('profile.review_history');
+});
 
 //Route dashboard
-Route::get('/admin', function () {
-    return view('admin.pages.index');
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/admin', 'index')->name('admin.index');
+    Route::post('/admin/editWebsite', 'editWebsite')->name('admin.editWebsite');
+    Route::post('/admin/editLogo', 'editLogo')->name('admin.editLogo');
 });
-Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->name('admin.editWebsite');
-Route::post('/admin/editLogo', [AdminController::class, 'editLogo'])->name('admin.editLogo');
-
 
 //Route quan ly don hang
-Route::get('/admin/order', function () {
-    return view('admin.pages.order');
+Route::controller(AdminOrderController::class)->group(function () {
+    Route::get('/admin/order', 'index')->name('admin.order');
+    Route::post('/admin/updateChuanBi/{id}', 'updateChuanBi')->name('admin.updateChuanBi');
+    Route::post('/admin/updateVanChuyen/{id}', 'updateVanChuyen')->name('admin.updateVanChuyen');
 });
-Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
-Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
 
 Route::get('/admin/statistical', function () {
     return view('admin.pages.statistical');
@@ -129,16 +130,16 @@ Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter'])
 
 //Route quan li lien he
 
-Route::get('/admin/contact',[AdminContactController::class,'showListContacts'])->name('admin.contact');
-Route::delete('/admin/contact/delete/{id}',[AdminContactController::class,'deleteContact'])->name('contact.delete');
-Route::get('/admin/contact/update/{id}',[AdminContactController::class,'updateContact'])->name('contact.update');
-Route::post('/addContact',[AdminContactController::class,'addContact']);
+Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
+Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
+Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
+Route::post('/addContact', [AdminContactController::class, 'addContact']);
 
 
 //Quản lý đơn hàng.
-Route::post('/admin/order/delete/{id}',[AdminOrderController::class,'deleteOrder'])->name('order.delete');
-Route::post('/admin/order/cancel/{id}',[AdminOrderController::class,'cancelOrder'])->name('order.cancel');
+Route::post('/admin/order/delete/{id}', [AdminOrderController::class, 'deleteOrder'])->name('order.delete');
+Route::post('/admin/order/cancel/{id}', [AdminOrderController::class, 'cancelOrder'])->name('order.cancel');
 
 //quản lý đánh giá
-Route::get('/admin/review',[AdminReviewController::class,'showListReviews'])->name('admin.pages.review');
-Route::delete('/admin/review/delete/{id}',[AdminReviewController::class,'deleteReviews'])->name('admin.review.delete');
+Route::get('/admin/review', [AdminReviewController::class, 'showListReviews'])->name('admin.pages.review');
+Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
