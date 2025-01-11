@@ -120,7 +120,7 @@
                     element.forEach(element => {
                         element.style.display = "none";
                     });
-                    alertify.success(res.success);
+                     alertify.success(res.success);
                 },
                 error: function(xhr){
                     const error = xhr.responseJSON.errors;
