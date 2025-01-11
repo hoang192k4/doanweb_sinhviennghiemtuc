@@ -57,6 +57,15 @@ class ProfileController extends Controller
     {
         return view('user.profile.order_history')->with('orders', Order::where('user_id', Auth::user()->id)->get());
     }
+    public function cancel($id)
+    {
+        $order = Order::where('user_id', Auth::user()->id)->find($id);
+        if ($order){
+            $order->order_status_id = 7;
+            $order->save();
+        }
+        return redirect()->back();
+    }
     public function favourite_product()
     {
         return view('user.profile.favourite_product')->with('products', Product::whereIn('id', LikeProduct::where('user_id', Auth::user()->id)->pluck('product_id'))->get());

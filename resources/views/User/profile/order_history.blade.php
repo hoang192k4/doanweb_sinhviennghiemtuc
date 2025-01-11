@@ -47,8 +47,9 @@
                                         <div class="table_item">Thành tiền:<span
                                                 style="font-size: 25px;">{{$order->total_price}}</span>đ
                                         </div>
-                                        @if (in_array($order->order_status_id, [1, 2, 3]))
-                                            <button class="rattingBtn" onclick="showPopup()">Hủy đơn hàng</button>
+                                        @if (in_array($order->order_status_id, [1, 2]))
+                                            <button class="rattingBtn"
+                                                onclick=""><a href="{{route('profile.cancel', ['id' => $order->id])}}">Hủy đơn hàng</a></button>
                                         @endif
                                     </div>
                                 </div>
@@ -86,7 +87,8 @@
                                         <div class="table_item">Thành tiền:<span
                                                 style="font-size: 25px;">{{$order->total_price}}</span>đ
                                         </div>
-                                        <button class="rattingBtn" onclick="showPopup()">Hủy đơn hàng</button>
+                                        <button class="rattingBtn"
+                                            onclick=""><a href="{{route('profile.cancel', ['id' => $order->id])}}">Hủy đơn hàng</a></button>
                                     </div>
                                 </div>
                             @endforeach
@@ -123,7 +125,10 @@
                                         <div class="table_item">Thành tiền:<span
                                                 style="font-size: 25px;">{{$order->total_price}}</span>đ
                                         </div>
-                                        <button class="rattingBtn" onclick="showPopup()">Hủy đơn hàng</button>
+                                        @if ($order->order_status_id == 2)
+                                            <button class="rattingBtn"
+                                                onclick=""><a href="{{route('profile.cancel', ['id' => $order->id])}}">Hủy đơn hàng</a></button>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
