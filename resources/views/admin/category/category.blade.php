@@ -58,14 +58,24 @@
                     <tr>
                         <td style="text-align: center;">{{ $item->id }}</td>
                         <td>{{ $item->name }}</td>
-                        <td style="text-align: center;"><a href=""><i class="fa-solid fa-check"></i></a></td>
+                        <td style="text-align: center;"><a
+                                href="{{ route('admin.category.editCategory', ['id' => $item->id]) }}"><i
+                                    class="fa-solid fa-check"></i></a></td>
                         <td style="text-align: center;"><a onclick="popup('dm')"><i class="fa-solid fa-x"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        {{ $danhSachDanhMuc->links() }}
+        <div class="pagination">
+            <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">...</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
+        </div>
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
