@@ -39,6 +39,7 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/cart-delete-all', 'deleteAllItem');
     Route::get('/cart-minus-one-variant/{id}', 'minusOnQuantity');
 });
+
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
     //Route dashboard
@@ -52,10 +53,12 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
     Route::post('/admin/order/delete/{id}', [AdminOrderController::class, 'deleteOrder'])->name('order.delete');
     Route::post('/admin/order/cancel/{id}', [AdminOrderController::class, 'cancelOrder'])->name('order.cancel');
+
     //Route quan li thong ke
     Route::get('/admin/statistical', function () {
         return view('admin.pages.statistical');
     });
+
     //Route quan ly san pham
     Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->middleware(AdminRoleMiddleware::class)->name('admin.product.active');
     Route::get('/admin/product/deactive/{id}', [AdminProductController::class, 'deactive'])->middleware(AdminRoleMiddleware::class)->name('admin.product.deactive');
@@ -84,9 +87,11 @@ Route::middleware(['role:QL,NV'])->group(function () {
 });
 
 //Phân quyền quản lý
-Route::middleware(['role:QL'])->group(function () {});
+Route::middleware(['role:QL'])->group(function () { });
+
 //Phân quyền quản lý , nhân viên và khách hàng
-Route::middleware(['role:QL,NV,KH'])->group(function () {});
+Route::middleware(['role:QL,NV,KH'])->group(function () { });
+
 //phân quyền khách hàng
 Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
@@ -97,16 +102,19 @@ Route::middleware(['role:KH'])->group(function () {
 
 
     //Route profile
-    Route::get('/trangcanhan', [ProfileController::class, 'index'])->name('profile.index');
-    Route::post('/trangcanhan/editInfo', [ProfileController::class, 'editInfo'])->name('profile.editInfo');
-    Route::post('/trangcanhan/editImage', [ProfileController::class, 'editImage'])->name('profile.editImage');
-    Route::get('/lichsudonhang', [ProfileController::class, 'order_history'])->name('profile.order_history');
-    Route::get('/sanphamyeuthich', [ProfileController::class, 'favourite_product'])->name('profile.favourite_product');
-    Route::get('/sanphamyeuthich/unLike/{id}', [ProfileController::class, 'unLike'])->name('profile.unLike');
-    Route::get('/lichsudanhgia', [ProfileController::class, 'review_history'])->name('profile.review_history');
-    Route::get('/doimatkhau', [ProfileController::class, 'ChangePwd'])->name('profile.changepassword');
-    Route::post('/kiemtrapassword', [ProfileController::class, 'IsPasswordChange'])->name('profile.ispassword');
-    Route::post('/submitchange', [ProfileController::class, 'UpdatePassword'])->name('profile.submitchange');
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/trangcanhan', 'index')->name('profile.index');
+        Route::post('/trangcanhan/editInfo', 'editInfo')->name('profile.editInfo');
+        Route::post('/trangcanhan/editImage', 'editImage')->name('profile.editImage');
+        Route::get('/lichsudonhang', 'order_history')->name('profile.order_history');
+        Route::get('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
+        Route::get('/sanphamyeuthich', 'favourite_product')->name('profile.favourite_product');
+        Route::get('/sanphamyeuthich/unLike/{id}', 'unLike')->name('profile.unLike');
+        Route::get('/lichsudanhgia', 'review_history')->name('profile.review_history');
+        Route::get('/doimatkhau', 'ChangePwd')->name('profile.changepassword');
+        Route::post('/kiemtrapassword', 'IsPasswordChange')->name('profile.ispassword');
+        Route::post('/submitchange', 'UpdatePassword')->name('profile.submitchange');
+    });
 });
 
 Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');

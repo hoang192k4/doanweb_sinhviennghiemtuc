@@ -113,10 +113,14 @@
                     newPassword:$('#newPassword').val(),
                 },
                 success:function(res){
-                    alertify.success(res.success);
-                    setTimeout(() => {
-                        window.location.href = "{{ route('user.index')}}"
-                    }, 1000);
+                    $('#oldpassword').val(''),
+                    $('#newPassword').val(''),
+                    $('#confirmNewPassword').val('') ;
+                    const element= document.querySelectorAll('.hide_pwd_change');
+                    element.forEach(element => {
+                        element.style.display = "none";
+                    });
+                     alertify.success(res.success);
                 },
                 error: function(xhr){
                     const error = xhr.responseJSON.errors;
