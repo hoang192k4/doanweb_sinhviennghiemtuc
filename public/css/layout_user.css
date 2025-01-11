@@ -90,8 +90,6 @@ p{
     width: 140px;
     padding:10px 5px ;
     z-index: 100;
-    border-radius: 5px;
-    border-top-right-radius: 0;
     transition: all linear 0.3s;
 }
 .dropbox_login >li {
@@ -104,7 +102,6 @@ p{
     position: relative;
 }
 .handleDropbox:hover {
-    border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
 .handleDropbox:hover .dropbox_login{
@@ -870,6 +867,23 @@ footer{
     display: none;
 }
 .login_user .register >form > .form_ground > #hide_pwd_cf_register:hover {
+    cursor: pointer;
+}
+.change_password_form > div {
+    display: flex;
+    position: relative;
+}
+.change_password_form > div > input {
+   padding-right: 20px;
+    width: 100%;
+}
+.change_password_form > div > span {
+    position: absolute;
+    top:0;
+    display: none;
+    right: 0;
+}
+.change_password_form > div > span:hover{
     cursor: pointer;
 }
 /*---------------------------------responsive Mobile footer-----------------------------------*/

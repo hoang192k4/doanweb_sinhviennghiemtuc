@@ -90,11 +90,13 @@
                                 @break
                             @endif
                             <div class="product_best_seller_item">
-                                <a href=""><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
-                                        alt="Lỗi hiển thị"></a>
+                                <a href="{{ route('detail', [$danhSachDTHot[$i]->slug]) }}"><img
+                                        src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}" alt="Lỗi hiển thị"></a>
                                 <div class="product_best_seller_item_info">
                                     <ul>
-                                        <li><a href="">{{ $danhSachDTHot[$i]->name }}</a></li>
+                                        <li><a
+                                                href="{{ route('detail', [$danhSachDTHot[$i]->slug]) }}">{{ $danhSachDTHot[$i]->name }}</a>
+                                        </li>
                                         <li>{{ number_format($danhSachDTHot[$i]->price, 0, ',', '.') }}<sup>đ</sup>
                                         </li>
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
@@ -114,11 +116,14 @@
                     <div class="product_best_seller_items">
                         @for ($i = 4; $i < count($danhSachDTHot); $i++)
                             <div class="product_best_seller_item">
-                                <a href=""><img src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
+                                <a href="{{ route('detail', [$danhSachDTHot[$i]->slug]) }}"><img
+                                        src="{{ asset('images/' . $danhSachDTHot[$i]->image) }}"
                                         alt="Lỗi hiển thị"></a>
                                 <div class="product_best_seller_item_info">
                                     <ul>
-                                        <li><a href="">{{ $danhSachDTHot[$i]->name }}</a></li>
+                                        <li><a
+                                                href="{{ route('detail', [$danhSachDTHot[$i]->slug]) }}">{{ $danhSachDTHot[$i]->name }}</a>
+                                        </li>
                                         <li>{{ number_format($danhSachDTHot[$i]->price, 0, ',', '.') }}<sup>đ</sup>
                                         </li>
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
@@ -157,14 +162,15 @@
         data-bs-interval="false">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                @if (isset($danhSachLapTopMoi))
-                    <div class="product_lt_new_items">
+                <div class="product_lt_new_items">
+                    @if (isset($danhSachLapTopMoi))
                         @for ($i = 0; $i < count($danhSachLapTopMoi); $i++)
                             @if ($i > 3)
                             @break
                         @endif
                         <div class="product_lt_new_item">
-                            <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
+                            <a href="{{ route('detail', [$danhSachLapTopMoi[$i]->slug]) }}"><img
+                                    src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
                                     alt="Lỗi hiển thị"></a>
                             <div class="product_lt_new_item_info">
                                 <ul>
@@ -181,29 +187,13 @@
                             </div>
                         </div>
                     @endfor
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
         @if (isset($danhSachLapTopMoi) && count($danhSachLapTopMoi) > 4)
             <div class="carousel-item">
                 <div class="product_lt_new_items">
                     @for ($i = 4; $i < count($danhSachLapTopMoi); $i++)
-<<<<<<< HEAD
-                    <div class="product_lt_new_item">
-                        <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
-                                alt="Lỗi hiển thị"></a>
-                        <div class="product_lt_new_item_info">
-                            <ul>
-                                <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
-                                <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
-                                    <sup>đ</sup></li>
-                                <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
-                                <li>
-                                    <a href=""><button>Mua ngay</button></a>
-                                    <div><a href="{{route('cart.add',['id'=>$danhSachLapTopMoi[$i]->id])}}"><i class="fas fa-cart-plus"></i></a></div>
-                                </li>
-                            </ul>
-=======
                         <div class="product_lt_new_item">
                             <a href=""><img src="{{ asset('images/' . $danhSachLapTopMoi[$i]->image) }} "
                                     alt="Lỗi hiển thị"></a>
@@ -220,27 +210,24 @@
                                     </li>
                                 </ul>
                             </div>
->>>>>>> hoang
                         </div>
                     @endfor
                 </div>
             </div>
+            <button class="carousel-control-prev" type="button"
+                data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button"
+                data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        @else
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+    @endif
 </div>
-@else
-</div>
-@endif
-
 </section>
 {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
 @include('user.partials.service')

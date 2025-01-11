@@ -17,7 +17,7 @@ class AdminContactController extends Controller
     public function deleteContact($id){
         $contact = Contact::findOrFail($id);
         $contact->delete();
-        return view('admin.pages.contact')->with('liên hệ của'.$contact->name.'đã xóa thành công');
+        return response()->json(['message'=>'liên hệ của '.$contact->name.' đã xóa thành công']);
     }
     public function updateContact($id){
         Contact::where('id',$id)->update(['status'=>1]);
@@ -40,10 +40,10 @@ class AdminContactController extends Controller
             'phone.required'=>'không được bỏ trống',
             'phone.digits'=>'chỉ đc nhập 10 ký tự số',
             'title.required'=>'không được bỏ trống',
-            'title.max'=>'tối đã 255 ký tự',                
+            'title.max'=>'tối đã 255 ký tự',
             'content.required'=>'không được bỏ trống',
         ]);
-       
+
         $data = new Contact();
         $data->id=$req['id'];
         $data->name=$req['name'];

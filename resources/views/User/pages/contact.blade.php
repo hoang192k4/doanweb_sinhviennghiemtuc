@@ -31,9 +31,6 @@
                             <div class="col">
                                 <input type="text" name="name" placeholder="Họ và tên của bạn @error('name'){{$message}}@enderror"
                                     value="@isset($contact){{ $contact->name }}@endisset" />
-                             
-     
-                                
                             </div>
                             <div class="col">
                                 <input type="text" name="phone" placeholder="Số điện thoại @error('phone'){{$message}}@enderror"

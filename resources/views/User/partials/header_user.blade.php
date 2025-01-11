@@ -20,7 +20,7 @@
                 @endguest
                 @auth
                     <li class="handleDropbox"><a href="" onclick="event.preventDefault();"><i class="far fa-user-circle"
-                                style="margin-right:5px"></i></a>
+                                style="margin-right:5px"></i>{{ Auth::user()->username}}</a>
                         <ul class="dropbox_login">
                             <li><a href="{{ route('profile.index')}} ">Thông tin cá nhân</a></li>
                             <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
@@ -34,8 +34,8 @@
     <nav class="container_css navbar navbar-bottom">
         <div class="navbar_item_first">
             <div>
-                <a href="{{ route('user.index') }}" style="font-size: 14px; color: rgb(233, 239, 236);"><img
-                        src="{{ $lienKetWebsite->logo }}" alt="Lỗi hiển thị"></a>
+                <a href="{{ route('user.index') }}" style="font-size: 14px; color: rgb(233, 239, 236);"><img style="width:99px;height:39px"
+                        src="{{ asset('images/'.$lienKetWebsite->logo) }}" alt="Lỗi hiển thị"></a>
             </div>
             <ul>
                 <li><a href="{{ route('user.index') }}">Trang chủ</a></li>
@@ -93,7 +93,7 @@
                     </form>
                 </li>
                 <li class="cart__header_desktop"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"
-                            style="margin-right:5px"><span class="number_cart">@if(session('cart')==null)0 @else {{session('cart')->totalQuantity}} @endif</span></i>Giỏ hàng</a></li>
+                            style="margin-right:5px"><span id="cart-quantity" class="number_cart">@if(session('cart')==null)0 @else {{session('cart')->totalQuantity}} @endif</span></i>Giỏ hàng</a></li>
                 <li class="cart__header_mb_tl"><a href="{{ route('user.shoppingcart') }}"><i class="fas fa-shopping-cart"><span
                                 class="number_cart_mb_tl">0</span></i></a></li>
             </ul>

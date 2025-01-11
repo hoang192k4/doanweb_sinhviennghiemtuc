@@ -4,7 +4,7 @@
             <a href="/admin"><img src="{{ asset('images/' . App\Models\About::first()->logo) }}" alt="Logo"></a>
         </div>
         <div class="website">
-            <a href=""><i class="fa-solid fa-globe"></i> Website</a>
+            <a href="{{route('user.index')}}"><i class="fa-solid fa-globe"></i> Website</a>
         </div>
     </div>
     <div class="right">

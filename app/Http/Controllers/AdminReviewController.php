@@ -13,6 +13,8 @@ class AdminReviewController extends Controller
     public function deleteReviews($id){
         $review = Rating::findOrFail($id);
         $review->delete();
-        return view('admin.review.delete')->with('msg','Đã xóa đánh giá thành công');
+        return response()->json([
+            'message'=>'Xóa đánh giá thành công!'
+        ]);
     }
 }

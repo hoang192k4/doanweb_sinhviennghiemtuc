@@ -24,7 +24,7 @@ class AdminOrderController extends Controller
         $order->save();
         return response()->json(['message' => 'Cập nhật đơn hàng thành công.']);
     }
-    
+
 
     public function cancelOrder($id){
         Order::where('id',$id)->update(['order_status_id'=>7]);//status=7 đơn hàng đã huy
@@ -37,7 +37,7 @@ class AdminOrderController extends Controller
             return response()->json(['message' => 'Không tim thấy đơn hàng'], 404);
         }
         if($order->order_status_id !=[4,5,6] || $order->payment_method==2){
-            $order = Order::where('id',$id)->update(['order_status_id'=>9]);//status =9 ẩn đơn hàng 
+            $order = Order::where('id',$id)->update(['order_status_id'=>9]);//status =9 ẩn đơn hàng
             return response()->json(['message' => 'Ẩn đơn hàng thành công.']);
         }
         return view('admin.pages.order');

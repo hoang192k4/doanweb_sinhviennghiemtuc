@@ -93,6 +93,7 @@
         }
         //xử lý giao diện khi xóa sản phẩm
         function afterDeleteAll() {
+            $('#cart-quantity').text(0);
             $('#cart-main #cart-bottom').remove();
             $('#list-product-variant')
                 .append($('<h3>')
@@ -116,6 +117,7 @@
                 })
                 .done((data) => {
                     $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                    $('#cart-quantity').text(`${data.cart.totalQuantity}`);
                 });
         }
         //Trừ một số lượng khi nhấn nút -
@@ -127,8 +129,9 @@
                         url: `/cart-minus-one-variant/${id}`
                     })
                     .done((data) => {
-                        console.log(data)
                         $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                        $('#cart-quantity').text(`${data.cart.totalQuantity}`);
+                        console.log(data);
                     });
             }
         }

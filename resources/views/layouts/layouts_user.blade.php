@@ -53,5 +53,82 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @yield('script')
 </body>
+<script>
+    function Login() {
+        $('.alert_error_validate').text('');
+        $.ajax({
+            'url': "{{ route('dangnhap') }} ",
+            'type': "POST",
+            'data': {
+                _token: '{{ csrf_token() }}',
+                email_login: $('#email_login').val(),
+                password_login: $('#password_login').val()
+            },
+            success: function(response) {
+                if (response.message) {
+                    alertify.success(response.message);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                }else{
+                    window.location="/admin";
+                }
+
+
+            },
+            error: function(xhr) {
+                const error = xhr.responseJSON.errors;
+                if (error) {
+                    if (error.email_login)
+                        $('#email_login_error').text(error.email_login);
+                    if (error.password_login)
+                        $('#password_login_error').text(error.password_login);
+                } else if (xhr.responseJSON.msg_error)
+                    alertify.error(xhr.responseJSON.msg_error)
+            }
+        })
+    }
+
+    function Register() {
+        $('.alert_error_validate').text('');
+        if ($('#password_register').val() !== $('#pwd_comfirm').val()) {
+            $('#pwd_comfirm_error').text('Xác nhận password sai');
+            return;
+        }
+        $('#pwd_comfirm_error').text('');
+        $.ajax({
+            'url': "{{ route('dangky') }}",
+            'type': "POST",
+            'data': {
+                _token: '{{ csrf_token() }}',
+                username: $('#username_register').val(),
+                full_name: $('#full_name_register').val(),
+                phone: $('#phone_register').val(),
+                email_register: $('#email_register').val(),
+                password_register: $('#password_register').val(),
+            },
+            success: function(response) {
+                alertify.success(response.message);
+                handleTargetLogin();
+                document.querySelectorAll('.form_register .form_ground input').forEach(element => {
+                    element.value = '';
+                });
+            },
+            error: function(xhr) {
+                const error = xhr.responseJSON.errors;
+                if (error.username)
+                    $('#username_register_error').text(error.username);
+                if (error.full_name)
+                    $('#full_name_register_error').text(error.full_name);
+                if (error.email_register)
+                    $('#email_register_error').text(error.email_register);
+                if (error.phone)
+                    $('#phone_register_error').text(error.phone);
+                if (error.password_register)
+                    $('#password_register_error').text(error.password_register);
+            }
+        });
+    }
+</script>
 
 </html>
