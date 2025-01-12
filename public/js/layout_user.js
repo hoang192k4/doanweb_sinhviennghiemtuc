@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     kt(); // Khởi tạo danh sách sản phẩm
-    SeachProduct(); // Gọi hàm tìm kiếm sản phẩm ngay khi tải trang
+    SeachProduct(undefined,undefined,undefined,documentElement.getElementById('seachall')); // Gọi hàm tìm kiếm sản phẩm ngay khi tải trang
 });
 const element_category = document.querySelector('#show__category');
 const element_categorys = document.querySelectorAll('.popup__category__ml__tl')
@@ -35,15 +35,15 @@ if (button_like) {
     }
 }
 
-const button_rams = document.querySelectorAll('.product_detail_right_ram button')
-if (button_rams) {
-    button_rams.forEach(element => {
-        element.onclick = function () {
-            button_rams.forEach(btn => btn.classList.remove('color_active'));
-            element.classList.add('color_active');
-        }
-    })
-}
+// const button_rams = document.querySelectorAll('.product_detail_right_ram button')
+// if (button_rams) {
+//     button_rams.forEach(element => {
+//         element.onclick = function () {
+//             button_rams.forEach(btn => btn.classList.remove('color_active'));
+//             element.classList.add('color_active');
+//         }
+//     })
+// }
 
 // const button_color = document.querySelectorAll('.product_detail_right_color button')
 // if (button_color) {
@@ -328,21 +328,22 @@ if (btnOpen) {
 }
 
 
-// const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
-// if (active_color_price) {
-//     active_color_price.forEach((element) => {
-//         element.onclick = function () {
-//             active_color_price.forEach(btn => btn.classList.remove('active_price'));
-//             this.classList.add('active_price');
-//         }
-//     });
-// }
+
 function kt() {
     const products = document.querySelectorAll('.product_search_list_right_item');
     return products;
 }
-function SeachProduct(min = 0, max = Infinity, itemsPage = 8) {
+function SeachProduct(min = 0, max = Infinity, itemsPage = 8,btn =null) {
+    const active_color_price = document.querySelectorAll('.product_search_list_price_popup button');
+if (active_color_price) {
+    active_color_price.forEach((element) => {
+        {
+            active_color_price.forEach(btn => btn.classList.remove('active_price'));
+        }
+    });
 
+}
+btn.classList.add('active_price');
 
     const products = Array.from(kt());
     const seachProduct = [];

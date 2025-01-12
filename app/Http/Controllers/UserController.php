@@ -36,7 +36,8 @@ class UserController extends Controller
     }
     public function TimKiemTheoTuKhoa(Request $request)
     {
-        $key = $request->input('seachbykey');
+        $key = str_replace('$', '', $request->input('seachbykey'));
+
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
@@ -152,23 +153,9 @@ class UserController extends Controller
             "sanPhamTuongTu"=>$arr
         ]);
     }
-    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
-
-        $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
-        $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
-        $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
-        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
-        $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
-        return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
-        ]);
+    public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
+        $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);
+        return $danhSachMau;
     }
     public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
         $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
@@ -179,5 +166,6 @@ class UserController extends Controller
             "price"=>$data->price
         ]);
     }
+
 
 }

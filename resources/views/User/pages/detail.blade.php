@@ -77,16 +77,16 @@
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
                 <div class="product_detail_right_ram">
                     @foreach ($danhSachBoNho as $index => $boNho)
-                        <a href="{{route("ChiTietSanPhamTheoBoNho",['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}" class="{{$index == 0 ? "color_active":''}}">
+                        <button class="color_active" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}')">
                             <span>{{$boNho->internal_memory}}</span>
                             <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
-                        </a>
+                        </button>
                     @endforeach
                 </div>
                 <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
-                <div class="product_detail_right_color">
+                <div class="product_detail_right_color" id="product_detail_right_color">
                     @foreach ( $mauSanPham as $index => $mau)
-                    <button onclick="LayThongTinSanPhamTheoMau('{{route('LayThongTinSanPhamTheoMau',['slug'=>$slug,'internal_memory'=>$mau->internal_memory,'color'=>$mau->color])}}',this)" class="{{$index == 0 ? 'color_active':''}}">
+                    <button onclick="LayThongTinSanPhamTheoMau('{{$slug}}','{{$mau->internal_memory}}','{{$mau->color}}',this)" class="{{$index == 0 ? 'color_active':''}}">
                         <img src="{{asset('images/'.$mau->image)}}" alt="Lỗi hiển thị">
                         <span>
                             <p>{{$mau->color}}</p>
@@ -233,7 +233,7 @@
 
     <!-- Sản phẩm tương tự -->
     <section class="container_css product_best_seller">
-        <h4>ĐIỆN THOẠI NỔI BẬT NHẤT</h4>
+        <h4>SẢN PHẨM TƯƠNG TỰ </h4>
         <div id="carouselExampleInterval" class="carousel slide carousel-dark" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="10000">
@@ -267,7 +267,10 @@
             @if (isset($sanPhamTuongTu) && count($sanPhamTuongTu) > 4)
                 <div class="carousel-item" data-bs-interval="2000">
                     <div class="product_best_seller_items">
-                        @for ($i = 4; $i < 8; $i++)
+                        @for ($i = 4; $i < count($sanPhamTuongTu); $i++)
+                        @if ($i>7)
+                        @break
+                        @endif
                             <div class="product_best_seller_item">
                                 <a href="{{route('detail',[$sanPhamTuongTu[$i]->slug])}}"><img src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
                                         alt="Lỗi hiển thị"></a>
@@ -318,12 +321,9 @@
         }
     </script>
     <script>
-        document.getElementById('number_input').addEventListener('change', function() {
-            const stock = document.getElementById('stock').value
-
-        });
-        function LayThongTinSanPhamTheoMau(url,btn)
+        function LayThongTinSanPhamTheoMau(slug,internal_memory,color,btn)
         {
+
             const button_color = document.querySelectorAll('.product_detail_right_color button')
             if (button_color) {
                 button_color.forEach(element => {
@@ -335,7 +335,7 @@
             btn.classList.add('color_active');
             $.ajax({
                 type: "GET",
-                url: url,
+                url:    `/detail/${slug}/${internal_memory}/${color}`,
                 data: "data",
                 dataType: "json",
                 success: function (response) {
@@ -354,5 +354,36 @@
                 }
             });
         }
+    </script>
+    <script>
+   function DanhSachMau(url) {
+    $.ajax({
+        method: "GET",
+        url: url,
+    })
+    .done((danhSachMau) => {
+        const thongTin = danhSachMau.map((mau, index) => {
+            const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
+            return `
+                <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
+                    <img src="{{asset('images/${mau.image}')}}" alt="Lỗi hiển thị">
+                    <span>
+                        <p>${mau.color}</p>
+                        <span>${formatprice}<sup>đ</sup></span>
+                    </span>
+                </button>
+            `;
+        });
+
+        const list = document.getElementById('product_detail_right_color');
+        list.innerHTML = thongTin.join('');
+    });
+}
+
+
+
+
+
+
     </script>
 @endsection
