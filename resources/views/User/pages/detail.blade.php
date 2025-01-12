@@ -373,7 +373,6 @@
     }
 </script>
 
-</script>
 <script>
     function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
 
