@@ -37,7 +37,8 @@ class UserController extends Controller
     }
     public function TimKiemTheoTuKhoa(Request $request)
     {
-        $key = $request->input('seachbykey');
+        $key = str_replace('$', '', $request->input('seachbykey'));
+
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
@@ -131,6 +132,7 @@ class UserController extends Controller
     }
 
     public function ChiTietSanPham($slug){
+        $product = Product::where('slug',$slug)->first();
         ProductUser::UpdateView($slug);
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
@@ -138,7 +140,8 @@ class UserController extends Controller
         $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
         $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
         $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
-        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
+        //thông số kỹ thuật
+        $thongSoKiThuatSanPham = $product->product_specification;
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
@@ -147,29 +150,15 @@ class UserController extends Controller
             "danhSachAnh"=>$danhSachAnh,
             "danhSachBoNho"=>$danhSachBoNho,
             "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
+            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
             "sanPhamTuongTu"=>$arr
         ]);
     }
-    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
-
-        $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
-        $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
-        $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
-        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
-        $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
-        return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
-        ]);
+    public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
+        $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);
+        return $danhSachMau;
     }
     public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
         $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
@@ -211,4 +200,5 @@ class UserController extends Controller
         $data->save();
         return redirect()->route('user.contact')->with('msg','Gửi liên hệ thành công!');
     }
+
 }

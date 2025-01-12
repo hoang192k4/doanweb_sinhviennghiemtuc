@@ -10,6 +10,7 @@ use App\Models\Brand;
 use App\Models\ImageProduct;
 use Illuminate\Support\Facades\File;
 use App\Models\ProductSpecification;
+use App\Models\CategorySpecification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,7 +34,8 @@ class AdminProductController extends Controller
         //
         $danhSachPhanLoai = Category::where('status',1)->get();
         $danhSachThuongHieu = Brand::filter(1);
-        return view('admin.product.addproduct',['danhSachPhanLoai'=>$danhSachPhanLoai,'danhSachThuongHieu'=>$danhSachThuongHieu]);
+        $danhSachThongTinKyThuat = CategorySpecification::where('category_id',1)->get();
+        return view('admin.product.addproduct',['danhSachPhanLoai'=>$danhSachPhanLoai,'danhSachThuongHieu'=>$danhSachThuongHieu,'danhSachThongTinKyThuat'=>$danhSachThongTinKyThuat]);
     }
 
     /**
@@ -44,35 +46,17 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'name'=>'required|unique:products|max:255',
             'description'=>'required',
-            'image.*'=>'required|image|mimes:jpeg,png,jpg|max:2048',
-            'display'=>'required',
-            'technic_screen'=>'required',
-            'resolution'=>'required',
-            'chipset'=>'required',
-            'os'=>'required',
-            'ram'=>'required',
-            'size'=>'required',
-            'launch_time'=>'required',
-            'camera'=>'required',
+            'image.*'=>'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'value.*'=>'required',
             'variants.*.color'=>'required',
             'variants.*.stock'=>'required|min:0',
             'variants.*.internal_memory'=>'required',
             'variants.*.price'=>'required|min:0',
-            'variants.*.image_variant'=>'required|image|mimes:jpeg,png,jpg|max:2048'
+            'variants.*.image_variant'=>'required|image|mimes:jpeg,png,jpg,webp|max:2048'
         ],[
             'name.required'=> 'Vui lòng nhập tên sản phẩm!',
             'name.unique'=>'Tên sản phẩm đã tồn tại!',
-            'description.required'=>'Vui lòng nhập mô tả!',
             'image.required'=>'Vui lòng thêm hình ảnh!',
-            'display.required'=>'Vui lòng nhập hình kích thước màn hình!',
-            'technic_screen'=>'Vui lòng nhập công nghệ màn hình!',
-            'resolution' =>'Vui lòng nhập độ phân giải màn hình!',
-            'chipset'=>'Vui lòng nhập chipset!',
-            'os'=>'Vui lòng nhập hệ điều hành!',
-            'ram'=>'Vui lòng nhập ram!',
-            'size'=>'Vui lòng nhập kích thước sản phẩm',
-            'launch_time'=>'Vui lòng nhập ngày ra mắt sản phẩm',
-            'camera'=>'Vui lòng nhập thông tin camera của sản phẩm!'
         ]);
 
         //thêm sản phẩm
@@ -96,18 +80,13 @@ class AdminProductController extends Controller
         }
 
         //thêm thông số kĩ thuật cho sản phẩm từ id của $product
-        ProductSpecification::create([
-            'display'=>$request->input('display'),
-            'technic_screen'=>$request->input('technic_screen'),
-            'resolution'=>$request->input('resolution'),
-            'chipset'=>$request->input('chipset'),
-            'ram'=>$request->input('ram'),
-            'camera'=>$request->input('camera'),
-            'operating_system'=>$request->input('os'),
-            'size'=>$request->input('size'),
-            'launch_time'=>$request->input('launch_time'),
-            'product_Id'=>$product->id
-        ]);
+        for($i = 0; $i < count($request->specification);$i++){
+            ProductSpecification::create([
+                'product_id'=>$product->id,
+                'category_specification_id' => $request->specification[$i],
+                'value' => $request->value[$i]
+            ]);
+        }
 
         //Thêm nhiều variant
         foreach($request->variants as $variant){
@@ -121,7 +100,7 @@ class AdminProductController extends Controller
                 ]);
         }
 
-        return redirect()->route('product.index')->with('msg','Thêm sản phẩm thành công!');
+        return redirect()->route('product.index')->with('msg','Thêm sản phẩm thành công! Sản phẩm đang ở trạng thái chờ duyệt');
     }
 
     /**
@@ -153,21 +132,12 @@ class AdminProductController extends Controller
     {
         //
         $validate = $request->validate([
+            'name'=>'required',
             'description'=>'required',
-            'display'=>'required',
-            'technic_screen'=>'required',
-            'resolution'=>'required',
-            'chipset'=>'required',
-            'os'=>'required',
-            'ram'=>'required',
-            'size'=>'required',
-            'launch_time'=>'required',
-            'camera'=>'required',
-
+            'value.*' => 'required|'
         ],[
-            'name.required'=> 'Vui lòng nhập tên sản phẩm!',
-            'name.unique'=>'Tên sản phẩm đã tồn tại!',
-            'description.required'=>'Vui lòng nhập mô tả!',
+            'name'=>'Vui lòng nhập tên sản phẩm',
+            'description'=>'Vui lòng nhập mô tả sản phẩm'
         ]);
 
         $product = Product::find($request->id);
@@ -198,11 +168,19 @@ class AdminProductController extends Controller
 
             }
         }
-        //cập nhật specification
+
+
         $product->update(['name'=>$request->input('name'),'slug'=>Str::slug($request->input('name')),'description'=>$request->description,'brand_id'=>$request->brand]);
-        $product->product_specification->update(['display'=>$request->input('display'),
-        'technic_screen'=>$request->technic_screen,'resolution'=>$request->resolution,'chipset'=>$request->chipset,'ram'=>$request->ram,'operating_system'=>$request->os,'camera'=>$request->camera,'launch_time'=>$request->launch_time,'size'=>$request->size]);
-        return redirect()->route('product.index')->with('msg','chỉnh sửa sản phẩm thành công!');
+
+
+        //duyệt danh sách các spe của sản phẩm gửi từ form và cập nhật từng dòng
+        //cập nhật theo id của product-spe
+        for($i = 0; $i < count($request->specification);$i++){
+            $spec = ProductSpecification::where('id',$request->specification[$i])->update([
+                'value'=>$request->value[$i]
+            ]);
+        }
+        return back()->with('msg','chỉnh sửa sản phẩm thành công!');
     }
 
     /**

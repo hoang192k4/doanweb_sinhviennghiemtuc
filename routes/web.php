@@ -32,6 +32,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
 
+
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -60,6 +61,10 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::get('/admin/statistical', function () {
         return view('admin.pages.statistical');
     });
+
+
+
+    Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
 
     //Route quan ly san pham
     Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->middleware(AdminRoleMiddleware::class)->name('admin.product.active');
@@ -121,10 +126,11 @@ Route::middleware(['role:KH'])->group(function () {
 
 //Route quan li danh mục
 Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
-Route::post('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
+Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
 Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
 Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
 Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updateCategory');
+Route::get('/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
 
 Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');

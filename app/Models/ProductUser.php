@@ -57,36 +57,45 @@ class ProductUser extends Model
         }
         return $danhSachSanPham;
     }
-    public static function TimKiemTheoTuKhoa($key){
-        $danhSachSanPham = DB::table('products')
-        ->select(
-            'products.id',
-            'products.name',
-            'products.slug',
-            'products.rating',
-            'categories.name as category_name',
-            'brands.name as brand_name',
-            DB::raw('MIN(image_products.image) as image'), // Lấy hình ảnh đầu tiên
-            DB::raw('MIN(product_variants.price) as price') // Lấy giá thấp nhất
-        )
-        ->join('image_products', 'products.id', '=', 'image_products.product_id')
-        ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
-        ->join('brands', 'products.brand_id', '=', 'brands.id')
-        ->join('categories', 'brands.category_id', '=', 'categories.id')
-        ->where('products.status', 1)
-        ->where(function ($query) use ($key) {
-            $query->where('categories.name', 'LIKE', '%' . $key . '%')
-                  ->orWhere('brands.name', 'LIKE', '%' . $key . '%')
-                  ->orWhere('products.name', 'LIKE', '%' . $key . '%')
-                  ->orWhere('products.description', 'LIKE', '%' . $key . '%')
-                  ->orWhere('product_variants.price', 'LIKE', '%' . $key . '%');
-        })
-        ->groupBy('products.id', 'products.name', 'products.slug','products.rating', 'categories.name', 'brands.name')
-        ->orderBy('products.name')
-        ->get();
+    public static function TimKiemTheoTuKhoa($key)
+    {
+        // Tách từ khóa
+        $keywords = preg_split('/\s+/', trim($key)); // Tách từ khóa dựa trên khoảng trắng
 
-    return $danhSachSanPham;
+        $danhSachSanPham = DB::table('products')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.slug',
+                'products.rating',
+                'categories.name as category_name',
+                'brands.name as brand_name',
+                DB::raw('MIN(image_products.image) as image'), // Lấy hình ảnh đầu tiên
+                DB::raw('MIN(product_variants.price) as price') // Lấy giá thấp nhất
+            )
+            ->join('image_products', 'products.id', '=', 'image_products.product_id')
+            ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->join('categories', 'brands.category_id', '=', 'categories.id')
+            ->where('products.status', 1)
+            ->where(function ($query) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $query->where(function ($q) use ($word) {
+                        $q->whereRaw('LOWER(categories.name COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('LOWER(brands.name COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('LOWER(products.name COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('LOWER(products.description COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('CAST(product_variants.price AS CHAR) LIKE ?', ["%{$word}%"]);
+                    });
+                }
+            })
+            ->groupBy('products.id', 'products.name', 'products.slug', 'products.rating', 'categories.name', 'brands.name')
+            ->orderBy('products.name')
+            ->get();
+
+        return $danhSachSanPham;
     }
+
     public static function HinhAnhSamPham($slug){
         return DB::table('image_products')
         ->join('products','products.id','=','image_products.product_id')
@@ -121,7 +130,7 @@ class ProductUser extends Model
     public static function MauSanPham($slug,$internal_memory){
         return DB::table('product_variants')
         ->join('products','product_variants.product_id','=','products.id')
-        ->select('product_variants.id','product_variants.color','product_variants.price','product_variants.stock','product_variants.image','product_variants.internal_memory')
+        ->select('product_variants.id','product_variants.color','product_variants.price','product_variants.stock','product_variants.image','product_variants.internal_memory','products.slug')
         ->where('products.slug',$slug)
         ->where('product_variants.internal_memory',$internal_memory)
         ->where('product_variants.status',1)

@@ -5,6 +5,10 @@
     .btn-goback>button>a {
         color: white;
     }
+
+    #inputContainer .form-control {
+        margin-bottom: 5px;
+    }
 </style>
 @section('content')
     <div class="separator"></div>
@@ -33,6 +37,14 @@
                                 <span class="text-danger">{{ $errors->first('nameCategory') }}</span>
                             @endif
                         </div>
+                        <div class="col">
+                            <label> Thông số kĩ thuật: </label>
+                        </div>
+                        <div class="col">
+                            <button id="btn_addSpecifications" type="button"> Thêm thông số kĩ thuật</button>
+                        </div>
+                        <div class="col" id="inputContainer">
+                        </div>
                     </div>
                     <div class="btn-goback">
                         @csrf
@@ -43,4 +55,23 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        // document.addEventListener('DOMContentLoaded', function() {
+        const btnAddSpecifications = document.getElementById('btn_addSpecifications');
+        const inputContainer = document.getElementById('inputContainer');
+
+        btnAddSpecifications.addEventListener('click', function() {
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.className = 'form-control';
+            newInput.name = 'nameSpecifications[]';
+            newInput.placeholder = 'Nhập thông số kĩ thuật';
+
+            // Thêm ô input mới vào container
+            inputContainer.appendChild(newInput);
+        });
+        // });
+    </script>
 @endsection
