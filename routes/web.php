@@ -28,7 +28,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/dangnhap', "DangNhap")->name('dangnhap');
     Route::get('/logout', "Logout")->name('logout');
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
-    Route::get('detail/{slug}/{internal_memory}', "ChiTietSanPhamTheoBoNho")->name("ChiTietSanPhamTheoBoNho");
+    Route::get('detail/{slug}/{internal_memory}',"LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
 
 });

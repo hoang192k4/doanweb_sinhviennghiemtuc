@@ -60,7 +60,7 @@ class ProductUser extends Model
     public static function TimKiemTheoTuKhoa($key)
     {
         // Tách từ khóa
-        $keywords = preg_split('/\s+/', trim($key)); // Tách từ khóa dựa trên khoảng trắng
+        $keywords = preg_split('/\s+/', trim($key));
 
         $danhSachSanPham = DB::table('products')
             ->select(
@@ -81,10 +81,10 @@ class ProductUser extends Model
             ->where(function ($query) use ($keywords) {
                 foreach ($keywords as $word) {
                     $query->where(function ($q) use ($word) {
-                        $q->whereRaw('LOWER(categories.name COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
-                            ->orWhereRaw('LOWER(brands.name COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
-                            ->orWhereRaw('LOWER(products.name COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
-                            ->orWhereRaw('LOWER(products.description COLLATE utf8mb4_bin) LIKE ?', ["%{$word}%"])
+                        $q->whereRaw('LOWER(categories.name COLLATE utf8mb4_unicode_ci ) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('LOWER(brands.name COLLATE utf8mb4_unicode_ci ) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('LOWER(products.name COLLATE utf8mb4_unicode_ci ) LIKE ?', ["%{$word}%"])
+                            ->orWhereRaw('LOWER(products.description COLLATE utf8mb4_unicode_ci ) LIKE ?', ["%{$word}%"])
                             ->orWhereRaw('CAST(product_variants.price AS CHAR) LIKE ?', ["%{$word}%"]);
                     });
                 }

@@ -85,32 +85,13 @@
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
                 <div class="product_detail_right_ram">
                     @foreach ($danhSachBoNho as $index => $boNho)
-<<<<<<< HEAD
-                        <a href="{{ route('ChiTietSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}"
-                            class="{{ $index == 0 ? 'color_active' : '' }}">
-                            <span>{{ $boNho->internal_memory }}</span>
-=======
-                        <button class="color_active" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}')">
+                        <button class="{{$index == 0 ? 'color_active':''}}" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}',this)">
                             <span>{{$boNho->internal_memory}}</span>
->>>>>>> long
                             <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
                         </button>
                     @endforeach
                 </div>
                 <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
-<<<<<<< HEAD
-                <div class="product_detail_right_color">
-                    @foreach ($mauSanPham as $index => $mau)
-                        <button
-                            onclick="LayThongTinSanPhamTheoMau('{{ route('LayThongTinSanPhamTheoMau', ['slug' => $slug, 'internal_memory' => $mau->internal_memory, 'color' => $mau->color]) }}',this)"
-                            class="{{ $index == 0 ? 'color_active' : '' }}">
-                            <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
-                            <span>
-                                <p>{{ $mau->color }}</p>
-                                <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
-                            </span>
-                        </button>
-=======
                 <div class="product_detail_right_color" id="product_detail_right_color">
                     @foreach ( $mauSanPham as $index => $mau)
                     <button onclick="LayThongTinSanPhamTheoMau('{{$slug}}','{{$mau->internal_memory}}','{{$mau->color}}',this)" class="{{$index == 0 ? 'color_active':''}}">
@@ -120,7 +101,6 @@
                             <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
                         </span>
                     </button>
->>>>>>> long
                     @endforeach
                 </div>
                 <div class="product_detail_right_quantity">
@@ -323,48 +303,6 @@
             alertify.success(data.message);
         })
     }
-</script>
-<script>
-    document.getElementById('number_input').addEventListener('change', function() {
-        const stock = document.getElementById('stock').value
-
-    });
-
-    function LayThongTinSanPhamTheoMau(url, btn) {
-        const button_color = document.querySelectorAll('.product_detail_right_color button')
-        if (button_color) {
-            button_color.forEach(element => {
-                {
-                    button_color.forEach(btn => btn.classList.remove('color_active'));
-                }
-            })
-        }
-<<<<<<< HEAD
-        btn.classList.add('color_active');
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: "data",
-            dataType: "json",
-            success: function(response) {
-                $('#stock').text(response.stock);
-                const price = new Intl.NumberFormat('de-DE').format(response.price);
-                if (response.stock > 0) {
-                    $('#status').text('(Còn hàng)');
-                } else {
-                    $('#status').text('(Hết hàng)');
-                }
-                $('#price').text(price);
-                //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
-
-                document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
-            }
-        });
-    }
-</script>
-=======
-    </script>
-    <script>
         function LayThongTinSanPhamTheoMau(slug,internal_memory,color,btn)
         {
 
@@ -398,9 +336,18 @@
                 }
             });
         }
-    </script>
-    <script>
-   function DanhSachMau(url) {
+
+
+   function DanhSachMau(url,btn) {
+    const button_color = document.querySelectorAll('.product_detail_right_ram button')
+            if (button_color) {
+                button_color.forEach(element => {
+                    {
+                        button_color.forEach(btn => btn.classList.remove('color_active'));
+                    }
+                })
+            }
+            btn.classList.add('color_active');
     $.ajax({
         method: "GET",
         url: url,
@@ -418,17 +365,13 @@
                 </button>
             `;
         });
-
         const list = document.getElementById('product_detail_right_color');
         list.innerHTML = thongTin.join('');
+        document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
+        document.getElementById('stock').innerHTML = danhSachMau[0].stock;
     });
-}
+   }
 
-
-
-
-
-
-    </script>
->>>>>>> long
+</script>
 @endsection
+
