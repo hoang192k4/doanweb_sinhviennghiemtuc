@@ -32,6 +32,7 @@ class Cart extends Model
         if($newProductVariant['quantity']> $variant->stock)
             return false;
         $this->listProductVariants[$variant_id] = $newProductVariant;
+        $this->sort();
         $this->totalPrice += $quantity*$variant->price;
         $this->totalQuantity+=$quantity;
         return true;
@@ -41,6 +42,7 @@ class Cart extends Model
         $this->totalQuantity -= $this->listProductVariants[$variant_id]['quantity'];
         $this->totalPrice -= $this->listProductVariants[$variant_id]['price'];
         unset($this->listProductVariants[$variant_id]);
+        $this->sort();
     }
 
     public function minusOnQuantity($variant_id)
@@ -49,6 +51,17 @@ class Cart extends Model
         $this->totalPrice -= $this->listProductVariants[$variant_id]['variant_info']->price;
         $this->listProductVariants[$variant_id]['quantity']-=1;
         $this->listProductVariants[$variant_id]['price']-=$this->listProductVariants[$variant_id]['variant_info']->price;
+
     }
 
+    public function sort(){
+        $sorted = collect($this->listProductVariants)->sort(function ($item_a, $item_b){
+            if($item_a['product_info']->id >= $item_b['product_info']->id)
+            {
+                return $item_a <=> $item_b;
+            }
+
+        }); // Sắp xếp theo giá trị tăng dần
+        $this->listProductVariants  = $sorted->toArray();
+    }
 }

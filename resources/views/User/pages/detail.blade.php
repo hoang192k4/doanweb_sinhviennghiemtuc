@@ -84,22 +84,25 @@
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
                 <div class="product_detail_right_ram">
                     @foreach ($danhSachBoNho as $index => $boNho)
-                        <button class="{{$index == 0 ? 'color_active':''}}" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}',this)">
-                            <span>{{$boNho->internal_memory}}</span>
+                        <button class="{{ $index == 0 ? 'color_active' : '' }}"
+                            onclick="DanhSachMau('{{ Route('LayMauSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}',this)">
+                            <span>{{ $boNho->internal_memory }}</span>
                             <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
                         </button>
                     @endforeach
                 </div>
                 <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
                 <div class="product_detail_right_color" id="product_detail_right_color">
-                    @foreach ( $mauSanPham as $index => $mau)
-                    <button onclick="LayThongTinSanPhamTheoMau('{{$slug}}','{{$mau->internal_memory}}','{{$mau->color}}',this)" class="{{$index == 0 ? 'color_active':''}}">
-                        <img src="{{asset('images/'.$mau->image)}}" alt="Lỗi hiển thị">
-                        <span>
-                            <p>{{$mau->color}}</p>
-                            <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
-                        </span>
-                    </button>
+                    @foreach ($mauSanPham as $index => $mau)
+                        <button
+                            onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)"
+                            class="{{ $index == 0 ? 'color_active' : '' }}">
+                            <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
+                            <span>
+                                <p>{{ $mau->color }}</p>
+                                <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
+                            </span>
+                        </button>
                     @endforeach
                 </div>
                 <div class="product_detail_right_quantity">
@@ -302,47 +305,47 @@
             method: "GET",
             url: `/add-to-cart/${id}/${quantity}`
         }).done((data) => {
-            if(data.success==true){
+            if (data.success == true) {
                 $('#cart-quantity').text(`${data.cart.totalQuantity}`);
                 alertify.success(data.message);
-            }else{
+            } else {
                 alertify.alert(data.message);
             }
 
         })
     }
-
 </script>
 <script>
     const input_number = document.getElementById('number_input');
 
-    checkStock({{$mauSanPham[0]->id}},1);
+    checkStock({{ $mauSanPham[0]->id }}, 1);
     input_number.addEventListener('keyup', function(event) {
         // Loại bỏ tất cả các ký tự không phải là số
-        if (isNaN(this.value) || this.value === ""||this.value=="0") {
+        if (isNaN(this.value) || this.value === "" || this.value == "0") {
             this.value = "";
-        }else{
+        } else {
             const id = parseInt(document.getElementById('add-to-cart').dataset.id);
-            checkStock(id,parseInt(input_number.value));
+            checkStock(id, parseInt(input_number.value));
         }
     });
+
     function minus(variantId) {
-        if(parseInt(input_number.value)===1)
-        {
-            $('#button_minus_value').attr('disabled',true);
-            if(parseInt(input_number.value)<0)
-                input_number.value=0;
+        if (parseInt(input_number.value) === 1) {
+            $('#button_minus_value').attr('disabled', true);
+            if (parseInt(input_number.value) < 0)
+                input_number.value = 0;
         }
         parseInt(input_number.value) > 0 && parseInt(input_number.value) < 2 ? input_number.value = 1 :
             input_number.value = parseInt(input_number.value) - 1;
-            checkStock(variantId,parseInt(input_number.value));
+        checkStock(variantId, parseInt(input_number.value));
     }
+
     function plus(variantId) {
         input_number.value = parseInt(input_number.value) + 1;
-        checkStock(variantId,parseInt(input_number.value));
+        checkStock(variantId, parseInt(input_number.value));
     };
 
-    function checkStock(variant_id,quantity) {
+    function checkStock(variant_id, quantity) {
         console.log(quantity);
         $.ajax({
                 method: "GET",
@@ -354,7 +357,7 @@
                     $('#number_input').val(data);
                     $('#button_plus_value').attr('disabled', true);
                     console.log(parseInt($('#number_input').val()));
-                    if(parseInt($('#number_input').val()) <= 0){
+                    if (parseInt($('#number_input').val()) <= 0) {
                         $('#number_input').val(1);
                     }
                 } else {
@@ -369,7 +372,7 @@
     }
 </script>
 <script>
-     function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
+    function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
         const button_color = document.querySelectorAll('.product_detail_right_color button')
         if (button_color) {
             button_color.forEach(element => {
@@ -401,6 +404,7 @@
             }
         });
     }
+
     function DanhSachMau(url) {
         $.ajax({
                 method: "GET",
@@ -409,26 +413,21 @@
             .done((danhSachMau) => {
                 const thongTin = danhSachMau.map((mau, index) => {
                     const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
-                    return `
-
-                <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
-                    <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
-                    <span>
-                        <p>${mau.color}</p>
-                        <span>${formatprice}<sup>đ</sup></span>
-                    </span>
-                </button>
-            `;
+                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
+                                    <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
+                                    <span>
+                                        <p>${mau.color}</p>
+                                        <span>${formatprice}<sup>đ</sup></span>
+                                    </span>
+                                </button>
+                            `;
                 });
-        });
-        const list = document.getElementById('product_detail_right_color');
-        list.innerHTML = thongTin.join('');
-        document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
-        document.getElementById('stock').innerHTML = danhSachMau[0].stock;
+                const list = document.getElementById('product_detail_right_color');
+                list.innerHTML = thongTin.join('');
+                document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
+                document.getElementById('stock').innerHTML = danhSachMau[0].stock;
+            });
     }
 </script>
-<script>
-
-</script>
+<script></script>
 @endsection
-
