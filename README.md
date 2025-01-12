@@ -64,3 +64,18 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+Tên: Samsung Galaxy A23 5G
+
+Mô tả: Samsung Galaxy A23 5G 4GB là thiết bị di động được cho ra mắt vào tháng 11/2022 tại thị trường Việt Nam. Điện thoại mang đến sự chú ý khi sở hữu mức giá bán rẻ, cấu hình ổn trong phân khúc cùng vẻ ngoài đầy bắt mắt.
+
+Màn hình: 6.6" - Tần số quét 120 Hz
+Công nghệ: IPS LCD
+Độ phân giải: Full HD+ (1080 x 2408 Pixels)
+chipset: Snapdragon 695 5G
+ram: 4 GB
+cam: Chính 50 MP & Phụ 5 MP, 2 MP, 2 MP
+

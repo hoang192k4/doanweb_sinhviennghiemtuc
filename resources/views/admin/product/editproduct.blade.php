@@ -14,9 +14,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div> @if (session('msg'))
-                            <p id="message" style="display: block; color: green;">{{ session('msg') }}</p>
-                        @endif</div>
+                        <div> </div>
                         <form action="{{route('product.update',[$sanPham])}}" method="POST" id="formAddProduct" class="form-product" enctype="multipart/form-data">
 
                             <div class=" form-groups">
@@ -24,14 +22,14 @@
                                     <input type="hidden" name="id" value="{{$sanPham->id}}">
                                     <div class="col"><label>Tên sản phẩm:</label></div>
                                     <div class="col"><input type="text" class="form-control" id="name"
-                                            name="name" value="{{ $sanPham->name }}"></div>
+                                            name="name" value="{{ $sanPham->name }}" required  oninvalid="this.setCustomValidity('Vui lòng nhập tên sản phẩm')" ></div>
                                     @error('name')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group-product">
                                     <div class="col"><label>Mô tả:</label></div>
-                                    <textarea name="description">{{ $sanPham->description }}</textarea>
+                                    <textarea name="description" required>{{ $sanPham->description }}</textarea>
                                     @error('description')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -40,7 +38,7 @@
                                     <div>
                                         <div class="col"><label>Danh mục:</label></div>
                                         <div class="col">
-                                            <select name="category" onchange="loadBrands(this)">
+                                            <select name="category" onchange="loadBrandAndCategorySpe(this)">
                                                 @foreach ($danhSachPhanLoai as $phanLoai)
                                                     <option value="{{ $phanLoai->id }}"
                                                         @if ($phanLoai->id == $sanPham->brand->category->id) {{ 'selected' }} @endif>
@@ -85,104 +83,19 @@
 
                                 </div>
                             </div>
-                            <div class="form-groups">
+                            <div class="form-groups" id="category-specification">
+                                @foreach($sanPham->product_specification as $index => $specification)
                                 <div class=" form-group-product">
                                     <div class="col">
-                                        <label>Màn hình</label>
+                                         <label>{{$specification->category_specification->name}}</label>
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="display"
-                                            value="{{ $sanPham->product_specification->display }}">
-                                        @error('display')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
+                                        <input type="hidden" name="specification[{{$index}}]" value="{{$specification->id}}"  >
+                                        <input type="text" class="form-control" name="value[{{$index}}]"
+                                            value="{{ $specification->value }}">
                                     </div>
                                 </div>
-                                <div class=" form-group-product">
-                                    <div class="col">
-                                        <label>Công nghệ màn hình</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="technic_screen"
-                                            value="{{ $sanPham->product_specification->technic_screen }}">
-                                        @error('technic_screen')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col">
-                                        <label>Độ phân giải</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="resolution"
-                                            value="{{ $sanPham->product_specification->resolution }}">
-                                        @error('resolution')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Chipset</label></div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="chipset"
-                                            value="{{ $sanPham->product_specification->chipset }}">
-                                        @error('chipset')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Ram</label></div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="ram"
-                                            value="{{ $sanPham->product_specification->ram }}">
-                                        @error('ram')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Camera</label></div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="camera"
-                                            value="{{ $sanPham->product_specification->camera }}">
-                                        @error('camera')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Hệ điều hành</label></div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="os"
-                                            value="{{ $sanPham->product_specification->operating_system }}">
-                                        @error('os')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Kích thước sản phẩm</label></div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="size"
-                                            value="{{ $sanPham->product_specification->size }}">
-                                        @error('size')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class=" form-group-product">
-                                    <div class="col"><label>Ngày ra mắt</label></div>
-                                    <div class="col">
-                                        <input type="date" class="form-control" name="launch_time"
-                                            value="{{ $sanPham->product_specification->launch_time }}">
-                                        @error('launch_time')
-                                            <div class="text-danger" style="color:red">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
+                                @endforeach
                             </div>
                             @csrf
                             @method('put')
@@ -198,22 +111,51 @@
     </div>
 @endsection
 @section('script')
-    <script>
-        function loadBrands(category) {
-            const opt = category.value;
-            $.ajax({
-                    method: "GET",
-                    url: `/admin/brand/filter/${opt}`
-                })
-                .done((data) => {
-                    const brands = data.map((brand) => {
-                        return `<option value="${brand.id}">${brand.name}</option>`;
-                    });
-                    const brandsHtml = document.getElementById('brands');
-                    brandsHtml.innerHTML = brands.join('');
-                })
-        }
-    </script>
+<script>
+    function loadBrandAndCategorySpe(category){
+        loadCategorySpecification(category);
+        loadBrands(category);
+    }
+    function loadCategorySpecification(category){
+        const opt = category.value;
+        let idx = 0;
+        $.ajax({
+                method: "GET",
+                url: `/admin/category-specification/${opt}`
+            })
+            .done((data) => {
+                const categorySpecifications = data.map((spe) => {
+
+                    return  `<div class=" form-group-product">
+                                <div class="col">
+                                    <label>${spe.name}</label>
+                                </div>
+                                <div class="col">
+                                    <input type="hidden" name="specification[${idx}]" value="${spe.id}">
+                                    <input type="text" class="form-control" name="value[${idx++}]" required>
+                                </div>
+                            </div>`;
+                });
+
+                const categorySpe = document.getElementById('category-specification');
+                categorySpe.innerHTML = categorySpecifications.join('');
+        })
+    }
+    function loadBrands(category) {
+        const opt = category.value;
+        $.ajax({
+                method: "GET",
+                url: `/admin/brand/filter/${opt}`
+            })
+            .done((data) => {
+                const brands = data.map((brand) => {
+                    return `<option value="${brand.id}">${brand.name}</option>`;
+                });
+                const brandsHtml = document.getElementById('brands');
+                brandsHtml.innerHTML = brands.join('');
+            })
+    }
+</script>
      <script>
         function addImage(btn){
             let idx = Number(++btn.dataset.idx);
@@ -251,5 +193,10 @@
                 message.style.display = 'none';
             }, 3000);
         }
+        </script>
+        <script>
+            @if (session('msg'))
+                alertify.alert('{{session('msg')}}');
+            @endif
         </script>
 @endsection

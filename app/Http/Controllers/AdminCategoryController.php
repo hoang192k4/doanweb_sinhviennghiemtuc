@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\CategorySpecification;
 
 class AdminCategoryController extends Controller
 {
@@ -79,5 +80,10 @@ class AdminCategoryController extends Controller
             'status' => $status
         ]);
         return redirect()->route('admin.category.editcategory');
+    }
+
+
+    public function loadCategorySpecification($category){
+        return CategorySpecification::where('category_id',$category)->get();
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý danh mục')
-@section('active', 'active')
+@section('active-category', 'active')
 <style>
     #categoryForm>button {
         background-color: rgb(19, 93, 102);
