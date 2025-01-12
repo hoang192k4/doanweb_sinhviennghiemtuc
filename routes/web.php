@@ -30,6 +30,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
     Route::get('detail/{slug}/{internal_memory}', "ChiTietSanPhamTheoBoNho")->name("ChiTietSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
+    Route::post('/addContact',  'addContact');
+
 
 });
 
@@ -84,7 +86,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
     Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
     Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
-    Route::post('/addContact', [AdminContactController::class, 'addContact']);
+
 
     //quản lý đánh giá
     Route::get('/admin/review', [AdminReviewController::class, 'showListReviews'])->name('admin.review');
@@ -121,11 +123,6 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/submitchange', 'UpdatePassword')->name('profile.submitchange');
     });
 });
-
-Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
-Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
-Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
-Route::post('/addContact', [AdminContactController::class, 'addContact']);
 
 //Route quan li danh mục
 Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
