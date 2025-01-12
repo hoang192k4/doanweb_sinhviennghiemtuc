@@ -15,12 +15,9 @@
                             <p class="form_notice" style="font-weight: 900;margin-bottom:12px;">
                                 Nhập mật khẩu hiện tại
                             </p>
-                            <div class="field"><input id="oldpassword" name="oldpassword" type="password"
+                            <div class="field"><input id="oldpassword" name="oldpassword" type="text"
                                     placeholder="Nhập mật khẩu hiện tại" required="required" class="group_item"
-                                    onkeyup="hidden_icon_changepwd(this)" onblur="handleIsPwd()">
-
-                                <span class="hide_pwd_change" onclick="handleType(this)"><i
-                                        class="fas fa-eye-slash"></i></span>
+                                    onkeyup="handleIsPwd()">
                             </div>
                             <div class="alert_error_validate" style="margin-left:8px" id="oldpassword_error"></div>
                         </div>
@@ -88,8 +85,15 @@
                         _token: "{{ csrf_token() }}",
                         oldpassword: $('#oldpassword').val()
                     },
+                    success: function(response){
+                        if(response){
+                        $('#oldpassword_error').text(response.success);
+                        $('#oldpassword_error').css('color','green');
+                        }
+                    },
                     error: function(xhr) {
                         if (xhr.responseJSON && xhr.responseJSON.error) {
+                            $('#oldpassword_error').css('color','red');
                             $('#oldpassword_error').text(xhr.responseJSON.error);
                         }
                     }
@@ -98,10 +102,17 @@
         }
 
         function submitChange() {
+
             $('#newPassword_error').text('');
             $('#confirmNewPassword_error').text('');
             if ($('#newPassword').val() !== $('#confirmNewPassword').val()) {
                 $('#confirmNewPassword_error').text('Mật khẩu không trùng khớp');
+                return;
+            }
+            $('#confirmNewPassword_error').text('');
+            if($('#oldpassword_error').text() === 'Mật khẩu hiện tại không đúng')
+            {
+                alertify.error('Sai mật khẩu Vui lòng nhập lại mật khẩu của bạn!');
                 return;
             }
             $.ajax({
@@ -113,9 +124,10 @@
                     newPassword:$('#newPassword').val(),
                 },
                 success:function(res){
-                    $('#oldpassword').val(''),
-                    $('#newPassword').val(''),
-                    $('#confirmNewPassword').val('') ;
+                    $('#oldpassword').val('');
+                    $('#newPassword').val('');
+                    $('#confirmNewPassword').val('');
+                    $('#oldpassword_error').text('');
                     const element= document.querySelectorAll('.hide_pwd_change');
                     element.forEach(element => {
                         element.style.display = "none";
@@ -124,8 +136,10 @@
                 },
                 error: function(xhr){
                     const error = xhr.responseJSON.errors;
-                    if(error.oldpassword)
+                    if(error.oldpassword){
                     $('#oldpassword_error').text(error.oldpassword);
+                    $('#oldpassword_error').css('color','red');
+                    };
                     if(error.newPassword)
                     $('#newPassword_error').text(error.newPassword);
                 }

@@ -174,7 +174,7 @@
                                     alt="Lỗi hiển thị"></a>
                             <div class="product_lt_new_item_info">
                                 <ul>
-                                    <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
+                                    <li><a href="{{ route('detail', [$danhSachLapTopMoi[$i]->slug]) }}">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
                                     <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
                                         <sup>đ</sup>
                                     </li>
@@ -199,7 +199,7 @@
                                     alt="Lỗi hiển thị"></a>
                             <div class="product_lt_new_item_info">
                                 <ul>
-                                    <li><a href="">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
+                                    <li><a href="{{ route('detail', [$danhSachLapTopMoi[$i]->slug]) }}">{{ $danhSachLapTopMoi[$i]->name }}</a></li>
                                     <li>{{ number_format($danhSachLapTopMoi[$i]->price, 0, ',', '.') }}
                                         <sup>đ</sup>
                                     </li>
