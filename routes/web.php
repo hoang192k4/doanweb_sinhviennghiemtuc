@@ -87,17 +87,17 @@ Route::middleware(['role:QL,NV'])->group(function () {
 });
 
 //Phân quyền quản lý
-Route::middleware(['role:QL'])->group(function () { });
+Route::middleware(['role:QL'])->group(function () {});
 
 //Phân quyền quản lý , nhân viên và khách hàng
-Route::middleware(['role:QL,NV,KH'])->group(function () { });
+Route::middleware(['role:QL,NV,KH'])->group(function () {});
 
 //phân quyền khách hàng
 Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
-        Route::post('/payment','completePayment')->name('complete-payment');
+        Route::post('/payment', 'completePayment')->name('complete-payment');
     });
 
 
@@ -128,7 +128,7 @@ Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory']
 Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
 Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
 Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updateCategory');
-Route::get('/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
+Route::get('/admn/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
 
 Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');

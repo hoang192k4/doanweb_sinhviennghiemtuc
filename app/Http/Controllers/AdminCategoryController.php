@@ -13,10 +13,11 @@ class AdminCategoryController extends Controller
     public function index()
     {
         $danhSachDanhMuc = Category::all();
+        $danhSachDanhMucLoc = Category::all();
         if ($danhSachDanhMuc->isEmpty()) {
             return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
         }
-        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
+        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc)->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
     }
     public function addCategory()
     {
@@ -83,14 +84,15 @@ class AdminCategoryController extends Controller
         ]);
         return redirect()->route('admin.category.editcategory');
     }
-    public function filterCategory($id)
+    public function filterCategory(Request $request)
     {
+        $danhSachDanhMucLoc = Category::all();
+        $id = $request->input('categoryFilter');
         if ($id == 'all') {
-            $danhSachDanhMuc = Category::all(); // Lấy tất cả các mục
+            $danhSachDanhMuc = Category::all();
         } else {
-            $danhSachDanhMuc = Category::where('id', $id)->get(); // Lọc theo danh mục
+            $danhSachDanhMuc = Category::where('id', $id)->get();
         }
-
-        return response()->json($danhSachDanhMuc);
+        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc)->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
     }
 }

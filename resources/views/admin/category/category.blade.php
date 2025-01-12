@@ -14,6 +14,13 @@
         margin-right: 10px;
         margin-top: 1px;
     }
+
+    .filter {
+        margin-top: 3px;
+        margin-right: 5px;
+        padding: 7px 30px;
+        border-radius: 5px;
+    }
 </style>
 @section('content')
     <div class="content" id="danhmuc">
@@ -30,12 +37,15 @@
             </div>
         </div>
         <div class="separator_x"></div>
-        <select name="categoryFilter" id="categoryFilter" onchange="filter()">
-            <option value="all">Tất cả</option>
-            @foreach ($danhSachDanhMuc as $item)
-                <option value="{{ $item->id }}">{{ $item->name }}</option>
-            @endforeach
-        </select>
+        <form action="{{ route('filter.category', ['id' => 'all']) }}" method="GET">
+            <select name="categoryFilter" id="categoryFilter">
+                <option value="all">Tất cả</option>
+                @foreach ($danhSachDanhMucLoc as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+            <button class="filter" style="float: inline-end;" type="submit">Lọc</button>
+        </form>
         @if (session('message'))
             <h1>hello</h1>
             <div class="alert alert-warning">
@@ -65,7 +75,6 @@
                 @endforeach
             </tbody>
         </table>
-        {{-- <div>{{ $danhSachDanhMuc->links() }}</div> --}}
 
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
@@ -80,5 +89,31 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        function filter() {
+            var categoryId = document.getElementById("categoryFilter").value;
 
+            // Gửi yêu cầu AJAX đến server để lấy dữ liệu đã lọc
+            fetch(`/filter-category/{id}?category=${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Xử lý dữ liệu trả về và hiển thị kết quả
+                    var resultDiv = document.getElementById("result");
+                    resultDiv.innerHTML = ""; // Xóa nội dung cũ
+
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            var div = document.createElement("div");
+                            div.innerHTML = item.name; // Giả sử mỗi item có thuộc tính name
+                            resultDiv.appendChild(div);
+                        });
+                    } else {
+                        resultDiv.innerHTML = "Không có kết quả nào.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 @endsection
