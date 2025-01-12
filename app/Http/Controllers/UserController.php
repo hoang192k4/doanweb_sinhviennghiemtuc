@@ -160,6 +160,24 @@ class UserController extends Controller
         $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);
         return $danhSachMau;
     }
+    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
+
+        $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
+        $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
+        $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
+        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
+        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
+        $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
+        return View('user.pages.detail')->with([
+            'slug'=>$slug,
+            "danhSachAnh"=>$danhSachAnh,
+            "danhSachBoNho"=>$danhSachBoNho,
+            "thongTinSanPham"=>$thongTinSanPham[0],
+            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
+            "luotThichSanPham"=>$luotThichSanPham,
+            "mauSanPham"=>$mauSanPham,
+        ]);
+    }
     public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
         $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
         return response()->json([
