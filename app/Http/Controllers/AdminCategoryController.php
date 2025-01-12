@@ -24,33 +24,35 @@ class AdminCategoryController extends Controller
     }
     public function store(Request $request)
     {
+        $nameCategory = $request->input('nameCategory');
         $request->validate([
             'nameCategory' => 'required|string|max:255',
+            'nameSpecifications' => 'required|array',
+            'nameSpecifications.*' => 'required|string|max:255',
         ]);
-        $slug = Str::slug($request->input('nameCategory'));
+        $slug = Str::slug($nameCategory);
 
         // Tạo danh mục mới với slug
-        Category::create([
-            'name' => $request->input('nameCategory'),
+        $category = Category::create([
+            'name' => $nameCategory,
             'slug' => $slug,
         ]);
+        foreach ($request->input('nameSpecifications') as $specification) {
+            CategorySpecification::create([
+                'name' => $specification,
+                'category_id' => $category->id,
+            ]);
+        }
         return redirect()->route('admin.category.addCategory')->with('msg', 'Thêm phân loại thành công');
     }
     public function searchCategory(Request $request)
     {
         $keyCategory = $request->input('keySearchCategory');
-        $categoryFilter = $request->input('categoryFilter');
 
         $danhSachDanhMuc = Category::where('name', 'like', '%' . $keyCategory . '%')->get();
 
-        if ($categoryFilter === 'all') {
-            $danhSachDanhMuc = Category::all();
-        } else {
-            $danhSachDanhMuc = Category::where('id', $categoryFilter)->get();
-        }
-
         if ($danhSachDanhMuc->isEmpty()) {
-            return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
+            return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.')->with('danhSachDanhMuc', $danhSachDanhMuc);
         }
 
         return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
@@ -83,7 +85,20 @@ class AdminCategoryController extends Controller
     }
 
 
-    public function loadCategorySpecification($category){
-        return CategorySpecification::where('category_id',$category)->get();
+
+    public function loadCategorySpecification($category)
+    {
+        return CategorySpecification::where('category_id', $category)->get();
+    }
+
+    public function filterCategory($id)
+    {
+        if ($id == 'all') {
+            $danhSachDanhMuc = Category::all(); // Lấy tất cả các mục
+        } else {
+            $danhSachDanhMuc = Category::where('id', $id)->get(); // Lọc theo danh mục
+        }
+
+        return response()->json($danhSachDanhMuc);
     }
 }

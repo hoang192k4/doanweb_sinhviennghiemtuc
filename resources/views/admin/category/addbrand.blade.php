@@ -32,8 +32,8 @@
                             <input type="text" class="form-control" id="nameBrand" name="nameBrand">
                         </div>
                         <div class="col">
-                            <input accept="image/*" type="file" name="imageBrand" id="imageBrand">
-                            <img id="previewImage" src="#" alt="Hình ảnh sản phẩm" width="100px" height="100px">
+                            <input type="file" name="imageBrand" id="imageBrand">
+                            <img id="previewImage" src="" alt="Hình ảnh sản phẩm" width="100px" height="100px">
                         </div>
                     </div>
                     <div class="form-group">
@@ -70,14 +70,16 @@
         </div>
     </div>
 @endsection
-<script>
-    const imageBrand = document.getElementById('imageBrand');
-    const previewImage = document.getElementById('previewImage');
+@section('script')
+    <script>
+        const imageBrand = document.getElementById('imageBrand');
+        let previewImage = document.getElementById('previewImage');
 
-    imageBrand.onchange = evt => {
-        const [file] = imageBrand.files;
-        if (file) {
-            previewImage.src = URL.createObjectURL(file);
+        imageBrand.onchange = (evt) => {
+            const [file] = imageBrand.files;
+            if (file) {
+                previewImage.src = URL.createObjectURL(file);
+            }
         }
-    }
-</script>
+    </script>
+@endsection

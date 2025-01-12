@@ -19,8 +19,8 @@
     <div class="content" id="danhmuc">
         <div class="head">
             <div class="title">Quản Lý Danh Mục</div>
-            <button><a href="{{ route('admin.category.addCategory') }}"><i class="fa-solid fa-plus"></i> Phân
-                    loại</a></button>
+            <button><a href="{{ route('admin.category.addCategory') }}"><i class="fa-solid fa-plus"></i> Danh Mục
+                </a></button>
             <button><a href="{{ route('admin.addbrand.index') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
                 <form action="{{ route('admin.category.searchCategory') }}" method="GET">
@@ -30,17 +30,14 @@
             </div>
         </div>
         <div class="separator_x"></div>
-        <form action="{{ route('admin.category.searchCategory') }}" method="GET" id="categoryForm">
-
-            <select name="categoryFilter" onchange="filter()">
-                <option value="all">Tất cả</option>
-                @foreach ($danhSachDanhMuc as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                @endforeach
-            </select>
-            <button type="submit">Lọc</button>
-        </form>
+        <select name="categoryFilter" id="categoryFilter" onchange="filter()">
+            <option value="all">Tất cả</option>
+            @foreach ($danhSachDanhMuc as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
         @if (session('message'))
+            <h1>hello</h1>
             <div class="alert alert-warning">
                 {{ session('message') }}
             </div>
@@ -68,15 +65,8 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="pagination">
-            <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">...</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
-        </div>
+        {{-- <div>{{ $danhSachDanhMuc->links() }}</div> --}}
+
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
@@ -89,8 +79,6 @@
         </div>
     </div>
 @endsection
-<script>
-    function filter() {
-        document.getElementbyId('categoryForm').submit();
-    }
-</script>
+@section('script')
+
+@endsection

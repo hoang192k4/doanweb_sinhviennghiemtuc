@@ -18,4 +18,8 @@ class Category extends Model
     {
         return $this->hasMany(Brand::class);
     }
+    public function category_specifications(): HasMany
+    {
+        return $this->hasMany(CategorySpecification::class);
+    }
 }
