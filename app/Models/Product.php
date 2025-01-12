@@ -32,8 +32,8 @@ class Product extends Model
     {
         return $this->hasMany(ImageProduct::class);
     }
-    public function product_specification():HasOne
+    public function product_specification():HasMany
     {
-        return $this->hasOne(ProductSpecification::class);
+        return $this->hasMany(ProductSpecification::class);
     }
 }

@@ -59,6 +59,10 @@ Route::middleware(['role:QL,NV'])->group(function () {
         return view('admin.pages.statistical');
     });
 
+
+
+    Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
+
     //Route quan ly san pham
     Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->middleware(AdminRoleMiddleware::class)->name('admin.product.active');
     Route::get('/admin/product/deactive/{id}', [AdminProductController::class, 'deactive'])->middleware(AdminRoleMiddleware::class)->name('admin.product.deactive');

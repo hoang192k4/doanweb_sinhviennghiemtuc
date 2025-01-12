@@ -130,6 +130,7 @@ class UserController extends Controller
     }
 
     public function ChiTietSanPham($slug){
+        $product = Product::where('slug',$slug)->first();
         ProductUser::UpdateView($slug);
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
@@ -137,7 +138,8 @@ class UserController extends Controller
         $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
         $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
         $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
-        $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
+        //thông số kỹ thuật
+        $thongSoKiThuatSanPham = $product->product_specification;
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
@@ -146,7 +148,7 @@ class UserController extends Controller
             "danhSachAnh"=>$danhSachAnh,
             "danhSachBoNho"=>$danhSachBoNho,
             "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
+            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
             "sanPhamTuongTu"=>$arr
