@@ -78,9 +78,6 @@
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
                                         @enderror
                                     @endfor
-
-
-
                                 </div>
                             </div>
                             <div class="form-groups" id="category-specification">
