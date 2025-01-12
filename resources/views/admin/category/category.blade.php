@@ -19,8 +19,8 @@
     <div class="content" id="danhmuc">
         <div class="head">
             <div class="title">Quản Lý Danh Mục</div>
-            <button><a href="{{ route('admin.category.addCategory') }}"><i class="fa-solid fa-plus"></i> Phân
-                    loại</a></button>
+            <button><a href="{{ route('admin.category.addCategory') }}"><i class="fa-solid fa-plus"></i> Danh Mục
+                </a></button>
             <button><a href="{{ route('admin.addbrand.index') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
                 <form action="{{ route('admin.category.searchCategory') }}" method="GET">
