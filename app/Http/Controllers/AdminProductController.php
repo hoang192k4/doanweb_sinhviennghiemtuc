@@ -13,6 +13,7 @@ use App\Models\ProductSpecification;
 use App\Models\CategorySpecification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ProductUser;
 
 class AdminProductController extends Controller
 {
@@ -220,9 +221,8 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'key' => 'required'
         ]);
-        $danhSachSanPhamDaTimKiem = Product::where('name','like','%'.$request->input('key').'%')
-                                            ->where('status',1)
-                                            ->get();
+        $key =  $key = str_replace('$', '', $request->input('seachbykey'));
+        $danhSachSanPhamDaTimKiem =ProductUser::TimKiemTheoTuKhoa($key);
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPhamDaTimKiem]);
     }
     public function filter(Request $req){

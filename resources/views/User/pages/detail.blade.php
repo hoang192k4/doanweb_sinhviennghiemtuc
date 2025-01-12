@@ -66,7 +66,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="product_detail_right">
                 <div class="product_detail_right_interact">
                     @auth
@@ -85,75 +84,68 @@
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
                 <div class="product_detail_right_ram">
                     @foreach ($danhSachBoNho as $index => $boNho)
-                        <a href="{{ route('ChiTietSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}"
-                            class="{{ $index == 0 ? 'color_active' : '' }}">
-                            <span>{{ $boNho->internal_memory }}</span>
-                            <button class="color_active"
-                                onclick="DanhSachMau('{{ Route('LayMauSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}')">
-                                <span>{{ $boNho->internal_memory }}</span>
-
-                                <a href="{{ route('ChiTietSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}"
-                                    class="{{ $index == 0 ? 'color_active' : '' }}">
-                                    <span>{{ $boNho->internal_memory }}</span>
-
-                                    <button class="color_active"
-                                        onclick="DanhSachMau('{{ Route('LayMauSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}')">
-                                        <span>{{ $boNho->internal_memory }}</span>
-
-                                        <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
-                                    </button>
+                        <button class="{{$index == 0 ? 'color_active':''}}" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}',this)">
+                            <span>{{$boNho->internal_memory}}</span>
+                            <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
+                        </button>
                     @endforeach
                 </div>
                 <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
-
-                <div class="product_detail_right_color">
-                    @foreach ($mauSanPham as $index => $mau)
-                        <button
-                            onclick="LayThongTinSanPhamTheoMau('{{ route('LayThongTinSanPhamTheoMau', ['slug' => $slug, 'internal_memory' => $mau->internal_memory, 'color' => $mau->color]) }}',this)"
-                            class="{{ $index == 0 ? 'color_active' : '' }}">
-                            <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
-                            <span>
-                                <p>{{ $mau->color }}</p>
-                                <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
-                            </span>
-                        </button>
-
-                        <div class="product_detail_right_color" id="product_detail_right_color">
-                            @foreach ($mauSanPham as $index => $mau)
-                                <button
-                                    onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)"
-                                    class="{{ $index == 0 ? 'color_active' : '' }}">
-                                    <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
-                                    <span>
-                                        <p>{{ $mau->color }}</p>
-                                        <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
-                                    </span>
-                                </button>
-
-                            @endforeach
-                        </div>
-                        <div class="product_detail_right_quantity">
-                            <p>Cửa hàng hiện có <span id="stock">{{ $mauSanPham[0]->stock }}</span> sản phẩm</p>
-                            <div>
-                                <button id="button_minus_value"><i class="fas fa-minus"></i></button>
-                                <input type="text" id="number_input" min="1" value="1">
-                                <button id="button_plus_value"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                        <div class="product_detail_right_buy">
-                            <div><button>Mua ngay</button></div>
-                            <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)"
-                                    data-id="{{ $mauSanPham[0]->id }}">
-                                    Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
-                        </div>
+                <div class="product_detail_right_color" id="product_detail_right_color">
+                    @foreach ( $mauSanPham as $index => $mau)
+                    <button onclick="LayThongTinSanPhamTheoMau('{{$slug}}','{{$mau->internal_memory}}','{{$mau->color}}',this)" class="{{$index == 0 ? 'color_active':''}}">
+                        <img src="{{asset('images/'.$mau->image)}}" alt="Lỗi hiển thị">
+                        <span>
+                            <p>{{$mau->color}}</p>
+                            <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
+                        </span>
+                    </button>
+                    @endforeach
+                </div>
+                <div class="product_detail_right_quantity">
+                    <p>Cửa hàng hiện có <span id="stock">{{ $mauSanPham[0]->stock }}</span> sản phẩm</p>
+                    <div>
+                        <button id="button_minus_value"><i class="fas fa-minus"></i></button>
+                        <input type="text" id="number_input" min="1" value="1">
+                        <button id="button_plus_value"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="product_detail_right_buy">
+                    <div><button>Mua ngay</button></div>
+                    <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)" data-id="{{ $mauSanPham[0]->id }}">
+                            Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
             </div>
-            <div class="product_detail detail_bottom">
-                <div class="product_detail_bottom_left">
-                    <div class="product_detail_bottom_left_rating">
+        </div>
+        <div class="product_detail detail_bottom">
+            <div class="product_detail_bottom_left">
+                <div class="product_detail_bottom_left_rating">
+                    <div>
+                        <a href="">
+                            <p>4.9 / 5</p>
+                            <p>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </p>
+                        </a>
+                    </div>
+                    <div id="button_rating">
+                        <button class="click_active_border">Tất cả</button>
+                        <button>5 sao (248)</button>
+                        <button>4 sao (515)</button>
+                        <button>3 sao (211)</button>
+                        <button>2 sao (85)</button>
+                        <button>1 sao (3)</button>
+                    </div>
+                </div>
+                <div class="product_detail_bottom_left_comments">
+                    <div class="product_detail_bottom_left_comment">
                         <div>
-                            <a href="">
-                                <p>4.9 / 5</p>
+                            <button><img src="images/user_commet1.jpg" alt=""></button>
+                            <div>Nguyễn Thùy Anh thư
                                 <p>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -161,84 +153,61 @@
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </p>
-                            </a>
+                            </div>
+                            <p><i class="fas fa-clock"></i>11/29/2024 11:11</p>
                         </div>
-                        <div id="button_rating">
-                            <button class="click_active_border">Tất cả</button>
-                            <button>5 sao (248)</button>
-                            <button>4 sao (515)</button>
-                            <button>3 sao (211)</button>
-                            <button>2 sao (85)</button>
-                            <button>1 sao (3)</button>
+                        <div>
+                            <p>Điện thoại khá đẹp tôi sẽ quay lại mua nữa</p>
+                            <div>
+                                <img src="images/detail2.png" alt="">
+                                <img src="images/detail3.png" alt="">
+                            </div>
                         </div>
                     </div>
-                    <div class="product_detail_bottom_left_comments">
-                        <div class="product_detail_bottom_left_comment">
-                            <div>
-                                <button><img src="images/user_commet1.jpg" alt=""></button>
-                                <div>Nguyễn Thùy Anh thư
-                                    <p>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </p>
-                                </div>
-                                <p><i class="fas fa-clock"></i>11/29/2024 11:11</p>
+                    <div class="product_detail_bottom_left_comment">
+                        <div>
+                            <button><img src="images/user_comment2.jpg" alt=""></button>
+                            <div>Nguyễn Quốc Đô
+                                <p>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </p>
                             </div>
+                            <p><i class="fas fa-clock"></i>11/29/2024 11:11</p>
+                        </div>
+                        <div>
+                            <p>Giao hàng nhanh.Shipper tận tình, shop khá uy tính tôi sẽ giới thiệu cho bạn tôi để có
+                                thể
+                                mua ủng hộ shop nhiều hơn</p>
                             <div>
-                                <p>Điện thoại khá đẹp tôi sẽ quay lại mua nữa</p>
-                                <div>
-                                    <img src="images/detail2.png" alt="">
-                                    <img src="images/detail3.png" alt="">
-                                </div>
+                                <img src="images/detail2.png" alt="">
+                                <img src="images/detail3.png" alt="">
                             </div>
                         </div>
-                        <div class="product_detail_bottom_left_comment">
-                            <div>
-                                <button><img src="images/user_comment2.jpg" alt=""></button>
-                                <div>Nguyễn Quốc Đô
-                                    <p>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </p>
-                                </div>
-                                <p><i class="fas fa-clock"></i>11/29/2024 11:11</p>
-                            </div>
-                            <div>
-                                <p>Giao hàng nhanh.Shipper tận tình, shop khá uy tính tôi sẽ giới thiệu cho bạn tôi để có
-                                    thể
-                                    mua ủng hộ shop nhiều hơn</p>
-                                <div>
-                                    <img src="images/detail2.png" alt="">
-                                    <img src="images/detail3.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <button>Xem thêm</button>
                     </div>
-                    <div class="product_detail_bottom_left_desription">
-                        <h6>Mô tả sản phẩm</h6>
-                        <p>{{ $thongTinSanPham->description }}</p>
-                    </div>
+                    <button>Xem thêm</button>
                 </div>
-
-                <div class="product_detail_bottom_right">
-                    <h4><a href="">Thông Số Kỹ Thuật</a></h4>
-                    <ul>
-                        @foreach ($thongSoKiThuatSanPham as $thongSo)
-                            <li>
-                                <div> {{ $thongSo->category_specification->name }}</div>
-                                <div>{{ $thongSo->value }}</div>
-                            </li>
-                        @endforeach
-                    </ul>
+                <div class="product_detail_bottom_left_desription">
+                    <h6>Mô tả sản phẩm</h6>
+                    <p>{{ $thongTinSanPham->description }}</p>
                 </div>
             </div>
+
+            <div class="product_detail_bottom_right">
+                <h4><a href="">Thông Số Kỹ Thuật</a></h4>
+                <ul>
+                    @foreach ($thongSoKiThuatSanPham as $thongSo)
+                        <li>
+                            <div> {{ $thongSo->category_specification->name }}</div>
+                            <div>{{ $thongSo->value }}</div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
     </section>
 
     <!-- Sản phẩm tương tự -->
@@ -334,47 +303,6 @@
             alertify.success(data.message);
         })
     }
-</script>
-<script>
-    document.getElementById('number_input').addEventListener('change', function() {
-        const stock = document.getElementById('stock').value
-
-    });
-
-    function LayThongTinSanPhamTheoMau(url, btn) {
-        const button_color = document.querySelectorAll('.product_detail_right_color button')
-        if (button_color) {
-            button_color.forEach(element => {
-                {
-                    button_color.forEach(btn => btn.classList.remove('color_active'));
-                }
-            })
-        }
-        btn.classList.add('color_active');
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: "data",
-            dataType: "json",
-            success: function(response) {
-                $('#stock').text(response.stock);
-                const price = new Intl.NumberFormat('de-DE').format(response.price);
-                if (response.stock > 0) {
-                    $('#status').text('(Còn hàng)');
-                } else {
-                    $('#status').text('(Hết hàng)');
-                }
-                $('#price').text(price);
-                //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
-
-                document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
-            }
-        });
-    }
-</script>
-
-</script>
-<script>
     function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
 
         const button_color = document.querySelectorAll('.product_detail_right_color button')
@@ -406,8 +334,6 @@
             }
         });
     }
-</script>
-<script>
     function DanhSachMau(url) {
         $.ajax({
                 method: "GET",
@@ -417,6 +343,7 @@
                 const thongTin = danhSachMau.map((mau, index) => {
                     const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
                     return `
+
                 <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
                     <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
                     <span>
@@ -426,10 +353,12 @@
                 </button>
             `;
                 });
-
-                const list = document.getElementById('product_detail_right_color');
-                list.innerHTML = thongTin.join('');
-            });
+        });
+        const list = document.getElementById('product_detail_right_color');
+        list.innerHTML = thongTin.join('');
+        document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
+        document.getElementById('stock').innerHTML = danhSachMau[0].stock;
     }
 </script>
 @endsection
+
