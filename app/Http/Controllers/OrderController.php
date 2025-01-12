@@ -23,7 +23,10 @@ class OrderController extends Controller
                 'full_name'=>'required|string|max:255',
                 'phone' => 'required|string|regex:/^[0-9]{10}$/',
                 'email' => 'required|email|max:50',
-                'address'=>'required|string|max:255'
+                'address'=>'required|string|max:255',
+                'provinces' => 'required|string', // Tỉnh/Thành bắt buộc
+                'districts' => 'required|string', // Quận/Huyện bắt buộc
+                'wards' => 'required|string', // Phường/Xã bắt buộc
             ],
             [
                 'full_name.required' => 'Bạn chưa nhập họ và tên',
@@ -35,6 +38,9 @@ class OrderController extends Controller
                 'phone.regex' => 'Vui lòng nhập ký tự số ( 0 đến 9 ) không quá 10 kí tự',
                 'address.required' => 'Bạn chưa nhập họ và tên',
                 'address.max' => 'Họ và tên không được quá 255 ký tự',
+                'provinces.required' => 'Vui lòng chọn tỉnh/thành.',
+                'districts.required' => 'Vui lòng chọn quận/huyện.',
+                'wards.required' => 'Vui lòng chọn phường/xã.',
             ]
         );
         $orderPayment =new Order();

@@ -92,42 +92,36 @@
                             value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset"
                             placeholder="Họ và tên">
                         <div class="alert_error_validate" id="full_name_payment_error">
-                            @error('full_name')
-                                {{ $message }}
-                            @enderror
+                           
                         </div>
 
                         <div>
-                            <input type="email" name="email" id="email_payment" placeholder="Email"
+                            <input type="email" name="email" id="email_payment" required placeholder="Email"
                                 value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
                             <div class="alert_error_validate" id="email_payment_error">
-                                @error('email')
-                                    {{ $message }}
-                                @enderror
+                               
                             </div>
 
-                            <input type="tel" name="phone" placeholder="Số điện thoại" id="phone-payment"
+                            <input type="tel" name="phone" placeholder="Số điện thoại" required id="phone-payment"
                                 value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
                             <div class="alert_error_validate" id="phone_payment_error">
-                                @error('phone')
-                                    {{ $message }}
-                                @enderror
+                               
                             </div>
 
                         </div>
-                        <input id="address"type="text" placeholder="Địa chỉ - Số nhà, tên Đường" name="address"
+                        <input id="address"type="text" placeholder="Địa chỉ - Số nhà, tên Đường" required name="address"
                             value="@isset($orderPayment){{ $orderPayment->address }} @endisset">
                         <div class="css_select_div">
                             <select class="css_select" id="provinces" name="provinces" title="Chọn Tỉnh Thành"
                                 onchange=hadelChangeProvince(this)>
-                                <option value="">Tỉnh Thành</option>
+                                <option required value="">Tỉnh Thành</option>
                             </select>
                             <select class="css_select" id="districts" name="districts" title="Chọn Quận Huyện"
                                 onchange=hadelChangeDistrict(this)>
-                                <option value="">Quận Huyện</option>
+                                <option required value="">Quận Huyện</option>
                             </select>
                             <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã">
-                                <option value="">Phường Xã</option>
+                                <option required value="">Phường Xã</option>
                             </select>
                         </div>
                         <div class="method_payment">
@@ -221,21 +215,25 @@
         }
     </script>
     <script>
-        function order() {
-            const data = {
-                full_name: $('#full_name_payment').val(),
-                email: $('#email_payment').val(),
-                phone: $('#phone-payment').val(),
-                address: $('#address').val(),
-                _token:'{{csrf_token()}}'
-            }
-            $.ajax({
-                method: "POST",
-                url: '/payment',
-                data: data
-            })
-            .done((data) => console.log(data))
-            .fail((data)=> alertify.alert('vui long nhap day du ho ten so dien thoai, email dia chi'))
-        }
+        // function order() {
+        //     const data = {
+        //         full_name: $('#full_name_payment').val(),
+        //         email: $('#email_payment').val(),
+        //         phone: $('#phone-payment').val(),
+        //         address: $('#address').val(),
+        //         _token:'{{csrf_token()}}'
+        //     }
+        //     $.ajax({
+        //         method: "POST",
+        //         url: '/payment',
+        //         data: data
+        //     })
+        //     .done((data) => console.log(data))
+        //     .fail((data){
+        //         if(data.status===422){
+        //             let errors = data.responseJSON.errors; // Lấy danh sách lỗi
+        //         }
+        //     })
+        // }
     </script>
 @endsection
