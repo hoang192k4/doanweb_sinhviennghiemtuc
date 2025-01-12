@@ -1,30 +1,3 @@
-const menu = document.querySelectorAll('.menu div');
-const contents = document.querySelectorAll('.content');
-menu.forEach(page => {
-    page.addEventListener('click', () => {
-        menu.forEach(m => m.classList.remove('active'))
-        page.classList.add('active')
-        contents.forEach(content => {
-            content.style.display = 'none'
-        })
-        if (page.textContent === 'Trang Dashboard') {
-            document.getElementById('dashboard').style.display = 'block'
-        } else if (page.textContent === 'Quản lý Danh mục') {
-            document.getElementById('danhmuc').style.display = 'block'
-        } else if (page.textContent === 'Quản lý Sản phẩm') {
-            document.getElementById('sanpham').style.display = 'block'
-        } else if (page.textContent === 'Quản lý Đơn hàng') {
-            document.getElementById('donhang').style.display = 'block'
-        } else if (page.textContent === 'Quản lý Thống kê') {
-            document.getElementById('thongke').style.display = 'block'
-        } else if (page.textContent === 'Quản lý Đánh giá') {
-            document.getElementById('danhgia').style.display = 'block'
-        } else if (page.textContent === 'Quản lý Liên hệ') {
-            document.getElementById('lienhe').style.display = 'block'
-        }
-    })
-})
-
 const tabs = document.querySelectorAll('.tabs div');
 const tables = document.querySelectorAll('.table');
 tabs.forEach(tab => {

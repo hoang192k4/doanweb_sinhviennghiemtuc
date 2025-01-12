@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ValidateAddContact;
+use App\Models\Contact;
 
 class AdminContactController extends Controller
 {

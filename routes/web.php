@@ -60,7 +60,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     //Route quan li thong ke
     Route::get('/admin/statistical', function () {
         return view('admin.pages.statistical');
-    });
+    })->name('admin.static');
 
 
 
