@@ -303,39 +303,49 @@
             alertify.success(data.message);
         })
     }
-        function LayThongTinSanPhamTheoMau(slug,internal_memory,color,btn)
-        {
+    function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
+    const button_color = document.querySelectorAll('.product_detail_right_color button');
 
-            const button_color = document.querySelectorAll('.product_detail_right_color button')
-            if (button_color) {
-                button_color.forEach(element => {
-                    {
-                        button_color.forEach(btn => btn.classList.remove('color_active'));
-                    }
-                })
+    // Xóa lớp 'color_active' khỏi tất cả các nút
+    button_color.forEach(button => button.classList.remove('color_active'));
+
+    // Thêm lớp 'color_active' vào nút màu đang chọn
+    btn.classList.add('color_active');
+
+    $.ajax({
+        type: "GET",
+        url: `/detail/${slug}/${internal_memory}/${color}`,
+        dataType: "json",
+        success: function(response) {
+            // Cập nhật thông tin kho hàng
+            $('#stock').text(response.stock);
+
+            // Định dạng lại giá
+            const price = new Intl.NumberFormat('de-DE').format(response.price);
+            $('#price').text(price);
+
+            // Hiển thị trạng thái (Còn hàng / Hết hàng)
+            if (response.stock > 0) {
+                $('#status').text('(Còn hàng)');
+            } else {
+                $('#status').text('(Hết hàng)');
             }
-            btn.classList.add('color_active');
-            $.ajax({
-                type: "GET",
-                url:    `/detail/${slug}/${internal_memory}/${color}`,
-                data: "data",
-                dataType: "json",
-                success: function (response) {
-                    $('#stock').text(response.stock);
-                    const price = new Intl.NumberFormat('de-DE').format(response.price);
-                    if(response.stock>0){
-                        $('#status').text('(Còn hàng)');
-                    }
-                    else{
-                        $('#status').text('(Hết hàng)');
-                    }
-                    $('#price').text(price);
-                    //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
 
-                    document.getElementById('add-to-cart').dataset.id=`${response.variant_id}`;
-                }
-            });
+            // Cập nhật ID variant cho nút thêm vào giỏ hàng
+            document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
+
+            // Cập nhật lại ảnh trong carousel (nếu cần)
+            // Giả sử bạn muốn cập nhật ảnh đầu tiên trong carousel
+            if (response.image) {
+                $('.carousel-item.active img.d-block').attr('src', '/images/' + response.image);
+            }
+        },
+        error: function() {
+            alert('Có lỗi xảy ra khi tải dữ liệu.');
         }
+    });
+}
+
 
 
    function DanhSachMau(url,btn) {
