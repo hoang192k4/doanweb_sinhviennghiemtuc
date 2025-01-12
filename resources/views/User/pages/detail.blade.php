@@ -85,20 +85,17 @@
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
                 <div class="product_detail_right_ram">
                     @foreach ($danhSachBoNho as $index => $boNho)
-<<<<<<< HEAD
                         <a href="{{ route('ChiTietSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}"
                             class="{{ $index == 0 ? 'color_active' : '' }}">
                             <span>{{ $boNho->internal_memory }}</span>
-=======
                         <button class="color_active" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}')">
                             <span>{{$boNho->internal_memory}}</span>
->>>>>>> long
                             <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
                         </button>
                     @endforeach
                 </div>
                 <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
-<<<<<<< HEAD
+
                 <div class="product_detail_right_color">
                     @foreach ($mauSanPham as $index => $mau)
                         <button
@@ -110,7 +107,7 @@
                                 <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
                             </span>
                         </button>
-=======
+
                 <div class="product_detail_right_color" id="product_detail_right_color">
                     @foreach ( $mauSanPham as $index => $mau)
                     <button onclick="LayThongTinSanPhamTheoMau('{{$slug}}','{{$mau->internal_memory}}','{{$mau->color}}',this)" class="{{$index == 0 ? 'color_active':''}}">
@@ -120,7 +117,6 @@
                             <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
                         </span>
                     </button>
->>>>>>> long
                     @endforeach
                 </div>
                 <div class="product_detail_right_quantity">
@@ -339,7 +335,6 @@
                 }
             })
         }
-<<<<<<< HEAD
         btn.classList.add('color_active');
         $.ajax({
             type: "GET",
@@ -362,7 +357,6 @@
         });
     }
 </script>
-=======
     </script>
     <script>
         function LayThongTinSanPhamTheoMau(slug,internal_memory,color,btn)
@@ -430,5 +424,4 @@
 
 
     </script>
->>>>>>> long
 @endsection
