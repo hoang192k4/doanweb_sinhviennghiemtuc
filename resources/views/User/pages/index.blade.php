@@ -74,7 +74,6 @@
                         src="{{ asset('images/' . $item->image) }}" alt="Lỗi hiển thị"></a>
             @endforeach
         </div>
-
     </section>
 
     <!-- Điện thoại bán chạy -->

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="go">
-                <a href="">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{route('admin.category')}}">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="count">
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="go">
-                <a href="">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{route('product.index')}}">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="count">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="go">
-                <a href="">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{route('admin.order')}}">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="go">
-                <a href="">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{route('admin.category')}}">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="count">
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="go">
-                <a href="">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{route('admin.review')}}">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="count">
@@ -91,7 +91,7 @@
                 </div>
             </div>
             <div class="go">
-                <a href="">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{route('admin.contact')}}">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </div>

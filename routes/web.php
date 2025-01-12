@@ -30,6 +30,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
     Route::get('detail/{slug}/{internal_memory}',"LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
+    Route::post('/addContact',  'addContact');
+
 
 });
 
@@ -41,6 +43,7 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/cart-minus-one-variant/{id}', 'minusOnQuantity');
 });
 
+Route::get('/admin/check-stock-variant/{id}',[AdminProductVariantController::class,'checkStock']);
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
     //Route dashboard
@@ -58,7 +61,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     //Route quan li thong ke
     Route::get('/admin/statistical', function () {
         return view('admin.pages.statistical');
-    });
+    })->name('admin.static');
 
 
 
@@ -74,6 +77,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::get('/admin/product-variant-hidden/{id}', [AdminProductVariantController::class, 'showListVariantsHide'])->name('product_variant_hide');
     Route::PUT('/admin/product-variant/active/{id}', [AdminProductVariantController::class, 'active'])->middleware(AdminRoleMiddleware::class);
     Route::post('/admin/product/is_isset', [AdminProductController::class, 'isIssetProduct']);
+
     Route::resource('/admin/product-variant', AdminProductVariantController::class)->except(['index']);
     Route::resource('/admin/product', AdminProductController::class);
 
@@ -84,7 +88,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
     Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
     Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
-    Route::post('/addContact', [AdminContactController::class, 'addContact']);
+
 
     //quản lý đánh giá
     Route::get('/admin/review', [AdminReviewController::class, 'showListReviews'])->name('admin.review');
@@ -121,11 +125,6 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/submitchange', 'UpdatePassword')->name('profile.submitchange');
     });
 });
-
-Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
-Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
-Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
-Route::post('/addContact', [AdminContactController::class, 'addContact']);
 
 //Route quan li danh mục
 Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');

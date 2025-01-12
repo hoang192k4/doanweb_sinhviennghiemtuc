@@ -1,6 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang thêm sản phẩm')
-@section('active-product','active')
+@section('active-product', 'active')
 @section('content')
     <div class="separator"></div>
     <div class="content">
@@ -73,19 +73,20 @@
                                 </div>
                             </div>
                             <div class="form-groups" id="category-specification">
-                                @foreach($danhSachThongTinKyThuat as $index => $thongTinKyThuat)
-                                <div class=" form-group-product">
-                                    <div class="col">
-                                        <label>{{$thongTinKyThuat->name}}</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="hidden" name="specification[{{$index}}]" value="{{$thongTinKyThuat->id}}">
-                                        <input type="text" class="form-control" name="value[{{$index}}]">
+                                @foreach ($danhSachThongTinKyThuat as $index => $thongTinKyThuat)
+                                    <div class=" form-group-product">
+                                        <div class="col">
+                                            <label>{{ $thongTinKyThuat->name }}</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="hidden" name="specification[{{ $index }}]"
+                                                value="{{ $thongTinKyThuat->id }}">
+                                            <input type="text" class="form-control" name="value[{{ $index }}]" required>
 
+                                        </div>
                                     </div>
-                                </div>
                                 @endforeach
-{{-- Hiển thị xong --}}
+                                {{-- Hiển thị xong --}}
 
                             </div>
                             <div class="row">
@@ -223,11 +224,12 @@
         }
     </script>
     <script>
-        function loadBrandAndCategorySpe(category){
+        function loadBrandAndCategorySpe(category) {
             loadCategorySpecification(category);
             loadBrands(category);
         }
-        function loadCategorySpecification(category){
+
+        function loadCategorySpecification(category) {
             const opt = category.value;
             let idx = 0;
             $.ajax({
@@ -237,7 +239,7 @@
                 .done((data) => {
                     const categorySpecifications = data.map((spe) => {
 
-                        return  `<div class=" form-group-product">
+                        return `<div class=" form-group-product">
                                     <div class="col">
                                         <label>${spe.name}</label>
                                     </div>
@@ -250,8 +252,9 @@
 
                     const categorySpe = document.getElementById('category-specification');
                     categorySpe.innerHTML = categorySpecifications.join('');
-            })
+                })
         }
+
         function loadBrands(category) {
             const opt = category.value;
             $.ajax({
@@ -273,9 +276,23 @@
             const image = `<div class="col">
                                         <img id="output-${idx}" />
                                         <input type="file" data-index=${idx} onchange="loadFile(event,this)" class="form-control"
-                                            style="background-color:white" name="image[${idx-1}]">
+                                            style="background-color:white" name="image[${idx-1}]" required>
                             </div>`;
             document.getElementById('image-products').insertAdjacentHTML('beforeend', image);
         }
+    </script>
+    <script>
+        @if ($errors->any())
+            alertify.alert('Vui lòng nhập đầy đủ các trường!');
+        @endif
+    </script>
+    <script>
+            const input = document.getElementById("name");
+            input.addEventListener("invalid", function () {
+            input.setCustomValidity("Vui lòng nhập tên sản phẩm vào đây!");
+            input.addEventListener("input", function () {
+            input.setCustomValidity("");
+        });
+        });
     </script>
 @endsection

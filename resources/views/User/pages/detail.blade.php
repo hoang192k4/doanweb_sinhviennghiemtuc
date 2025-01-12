@@ -66,20 +66,19 @@
                     </div>
                 </div>
             </div>
-
             <div class="product_detail_right">
                 <div class="product_detail_right_interact">
                     @auth
                         <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
                     @endauth
-                    <p><i class="fas fa-thumbs-up"></i>{{$luotThichSanPham}} lượt thích</p>
-                    <p><i class="fas fa-eye"></i>{{$thongTinSanPham->views}}</p>
+                    <p><i class="fas fa-thumbs-up"></i>{{ $luotThichSanPham }} lượt thích</p>
+                    <p><i class="fas fa-eye"></i>{{ $thongTinSanPham->views }}</p>
                 </div>
                 <h4>{{ $thongTinSanPham->name }}</h4>
                 <div class="product_detail_right_price">
-                    <p>Giá bán: <Span id="price">
-                            {{ number_format($mauSanPham[0]->price, 0, ',', '.') }}<sup>đ</sup></Span></p>
+                    <p>Giá bán: <Span> <span id="price"> {{ number_format($mauSanPham[0]->price, 0, ',', '.') }}</span>
+                            <sup>đ</sup></Span></p>
                     <h5 id="status">{{ $mauSanPham[0]->stock > 0 ? '(Còn hàng)' : '(Hết hàng)' }}</h5>
                 </div>
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
@@ -106,10 +105,13 @@
                 <div class="product_detail_right_quantity">
                     <p>Cửa hàng hiện có <span id="stock">{{ $mauSanPham[0]->stock }}</span> sản phẩm</p>
                     <div>
-                        <button id="button_minus_value"><i class="fas fa-minus"></i></button>
+                        <button id="button_minus_value" data-id={{ $mauSanPham[0]->id }}
+                            onclick="minus(this.dataset.id)"><i class="fas fa-minus"></i></button>
                         <input type="text" id="number_input" min="1" value="1">
-                        <button id="button_plus_value"><i class="fas fa-plus"></i></button>
+                        <button id="button_plus_value" data-id="{{ $mauSanPham[0]->id }}"
+                            onclick="plus(this.dataset.id)"><i class="fas fa-plus"></i></button>
                     </div>
+                    <span style="color:red" id="quantity-limit"></span>
                 </div>
                 <div class="product_detail_right_buy">
                     <div><button>Mua ngay</button></div>
@@ -180,7 +182,8 @@
                             <p><i class="fas fa-clock"></i>11/29/2024 11:11</p>
                         </div>
                         <div>
-                            <p>Giao hàng nhanh.Shipper tận tình, shop khá uy tính tôi sẽ giới thiệu cho bạn tôi để có thể
+                            <p>Giao hàng nhanh.Shipper tận tình, shop khá uy tính tôi sẽ giới thiệu cho bạn tôi để có
+                                thể
                                 mua ủng hộ shop nhiều hơn</p>
                             <div>
                                 <img src="images/detail2.png" alt="">
@@ -201,7 +204,7 @@
                 <ul>
                     @foreach ($thongSoKiThuatSanPham as $thongSo)
                         <li>
-                            <div> {{$thongSo->category_specification->name}}</div>
+                            <div> {{ $thongSo->category_specification->name }}</div>
                             <div>{{ $thongSo->value }}</div>
                         </li>
                     @endforeach
@@ -250,45 +253,45 @@
                 <div class="carousel-item" data-bs-interval="2000">
                     <div class="product_best_seller_items">
                         @for ($i = 4; $i < count($sanPhamTuongTu); $i++)
-                        @if ($i>7)
-                        @break
+                            @if ($i > 7)
+                            @break
                         @endif
-                            <div class="product_best_seller_item">
-                                <a href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}"><img
-                                        src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
-                                        alt="Lỗi hiển thị"></a>
-                                <div class="product_best_seller_item_info">
-                                    <ul>
-                                        <li><a
-                                                href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}">{{ $sanPhamTuongTu[$i]->name }}</a>
-                                        </li>
-                                        <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup>
-                                        </li>
-                                        <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
-                                        <li>
-                                            <a href=""><button>Mua ngay</button></a>
-                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <div class="product_best_seller_item">
+                            <a href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}"><img
+                                    src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
+                                    alt="Lỗi hiển thị"></a>
+                            <div class="product_best_seller_item_info">
+                                <ul>
+                                    <li><a
+                                            href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}">{{ $sanPhamTuongTu[$i]->name }}</a>
+                                    </li>
+                                    <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                    </li>
+                                    <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
+                                    <li>
+                                        <a href=""><button>Mua ngay</button></a>
+                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
+                                    </li>
+                                </ul>
                             </div>
-                        @endfor
-                    </div>
+                        </div>
+                    @endfor
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            @else
-        </div>
-        @endif
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        @else
     </div>
+    @endif
+</div>
 </section>
 @endsection
 @section('script')
@@ -299,89 +302,130 @@
             method: "GET",
             url: `/add-to-cart/${id}/${quantity}`
         }).done((data) => {
-            $('#cart-quantity').text(`${data.cart.totalQuantity}`);
-            alertify.success(data.message);
+            if (data.success == true) {
+                $('#cart-quantity').text(`${data.cart.totalQuantity}`);
+                alertify.success(data.message);
+            } else {
+                alertify.alert(data.message);
+            }
+
         })
     }
-    function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
-    const button_color = document.querySelectorAll('.product_detail_right_color button');
+</script>
+<script>
+    const input_number = document.getElementById('number_input');
 
-    // Xóa lớp 'color_active' khỏi tất cả các nút
-    button_color.forEach(button => button.classList.remove('color_active'));
-
-    // Thêm lớp 'color_active' vào nút màu đang chọn
-    btn.classList.add('color_active');
-
-    $.ajax({
-        type: "GET",
-        url: `/detail/${slug}/${internal_memory}/${color}`,
-        dataType: "json",
-        success: function(response) {
-            // Cập nhật thông tin kho hàng
-            $('#stock').text(response.stock);
-
-            // Định dạng lại giá
-            const price = new Intl.NumberFormat('de-DE').format(response.price);
-            $('#price').text(price);
-
-            // Hiển thị trạng thái (Còn hàng / Hết hàng)
-            if (response.stock > 0) {
-                $('#status').text('(Còn hàng)');
-            } else {
-                $('#status').text('(Hết hàng)');
-            }
-
-            // Cập nhật ID variant cho nút thêm vào giỏ hàng
-            document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
-
-            // Cập nhật lại ảnh trong carousel (nếu cần)
-            // Giả sử bạn muốn cập nhật ảnh đầu tiên trong carousel
-            if (response.image) {
-                $('.carousel-item.active img.d-block').attr('src', '/images/' + response.image);
-            }
-        },
-        error: function() {
-            alert('Có lỗi xảy ra khi tải dữ liệu.');
+    checkStock({{ $mauSanPham[0]->id }}, 1);
+    input_number.addEventListener('keyup', function(event) {
+        // Loại bỏ tất cả các ký tự không phải là số
+        if (isNaN(this.value) || this.value === "" || this.value == "0") {
+            this.value = "";
+        } else {
+            const id = parseInt(document.getElementById('add-to-cart').dataset.id);
+            checkStock(id, parseInt(input_number.value));
         }
     });
-}
 
+    function minus(variantId) {
+        if (parseInt(input_number.value) === 1) {
+            $('#button_minus_value').attr('disabled', true);
+            if (parseInt(input_number.value) < 0)
+                input_number.value = 0;
+        }
+        parseInt(input_number.value) > 0 && parseInt(input_number.value) < 2 ? input_number.value = 1 :
+            input_number.value = parseInt(input_number.value) - 1;
+        checkStock(variantId, parseInt(input_number.value));
+    }
 
+    function plus(variantId) {
+        input_number.value = parseInt(input_number.value) + 1;
+        checkStock(variantId, parseInt(input_number.value));
+    };
 
-   function DanhSachMau(url,btn) {
-    const button_color = document.querySelectorAll('.product_detail_right_ram button')
-            if (button_color) {
-                button_color.forEach(element => {
-                    {
-                        button_color.forEach(btn => btn.classList.remove('color_active'));
+    function checkStock(variant_id, quantity) {
+        console.log(quantity);
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variant_id}`
+            })
+            .done((data) => {
+                if (data <= quantity) {
+                    $('#quantity-limit').text('Số lượng đã đạt giới hạn');
+                    $('#number_input').val(data);
+                    $('#button_plus_value').attr('disabled', true);
+                    console.log(parseInt($('#number_input').val()));
+                    if (parseInt($('#number_input').val()) <= 0) {
+                        $('#number_input').val(1);
                     }
-                })
-            }
-            btn.classList.add('color_active');
-    $.ajax({
-        method: "GET",
-        url: url,
-    })
-    .done((danhSachMau) => {
-        const thongTin = danhSachMau.map((mau, index) => {
-            const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
-            return `
-                <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
-                    <img src="{{asset('images/${mau.image}')}}" alt="Lỗi hiển thị">
-                    <span>
-                        <p>${mau.color}</p>
-                        <span>${formatprice}<sup>đ</sup></span>
-                    </span>
-                </button>
-            `;
-        });
-        const list = document.getElementById('product_detail_right_color');
-        list.innerHTML = thongTin.join('');
-        document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
-        document.getElementById('stock').innerHTML = danhSachMau[0].stock;
-    });
-   }
+                } else {
+                    $('#button_plus_value').attr('disabled', false);
+                    $('#quantity-limit').text('');
+                }
 
+
+
+            })
+
+    }
 </script>
+<script>
+    function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
+        const button_color = document.querySelectorAll('.product_detail_right_color button')
+        if (button_color) {
+            button_color.forEach(element => {
+                {
+                    button_color.forEach(btn => btn.classList.remove('color_active'));
+                }
+            })
+        }
+        btn.classList.add('color_active');
+        $.ajax({
+            type: "GET",
+            url: `/detail/${slug}/${internal_memory}/${color}`,
+            data: "data",
+            dataType: "json",
+            success: function(response) {
+                $('#stock').text(response.stock);
+                const price = new Intl.NumberFormat('de-DE').format(response.price);
+                if (response.stock > 0) {
+                    $('#status').text('(Còn hàng)');
+                } else {
+                    $('#status').text('(Hết hàng)');
+                }
+                $('#price').text(price);
+                //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
+
+                document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
+                document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
+                document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
+            }
+        });
+    }
+
+    function DanhSachMau(url) {
+        $.ajax({
+                method: "GET",
+                url: url,
+            })
+            .done((danhSachMau) => {
+                const thongTin = danhSachMau.map((mau, index) => {
+                    const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
+                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
+                                    <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
+                                    <span>
+                                        <p>${mau.color}</p>
+                                        <span>${formatprice}<sup>đ</sup></span>
+                                    </span>
+                                </button>
+                            `;
+                });
+                const list = document.getElementById('product_detail_right_color');
+                list.innerHTML = thongTin.join('');
+                document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
+                document.getElementById('stock').innerHTML = danhSachMau[0].stock;
+            });
+    }
+</script>
+<script></script>
 @endsection
 
