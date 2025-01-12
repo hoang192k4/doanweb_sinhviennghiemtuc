@@ -77,8 +77,8 @@
                 </div>
                 <h4>{{ $thongTinSanPham->name }}</h4>
                 <div class="product_detail_right_price">
-                    <p>Giá bán: <Span id="price">
-                            {{ number_format($mauSanPham[0]->price, 0, ',', '.') }}<sup>đ</sup></Span></p>
+                    <p>Giá bán: <Span> <span id="price"> {{ number_format($mauSanPham[0]->price, 0, ',', '.') }}</span>
+                            <sup>đ</sup></Span></p>
                     <h5 id="status">{{ $mauSanPham[0]->stock > 0 ? '(Còn hàng)' : '(Hết hàng)' }}</h5>
                 </div>
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
@@ -105,10 +105,13 @@
                 <div class="product_detail_right_quantity">
                     <p>Cửa hàng hiện có <span id="stock">{{ $mauSanPham[0]->stock }}</span> sản phẩm</p>
                     <div>
-                        <button id="button_minus_value"><i class="fas fa-minus"></i></button>
+                        <button id="button_minus_value" data-id={{ $mauSanPham[0]->id }}
+                            onclick="minus(this.dataset.id)"><i class="fas fa-minus"></i></button>
                         <input type="text" id="number_input" min="1" value="1">
-                        <button id="button_plus_value"><i class="fas fa-plus"></i></button>
+                        <button id="button_plus_value" data-id="{{ $mauSanPham[0]->id }}"
+                            onclick="plus(this.dataset.id)"><i class="fas fa-plus"></i></button>
                     </div>
+                    <span style="color:red" id="quantity-limit"></span>
                 </div>
                 <div class="product_detail_right_buy">
                     <div><button>Mua ngay</button></div>
@@ -299,12 +302,74 @@
             method: "GET",
             url: `/add-to-cart/${id}/${quantity}`
         }).done((data) => {
-            $('#cart-quantity').text(`${data.cart.totalQuantity}`);
-            alertify.success(data.message);
+            if(data.success==true){
+                $('#cart-quantity').text(`${data.cart.totalQuantity}`);
+                alertify.success(data.message);
+            }else{
+                alertify.alert(data.message);
+            }
+
         })
     }
-    function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
 
+</script>
+<script>
+    const input_number = document.getElementById('number_input');
+
+    checkStock({{$mauSanPham[0]->id}},1);
+    input_number.addEventListener('keyup', function(event) {
+        // Loại bỏ tất cả các ký tự không phải là số
+        if (isNaN(this.value) || this.value === ""||this.value=="0") {
+            this.value = "";
+        }else{
+            const id = parseInt(document.getElementById('add-to-cart').dataset.id);
+            checkStock(id,parseInt(input_number.value));
+        }
+    });
+    function minus(variantId) {
+        if(parseInt(input_number.value)===1)
+        {
+            $('#button_minus_value').attr('disabled',true);
+            if(parseInt(input_number.value)<0)
+                input_number.value=0;
+        }
+        parseInt(input_number.value) > 0 && parseInt(input_number.value) < 2 ? input_number.value = 1 :
+            input_number.value = parseInt(input_number.value) - 1;
+            checkStock(variantId,parseInt(input_number.value));
+    }
+    function plus(variantId) {
+        input_number.value = parseInt(input_number.value) + 1;
+        checkStock(variantId,parseInt(input_number.value));
+    };
+
+    function checkStock(variant_id,quantity) {
+        console.log(quantity);
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variant_id}`
+            })
+            .done((data) => {
+                if (data <= quantity) {
+                    $('#quantity-limit').text('Số lượng đã đạt giới hạn');
+                    $('#number_input').val(data);
+                    $('#button_plus_value').attr('disabled', true);
+                    console.log(parseInt($('#number_input').val()));
+                    if(parseInt($('#number_input').val()) <= 0){
+                        $('#number_input').val(1);
+                    }
+                } else {
+                    $('#button_plus_value').attr('disabled', false);
+                    $('#quantity-limit').text('');
+                }
+
+
+
+            })
+
+    }
+</script>
+<script>
+     function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
         const button_color = document.querySelectorAll('.product_detail_right_color button')
         if (button_color) {
             button_color.forEach(element => {
@@ -331,6 +396,8 @@
                 //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
 
                 document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
+                document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
+                document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
             }
         });
     }
@@ -359,6 +426,9 @@
         document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
         document.getElementById('stock').innerHTML = danhSachMau[0].stock;
     }
+</script>
+<script>
+
 </script>
 @endsection
 

@@ -23,15 +23,16 @@
                                 <div class="cart_item_info_bottom">
                                     <div>{{ number_format($item['variant_info']->price) }} <sup>đ</sup></div>
                                     <div>
-                                        <button class="minus amount"
+                                        <button class="minus amount" id="minus-{{$item['variant_info']->id }}"
                                             onclick="minusOneQuantity({{ $item['variant_info']->id }})"><i
                                                 class="fas fa-minus"></i></button>
                                         <input class="amount" disabled type="text" min="1"
                                             value="{{ $item['quantity'] }}"
                                             id="quantity-variant-{{ $item['variant_info']->id }}">
-                                        <button class="plus amount"
+                                        <button class="plus amount" id="add-{{$item['variant_info']->id }}"
                                             onclick="addOneQuantity({{ $item['variant_info']->id }})"><i
                                                 class="fas fa-plus"></i></button>
+
                                     </div>
                                 </div>
                             </div>
@@ -173,8 +174,14 @@
                     url: `/add-to-cart/${id}/1`
                 })
                 .done((data) => {
-                    $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
-                    $('#cart-quantity').text(`${data.cart.totalQuantity}`);
+                    if(data.success===true){
+                        $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                        $('#cart-quantity').text(`${data.cart.totalQuantity}`);
+                    }else{
+                        alertify.error(data.message);
+                        console.log(data.cart.listProductVariants[id].quantity)
+                        $(`#quantity-variant-${id}`).val(data.cart.listProductVariants[id].quantity);
+                    }
                 });
         }
         //Trừ một số lượng khi nhấn nút -
@@ -188,9 +195,22 @@
                     .done((data) => {
                         $('#total-price').text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
                         $('#cart-quantity').text(`${data.cart.totalQuantity}`);
-                        console.log(data);
+                        $(`#add-${id}`).attr('disabled',false);
                     });
             }
+        }
+
+        function checkStock(variant_id,quantity) {
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variant_id}`
+            })
+            .done((data) => {
+                if(parseInt(data)===0)
+                    $(`#add-${variant_id}`).attr('disabled',true);
+                else
+                    $(`#add-${variant_id}`).attr('disabled',false);
+            })
         }
     </script>
 @endsection

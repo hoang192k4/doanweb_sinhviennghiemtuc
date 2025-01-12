@@ -106,4 +106,13 @@ class AdminProductVariantController extends Controller
         ProductVariant::where('id',$id)->update(['status'=>1]);
         return 'Hiển thị variant '.$id.' thành công!';
     }
+    public function checkStock($id){
+
+        $quantity = 0;
+        if(session('cart')){
+            if(array_key_exists($id,session('cart')->listProductVariants))
+                $quantity = session('cart')->listProductVariants[$id]['quantity'];
+        }
+        return ProductVariant::find($id)->stock - $quantity;
+    }
 }

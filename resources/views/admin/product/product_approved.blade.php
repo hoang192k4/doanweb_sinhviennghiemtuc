@@ -1,6 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang quản lý sản phẩm duyệt')
-@section('active-product','active')
+@section('active-product', 'active')
 @section('content')
     <div class="separator"></div>
     <div class="content">
@@ -26,87 +26,89 @@
         </div>
 
         <div class="table" id="choduyet">
-            @if(isset($danhSachSanPham)&& count($danhSachSanPham)>0)
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 48px;">ID</th>
-                        <th>Tên sản phẩm</th>
-                        <th style="width: 48px;">Duyệt</th>
-                        <th style="width: 55px;">Variants</th>
-                        <th style="width: 48px;">Chi tiết</th>
-                        <th style="width: 48px;">Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($danhSachSanPham as $sanPham)
+            @if (isset($danhSachSanPham) && count($danhSachSanPham) > 0)
+                <table>
+                    <thead>
                         <tr>
-                            <td style="text-align: center;">{{ $sanPham->id }}</td>
-                            <td> {{ $sanPham->name }}</td>
-                            <td style="text-align: center;"><a
-                                    href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
-                                        class="fa-solid fa-check"></i></a></td>
-                            <td style="text-align: center;"> <a
-                                    href="{{ route('product_variant_hide', [$sanPham->id]) }}"> <i
-                                        class="fa-solid fa-code"></i></a> </td>
-                            <td style="text-align: center;"><a
-                                    href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
-                                        class="fa-regular fa-pen-to-square"></i></a>
-                            </td>
-                            <td style="text-align: center;"><button class="cursor"
-                                    style="background-color: white;color:rgb(19, 93, 102)"
-                                    onclick="showPopupDelete({{ $sanPham }})"><i class="fa-solid fa-x"></i></button>
-                            </td>
+                            <th style="width: 48px;">ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th style="width: 48px;">Duyệt</th>
+                            <th style="width: 55px;">Variants</th>
+                            <th style="width: 48px;">Chi tiết</th>
+                            <th style="width: 48px;">Xóa</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="pending">
+                        @foreach ($danhSachSanPham as $sanPham)
+                            <tr id="pending-{{$sanPham->id}}">
+                                <td style="text-align: center;">{{ $sanPham->id }}</td>
+                                <td> {{ $sanPham->name }}</td>
+                                <td style="text-align: center;"><a
+                                        href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
+                                            class="fa-solid fa-check"></i></a></td>
+                                <td style="text-align: center;"> <a
+                                        href="{{ route('product_variant_hide', [$sanPham->id]) }}"> <i
+                                            class="fa-solid fa-code"></i></a> </td>
+                                <td style="text-align: center;"><a
+                                        href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
+                                            class="fa-regular fa-pen-to-square"></i></a>
+                                </td>
+                                <td style="text-align: center;"><button class="cursor"
+                                        style="background-color: white;color:rgb(19, 93, 102)"
+                                        onclick="showPopupDelete({{ $sanPham }})"><i
+                                            class="fa-solid fa-x"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @else
                 <p style="text-align: center;font-size:25px">Không có sản phẩm chờ duyệt!!!</p>
             @endif
         </div>
         <div class="table" id="taman" style="display: none;">
-            @if(isset($danhSachSanPhamBiAn) && count($danhSachSanPhamBiAn)>0)
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 48px;">ID</th>
-                        <th>Tên sản phẩm</th>
-                        <th style="width: 48px;">Hiển thị</th>
-                        <th style="width: 55px;">Variants</th>
-                        <th style="width: 48px;">Chi tiết</th>
-                        <th style="width: 48px;">Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($danhSachSanPhamBiAn as $sanPham)
-                    <tr>
-                        <td style="text-align: center;">{{ $sanPham->id }}</td>
-                        <td> {{ $sanPham->name }}</td>
-                        <td style="text-align: center;"><a
-                                href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
-                                    class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"> <a
-                                href="{{ route('product_variant_hide', [$sanPham->id]) }}"> <i
-                                    class="fa-solid fa-code"></i></a> </td>
-                        <td style="text-align: center;"><a
-                                href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
-                                    class="fa-regular fa-pen-to-square"></i></a>
-                        </td>
-                        <td style="text-align: center;"><button class="cursor"
-                                style="background-color: white;color:rgb(19, 93, 102)"
-                                onclick="showPopupDelete({{ $sanPham }})"><i class="fa-solid fa-x"></i></button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
+            @if (isset($danhSachSanPhamBiAn) && count($danhSachSanPhamBiAn) > 0)
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 48px;">ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th style="width: 48px;">Hiển thị</th>
+                            <th style="width: 55px;">Variants</th>
+                            <th style="width: 48px;">Chi tiết</th>
+                            <th style="width: 48px;">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-hidden">
+                        @foreach ($danhSachSanPhamBiAn as $sanPham)
+                            <tr id="hidden-{{$sanPham->id}}">
+                                <td style="text-align: center;">{{ $sanPham->id }}</td>
+                                <td> {{ $sanPham->name }}</td>
+                                <td style="text-align: center;"><a
+                                        href="{{ route('admin.product.active', ['id' => $sanPham->id]) }}"><i
+                                            class="fa-solid fa-check"></i></a></td>
+                                <td style="text-align: center;"> <a
+                                        href="{{ route('product_variant_hide', [$sanPham->id]) }}"> <i
+                                            class="fa-solid fa-code"></i></a> </td>
+                                <td style="text-align: center;"><a
+                                        href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
+                                            class="fa-regular fa-pen-to-square"></i></a>
+                                </td>
+                                <td style="text-align: center;"><button class="cursor"
+                                        style="background-color: white;color:rgb(19, 93, 102)"
+                                        onclick="showPopupDelete({{ $sanPham }})"><i
+                                            class="fa-solid fa-x"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p style="text-align: center;font-size:25px">Không có sản phẩm bị ẩn</p>
+            @endif
         </div>
 
-        @else
-            <p style="text-align: center;font-size:25px">Không có sản phẩm bị ẩn</p>
-        @endif
+
         <div class="popup_admin" id="popupduyet">
             <h3 style="color: white;">Bạn có thật sự muốn xóa sản phẩm ... ?</h3>
             <p style="color: white;">* Sản phẩm bị xóa sẽ không thể khôi phục nữa *</p>
@@ -139,9 +141,8 @@
                 })
                 .done((data) => {
                     alertify.success(data);
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },1000)
+                    $(`#table-hidden #hidden-${id}`).remove();
+                    $(`#pending #pending-${id}`).remove();
                 })
 
             document.getElementById('popupduyet').style.display = "none";
@@ -152,7 +153,7 @@
         if (message !== null) {
             setTimeout(() => {
                 message.style.display = 'none';
-            }, 3000);
+            }, 2000);
         }
     </script>
     <script>
