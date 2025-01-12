@@ -15,6 +15,7 @@ class CartController extends Controller
         $cart = session('cart')?session('cart'):null;
         if($cart!=null)
         {
+            //kiểm tra lại các sp trong giỏ, nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ
             foreach($cart->listProductVariants as $item){
                 $var = ProductVariant::find($item['variant_info']->id);
                 if($var->status==0)
@@ -37,16 +38,24 @@ class CartController extends Controller
             return 'sản phẩm không tồn tại!';
         $product = $variant->product;
         $newCart = new Cart();
+
         if($variant!=null){
             $oldCart = session('cart')!=null?session('cart'):null;
             $newCart->setCart($oldCart);
-            $newCart->addToCart($product,$variant,$quantity,$variant_id);
+
+            if($newCart->addToCart($product,$variant,$quantity,$variant_id)==false){
+                return response()->json([
+                    'success'=>0,
+                    'message' =>'Số lượng bạn chọn đã vượt quá giới hạn số lượng của sản phẩm này!',
+                    'cart'=>['totalQuantity'=>$newCart->totalQuantity,'totalPrice'=>$newCart->totalPrice,'listProductVariants'=>$newCart->listProductVariants]
+                ]);
+            }
             $request->session()->put('cart',$newCart);
         }
         return response()->json([
-            'sucess'=>true,
+            'success'=>true,
             'message'=>'Đã thêm sản phẩm '.$product->name.' ('.$variant->color.'/'.$variant->internal_memory.') vào giỏ hàng',
-            'cart'=>['totalQuantity'=>$newCart->totalQuantity,'totalPrice'=>$newCart->totalPrice]
+            'cart'=>['totalQuantity'=>$newCart->totalQuantity,'totalPrice'=>$newCart->totalPrice,'listProductVariants'=>$newCart->listProductVariants]
         ]);
     }
 

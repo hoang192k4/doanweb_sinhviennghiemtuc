@@ -55,24 +55,7 @@ if (button_rams) {
 //     })
 // }
 
-const button_minus = document.getElementById('button_minus_value');
-const button_plus = document.getElementById('button_plus_value');
-const input_number = document.getElementById('number_input');
-if (input_number) {
-    input_number.addEventListener('input', function (event) {
-        // Loại bỏ tất cả các ký tự không phải là số
-        if (isNaN(this.value) || this.value === "") {
-            this.value = "1";
-        }
-    });
-    button_minus.onclick = function () {
-        parseInt(input_number.value) > 0 && parseInt(input_number.value) < 2 ? input_number.value = 1 :
-            input_number.value = parseInt(input_number.value) - 1;
-    }
-    button_plus.addEventListener('click', function () {
-        input_number.value = parseInt(input_number.value) + 1;
-    });
-}
+
 
 
 

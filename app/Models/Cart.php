@@ -29,9 +29,12 @@ class Cart extends Model
         }
         $newProductVariant['price'] += ($quantity*$variant->price);
         $newProductVariant['quantity']+=$quantity;
+        if($newProductVariant['quantity']> $variant->stock)
+            return false;
         $this->listProductVariants[$variant_id] = $newProductVariant;
         $this->totalPrice += $quantity*$variant->price;
         $this->totalQuantity+=$quantity;
+        return true;
     }
     public function deleteItemCart($variant_id)
     {

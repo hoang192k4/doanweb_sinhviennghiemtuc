@@ -40,6 +40,7 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/cart-minus-one-variant/{id}', 'minusOnQuantity');
 });
 
+Route::get('/admin/check-stock-variant/{id}',[AdminProductVariantController::class,'checkStock']);
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
     //Route dashboard
@@ -73,6 +74,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::get('/admin/product-variant-hidden/{id}', [AdminProductVariantController::class, 'showListVariantsHide'])->name('product_variant_hide');
     Route::PUT('/admin/product-variant/active/{id}', [AdminProductVariantController::class, 'active'])->middleware(AdminRoleMiddleware::class);
     Route::post('/admin/product/is_isset', [AdminProductController::class, 'isIssetProduct']);
+
     Route::resource('/admin/product-variant', AdminProductVariantController::class)->except(['index']);
     Route::resource('/admin/product', AdminProductController::class);
 
