@@ -84,22 +84,25 @@
                 <h5 style="margin-bottom: 0; font-weight: 100; color: #a7a7a7;">Dung lượng</h5>
                 <div class="product_detail_right_ram">
                     @foreach ($danhSachBoNho as $index => $boNho)
-                        <button class="{{$index == 0 ? 'color_active':''}}" onclick="DanhSachMau('{{Route('LayMauSanPhamTheoBoNho',['slug'=>$slug,'internal_memory'=>$boNho->internal_memory])}}',this)">
-                            <span>{{$boNho->internal_memory}}</span>
+                        <button class="{{ $index == 0 ? 'color_active' : '' }}"
+                            onclick="DanhSachMau('{{ Route('LayMauSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}',this)">
+                            <span>{{ $boNho->internal_memory }}</span>
                             <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
                         </button>
                     @endforeach
                 </div>
                 <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
                 <div class="product_detail_right_color" id="product_detail_right_color">
-                    @foreach ( $mauSanPham as $index => $mau)
-                    <button onclick="LayThongTinSanPhamTheoMau('{{$slug}}','{{$mau->internal_memory}}','{{$mau->color}}',this)" class="{{$index == 0 ? 'color_active':''}}">
-                        <img src="{{asset('images/'.$mau->image)}}" alt="Lỗi hiển thị">
-                        <span>
-                            <p>{{$mau->color}}</p>
-                            <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
-                        </span>
-                    </button>
+                    @foreach ($mauSanPham as $index => $mau)
+                        <button
+                            onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)"
+                            class="{{ $index == 0 ? 'color_active' : '' }}">
+                            <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
+                            <span>
+                                <p>{{ $mau->color }}</p>
+                                <span> {{ number_format($mau->price, 0, ',', '.') }}<sup>đ</sup></span>
+                            </span>
+                        </button>
                     @endforeach
                 </div>
                 <div class="product_detail_right_quantity">
@@ -361,9 +364,6 @@
                     $('#button_plus_value').attr('disabled', false);
                     $('#quantity-limit').text('');
                 }
-
-
-
             })
 
     }
@@ -412,6 +412,7 @@
             })
         }
         btn.classList.add('color_active');
+
         $.ajax({
                 method: "GET",
                 url: url,

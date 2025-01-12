@@ -80,7 +80,8 @@ class CartController extends Controller
             $request->session()->forget('cart');
             return response()->json([
                 'sussess'=>true,
-                'message'=> 'Đã xóa '.$variant->product->name.' ('.$variant->color.'/'.$variant->internal_memory.') khỏi giỏ hàng'
+                'message'=> 'Đã xóa '.$variant->product->name.' ('.$variant->color.'/'.$variant->internal_memory.') khỏi giỏ hàng',
+                'cart'=>['totalQuantity'=>$cart->totalQuantity,'totalPrice'=>$cart->totalPrice]
             ]);
         }
         else

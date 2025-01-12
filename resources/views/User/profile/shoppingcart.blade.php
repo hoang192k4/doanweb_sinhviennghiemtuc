@@ -10,7 +10,7 @@
                     @foreach (session('cart')->listProductVariants as $item)
                         <div id="variant-{{ $item['variant_info']->id }}" class="shopping_cart_item">
                             <div class="cart_item_img">
-                                <a href=""><img src="{{ asset('images/' . $item['variant_info']->image) }}"
+                                <a href="{{route('detail',['slug'=>$item['product_info']->slug])}}"><img src="{{ asset('images/' . $item['variant_info']->image) }}"
                                         alt=""></a>
                             </div>
                             <div class="cart_item_info">
@@ -38,8 +38,9 @@
                             </div>
                         </div>
                     @endforeach
-                    <div class="page" id="page"></div>
+
                 </div>
+                <div class="page" id="page"></div>
                 <div class="shopping_cart_bottom" id="cart-bottom">
                     <div class="shopping_cart_bottom_left">
                         <button onclick="deleteAll()">xóa tất cả</button>
@@ -65,6 +66,7 @@
             </div>
         @endif
     </div>
+
 @endsection
 @section('script')
     <script>
@@ -132,10 +134,16 @@
             }).done((data) => {
                 alertify.success(data.message);
                 $(`#list-product-variant #variant-${id}`).remove();
+
+                console.log($('#list-product-variant').children().length)
                 if ($('#list-product-variant').children().length == 0)
                     afterDeleteAll();
                 else
+                {
+                    console.log(data);
                     $(`#total-price`).text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                }
+
             })
         }
         //xóa tất cả sản phẩm
@@ -212,5 +220,8 @@
                     $(`#add-${variant_id}`).attr('disabled',false);
             })
         }
+    </script>
+    <script>
+
     </script>
 @endsection
