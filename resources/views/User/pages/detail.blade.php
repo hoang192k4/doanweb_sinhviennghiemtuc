@@ -402,7 +402,16 @@
         });
     }
 
-    function DanhSachMau(url) {
+    function DanhSachMau(url,btn) {
+        const button_color = document.querySelectorAll('.product_detail_right_ram button')
+        if (button_color) {
+            button_color.forEach(element => {
+                {
+                    button_color.forEach(btn => btn.classList.remove('color_active'));
+                }
+            })
+        }
+        btn.classList.add('color_active');
         $.ajax({
                 method: "GET",
                 url: url,
