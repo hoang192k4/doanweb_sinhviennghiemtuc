@@ -73,10 +73,8 @@
                         <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
                     @endauth
-                    <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
-                    </p>
-                    <p><i class="fas fa-thumbs-up"></i>{{ $luotThichSanPham }} lượt thích</p>
-                    <p><i class="fas fa-eye"></i>{{ $thongTinSanPham->views }}</p>
+                    <p><i class="fas fa-thumbs-up"></i>{{$luotThichSanPham}} lượt thích</p>
+                    <p><i class="fas fa-eye"></i>{{$thongTinSanPham->views}}</p>
                 </div>
                 <h4>{{ $thongTinSanPham->name }}</h4>
                 <div class="product_detail_right_price">
