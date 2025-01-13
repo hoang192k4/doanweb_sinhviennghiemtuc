@@ -9,6 +9,7 @@ use App\Models\Blog;
 use App\Models\ProductUser;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\LikeProduct;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -140,7 +141,7 @@ class UserController extends Controller
         $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
         $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
         $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
-        //thông số kỹ thuật
+        //thông số kỹ thuậnthuận
         $thongSoKiThuatSanPham = $product->product_specification;
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
@@ -200,5 +201,25 @@ class UserController extends Controller
         $data->save();
         return redirect()->route('user.contact')->with('msg','Gửi liên hệ thành công!');
     }
-
+    public function CapNhapSanPhamYeuThich($sanpham,$user){
+        $luotThich = LikeProduct::TongLuotThichSanPham($sanpham);
+        $tenSanPham =ProductUser::LayTenSanPhamTheoId($sanpham);
+        $status = LikeProduct::TrangThai($sanpham,$user);
+        if($status > 0 ){
+            LikeProduct::XoaSanPhamYeuThich($sanpham,$user);
+            return response()->json([
+                'status'=>0,
+                'tenSanPham'=>$tenSanPham,
+                'luotThich'=>$luotThich,
+            ]);
+        }
+        else{
+            LikeProduct::ThemSanPhamYeuThich($sanpham,$user);
+            return response()->json([
+                'status'=>1,
+                'tenSanPham'=>$tenSanPham,
+                'luotThich'=>$luotThich,
+            ]);
+        }
+    }
 }

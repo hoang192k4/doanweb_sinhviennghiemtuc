@@ -13,13 +13,16 @@
             )
             ->where('products.slug', $slug)
             ->first();
+        $yeuthich = DB::table('like_products')
+        ->where('product_id',$thongTinSanPham->id)
+        ->where('user_id',Auth::user()->id)
+        ->count();
     @endphp
-
     <div style="background-color: rgb(241, 240, 241);">
         <div class="container_css product_detail_top_url">
             <ul>
                 @if ($seach)
-                    <li><a href="">Trang chủ</a></li>
+                    <li><a href="{{route("user.index")}}">Trang chủ</a></li>
                     <li><a href="{{ route('timkiemsanpham', ['slug' => $seach->slug]) }}">{{ $seach->category }}</a></li>
                     <!-- Truy xuất đúng tên trường -->
                     <li><a
@@ -69,10 +72,10 @@
             <div class="product_detail_right">
                 <div class="product_detail_right_interact">
                     @auth
-                        <p id="button_like"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
+                        <p id="button_like"  onclick="CapNhatYeuThich('{{$thongTinSanPham->id}}','{{Auth::user()->id}}')" style="color: {{$yeuthich == 1 ? 'red' : 'grey'}}"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
                     @endauth
-                    <p><i class="fas fa-thumbs-up"></i>{{ $luotThichSanPham }} lượt thích</p>
+                    <p><i class="fas fa-thumbs-up"></i><span id="number_like">{{ $luotThichSanPham }}</span> lượt thích</p>
                     <p><i class="fas fa-eye"></i>{{ $thongTinSanPham->views }}</p>
                 </div>
                 <h4>{{ $thongTinSanPham->name }}</h4>
@@ -393,15 +396,13 @@
                     $('#status').text('(Hết hàng)');
                 }
                 $('#price').text(price);
-                //$('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
-
+                // $('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
                 document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
             }
         });
     }
-
     function DanhSachMau(url,btn) {
         const button_color = document.querySelectorAll('.product_detail_right_ram button')
         if (button_color) {
@@ -435,5 +436,26 @@
             });
     }
 </script>
-<script></script>
+<script>
+    function CapNhatYeuThich(sanpham, user) {
+        $.ajax({
+            type: "GET",
+            url: `/yeuthich/${sanpham}/${user}`,
+            data: "data",
+            dataType: "json",
+            success: function(response) {
+                if (response.status == 1) {
+                    alertify.success(`Thêm sản phẩm ${response.tenSanPham[0].name} vào danh sách yêu thích thành công `);
+                    $("#button_like").css("color", "red");
+                    $("#number_like").text(response.luotThich + 1);
+                } else {
+                    alertify.error(`Bỏ sản phẩm ${response.tenSanPham[0].name} ra khỏi danh sách yêu thích thành công `);
+                    $("#button_like").css("color", "grey");
+                    $("#number_like").text(response.luotThich - 1); // Giảm số nếu bỏ thích
+                }
+            }
+        });
+    }
+</script>
+
 @endsection
