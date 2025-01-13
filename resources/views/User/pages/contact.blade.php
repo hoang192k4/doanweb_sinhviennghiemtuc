@@ -29,24 +29,50 @@
                         <form class="form_contact" action="/addContact" method="POST" style="padding-left: 30px;">
                             @csrf @method('POST')
                             <div class="col">
-                                <input type="text" name="name" placeholder="Họ và tên của bạn @error('name'){{$message}}@enderror"
+                                <input type="text" name="name" placeholder="Họ và tên của bạn"
                                     value="@isset($contact){{ $contact->name }}@endisset" />
+                                    <div class="alert_error_validate">
+                                        <span style="color: red; font-size:12px;margin-left: 10px" >
+                                            @error('name'){{$message}}@enderror
+                                        </span>
+                                    </div>
                             </div>
                             <div class="col">
-                                <input type="text" name="phone" placeholder="Số điện thoại @error('phone'){{$message}}@enderror"
+                                <input type="text" name="phone" placeholder="Số điện thoại "
                                     value="@isset($contact){{ $contact->phone }}@endisset" />
+                                    <div class="alert_error_validate">
+                                        <span style="color: red; font-size:12px;margin-left: 10px" >
+                                            @error('phone'){{$message}}@enderror
+                                        </span>
+                                    </div>
                             </div>
                             <div class="col">
-                                <input type="text" name="email" placeholder="E-mail @error('email'){{$message}}@enderror"
+                                <input type="text" name="email" placeholder="E-mail "
                                     value="@isset($contact){{ $contact->email }}@endisset" />
+                                    <div class="alert_error_validate">
+                                        <span style="color: red; font-size:12px;margin-left: 10px" >
+                                            @error('email'){{$message}}@enderror
+                                        </span>
+                                    </div>
                             </div>
                             <div class="col">
-                                <input type="text" name="title" placeholder="Tiêu đề @error('title'){{$message}}@enderror"
+                                <input type="text" name="title" placeholder="Tiêu đề "
                                     value="@isset($contact){{ $contact->title }}@endisset" />
+                                    <div class="alert_error_validate">
+                                        <span style="color: red; font-size:12px;margin-left: 10px" >
+                                            @error('title'){{$message}}@enderror
+                                        </span>
+                                    </div>
                             </div>
                             <div class="col">
-                                <textarea name="content" placeholder="Nội dung @error('content'){{$message}}@enderror" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
-                                    value="@isset($contact){{ $contact->content }}@endisset"></textarea>
+                                <textarea name="content" placeholder="Nội dung " style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
+                                    value="@isset($contact){{ $contact->content }}@endisset">
+                                </textarea>
+                                <div class="alert_error_validate">
+                                    <span style="color: red; font-size:12px;margin-left: 10px" >
+                                        @error('content'){{$message}}@enderror
+                                    </span>
+                                </div>
                             </div>
                             <button type="submit" class="sendMessage">
                                 Gửi</button>

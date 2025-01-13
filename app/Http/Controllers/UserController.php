@@ -197,16 +197,16 @@ class UserController extends Controller
             'title'=>'required|max:255',
             'content'=>'required|string',
         ],[
-            'name.required'=>'không được trống',
-            'name.max' =>'tối đa chỉ 50 ký tự',
-            'email.required' => 'không được trống.',
-            'email.email' => 'không hợp lệ.',
-            'email.max' => 'không được vượt quá 255 ký tự.',
-            'phone.required'=>'không được bỏ trống',
-            'phone.digits'=>'chỉ đc nhập 10 ký tự số',
-            'title.required'=>'không được bỏ trống',
-            'title.max'=>'tối đã 255 ký tự',
-            'content.required'=>'không được bỏ trống',
+            'name.required'=>'Họ và tên không được trống',
+            'name.max' =>'Chỉ được nhập tối đa chỉ 50 ký tự',
+            'email.required' => 'Email không được trống.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.max' => 'Email không được vượt quá 255 ký tự.',
+            'phone.required'=>'Số điện thoại không được bỏ trống',
+            'phone.digits'=>'Số điện thoại chỉ đc nhập 10 ký tự số',
+            'title.required'=>'Tiêu đề không được bỏ trống',
+            'title.max'=>'chỉ được nhập tối đã 255 ký tự',
+            'content.required'=>'Nội dung không được bỏ trống',
         ]);
 
         $data = new Contact();
