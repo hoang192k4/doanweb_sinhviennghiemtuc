@@ -62,7 +62,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
 
     //Route quan li thong ke
     Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
-    
+
     Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
 
     //Route quan ly san pham

@@ -60,7 +60,7 @@
                         <div class="shopping_cart_bottom_price">
                             <h4>Tổng cộng</h4>
                             <p id="total-price"> {{ number_format(session('cart')->totalPrice) }}<sup>đ</sup></p>
-                            <button><a href="{{route('user.payment')}}">Thanh toán</a></button>
+                            <button onclick="payment()"><a href="{{route('user.payment')}}">Thanh toán</a></button>
                         </div>
 
                     </div>
@@ -71,6 +71,11 @@
 
 @endsection
 @section('script')
+<script>
+    function payment(){
+        window.location.href = "{{route('user.payment')}}";
+    }
+</script>
     <script>
         //xóa một sản phẩm
         function deleteItemCart(id) {
@@ -191,7 +196,7 @@
                 const begin = (page - 1) * itemsPage;
                 const end = begin + itemsPage;
                 products.slice(begin, end).forEach(product => {
-                    container.appendChild(product); 
+                    container.appendChild(product);
                 });
                 LoadPageButton(countPage, page);
             }

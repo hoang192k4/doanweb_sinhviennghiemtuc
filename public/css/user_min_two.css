@@ -644,7 +644,7 @@
     background-color: rgb(22, 66, 60);
     border-radius: 5px;
 }
-.shopping_cart_bottom_price > button > a{
+.shopping_cart_bottom_price > button >a {
     color: white;
 }
 @media only screen and (max-width: 768px) {

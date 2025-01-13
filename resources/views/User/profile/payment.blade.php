@@ -1,7 +1,7 @@
 @extends('layouts.layouts_user')
 @section('title', 'Thanh toán')
 @section('content')
-    <div class="popup_payment">
+    <div class="popup_payment" id="popup-payment">
         <div class="overflow_payment"></div>
         <div class="popup_payment_base payment_cod">
             <p><i class="fas fa-times"></i></p>
@@ -261,6 +261,13 @@
                     url: '/payment',
                     data: data
                 })
+                .done((data)=>{
+                    alertify.confirm(data.message,function(){
+                        window.location.href = data.url;
+                    },function(){
+                        window.location.href = data.url;
+                    });
+                })
                 .fail((data) => {
                     let errors = data.responseJSON.errors; // Lấy danh sách lỗi
 
@@ -346,6 +353,10 @@
                     $('#voucher').val(data.voucher.id);
                     totalPrice = parseInt({{ session('cart')->totalPrice }}) - data.voucher.discount_value;
                 } else {
+                    $('#voucher').val('');
+                    $('#discount').text(0);
+                    $('#total-price').text(new Intl.NumberFormat('vi-VN').format(parseInt(
+                        {{ session('cart')->totalPrice }})));
                     alertify.error(data.message);
                 }
             })

@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Voucher;
 use App\Models\VoucherUser;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -83,10 +84,27 @@ class OrderController extends Controller
                 'wards.required' => 'Vui lòng chọn phường/xã.',
             ]
         );
+        //kiểm tra giá sản phẩm có bằng với lúc nhấn đặt hàng hay không
+        foreach(session('cart')->listProductVariants as $item){
+            $variant = ProductVariant::find($item['variant_info']->id);
+            if($item['variant_info']->price != $variant->price){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+        }
 
         if($req->voucher!=null){
             $voucher = Voucher::find($req->voucher);
-            $discount = $voucher->id;
+            if(VoucherUser::where('user_id',Auth::user()->id)->where('voucher_id',$voucher->id)->first()!=null){
+                return response()->json([
+                    'success'=>0,
+                    'message'=>'Voucher đã được sử dụng!'
+                ]);
+            }
+            $discount = $voucher->discount_value;
             VoucherUser::create([
                 'voucher_id'=>$voucher->id,
                 'user_id'=>Auth::user()->id
@@ -102,13 +120,12 @@ class OrderController extends Controller
             'full_name'=>$req->full_name,
             'phone'=>$req->phone,
             'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
-            'total_price'=>session('cart')->totalPrice -$discount,
+            'total_price'=>session('cart')->totalPrice - $discount,
             'payment_method'=>$methodId,
             'user_id'=>Auth::user()->id,
-            'voucher_id'=>$voucher->id,
-            'order_status_id'=>6
+            'voucher_id'=> $req->voucher!=null? $voucher->id:null,
+            'order_status_id'=>2
         ]);
-
         foreach(session('cart')->listProductVariants as $item){
             OrderItem::create([
                 'product_variant_id'=>$item['variant_info']->id,
@@ -125,7 +142,8 @@ class OrderController extends Controller
 
         return response()->json([
             'success'=>1,
-            'message'=>'Đặt hàng thành công!'
+            'message'=>'Đặt hàng thành công!',
+            'url'=>route('user.index')
         ]);
     }
 }

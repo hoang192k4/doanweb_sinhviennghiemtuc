@@ -10,13 +10,13 @@
             <div class="col_order_history" style="padding-left: 20px;width: 79%;">
                 <div class="col_order_history_2">
                     <div class="tab">
-                        <button class="tablinks">Tất cả</button>
-                        <button class="tablinks">Chờ thanh toán</button>
-                        <button class="tablinks">Đang chuẩn bị</button>
-                        <button class="tablinks">Đang giao</button>
-                        <button class="tablinks">Hoàn thành</button>
-                        <button class="tablinks">Đã hủy</button>
-                        <button class="tablinks">Trả hàng/Hoàn tiền</button>
+                        <button class="tablinks" id="all-order">Tất cả</button>
+                        <button class="tablinks" id="pending-pay">Chờ thanh toán</button>
+                        <button class="tablinks" id="preparing">Đang chuẩn bị</button>
+                        <button class="tablinks" id="shipping">Đang giao</button>
+                        <button class="tablinks" id="done">Hoàn thành</button>
+                        <button class="tablinks" id="canceled">Đã hủy</button>
+                        <button class="tablinks" id="refund">Trả hàng/Hoàn tiền</button>
                     </div>
                     <div class="history" id="all">
                         @if (count($orders) > 0)
