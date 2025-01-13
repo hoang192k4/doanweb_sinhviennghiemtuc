@@ -21,6 +21,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
     Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
+    Route::post('/addContact',  'addContact');
     Route::get('/', "index")->name('user.index');
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
@@ -32,6 +33,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
+
+
 });
 
 Route::controller(CartController::class)->group(function () {

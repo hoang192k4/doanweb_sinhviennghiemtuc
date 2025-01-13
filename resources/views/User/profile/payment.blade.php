@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="payment_right">
-                <form action="/completePayment" class="form_payment" method="POST">
+                <form action="/completePayment" class="form_payment" method="POST">@csrf
                     <div class="logo_payment"><img src="" alt="Lỗi hiển thị"></div>
                     <h4>Thông tin giao hàng</h4>
                     <div class="profile_payment">
@@ -215,25 +215,32 @@
         }
     </script>
     <script>
-        // function order() {
-        //     const data = {
-        //         full_name: $('#full_name_payment').val(),
-        //         email: $('#email_payment').val(),
-        //         phone: $('#phone-payment').val(),
-        //         address: $('#address').val(),
-        //         _token:'{{csrf_token()}}'
-        //     }
-        //     $.ajax({
-        //         method: "POST",
-        //         url: '/payment',
-        //         data: data
-        //     })
-        //     .done((data) => console.log(data))
-        //     .fail((data){
-        //         if(data.status===422){
-        //             let errors = data.responseJSON.errors; // Lấy danh sách lỗi
-        //         }
-        //     })
-        // }
+        function order() {
+            $('.alert_error_validate').text('');
+            const data = {
+                full_name: $('#full_name_payment').val(),
+                email: $('#email_payment').val(),
+                phone: $('#phone-payment').val(),
+                address: $('#address').val(),
+                _token:'{{csrf_token()}}'
+            }
+            $.ajax({
+                method: "POST",
+                url: '/completePayment',
+                data: data
+            });
+            .done((data) => alertify.success(response.message))
+            .fail((data){
+                const errors = data.responseJSON.errors; // Lấy danh sách lỗi
+                if(errors.full_name)
+                    $('#full_name_payment_error').text(error.full_name);
+                if(errors.email)
+                    $('#email_payment_error').text(error.email);
+                if(errors.phone)
+                    $('#phone_payment_error').text(error.phone);
+                if(errors.address)
+                    $('#address_payment_error').text(error.address);
+            })
+        }
     </script>
 @endsection
