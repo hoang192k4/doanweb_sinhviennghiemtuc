@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Voucher;
 use App\Models\VoucherUser;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -81,14 +83,49 @@ class OrderController extends Controller
                 'wards.required' => 'Vui lòng chọn phường/xã.',
             ]
         );
-        $orderPayment =new Order();
-        $validated['order_code'] = Order::generateOrderCode();
-        $orderPayment->id=$req['id'];
-        $orderPayment->full_name=$req['full_name'];
-        $orderPayment->phone=$req['phone'];
-        $orderPayment->email=$req['email'];
-        $orderPayment->address=$req['address'];
-        $orderpayment->save();
-        return redirect()->route('user.payment')->with('msg','Đặt hàng thàng công!');
+
+        if($req->voucher!=null){
+            $voucher = Voucher::find($req->voucher);
+            $discount = $voucher->id;
+            VoucherUser::create([
+                'voucher_id'=>$voucher->id,
+                'user_id'=>Auth::user()->id
+            ]);
+        }else
+            $discount = 0;
+        if($req->method=="COD")
+            $methodId=1;
+        else
+            $methodId = 2;
+        $order = Order::create([
+            'order_code'=>Order::generateTimestamp(),
+            'full_name'=>$req->full_name,
+            'phone'=>$req->phone,
+            'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
+            'total_price'=>session('cart')->totalPrice -$discount,
+            'payment_method'=>$methodId,
+            'user_id'=>Auth::user()->id,
+            'voucher_id'=>$voucher->id,
+            'order_status_id'=>6
+        ]);
+
+        foreach(session('cart')->listProductVariants as $item){
+            OrderItem::create([
+                'product_variant_id'=>$item['variant_info']->id,
+                'slug_product'=>$item['product_info']->slug,
+                'name_product'=>$item['product_info']->name,
+                'color'=>$item['variant_info']->color,
+                'internal_memory'=>$item['variant_info']->internal_memory,
+                'quantity'=>$item['quantity'],
+                'price'=>$item['variant_info']->price,
+                'total_price'=>$item['price'],
+                'order_id'=>$order->id
+            ]);
+        }
+
+        return response()->json([
+            'success'=>1,
+            'message'=>'Đặt hàng thành công!'
+        ]);
     }
 }

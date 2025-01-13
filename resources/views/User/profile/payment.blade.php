@@ -252,6 +252,8 @@
                 provinces: localStorage.getItem('province'),
                 districts: localStorage.getItem('district'),
                 wards: localStorage.getItem('ward'),
+                voucher:  $('#voucher').val(),
+                method: $('input[name="method_payment"]:checked').val(),
                 _token: '{{ csrf_token() }}'
             }
             $.ajax({
