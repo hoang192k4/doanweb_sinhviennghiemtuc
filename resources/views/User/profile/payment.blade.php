@@ -46,7 +46,7 @@
                                         <a href="">
                                             <h6>{{ $item['product_info']->name }}</h6>
                                         </a>
-                                        <p>{{ $item['variant_info']->price }}<sup>đ</sup></p>
+                                        <p>{{ number_format($item['variant_info']->price, 0, ',', '.') }}<sup>đ</sup></p>
                                     </div>
                                     <div>
                                         <h6>{{ $item['variant_info']->color }} {{ $item['variant_info']->internal_memory }}
@@ -59,14 +59,14 @@
                     @endif
                 </div>
                 <div class="payment_action">
-                    <form class="voucher_payment" action="" method="get">
-                        <input type="text" placeholder="Mã giảm giá">
-                        <button type="submit">Áp dụng</button>
-                    </form>
+                    <div class="voucher_payment">
+                        <input type="text" placeholder="Mã giảm giá" id="voucher-code">
+                        <button type="button" id="btn-submit-voucher">Áp dụng</button>
+                    </div>
                     <div class="payment_action_temporary">
                         <div>
                             <p>Tạm tính </p>
-                            <p> {{ number_format(session('cart')->totalPrice) }}<sup>đ</sup></p>
+                            <p> {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}<sup>đ</sup></p>
                         </div>
                         <div>
                             <p>Phí vận chuyển </p>
@@ -74,12 +74,15 @@
                         </div>
                         <div>
                             <p>Giảm giá</p>
-                            <p>0<sup>đ</sup></p>
+                            <p><span id="discount">0</span><sup>đ</sup></p>
+                            <input type="hidden" name="voucher" id="voucher">
                         </div>
                     </div>
                     <div class="total_price">
                         <p>Tổng cộng </p>
-                        <p><span>VNĐ </span> {{ number_format(session('cart')->totalPrice) }} <sup>đ</sup></p>
+                        <p><span>VNĐ </span><span
+                                id="total-price">{{ number_format(session('cart')->totalPrice, 0, ',', '.') }}</span>
+                            <sup>đ</sup></p>
                     </div>
                 </div>
             </div>
@@ -88,29 +91,27 @@
                     <div class="logo_payment"><img src="" alt="Lỗi hiển thị"></div>
                     <h4>Thông tin giao hàng</h4>
                     <div class="profile_payment">
-                        <input type="text" name="full_name" id="full_name_payment" required
-                            value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset"
-                            placeholder="Họ và tên">
-                        <div class="alert_error_validate" id="full_name_payment_error">
-                           
-                        </div>
-
+                        <input type="text" name="full_name" id="full_name_payment"
+                            value="{{ Auth()->user()->full_name }}" placeholder="Họ và tên">
+                        <div class="alert_error_validate" id="full_name_payment_error"></div>
                         <div>
                             <input type="email" name="email" id="email_payment" required placeholder="Email"
-                                value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
-                            <div class="alert_error_validate" id="email_payment_error">
-                               
-                            </div>
+                                value="{{ Auth()->user()->email }}">
+                            <input type="tel" name="phone" placeholder="Số điện thoại" required id="phone_payment"
+                                value="{{ Auth()->user()->phone }}">
 
-                            <input type="tel" name="phone" placeholder="Số điện thoại" required id="phone-payment"
-                                value="@isset($orderPayment){{ $orderPayment->full_name }} @endisset">
+                        </div>
+                        <div>
+                            <div class="alert_error_validate" id="email_payment_error">
+                            </div>
                             <div class="alert_error_validate" id="phone_payment_error">
-                               
                             </div>
 
                         </div>
                         <input id="address"type="text" placeholder="Địa chỉ - Số nhà, tên Đường" required name="address"
-                            value="@isset($orderPayment){{ $orderPayment->address }} @endisset">
+                            value="">
+                        <div class="alert_error_validate" id="address_payment_error">
+                        </div>
                         <div class="css_select_div">
                             <select class="css_select" id="provinces" name="provinces" title="Chọn Tỉnh Thành"
                                 onchange=hadelChangeProvince(this)>
@@ -120,9 +121,19 @@
                                 onchange=hadelChangeDistrict(this)>
                                 <option required value="">Quận Huyện</option>
                             </select>
-                            <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã">
+                            <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã" onchange="handleChangePosition(this)">
                                 <option required value="">Phường Xã</option>
                             </select>
+                        </div>
+                        <div class="css_select_div">
+                            <div class="alert_error_validate" id="provinces_error">
+
+                            </div>
+                            <div class="alert_error_validate" id="districts_error">
+
+                            </div>
+                            <div class="alert_error_validate" id="wards_error">
+                            </div>
                         </div>
                         <div class="method_payment">
                             <table>
@@ -176,17 +187,26 @@
 @endsection
 @section('script')
     <script>
+        localStorage.removeItem("province");
+        localStorage.removeItem("district");
+        localStorage.removeItem("ward");
+        let selectedProvinceName = "";
+        let selectedDistrictName = "";
+        let selectedWardName = "";
+
         fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
             .then(response => response.json())
             .then(data => {
                 let provinces = data.data;
                 if (provinces !== undefined) {
                     provinces.map(item => document.getElementById('provinces').innerHTML +=
-                        `<option value="${item.id}">${item.full_name}</option>`);
+                        `<option value="${item.id}">${item.name}</option>`);
                 }
             });
 
         function hadelChangeProvince(provinceId) {
+            selectedProvinceName = provinceId.options[provinceId.selectedIndex].text;
+            localStorage.setItem("province", selectedProvinceName);
             fetch(`https://esgoo.net/api-tinhthanh/2/${provinceId.value}.htm`)
                 .then(response => response.json())
                 .then(data => {
@@ -201,7 +221,12 @@
 
         }
 
+
+
         function hadelChangeDistrict(districtId) {
+            let selectedDistrictName = districtId.options[districtId.selectedIndex].text;
+            localStorage.setItem("district", selectedDistrictName);
+            console.log(selectedDistrictName)
             fetch(`https://esgoo.net/api-tinhthanh/3/${districtId.value}.htm`)
                 .then(response => response.json())
                 .then(data => {
@@ -209,31 +234,120 @@
                     document.getElementById('wards').innerHTML = '<option value="">Phường xã</option>';
                     if (wards !== undefined) {
                         wards.map(item => document.getElementById('wards').innerHTML +=
-                            `<option value="${item.code}">${item.full_name}</option>`);
+                            `<option value="${item.id}">${item.full_name}</option>`);
                     }
                 });
         }
+        function handleChangePosition(ward){
+            let selectedWardName = ward.options[ward.selectedIndex].text;
+            localStorage.setItem("ward", selectedWardName);
+        }
+
+        function order() {
+            const data = {
+                full_name: $('#full_name_payment').val(),
+                email: $('#email_payment').val(),
+                phone: $('#phone_payment').val(),
+                address: $('#address').val(),
+                provinces: localStorage.getItem('province'),
+                districts: localStorage.getItem('district'),
+                wards: localStorage.getItem('ward'),
+                _token: '{{ csrf_token() }}'
+            }
+            $.ajax({
+                    method: "POST",
+                    url: '/payment',
+                    data: data
+                })
+                .done((data) => console.log(data))
+                .fail((data) => {
+                    let errors = data.responseJSON.errors; // Lấy danh sách lỗi
+
+                    if (errors.full_name !== undefined) {
+                        $('#full_name_payment_error').text(errors.full_name);
+                        $('#full_name_payment').focus();
+                    }
+                    if (errors.phone !== undefined) {
+                        $('#phone_payment_error').text(errors.phone);
+                        $('#phone_payment').focus();
+                    }
+                    if (errors.email !== undefined) {
+                        $('#email_payment_error').text(errors.email);
+                        $('#email_payment').focus();
+                    }
+                    if (errors.address !== undefined) {
+                        $('#address_payment_error').text(errors.address);
+                        $('#address_payment').focus();
+                    }
+                    if (errors.provinces !== undefined) {
+                        $('#provinces_error').text(errors.provinces);
+                        $('#provinces').focus();
+                    }
+                    if (errors.districts !== undefined) {
+                        $('#districts_error').text(errors.districts);
+                        $('#districts').focus();
+                    }
+                    if (errors.wards !== undefined) {
+                        $('#wards_error').text(errors.wards);
+                        $('#wards').focus();
+                    }
+                    console.log($('#provinces').val());
+                })
+        }
+        const fullName = document.getElementById('full_name_payment');
+        fullName.addEventListener('input', () => {
+            $('#full_name_payment_error').text('');
+        })
+        const email = document.getElementById('email_payment');
+        email.addEventListener('input', () => {
+            $('#email_payment_error').text('');
+        })
+        const phone = document.getElementById('phone_payment');
+        phone.addEventListener('input', () => {
+            $('#phone_payment_error').text('');
+        })
+        const address = document.getElementById('address');
+        address.addEventListener('input', () => {
+            $('#address_payment_error').text('');
+        })
+        const provinces = document.getElementById('provinces');
+        provinces.addEventListener('input', () => {
+            $('#provinces_error').text('');
+        })
+        const districts = document.getElementById('districts');
+        provinces.addEventListener('input', () => {
+            $('#districts_error').text('');
+        })
+        const wards = document.getElementById('wards');
+        provinces.addEventListener('input', () => {
+            $('#wards_error').text('');
+        })
     </script>
     <script>
-        // function order() {
-        //     const data = {
-        //         full_name: $('#full_name_payment').val(),
-        //         email: $('#email_payment').val(),
-        //         phone: $('#phone-payment').val(),
-        //         address: $('#address').val(),
-        //         _token:'{{csrf_token()}}'
-        //     }
-        //     $.ajax({
-        //         method: "POST",
-        //         url: '/payment',
-        //         data: data
-        //     })
-        //     .done((data) => console.log(data))
-        //     .fail((data){
-        //         if(data.status===422){
-        //             let errors = data.responseJSON.errors; // Lấy danh sách lỗi
-        //         }
-        //     })
-        // }
+        const btn = document.getElementById('btn-submit-voucher');
+        btn.addEventListener('click', (event) => {
+            const code = $('#voucher-code').val().trim();
+
+            $.ajax({
+                method: "POST",
+                url: '/add-voucher',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    orderValue: {{ session('cart')->totalPrice }},
+                    code
+                }
+            }).done((data) => {
+                if (data.success === 1) {
+                    alertify.success(data.message);
+                    $('#discount').text(new Intl.NumberFormat('vi-VN').format(data.voucher.discount_value));
+                    $('#total-price').text(new Intl.NumberFormat('vi-VN').format(parseInt(
+                        {{ session('cart')->totalPrice }}) - data.voucher.discount_value));
+                    $('#voucher').val(data.voucher.id);
+                    totalPrice = parseInt({{ session('cart')->totalPrice }}) - data.voucher.discount_value;
+                } else {
+                    alertify.error(data.message);
+                }
+            })
+        })
     </script>
 @endsection
