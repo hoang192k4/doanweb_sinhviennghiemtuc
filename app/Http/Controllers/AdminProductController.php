@@ -132,6 +132,7 @@ class AdminProductController extends Controller
     public function update(Request $request, string $id)
     {
         //
+
         $validate = $request->validate([
             'name'=>'required',
             'description'=>'required',
@@ -141,6 +142,10 @@ class AdminProductController extends Controller
             'description'=>'Vui lòng nhập mô tả sản phẩm'
         ]);
 
+        $check =Product::where('slug',Str::slug($request->input('name')))->where('id','<>',$request->id)->first();
+        if($check != null && Str::slug($request->input('name')) == $check->slug){
+            return back()->with('msg','Chỉnh sửa không thành công! Tên sản phẩm đã tồn tại');
+        }
         $product = Product::find($request->id);
         //chỉnh và thêm các ảnh của sản phẩm
         for($i = 0; $i < count($request->image_id);$i++){

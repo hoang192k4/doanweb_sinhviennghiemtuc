@@ -61,6 +61,7 @@ class CartController extends Controller
 
     public function deleteItemCart(Request $request, string $variant_id)
     {
+
         $variant = ProductVariant::find($variant_id);
         $cart = session('cart')?session('cart'):null;
         if(array_key_exists($variant_id,$cart->listProductVariants)==false){
