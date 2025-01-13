@@ -9,5 +9,6 @@ class CategorySpecification extends Model
 {
     //
     use HasFactory;
-    protected $fillable = ['id', 'category_id', 'name', 'updated_at', 'created_at'];
+    protected $fillable = ['id', 'category_id', 'name'];
+    public $timestamps = false;
 }

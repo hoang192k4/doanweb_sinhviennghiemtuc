@@ -12,12 +12,14 @@ class AdminCategoryController extends Controller
     //
     public function index()
     {
-        $danhSachDanhMuc = Category::all();
+        $danhSachDanhMuc = Category::all()->where('status', 1);
         $danhSachDanhMucLoc = Category::all();
         if ($danhSachDanhMuc->isEmpty()) {
             return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
         }
-        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc)->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
+        return view('admin.category.category')
+            ->with('danhSachDanhMuc', $danhSachDanhMuc)
+            ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
     }
     public function addCategory()
     {
@@ -37,6 +39,7 @@ class AdminCategoryController extends Controller
         $category = Category::create([
             'name' => $nameCategory,
             'slug' => $slug,
+            'status' => 1,
         ]);
         foreach ($request->input('nameSpecifications') as $specification) {
             CategorySpecification::create([
@@ -44,7 +47,8 @@ class AdminCategoryController extends Controller
                 'category_id' => $category->id,
             ]);
         }
-        return redirect()->route('admin.category.addCategory')->with('msg', 'Thêm phân loại thành công');
+        return redirect()->route('admin.category.addCategory')
+            ->with('msg', 'Thêm phân loại thành công');
     }
     public function searchCategory(Request $request)
     {
@@ -53,39 +57,49 @@ class AdminCategoryController extends Controller
         $danhSachDanhMuc = Category::where('name', 'like', '%' . $keyCategory . '%')->get();
 
         if ($danhSachDanhMuc->isEmpty()) {
-            return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.')->with('danhSachDanhMuc', $danhSachDanhMuc);
+            return view('admin.category.category')
+                ->with('message', 'Không tìm thấy danh mục nào.')->with('danhSachDanhMuc', $danhSachDanhMuc);
         }
 
-        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc);
+        return view('admin.category.category')
+            ->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
     public function editCategory($id)
     {
         $danhMucTimKiem = Category::find($id);
-        return view('admin.category.editcategory')->with('danhMucTimKiem', $danhMucTimKiem);
+        $thongSoKyThuat = $danhMucTimKiem->category_specifications;
+        return view('admin.category.editcategory')
+            ->with('danhMucTimKiem', $danhMucTimKiem)
+            ->with('thongSoKyThuat', $thongSoKyThuat);
     }
     public function updateCategory(Request $request, $id)
     {
-        $khoaTimKiem = Category::find($id);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
+        $danhMucTimKiem = Category::find($id);
         $nameCategory = $request->input('nameCategory');
         $status = $request->input('status');
         $slug = Str::slug($request->input('nameCategory'));
-        dd($nameCategory);
-        dd($status);
-
-        Category::where('id', $khoaTimKiem)->update([
+        $nameSpecification = $request->input('nameSpecification');
+        // $thongSoKyThuat = $danhMucTimKiem->category_specifications;
+        // dd($nameSpecification);
+        Category::where('id', $id)->update([
             'name' => $nameCategory,
             'slug' => $slug,
             'status' => $status
         ]);
-        return redirect()->route('admin.category.editcategory');
+
+        CategorySpecification::where('category_id', $id)->update([
+            'name' => $nameSpecification,
+        ]);
+
+        return view('admin.category.editCategory')
+            ->with('danhMucTimKiem', $danhMucTimKiem)
+            // ->with('thongSoKyThuat', $thongSoKyThuat)
+            ->with('msg', 'Cập nhật thành công');
     }
+
     public function filterCategory(Request $request)
     {
+
         $danhSachDanhMucLoc = Category::all();
         $id = $request->input('categoryFilter');
         if ($id == 'all') {
@@ -93,6 +107,18 @@ class AdminCategoryController extends Controller
         } else {
             $danhSachDanhMuc = Category::where('id', $id)->get();
         }
-        return view('admin.category.category')->with('danhSachDanhMuc', $danhSachDanhMuc)->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
+        return view('admin.category.category')
+            ->with('danhSachDanhMuc', $danhSachDanhMuc)
+            ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
+    }
+
+    public function deleteCategory($id)
+    {
+        $danhMucTimKiem = Category::find($id);
+        if ($danhMucTimKiem) {
+            $danhMucTimKiem->update(['status' => 0]);
+            return response()->json(['message' => 'Xóa danh mục thành công.'], 200);
+        }
+        return response()->json(['message' => 'Danh mục không tồn tại.'], 404);
     }
 }

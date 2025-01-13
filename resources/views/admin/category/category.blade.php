@@ -69,7 +69,10 @@
                         <td style="text-align: center;"><a
                                 href="{{ route('admin.category.editCategory', ['id' => $item->id]) }}"><i
                                     class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;"><a onclick="popup('dm')"><i class="fa-solid fa-x"></i></a>
+                        <td style="text-align: center;">
+                            <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
+                                <i class="fa-solid fa-x"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach
@@ -79,41 +82,52 @@
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
-            <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
             <p id="alert"></p>
+
+
+
             <div class="button">
-                <button onclick="submit()">Submit</button>
-                <button onclick="cancel('dm')">Cancel</button>
+                <button id="deleteBtn">Đồng ý </button>
+                <button onclick="cancel('dm')">Hủy</button>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
     <script>
-        function filter() {
-            var categoryId = document.getElementById("categoryFilter").value;
+        function popup(action, id) {
+            console.log('ID nhận được:', id);
 
-            // Gửi yêu cầu AJAX đến server để lấy dữ liệu đã lọc
-            fetch(`/filter-category/{id}?category=${categoryId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Xử lý dữ liệu trả về và hiển thị kết quả
-                    var resultDiv = document.getElementById("result");
-                    resultDiv.innerHTML = ""; // Xóa nội dung cũ
+            // Hiển thị popup
+            const popupElement = document.getElementById('popupdm');
+            popupElement.style.display = 'block';
 
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            var div = document.createElement("div");
-                            div.innerHTML = item.name; // Giả sử mỗi item có thuộc tính name
-                            resultDiv.appendChild(div);
-                        });
+            // Lưu ID vào nút "Đồng ý"
+            const deleteButton = document.getElementById('deleteBtn');
+            deleteButton.setAttribute('data-id', id);
+        }
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            const categoryId = this.getAttribute('data-id');
+
+
+            fetch(`/admin/deletecategory/${categoryId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Xóa danh mục thành công');
+                        window.location.href = '/admin/category';
                     } else {
-                        resultDiv.innerHTML = "Không có kết quả nào.";
+                        alert('Đã có lỗi xảy ra');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        }
+        });
     </script>
 @endsection
