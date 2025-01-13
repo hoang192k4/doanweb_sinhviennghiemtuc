@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminStaticController;
 use App\Http\Middleware\AdminRoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -16,11 +17,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
     Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
+    Route::post('/addContact',  'addContact');
     Route::get('/', "index")->name('user.index');
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
@@ -32,6 +33,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
+
+
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -52,18 +55,14 @@ Route::middleware(['role:QL,NV'])->group(function () {
 
     //Route quan ly don hang
     Route::get('/admin/order', [AdminOrderController::class, 'index'])->name('admin.order');
-    Route::post('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
-    Route::post('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
+    Route::get('/admin/updateChuanBi/{id}', [AdminOrderController::class, 'updateChuanBi'])->name('admin.updateChuanBi');
+    Route::get('/admin/updateVanChuyen/{id}', [AdminOrderController::class, 'updateVanChuyen'])->name('admin.updateVanChuyen');
     Route::post('/admin/order/delete/{id}', [AdminOrderController::class, 'deleteOrder'])->name('order.delete');
     Route::post('/admin/order/cancel/{id}', [AdminOrderController::class, 'cancelOrder'])->name('order.cancel');
 
     //Route quan li thong ke
-    Route::get('/admin/statistical', function () {
-        return view('admin.pages.statistical');
-    })->name('admin.static');
-
-
-
+    Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
+    
     Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
 
     //Route quan ly san pham
@@ -94,8 +93,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
 });
 
-//Phân quyền quản lý
-Route::middleware(['role:QL'])->group(function () { });
+
 
 //Phân quyền quản lý , nhân viên và khách hàng
 Route::middleware(['role:QL,NV,KH'])->group(function () { });
@@ -106,8 +104,8 @@ Route::middleware(['role:KH'])->group(function () {
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
         Route::post('/payment','completePayment')->name('complete-payment');
+        Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
     });
-
 
     //Route profile
     Route::controller(ProfileController::class)->group(function () {

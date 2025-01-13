@@ -24,6 +24,7 @@
     <div style="background-color: rgb(241, 240, 241);">
         <div class="container_css product_detail_top_url">
             <ul>
+
                 @if ($seach)
                     <li><a href="{{route("user.index")}}">Trang chủ</a></li>
                     <li><a href="{{ route('timkiemsanpham', ['slug' => $seach->slug]) }}">{{ $seach->category }}</a></li>
@@ -84,8 +85,9 @@
                     <p><i class="fas fa-eye"></i>{{ $thongTinSanPham->views }}</p>
                 </div>
                 <h4>{{ $thongTinSanPham->name }}</h4>
+                @if(isset($mauSanPham[0]))
                 <div class="product_detail_right_price">
-                    <p>Giá bán: <Span> <span id="price"> {{ number_format($mauSanPham[0]->price, 0, ',', '.') }}</span>
+                    <p>Giá bán: <Span> <span id="price">{{ number_format($mauSanPham[0]->price, 0, ',', '.') }}</span>
                             <sup>đ</sup></Span></p>
                     <h5 id="status">{{ $mauSanPham[0]->stock > 0 ? '(Còn hàng)' : '(Hết hàng)' }}</h5>
                 </div>
@@ -114,19 +116,20 @@
                     @endforeach
                 </div>
                 <div class="product_detail_right_quantity">
-                    <p>Cửa hàng hiện có <span id="stock">{{ $mauSanPham[0]->stock }}</span> sản phẩm</p>
+                    <p>Cửa hàng hiện có <span id="stock">{{$mauSanPham[0]->stock}}</span> sản phẩm</p>
                     <div>
-                        <button id="button_minus_value" data-id={{ $mauSanPham[0]->id }}
+                        <button id="button_minus_value" data-id="{{$mauSanPham[0]->id}}"
                             onclick="minus(this.dataset.id)"><i class="fas fa-minus"></i></button>
                         <input type="text" id="number_input" min="1" value="1">
-                        <button id="button_plus_value" data-id="{{ $mauSanPham[0]->id }}"
+                        <button id="button_plus_value" data-id="{{$mauSanPham[0]->id }}"
                             onclick="plus(this.dataset.id)"><i class="fas fa-plus"></i></button>
                     </div>
                     <span style="color:red" id="quantity-limit"></span>
                 </div>
+                @endif
                 <div class="product_detail_right_buy">
                     <div><button>Mua ngay</button></div>
-                    <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)" data-id="{{ $mauSanPham[0]->id }}">
+                    <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)" data-id="@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif">
                             Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
             </div>
@@ -321,12 +324,15 @@
             }
 
         })
+        .fail((data)=>{
+            alertify.alert('Hiện tại sản phẩm này chưa thể thêm vào giỏ hàng!')
+        })
     }
 </script>
 <script>
     const input_number = document.getElementById('number_input');
 
-    checkStock({{ $mauSanPham[0]->id }}, 1);
+    checkStock(@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif, 1);
     input_number.addEventListener('keyup', function(event) {
         // Loại bỏ tất cả các ký tự không phải là số
         if (isNaN(this.value) || this.value === "" || this.value == "0") {
