@@ -40,8 +40,9 @@
                     @endforeach
 
                 </div>
-                <div class="page" id="page"></div>
+                <span class="page" id="page"></span>
                 <div class="shopping_cart_bottom" id="cart-bottom">
+
                     <div class="shopping_cart_bottom_left">
                         <button onclick="deleteAll()">xóa tất cả</button>
                     </div>
@@ -61,6 +62,7 @@
                             <p id="total-price"> {{ number_format(session('cart')->totalPrice) }}<sup>đ</sup></p>
                             <button><a href="{{route('user.payment')}}">Thanh toán</a></button>
                         </div>
+
                     </div>
                 </div>
             </div>
