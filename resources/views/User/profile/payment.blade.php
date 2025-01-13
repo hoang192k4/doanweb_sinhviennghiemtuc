@@ -259,7 +259,6 @@
                     url: '/payment',
                     data: data
                 })
-                .done((data) => console.log(data))
                 .fail((data) => {
                     let errors = data.responseJSON.errors; // Lấy danh sách lỗi
 
@@ -291,7 +290,6 @@
                         $('#wards_error').text(errors.wards);
                         $('#wards').focus();
                     }
-                    console.log($('#provinces').val());
                 })
         }
         const fullName = document.getElementById('full_name_payment');
