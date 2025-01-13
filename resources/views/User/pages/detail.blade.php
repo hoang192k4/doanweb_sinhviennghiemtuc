@@ -13,10 +13,13 @@
             )
             ->where('products.slug', $slug)
             ->first();
-        $yeuthich = DB::table('like_products')
+        if(Auth::check()){
+            $yeuthich = DB::table('like_products')
         ->where('product_id',$thongTinSanPham->id)
         ->where('user_id',Auth::user()->id)
         ->count();
+        }
+
     @endphp
     <div style="background-color: rgb(241, 240, 241);">
         <div class="container_css product_detail_top_url">
@@ -72,8 +75,10 @@
             <div class="product_detail_right">
                 <div class="product_detail_right_interact">
                     @auth
+                        @if(Auth::user()->role=='KH')
                         <p id="button_like"  onclick="CapNhatYeuThich('{{$thongTinSanPham->id}}','{{Auth::user()->id}}')" style="color: {{$yeuthich == 1 ? 'red' : 'grey'}}"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
+                        @endif
                     @endauth
                     <p><i class="fas fa-thumbs-up"></i><span id="number_like">{{ $luotThichSanPham }}</span> lượt thích</p>
                     <p><i class="fas fa-eye"></i>{{ $thongTinSanPham->views }}</p>

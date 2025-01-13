@@ -34,7 +34,7 @@
                                                     src="{{asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image)}}"
                                                     width="100px" alt="image"></div>
                                             <div class="table_item" style="width: 85%;font-size: 16px;">
-                                                <div>{{$item->name_product}}</div>
+                                                <div><a href="{{route('detail',$item->slug_product)}}">{{$item->name_product}}</a></div>
                                                 <div style="opacity: 0.7;font-size: 14px;">{{$item->color}} -
                                                     {{$item->internal_memory}}
                                                 </div>
@@ -44,6 +44,9 @@
                                         </div>
                                     @endforeach
                                     <div class="footer_order_table">
+                                        <div>
+                                            <button onclick="showPopup()">Đánh Giá</button>
+                                        </div>
                                         <div class="table_item">Thành tiền:<span
                                                 style="font-size: 25px;">{{$order->total_price}}</span>đ
                                         </div>
@@ -188,7 +191,7 @@
                                                     src="{{asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image)}}"
                                                     width="100px" alt="image"></div>
                                             <div class="table_item" style="width: 85%;font-size: 16px;">
-                                                <div>{{$item->name_product}}</div>
+                                                <div><a href="{{route('detail',$item->slug_product)}}"> {{$item->name_product}}</a></div>
                                                 <div style="opacity: 0.7;font-size: 14px;">{{$item->color}} -
                                                     {{$item->internal_memory}}
                                                 </div>
@@ -288,16 +291,22 @@
             <div class="popup_content">
                 <span class="close_popup_rating">&times;</span>
                 <div class="popup_table">
+                    @foreach ($danhSachSanPhamDanhGia as $item)
                     <form class="popup_form" action="" method="">
-                        <div class="table_item" style="padding-left: 5px;"><img src="/images/1.jpg" width="100px"
+                        <div class="table_item" style="padding-left: 5px;"><img src="{{asset('images/'.$item->image)}}" width="100px"
                                 alt="MSI">
                         </div>
                         <div class="table_item" id="table_item" style="width: 85%;font-size: 16px;">
-                            <div>Laptop MSI Katana 15 B13VEK-252VN i7-13620H | 8GB | 512GB | RTX 4050
-                                6GB|15.6' FHD 144Hz</div>
+                            <div>
+                                <span>{{$item->name_product}}</span> |
+                                <span>{{$item->internal_memory}}</span> |
+                                <span>{{$item->color}}</span>
+
+
+                            </div>
                             <div style="opacity: 0.7;font-size: 14px;">Laptop MSI</div>
-                            <div style="font-size: 14px;">x1</div>
-                            <div style="font-size: 14px;">Giá: 32 990 000</div>
+                            <div style="font-size: 14px;">x<span>{{$item->quantity}}</span></div>
+                            <div style="font-size: 14px;">Giá: <span> {{ number_format($item->price, 0, ',', '.') }}</span></div>
                             <div class="star-ratting">
                                 <input type="hidden" name="point" id="point">
                                 <label for="star5" class="fas fa-star point" data-id="1"></label>
@@ -311,29 +320,8 @@
                             <button type="submit" style="padding: 5px 20px;">Đánh giá</button>
                         </div>
                     </form>
-                    <form class="popup_form" action="" method="">
-                        <div class="table_item" style="padding-left: 5px;"><img src="/images/1.jpg" width="100px"
-                                alt="MSI">
-                        </div>
-                        <div class="table_item" id="table_item" style="width: 85%;font-size: 16px;">
-                            <div>Laptop MSI Katana 15 B13VEK-252VN i7-13620H | 8GB | 512GB | RTX 4050
-                                6GB|15.6' FHD 144Hz</div>
-                            <div style="opacity: 0.7;font-size: 14px;">Laptop MSI</div>
-                            <div style="font-size: 14px;">x1</div>
-                            <div style="font-size: 14px;">Giá: 32 990 000</div>
-                            <div class="star-ratting">
-                                <input type="hidden" name="point" id="point">
-                                <label for="star5" class="fas fa-star point" data-id="1"></label>
-                                <label for="star4" class="fas fa-star point" data-id="2"></label>
-                                <label for="star3" class="fas fa-star point" data-id="3"></label>
-                                <label for="star2" class="fas fa-star point" data-id="4"></label>
-                                <label for="star1" class="fas fa-star point" data-id="5"></label>
-                            </div>
-                            <textarea name="feedback" style="padding:5px 7px" id=""
-                                placeholder="Nhập ý kiến của bạn..."></textarea>
-                            <button type="submit" style="padding: 5px 20px;">Đánh giá</button>
-                        </div>
-                    </form>
+                    @endforeach
+
                 </div>
             </div>
         </div>
