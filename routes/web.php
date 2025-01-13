@@ -31,8 +31,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}/{internal_memory}',"LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
-
-
+    Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
 });
 
 Route::controller(CartController::class)->group(function () {

@@ -23,14 +23,14 @@ backToTopButton.addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-const button_like = document.querySelector('#button_like');
-if (button_like) {
-    button_like.onclick = function () {
-        if (button_like.style.color !== "red")
-            button_like.style.color = "red"
-        else button_like.style.color = "grey"
-    }
-}
+// const button_like = document.querySelector('#button_like');
+// if (button_like) {
+//     button_like.onclick = function () {
+//         if (button_like.style.color !== "red")
+//             button_like.style.color = "red"
+//         else button_like.style.color = "grey"
+//     }
+// }
 
 // const button_rams = document.querySelectorAll('.product_detail_right_ram button')
 // if (button_rams) {

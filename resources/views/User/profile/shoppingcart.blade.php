@@ -70,62 +70,6 @@
 @endsection
 @section('script')
     <script>
-        //Phân trang
-        document.addEventListener("DOMContentLoaded", () => {
-        kt(); // Khởi tạo danh sách sản phẩm
-        Page();
-    });
-
-
-    function kt() {
-        const products = document.querySelectorAll('.shopping_cart_item');
-        return products;
-    }
-        function Page(itemsPage = 4) {
-        const products = Array.from(kt());
-
-        const countPage = Math.ceil(products.length / itemsPage);
-        let index = 1;
-
-        function LoadPage(page) {
-            products.forEach(product => product.style.display = "none");
-            const begin = (page - 1) * itemsPage;
-            const end = begin + itemsPage;
-            products.slice(begin, end).forEach(product => {
-                product.style.display = 'block';
-            });
-            LoadPageButton(countPage, page);
-        }
-
-        function LoadPageButton(countPage, index) {
-            const page = document.getElementById('page');
-            page.innerHTML = '';
-            // Nút "Pre"
-            const pre = document.createElement('button');
-            pre.innerHTML = "Pre";
-            pre.disabled = index === 1;
-            pre.addEventListener('click', () => LoadPage(index - 1));
-            page.appendChild(pre);
-            // Nút số trang
-            for (let i = 1; i <= countPage; i++) {
-                const button = document.createElement('button');
-                button.innerHTML = i;
-                button.className = i === index ? 'active' : '';
-                button.addEventListener('click', () => LoadPage(i));
-                page.appendChild(button);
-            }
-            // Nút "Next"
-            const next = document.createElement('button');
-            next.innerHTML = "Next";
-            next.disabled = index === countPage;
-            next.addEventListener('click', () => LoadPage(index + 1));
-            page.appendChild(next);
-        }
-
-        if (products.length > itemsPage) {
-            LoadPage(index);
-        }
-    }
         //xóa một sản phẩm
         function deleteItemCart(id) {
             $.ajax({
@@ -222,6 +166,61 @@
         }
     </script>
     <script>
+        // Phân trang
+        document.addEventListener("DOMContentLoaded", () => {
+            kt(); // Khởi tạo danh sách sản phẩm
+            Page();
+        });
 
+        function kt() {
+            const products = document.querySelectorAll('.shopping_cart_item');
+            return products;
+        }
+
+        function Page(itemsPage = 8) {
+            const products = Array.from(kt());
+
+            const countPage = Math.ceil(products.length / itemsPage);
+            let index = 1;
+
+            function LoadPage(page) {
+                products.forEach(product => product.style.display = "none");
+                const begin = (page - 1) * itemsPage;
+                const end = begin + itemsPage;
+                products.slice(begin, end).forEach(product => {
+                    product.style.display = 'block';
+                });
+                LoadPageButton(countPage, page);
+            }
+
+            function LoadPageButton(countPage, index) {
+                const page = document.getElementById('page');
+                page.innerHTML = '';
+                // Nút "Pre"
+                const pre = document.createElement('button');
+                pre.innerHTML = "Pre";
+                pre.disabled = index === 1;
+                pre.addEventListener('click', () => LoadPage(index - 1));
+                page.appendChild(pre);
+                // Nút số trang
+                for (let i = 1; i <= countPage; i++) {
+                    const button = document.createElement('button');
+                    button.innerHTML = i;
+                    button.className = i === index ? 'active' : '';
+                    button.addEventListener('click', () => LoadPage(i));
+                    page.appendChild(button);
+                }
+                // Nút "Next"
+                const next = document.createElement('button');
+                next.innerHTML = "Next";
+                next.disabled = index === countPage;
+                next.addEventListener('click', () => LoadPage(index + 1));
+                page.appendChild(next);
+            }
+
+            if (products.length > itemsPage) {
+                LoadPage(index);
+            }
+        }
     </script>
 @endsection
