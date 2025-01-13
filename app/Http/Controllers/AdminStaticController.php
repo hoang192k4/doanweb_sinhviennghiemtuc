@@ -9,10 +9,14 @@ class AdminStaticController extends Controller
 {
     public function index()
     {
-        $monthly = [];
+        $sum = [];
         for ($month = 1; $month <= 12; $month++) {
-            $monthly[$month - 1] = Order::whereYear('created_at', 2024)->whereMonth('created_at', $month)->sum('total_price');
+            $sum[$month - 1] = Order::whereYear('created_at', 2024)->whereMonth('created_at', $month)->sum('total_price');
         }
-        return view('admin.pages.statistical')->with('monthly',$monthly);
+        $count = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $count[$month - 1] = Order::whereYear('created_at', 2024)->whereMonth('created_at', $month)->count('order_code');
+        }
+        return view('admin.pages.statistical')->with('sum', $sum)->with('count', $count);
     }
 }
