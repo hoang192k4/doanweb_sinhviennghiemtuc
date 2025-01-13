@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminStaticController;
 use App\Http\Middleware\AdminRoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -15,7 +16,6 @@ use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
@@ -58,12 +58,8 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::post('/admin/order/cancel/{id}', [AdminOrderController::class, 'cancelOrder'])->name('order.cancel');
 
     //Route quan li thong ke
-    Route::get('/admin/statistical', function () {
-        return view('admin.pages.statistical');
-    })->name('admin.static');
-
-
-
+    Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
+    
     Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
 
     //Route quan ly san pham
@@ -107,7 +103,6 @@ Route::middleware(['role:KH'])->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
         Route::post('/payment','completePayment')->name('complete-payment');
     });
-
 
     //Route profile
     Route::controller(ProfileController::class)->group(function () {
