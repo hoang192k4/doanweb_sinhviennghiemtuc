@@ -40,7 +40,7 @@
                     @endforeach
 
                 </div>
-                <span class="page" id="page"></span>
+                <div class="page" id="page"></div>
                 <div class="shopping_cart_bottom" id="cart-bottom">
 
                     <div class="shopping_cart_bottom_left">
@@ -179,18 +179,19 @@
             return products;
         }
 
-        function Page(itemsPage = 8) {
+        function Page(itemsPage = 4) {
             const products = Array.from(kt());
 
             const countPage = Math.ceil(products.length / itemsPage);
             let index = 1;
 
             function LoadPage(page) {
-                products.forEach(product => product.style.display = "none");
+                const container = document.querySelector("#list-product-variant");
+                container.innerHTML = "";
                 const begin = (page - 1) * itemsPage;
                 const end = begin + itemsPage;
                 products.slice(begin, end).forEach(product => {
-                    product.style.display = 'block';
+                    container.appendChild(product); 
                 });
                 LoadPageButton(countPage, page);
             }
