@@ -327,7 +327,7 @@
 <script>
     const input_number = document.getElementById('number_input');
 
-    checkStock(@if(isset($mauSanPham[0])){{ $mauSanPham[0]->id }}@endif, 1);
+    checkStock(@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif, 1);
     input_number.addEventListener('keyup', function(event) {
         // Loại bỏ tất cả các ký tự không phải là số
         if (isNaN(this.value) || this.value === "" || this.value == "0") {

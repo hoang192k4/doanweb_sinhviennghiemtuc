@@ -93,8 +93,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
 });
 
-//Phân quyền quản lý
-Route::middleware(['role:QL'])->group(function () { });
+
 
 //Phân quyền quản lý , nhân viên và khách hàng
 Route::middleware(['role:QL,NV,KH'])->group(function () { });
@@ -105,6 +104,7 @@ Route::middleware(['role:KH'])->group(function () {
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
         Route::post('/payment','completePayment')->name('complete-payment');
+        Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
     });
 
     //Route profile

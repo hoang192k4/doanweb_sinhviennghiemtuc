@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Voucher;
+use App\Models\VoucherUser;
 
 class OrderController extends Controller
 {
@@ -15,6 +17,42 @@ class OrderController extends Controller
         if(session('cart')==null)
             return redirect()->route('user.index');
         return view('User.profile.payment');
+    }
+
+    public function addVoucher(Request $request){
+        //kiểm tra mã code có tồn tại
+        $voucher =  Voucher::where('code',$request->code)->first();
+        if($voucher==null){
+            return response()->json([
+                'success'=>0,
+                'message'=>'Mã code không tồn tại'
+            ]);
+        }else{
+            //kiểm tra order đủ giá trị để sử dụng chưa
+            if($voucher->min_order_value > $request->orderValue){
+                return response()->json([
+                    'success'=>0,
+                    'message'=>'Giá trị đơn hàng không đủ để sử dụng voucher'
+                ]);
+            }else{
+                //kiểm tra mã code đã đc sử dụng bởi người dùng chưa
+                if(VoucherUser::where('voucher_id',$voucher->id)->where('user_id',Auth()->user()->id)->first())
+                {
+                    return response()->json([
+                        'success'=>0,
+                        'message'=>'Voucher đã được sử dụng!'
+                    ]);
+                }else{
+                    return response()->json([
+                        'success'=>1,
+                        'message'=>'Áp dụng voucher thành công!',
+                        'voucher'=>$voucher
+                    ]);
+                }
+            }
+
+
+        }
     }
 
     public function completePayment(Request $req){
