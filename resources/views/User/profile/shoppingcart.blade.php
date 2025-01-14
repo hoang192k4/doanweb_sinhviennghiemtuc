@@ -40,6 +40,7 @@
                     @endforeach
 
                 </div>
+
                 <div class="page" id="page"></div>
                 <div class="shopping_cart_bottom" id="cart-bottom">
 
@@ -91,7 +92,6 @@
                     afterDeleteAll();
                 else
                 {
-                    console.log(data);
                     $(`#total-price`).text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
                 }
 

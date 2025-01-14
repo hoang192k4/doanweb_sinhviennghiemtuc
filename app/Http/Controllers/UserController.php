@@ -135,6 +135,8 @@ class UserController extends Controller
     public function ChiTietSanPham($slug){
         $product = Product::where('slug',$slug)->first();
         ProductUser::UpdateView($slug);
+        if($product==null)
+            return view('User.pages.404');
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);

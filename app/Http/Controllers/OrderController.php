@@ -90,14 +90,28 @@ class OrderController extends Controller
             if($item['variant_info']->price != $variant->price){
                 return response()->json([
                     'success' => 0,
-                    'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn!',
+                    'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+        }
+        //kiểm tra số lượng của sản phẩm lúc đặt hàng và số lượng trong giỏ hàng
+        foreach(session('cart')->listProductVariants as $item){
+            $variant = ProductVariant::find($item['variant_info']->id);
+            if($item['quantity'] > $variant->stock){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
                     'url'=>route('user.shoppingcart')
                 ]);
             }
         }
 
+
+        //kiểm tra khách hàng có nhập voucher hay không
         if($req->voucher!=null){
             $voucher = Voucher::find($req->voucher);
+            //kiểm tra đã vc đã sử dụng chưa
             if(VoucherUser::where('user_id',Auth::user()->id)->where('voucher_id',$voucher->id)->first()!=null){
                 return response()->json([
                     'success'=>0,

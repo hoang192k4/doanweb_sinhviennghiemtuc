@@ -315,12 +315,12 @@
                 $('#cart-quantity').text(`${data.cart.totalQuantity}`);
                 alertify.success(data.message);
             } else {
-                alertify.alert(data.message);
+                alertify.alert('Thông báo', data.message);
             }
 
         })
         .fail((data)=>{
-            alertify.alert('Hiện tại sản phẩm này chưa thể thêm vào giỏ hàng!')
+            alertify.alert('Thông báo','Hiện tại sản phẩm này chưa thể thêm vào giỏ hàng!')
         })
     }
 </script>
