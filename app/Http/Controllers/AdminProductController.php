@@ -24,6 +24,7 @@ class AdminProductController extends Controller
     {
         //
         $danhSachSanPham = Product::where('status',1)->get();
+        dd($danhSachSanPham);
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPham]);
     }
 
@@ -226,9 +227,15 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'key' => 'required'
         ]);
-        $key =  $key = str_replace('$', '', $request->input('seachbykey'));
+        $key = str_replace('$', '', $request->input('key'));
+
         $danhSachSanPhamDaTimKiem =ProductUser::TimKiemTheoTuKhoa($key);
-        return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPhamDaTimKiem]);
+
+        return view('admin.product.product')->with(
+            [
+                'danhSachSanPham'=>$danhSachSanPhamDaTimKiem
+            ]
+        );
     }
     public function filter(Request $req){
         if($req->opt=='all'){
