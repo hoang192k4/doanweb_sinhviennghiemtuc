@@ -15,16 +15,30 @@ class CartController extends Controller
         $cart = session('cart')?session('cart'):null;
         if($cart!=null)
         {
-            //kiểm tra lại các sp trong giỏ, sản phẩm có sl =0 ,nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ
+            //kiểm tra lại các sp trong giỏ, nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ
             foreach($cart->listProductVariants as $item){
                 $var = ProductVariant::find($item['variant_info']->id);
-                if($var->status==0||$var->stock=0||$var==null)
+                //kiểm tra nếu variant bị ẩn hoặc  = 0 hoặc bị xóa vĩnh viễn thì giỏ hàng cũng phải xóa mât
+                if($var->status==0||$var==null||$var->stock==0)
                 {
-                    $cart->deleteItemCart($var!=null?$var->id:$item['variant_info']->id);
+                    $cart->deleteItemCart($var->id!=null?$var->id:$item['variant_info']->id);
                     if($cart->totalQuantity==0)
                         $request->session()->forget('cart');
                     else
                         $request->session('cart')->put('cart',$cart);
+                }else{
+                    //nếu số lượng thay đổi thì số lượng trong giỏ hàng cũng thay đổi
+                    if($var->stock!= $item['variant_info']->stock){
+                        $cart->deleteItemCart($var->id);
+                        $cart->addToCart($var->product,$var,$var->stock,$var->id);
+                        $request->session('cart')->put('cart',$cart);
+                    }
+                    //nếu giá thay đổi thì giá trong giỏ hàng cũng phải thay đổi
+                    if($var->price!=$item['variant_info']->price){
+                        $cart->deleteItemCart($var->id);
+                        $cart->addToCart($var->product,$var,$item['quantity'],$var->id);
+                        $request->session('cart')->put('cart',$cart);
+                    }
                 }
             }
         }
@@ -120,20 +134,5 @@ class CartController extends Controller
             'cart'=>['totalQuantity'=>$cart->totalQuantity,'totalPrice'=>$cart->totalPrice]
         ]);
 
-    }
-
-    public function buyNow(Request $request){
-        $quantity = $request->quantity;
-        $variant = ProductVariant::find($request->id);
-        if($variant==null){
-            return response()->json([
-                'success'=>0,
-                'message'=>'Sản phẩm không tồn tại'
-            ]);
-        }else{
-            $buyNow = ['quantity'=>$quantity,'totalPrice'=>$quantity*$variant->price,'product_info'=>$variant->product,'variant_info'=>$variant];
-            $request->session()->put('buy-now',$buyNow);
-        }
-        return response()->json(route('user.payment'));
     }
 }
