@@ -65,7 +65,7 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <textarea name="content" placeholder="Nội dung " style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
+                                <textarea name="content" placeholder="Nội dung" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
                                     value="@isset($contact){{ $contact->content }}@endisset">
                                 </textarea>
                                 <div class="alert_error_validate">

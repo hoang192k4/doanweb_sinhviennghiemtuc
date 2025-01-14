@@ -169,7 +169,7 @@
                         </div>
                     </div>
                 </form>
-                <button type="button" id="" onclick="order()"> Hoàn tất đơn hàng</button>
+                <button type="button" id="" onclick=""> Hoàn tất đơn hàng</button>
             </div>
         </div>
     </div>
@@ -230,17 +230,17 @@
                 data: data
             });
             .done((data) => alertify.success(response.message))
-            .fail((data){
-                const errors = data.responseJSON.errors; // Lấy danh sách lỗi
-                if(errors.full_name)
-                    $('#full_name_payment_error').text(error.full_name);
-                if(errors.email)
-                    $('#email_payment_error').text(error.email);
-                if(errors.phone)
-                    $('#phone_payment_error').text(error.phone);
-                if(errors.address)
-                    $('#address_payment_error').text(error.address);
-            })
+            // .fail((data){
+            //     const errors = data.responseJSON.errors; // Lấy danh sách lỗi
+            //     if(errors.full_name)
+            //         $('#full_name_payment_error').text(error.full_name);
+            //     if(errors.email)
+            //         $('#email_payment_error').text(error.email);
+            //     if(errors.phone)
+            //         $('#phone_payment_error').text(error.phone);
+            //     if(errors.address)
+            //         $('#address_payment_error').text(error.address);
+            // })
         }
     </script>
 @endsection
