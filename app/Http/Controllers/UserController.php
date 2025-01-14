@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Blog;
+use App\Models\About;
 use App\Models\ProductUser;
 use App\Models\Brand;
 use App\Models\Product;
@@ -49,7 +50,10 @@ class UserController extends Controller
     public function GioiThieu()
     {
         $danhSachBaiViet = Blog::layTatCaBaiViet();
-        return view('user.pages.blog')->with('danhSachBaiViet', $danhSachBaiViet);
+        $danhSachThongTinBaiViet = About::all()->first();
+        return view('user.pages.blog')
+            ->with('danhSachBaiViet', $danhSachBaiViet)
+            ->with('danhSachThongTinBaiViet', $danhSachThongTinBaiViet);
     }
     public function timKiemBaiVietTheoTuKhoa(Request $request)
     {
@@ -105,7 +109,7 @@ class UserController extends Controller
     }
     public function DangNhap(Request $request)
     {
-         $request->validate(
+        $request->validate(
             [
                 'email_login' => 'required|email|string|max:255|exists:users,email',
                 'password_login' => 'required|string'
@@ -118,129 +122,135 @@ class UserController extends Controller
                 'password_login.required' => 'Bạn chưa nhập password',
             ]
         );
-         if(Auth::attempt(['email' => $request->email_login, 'password' =>$request->password_login]))
-        {
-            if(Auth::user()->role=="NV" || Auth::user()->role=="QL")
+        if (Auth::attempt(['email' => $request->email_login, 'password' => $request->password_login])) {
+            if (Auth::user()->role == "NV" || Auth::user()->role == "QL")
                 return redirect()->route('admin.index');
             return response()->json(['message' => 'Đăng nhập thành công']);
-        }
-        else {
-            return response()->json(['msg_error' => 'Mật khẩu chưa chính xác!'.'<br>'.' Vui lòng nhập lại mật khẩu'],401);
+        } else {
+            return response()->json(['msg_error' => 'Mật khẩu chưa chính xác!' . '<br>' . ' Vui lòng nhập lại mật khẩu'], 401);
         }
     }
-    public function Logout(){
+    public function Logout()
+    {
         Auth::logout();
         return redirect()->back();
     }
 
-    public function ChiTietSanPham($slug){
-        $product = Product::where('slug',$slug)->first();
+
+    public function ChiTietSanPham($slug)
+    {
+        $product = Product::where('slug', $slug)->first();
         ProductUser::UpdateView($slug);
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
-        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
-        $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
-        $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
+        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug, $thongTinSanPham[0]->brand, $slug);
+        $laySanPhamTheoDanhMuc = ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug, $slug);
+        $arr = array_merge($sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
         //thông số kỹ thuậnthuận
         $thongSoKiThuatSanPham = $product->product_specification;
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
+        $mauSanPham = ProductUser::MauSanPham($slug, $boNhoNhoNhat->internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$arr
+            'slug' => $slug,
+            "danhSachAnh" => $danhSachAnh,
+            "danhSachBoNho" => $danhSachBoNho,
+            "thongTinSanPham" => $thongTinSanPham[0],
+            "thongSoKiThuatSanPham" => $thongSoKiThuatSanPham,
+            "luotThichSanPham" => $luotThichSanPham,
+            "mauSanPham" => $mauSanPham,
+            "sanPhamTuongTu" => $arr
         ]);
     }
-    public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
-        $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);
+    public function LayMauSanPhamTheoBoNho($slug, $internal_memory)
+    {
+        $danhSachMau = ProductUser::MauSanPham($slug, $internal_memory);
         return $danhSachMau;
     }
-    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
+
+    public function ChiTietSanPhamTheoBoNho($slug, $internal_memory)
+    {
 
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
+        $mauSanPham = ProductUser::MauSanPham($slug, $internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
+            'slug' => $slug,
+            "danhSachAnh" => $danhSachAnh,
+            "danhSachBoNho" => $danhSachBoNho,
+            "thongTinSanPham" => $thongTinSanPham[0],
+            "thongSoKiThuatSanPham" => $thongSoKiThuatSanPham[0],
+            "luotThichSanPham" => $luotThichSanPham,
+            "mauSanPham" => $mauSanPham,
         ]);
     }
-    public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
-        $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
+    public function LayThongTinSanPhamTheoMau($slug, $internal_memory, $color)
+    {
+        $data = ProductUser::LayThongTinSanPhamTheoMau($slug, $internal_memory, $color);
         return response()->json([
-            "variant_id"=>$data->id,
-            "image"=>$data->image,
-            "stock"=>$data->stock,
-            "price"=>$data->price
+            "variant_id" => $data->id,
+            "image" => $data->image,
+            "stock" => $data->stock,
+            "price" => $data->price
         ]);
     }
+
     public function addContact(Request $req)
     {
-        $validate=$req->validate([
-            'name'=>'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
-            'email'=>'required|email|max:25',
-            'phone'=>'required|string|regex:/^[0-9]{10}$/',
-            'title'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:255',
-            'content'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|string',
-        ],[
-            'name.required'=>'Bạn chưa nhập họ tên',
-            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
-            'name.max' =>'Họ và tên vừa nhập đã vượt 50 ký tự.',
+        $validate = $req->validate([
+            'name' => 'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
+            'email' => 'required|email|max:25',
+            'phone' => 'required|string|regex:/^[0-9]{10}$/',
+            'title' => 'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:255',
+            'content' => 'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|string',
+        ], [
+            'name.required' => 'Bạn chưa nhập họ tên',
+            'name.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
+            'name.max' => 'Họ và tên vừa nhập đã vượt 50 ký tự.',
             'email.required' => 'Bạn chưa nhập Email.',
             'email.email' => 'Email vừa nhập chưa hợp lệ.',
             'email.max' => 'Email vừa nhập đã vượt 25 ký tự.',
-            'phone.required'=>'Bạn chưa nhập số điện thoại.',
-            'phone.regex'=>'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
-            'title.required'=>'Bạn chưa nhập tiêu đề.',
-            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
-            'title.max'=>'chỉ được nhập tối đã 255 ký tự',
-            'content.required'=>'Bạn chưa nhập nội dung.',
-            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
+            'phone.required' => 'Bạn chưa nhập số điện thoại.',
+            'phone.regex' => 'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
+            'title.required' => 'Bạn chưa nhập tiêu đề.',
+            'title.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
+            'title.max' => 'chỉ được nhập tối đã 255 ký tự',
+            'content.required' => 'Bạn chưa nhập nội dung.',
+            'content.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
         ]);
 
         $data = new Contact();
-        $data->id=$req['id'];
-        $data->name=$req['name'];
-        $data->title=$req['title'];
-        $data->content=$req['content'];
-        $data->email=$req['email'];
-        $data->phone=$req['phone'];
+        $data->id = $req['id'];
+        $data->name = $req['name'];
+        $data->title = $req['title'];
+        $data->content = $req['content'];
+        $data->email = $req['email'];
+        $data->phone = $req['phone'];
         $data->save();
-        return redirect()->route('user.contact')->with('msg','Gửi liên hệ thành công!');
+        return redirect()->route('user.contact')->with('msg', 'Gửi liên hệ thành công!');
     }
-    public function CapNhapSanPhamYeuThich($sanpham,$user){
+    public function CapNhapSanPhamYeuThich($sanpham, $user)
+    {
         $luotThich = LikeProduct::TongLuotThichSanPham($sanpham);
-        $tenSanPham =ProductUser::LayTenSanPhamTheoId($sanpham);
-        $status = LikeProduct::TrangThai($sanpham,$user);
-        if($status > 0 ){
-            LikeProduct::XoaSanPhamYeuThich($sanpham,$user);
+        $tenSanPham = ProductUser::LayTenSanPhamTheoId($sanpham);
+        $status = LikeProduct::TrangThai($sanpham, $user);
+        if ($status > 0) {
+            LikeProduct::XoaSanPhamYeuThich($sanpham, $user);
             return response()->json([
-                'status'=>0,
-                'tenSanPham'=>$tenSanPham,
-                'luotThich'=>$luotThich,
+                'status' => 0,
+                'tenSanPham' => $tenSanPham,
+                'luotThich' => $luotThich,
             ]);
-        }
-        else{
-            LikeProduct::ThemSanPhamYeuThich($sanpham,$user);
+        } else {
+            LikeProduct::ThemSanPhamYeuThich($sanpham, $user);
             return response()->json([
-                'status'=>1,
-                'tenSanPham'=>$tenSanPham,
-                'luotThich'=>$luotThich,
+                'status' => 1,
+                'tenSanPham' => $tenSanPham,
+                'luotThich' => $luotThich,
             ]);
         }
     }

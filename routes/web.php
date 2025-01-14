@@ -93,18 +93,27 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
 });
 
+<<<<<<< HEAD
 
+=======
+//Phân quyền quản lý
+Route::middleware(['role:QL'])->group(function () {});
+>>>>>>> quocdo
 
 //Phân quyền quản lý , nhân viên và khách hàng
-Route::middleware(['role:QL,NV,KH'])->group(function () { });
+Route::middleware(['role:QL,NV,KH'])->group(function () {});
 
 //phân quyền khách hàng
 Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
+<<<<<<< HEAD
         Route::post('/payment','completePayment')->name('complete-payment');
         Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
+=======
+        Route::post('/payment', 'completePayment')->name('complete-payment');
+>>>>>>> quocdo
     });
 
     //Route profile
@@ -129,7 +138,8 @@ Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory']
 Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
 Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
 Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updateCategory');
-Route::get('/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
+Route::get('/admin/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
+Route::delete('/admin/deletecategory/{id}', [AdminCategoryController::class, 'deleteCategory'])->name('admin.delete.category');
 
 Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');
