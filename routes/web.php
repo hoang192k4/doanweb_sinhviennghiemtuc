@@ -29,12 +29,10 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/dangnhap', "DangNhap")->name('dangnhap');
     Route::get('/logout', "Logout")->name('logout');
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
-    Route::get('detail/{slug}/{internal_memory}',"LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
+    Route::get('detail/{slug}/{internal_memory}', "LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
-
-
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -45,7 +43,7 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/cart-minus-one-variant/{id}', 'minusOnQuantity');
 });
 
-Route::get('/admin/check-stock-variant/{id}',[AdminProductVariantController::class,'checkStock']);
+Route::get('/admin/check-stock-variant/{id}', [AdminProductVariantController::class, 'checkStock']);
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
     //Route dashboard
@@ -63,7 +61,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     //Route quan li thong ke
     Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
 
-    Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
+    Route::get('/admin/category-specification/{id}', [AdminCategoryController::class, 'loadCategorySpecification']);
 
     //Route quan ly san pham
     Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->middleware(AdminRoleMiddleware::class)->name('admin.product.active');
@@ -93,12 +91,12 @@ Route::middleware(['role:QL,NV'])->group(function () {
     Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
 });
 
-<<<<<<< HEAD
 
-=======
+
+
 //Phân quyền quản lý
 Route::middleware(['role:QL'])->group(function () {});
->>>>>>> quocdo
+
 
 //Phân quyền quản lý , nhân viên và khách hàng
 Route::middleware(['role:QL,NV,KH'])->group(function () {});
@@ -108,12 +106,11 @@ Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
-<<<<<<< HEAD
-        Route::post('/payment','completePayment')->name('complete-payment');
-        Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
-=======
+
         Route::post('/payment', 'completePayment')->name('complete-payment');
->>>>>>> quocdo
+        Route::post('/add-voucher', 'addVoucher')->name('user.addvoucher');
+
+        Route::post('/payment', 'completePayment')->name('complete-payment');
     });
 
     //Route profile
