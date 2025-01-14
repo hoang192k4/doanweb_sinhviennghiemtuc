@@ -10,6 +10,7 @@ use App\Models\ProductUser;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\LikeProduct;
+use App\Models\Rating;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -39,7 +40,7 @@ class UserController extends Controller
     public function TimKiemTheoTuKhoa(Request $request)
     {
         $key = str_replace('$', '', $request->input('seachbykey'));
-
+        
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
@@ -239,5 +240,9 @@ class UserController extends Controller
                 'luotThich'=>$luotThich,
             ]);
         }
+    }
+    public function GetDanhSachDanhGia($user,$code){
+        $danhSach=Rating::DanhGia($user,$code);
+        return $danhSach;
     }
 }

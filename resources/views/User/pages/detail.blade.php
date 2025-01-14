@@ -97,7 +97,7 @@
                         <button class="{{ $index == 0 ? 'color_active' : '' }}"
                             onclick="DanhSachMau('{{ Route('LayMauSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}',this)">
                             <span>{{ $boNho->internal_memory }}</span>
-                            <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
+                            {{-- <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p> --}}
                         </button>
                     @endforeach
                 </div>
@@ -106,7 +106,7 @@
                     @foreach ($mauSanPham as $index => $mau)
                         <button
                             onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)"
-                            class="{{ $index == 0 ? 'color_active' : '' }}">
+                           >
                             <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
                             <span>
                                 <p>{{ $mau->color }}</p>
@@ -407,7 +407,7 @@
                     $('#status').text('(Hết hàng)');
                 }
                 $('#price').text(price);
-                // $('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
+
                 document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
@@ -432,7 +432,7 @@
             .done((danhSachMau) => {
                 const thongTin = danhSachMau.map((mau, index) => {
                     const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
-                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
+                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" >
                                     <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
                                     <span>
                                         <p>${mau.color}</p>
@@ -443,8 +443,6 @@
                 });
                 const list = document.getElementById('product_detail_right_color');
                 list.innerHTML = thongTin.join('');
-                document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
-                document.getElementById('stock').innerHTML = danhSachMau[0].stock;
             });
     }
 </script>

@@ -33,8 +33,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
-
-
+    Route::get('/get/{user}/{code}',  'GetDanhSachDanhGia');
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -62,7 +61,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
 
     //Route quan li thong ke
     Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
-    
+
     Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
 
     //Route quan ly san pham

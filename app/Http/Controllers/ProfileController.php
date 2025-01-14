@@ -55,11 +55,8 @@ class ProfileController extends Controller
     }
     public function order_history()
     {
-        $danhSachSanPhamDanhGia = Rating::DanhGia(Auth::user()->id);
-
         return view('user.profile.order_history')->with([
             'orders'=> Order::where('user_id', Auth::user()->id)->get(),
-            'danhSachSanPhamDanhGia'=>$danhSachSanPhamDanhGia,
         ]);
     }
     public function cancel($id)

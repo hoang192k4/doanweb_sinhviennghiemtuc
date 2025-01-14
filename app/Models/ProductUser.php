@@ -120,7 +120,7 @@ class ProductUser extends Model
     public static function BoNhoTrongSanPham($slug){
         return DB::table('product_variants')
         ->join('products','products.id','=','product_variants.product_id')
-        ->select('internal_memory' , 'price')
+        ->select('internal_memory' )
         ->distinct()
         ->where('products.slug',$slug)
         ->where('product_variants.status',1)
