@@ -12,6 +12,9 @@ class CartController extends Controller
     //
     public function index(Request $request)
     {
+        if(session('buy-now')!=null){
+            $request->session()->forget('buy-now');
+        }
         $cart = session('cart')?session('cart'):null;
         if($cart!=null)
         {
@@ -44,7 +47,20 @@ class CartController extends Controller
         }
         return view('User.profile.shoppingcart');
     }
-
+    public function buyNow(Request $request){
+        $variant = ProductVariant::find($request->id);
+        $quantity = $request->quantity;
+        if($variant==null||$variant->status==0||$variant->stock==0){
+            return response()->json([
+                'success'=>0,
+                'message'=>'Sản phẩm hết hàng'
+            ]);
+        }else{
+            $buyNow = ['quantity'=>$quantity,'totalPrice'=>$quantity*$variant->price,'product_info'=>$variant->product,'variant_info'=>$variant];
+            $request->session()->put('buy-now',$buyNow);
+            return response()->json(route('user.payment'));
+        }
+    }
     public function addToCart(Request $request, string $variant_id, $quantity)
     {
         $variant = ProductVariant::where('status',1)->find($variant_id);

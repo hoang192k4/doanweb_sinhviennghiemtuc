@@ -16,6 +16,9 @@ class OrderController extends Controller
     //
     public function index()
     {
+        if(session('buy-now')!=null) {
+            return view('User.profile.payment');
+        }
         //hiển thị các sản phẩm trong giỏ hàng
         if(session('cart')==null)
             return redirect()->route('user.index');
@@ -64,7 +67,7 @@ class OrderController extends Controller
                 'full_name'=>'required|string|max:255|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/',
                 'phone' => 'required|string|regex:/^[0-9]{10}$/',
                 'email' => 'required|email|max:50',
-                'address'=>'required|string|max:255|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/',
+                //'address'=>'required|string|max:255|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,./-]+$/',
                 'provinces' => 'required|string', // Tỉnh/Thành bắt buộc
                 'districts' => 'required|string', // Quận/Huyện bắt buộc
                 'wards' => 'required|string', // Phường/Xã bắt buộc
@@ -100,6 +103,14 @@ class OrderController extends Controller
         //kiểm tra số lượng của sản phẩm lúc đặt hàng và số lượng trong giỏ hàng
         foreach(session('cart')->listProductVariants as $item){
             $variant = ProductVariant::find($item['variant_info']->id);
+            //kiểm tra sản phẩm có bị ẩn đi hay xóa trong lúc đặt k
+            if($variant==null||$variant->status==0){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Sản phẩm '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') có thể đã bị xóa! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
             if($item['quantity'] > $variant->stock){
                 return response()->json([
                     'success' => 0,
@@ -155,7 +166,7 @@ class OrderController extends Controller
                 'order_id'=>$order->id
             ]);
         }
-        $request->session()->forget('cart');
+        $req->session()->forget('cart');
         return response()->json([
             'success'=>1,
             'message'=>'Đặt hàng thành công!',
