@@ -40,7 +40,7 @@ class UserController extends Controller
     public function TimKiemTheoTuKhoa(Request $request)
     {
         $key = str_replace('$', '', $request->input('seachbykey'));
-        
+
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
