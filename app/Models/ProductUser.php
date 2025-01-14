@@ -61,7 +61,6 @@ class ProductUser extends Model
     {
         // Tách từ khóa
         $keywords = preg_split('/\s+/', trim($key));
-
         $danhSachSanPham = DB::table('products')
             ->select(
                 'products.id',

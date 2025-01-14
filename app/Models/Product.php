@@ -36,4 +36,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductSpecification::class);
     }
+    public function rating():HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

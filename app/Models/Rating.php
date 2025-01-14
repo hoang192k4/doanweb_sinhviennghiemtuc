@@ -10,5 +10,5 @@ class Rating extends Model
 {
     //
     use HasFactory;
-
+    
 }

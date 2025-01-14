@@ -262,7 +262,7 @@
                     data: data
                 })
                 .done((data)=>{
-                    alertify.confirm(data.message,function(){
+                    alertify.confirm('Thông báo',data.message,function(){
                         window.location.href = data.url;
                     },function(){
                         window.location.href = data.url;

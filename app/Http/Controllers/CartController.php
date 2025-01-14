@@ -18,13 +18,27 @@ class CartController extends Controller
             //kiểm tra lại các sp trong giỏ, nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ
             foreach($cart->listProductVariants as $item){
                 $var = ProductVariant::find($item['variant_info']->id);
-                if($var->status==0)
+                //kiểm tra nếu variant bị ẩn hoặc  = 0 hoặc bị xóa vĩnh viễn thì giỏ hàng cũng phải xóa mât
+                if($var->status==0||$var==null||$var->stock==0)
                 {
-                    $cart->deleteItemCart($var->id);
+                    $cart->deleteItemCart($var->id!=null?$var->id:$item['variant_info']->id);
                     if($cart->totalQuantity==0)
                         $request->session()->forget('cart');
                     else
                         $request->session('cart')->put('cart',$cart);
+                }else{
+                    //nếu số lượng thay đổi thì số lượng trong giỏ hàng cũng thay đổi
+                    if($var->stock!= $item['variant_info']->stock){
+                        $cart->deleteItemCart($var->id);
+                        $cart->addToCart($var->product,$var,$var->stock,$var->id);
+                        $request->session('cart')->put('cart',$cart);
+                    }
+                    //nếu giá thay đổi thì giá trong giỏ hàng cũng phải thay đổi
+                    if($var->price!=$item['variant_info']->price){
+                        $cart->deleteItemCart($var->id);
+                        $cart->addToCart($var->product,$var,$item['quantity'],$var->id);
+                        $request->session('cart')->put('cart',$cart);
+                    }
                 }
             }
         }
