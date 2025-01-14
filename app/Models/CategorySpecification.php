@@ -12,7 +12,7 @@ class CategorySpecification extends Model
 {
     //
     use HasFactory;
-<<<<<<< HEAD
+
 
     public function product_specifications(): HasMany
     {
@@ -21,8 +21,6 @@ class CategorySpecification extends Model
 
     protected $fillable = ['id', 'category_id', 'name'];
 
-=======
-    protected $fillable = ['id', 'category_id', 'name'];
->>>>>>> quocdo
+
     public $timestamps = false;
 }
