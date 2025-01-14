@@ -11,11 +11,17 @@ class AdminBrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getListBrand()
     {
         //
-        $danhSachTenDanhMuc = Category::all();
-        return view('admin.category.addbrand')->with('danhSachTenDanhMuc', $danhSachTenDanhMuc);
+        $danhSachThuongHieu = Brand::all();
+        $danhSachDanhMucLoc = Category::all();
+        $danhSachDanhMuc = Category::all();
+
+        return view('admin.category.category')
+            ->with('danhSachThuongHieu', $danhSachThuongHieu)
+            ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc)
+            ->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
 
     /**
@@ -43,25 +49,46 @@ class AdminBrandController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function editBrand(string $id)
     {
-        //
+        $thuongHieuTimKiem = Brand::find($id);
+        $danhSachDanhMuc = Category::all();
+        return view('admin.category.editbrand')
+            ->with('thuongHieuTimKiem', $thuongHieuTimKiem)
+            ->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateBrand(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'nameBrand' => 'required|unique:brands,name,' . $id,
+            'imageBrand' => 'required',
+        ], [
+            'nameBrand.required' => 'Vui lòng nhập tên thương hiệu',
+            'nameBrand.unique' => 'Tên thương hiệu đã tồn tại',
+            'imageBrand' => 'Vui lòng chọn ảnh',
+        ]);
+
+        $nameBrand = $request->input('nameBrand');
+        $nameCategory = $request->input('nameCategory');
+        $status = $request->input('status');
+        $imageBrand = $request->input('imageBrand');
+
+        Brand::where('id', $id)->update([
+            'name' => $nameBrand,
+            'category_id' => $nameCategory,
+            'status' => $status,
+            'image' => $imageBrand,
+        ]);
+        return redirect()->route('admin.category.editbrand', ['id' => $id])->with('message', 'Cập nhật thương hiệu thành công');
     }
 
     /**

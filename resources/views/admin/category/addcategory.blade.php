@@ -52,6 +52,32 @@
                         <button>Hủy</button>
                     </div>
                 </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 48px;">ID</th>
+                            <th>Name</th>
+                            <th style="width: 48px;">Sửa</th>
+                            <th style="width: 48px;">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($danhSachDanhMuc as $item)
+                            <tr>
+                                <td style="text-align: center;">{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td style="text-align: center;"><a
+                                        href="{{ route('admin.category.editCategory', ['id' => $item->id]) }}"><i
+                                            class="fa-solid fa-check"></i></a></td>
+                                <td style="text-align: center;">
+                                    <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
+                                        <i class="fa-solid fa-x"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

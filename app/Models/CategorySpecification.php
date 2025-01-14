@@ -13,7 +13,7 @@ class CategorySpecification extends Model
     //
     use HasFactory;
 
-    public function product_specifications(): HasMany
+    public function category(): HasMany
     {
         return $this->hasMany(ProductSpecification::class);
     }

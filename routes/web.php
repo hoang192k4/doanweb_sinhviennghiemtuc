@@ -129,7 +129,7 @@ Route::middleware(['role:KH'])->group(function () {
 });
 
 //Route quan li danh mục
-Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
+// Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
 Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
 Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
 Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
@@ -137,6 +137,13 @@ Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'upd
 Route::get('/admin/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
 Route::delete('/admin/deletecategory/{id}', [AdminCategoryController::class, 'deleteCategory'])->name('admin.delete.category');
 
-Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
-Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');
-Route::post('/admin/addbrand/store', [AdminBrandController::class, 'store'])->name('admin.addbrand.store');
+Route::controller(AdminBrandController::class)->group(
+    function () {
+        Route::get('/admin/category', [AdminBrandController::class, 'getListBrand'])->name('admin.category');
+        Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
+        Route::get('/admin/editbrand/{id}', [AdminBrandController::class, 'editBrand'])->name('admin.category.editbrand');
+        Route::post('/admin/updatebrand/{id}', [AdminBrandController::class, 'updateBrand'])->name('admin.category.updatebrand');
+        Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');
+        Route::post('/admin/addbrand/store', [AdminBrandController::class, 'store'])->name('admin.addbrand.store');
+    }
+);

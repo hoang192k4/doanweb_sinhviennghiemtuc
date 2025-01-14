@@ -26,7 +26,7 @@
     <div class="content" id="danhmuc">
         <div class="head">
             <div class="title">Quản Lý Danh Mục</div>
-            <button><a href="{{ route('admin.category.addCategory') }}"><i class="fa-solid fa-plus"></i> Danh Mục
+            <button><a href="{{ route('admin.category.addCategory') }}"> Danh Mục
                 </a></button>
             <button><a href="{{ route('admin.addbrand.index') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
@@ -37,47 +37,50 @@
             </div>
         </div>
         <div class="separator_x"></div>
-        <form action="{{ route('filter.category', ['id' => 'all']) }}" method="GET">
+        <form id="filterForm">
             <select name="categoryFilter" id="categoryFilter">
                 <option value="all">Tất cả</option>
                 @foreach ($danhSachDanhMucLoc as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->specification_name }}</option>
                 @endforeach
             </select>
-            <button class="filter" style="float: inline-end;" type="submit">Lọc</button>
         </form>
-        @if (session('message'))
-            <h1>hello</h1>
-            <div class="alert alert-warning">
-                {{ session('message') }}
-            </div>
-        @endif
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 48px;">ID</th>
-                    <th>Name</th>
-                    <th style="width: 48px;">Sửa</th>
-                    <th style="width: 48px;">Xóa</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($danhSachDanhMuc as $item)
+        @if ($danhSachDanhMuc->isEmpty())
+            @if (isset($message))
+                <div class="alert alert-warning">
+                    {{ $message }}
+                </div>
+            @endif
+        @else
+            <table>
+                <thead>
                     <tr>
-                        <td style="text-align: center;">{{ $item->id }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td style="text-align: center;"><a
-                                href="{{ route('admin.category.editCategory', ['id' => $item->id]) }}"><i
-                                    class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;">
-                            <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
-                                <i class="fa-solid fa-x"></i>
-                            </a>
-                        </td>
+                        <th style="width: 48px;">ID</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th style="width: 48px;">Sửa</th>
+                        <th style="width: 48px;">Xóa</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($danhSachThuongHieu as $item)
+                        <tr>
+                            <td style="text-align: center;">{{ $item->id }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->image }}</td>
+                            <td style="text-align: center;"><a
+                                    href="{{ route('admin.category.editbrand', ['id' => $item->id]) }}"><i
+                                        class="fa-regular fa-pen-to-square"></i></a></td>
+                            <td style="text-align: center;">
+                                <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
@@ -124,6 +127,40 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        });
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            const categoryId = this.value;
+
+            fetch(`{{ route('filter.category', ['id' => 'all']) }}?categoryFilter=${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Cập nhật bảng với dữ liệu mới
+                    const tbody = document.querySelector('table tbody');
+                    tbody.innerHTML = ''; // Xóa nội dung cũ
+
+                    if (data.length === 0) {
+                        tbody.innerHTML =
+                            '<tr><td colspan="4" style="text-align: center;">Không có danh mục nào để hiển thị.</td></tr>';
+                    } else {
+                        data.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td style="text-align: center;">${item.id}</td>
+                            <td>${item.name}</td>
+                            <td style="text-align: center;">
+                                <a href="/admin/category/edit/${item.id}"><i class="fa-solid fa-check"></i></a>
+                            </td>
+                            <td style="text-align: center;">
+                                <a onclick="popup('dm', ${item.id})" data-id="${item.id}">
+                                    <i class="fa-solid fa-x"></i>
+                                </a>
+                            </td>
+                        `;
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
     </script>
 @endsection
