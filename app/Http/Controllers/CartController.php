@@ -15,12 +15,12 @@ class CartController extends Controller
         $cart = session('cart')?session('cart'):null;
         if($cart!=null)
         {
-            //kiểm tra lại các sp trong giỏ, nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ
+            //kiểm tra lại các sp trong giỏ, sản phẩm có sl =0 ,nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ
             foreach($cart->listProductVariants as $item){
                 $var = ProductVariant::find($item['variant_info']->id);
-                if($var->status==0)
+                if($var->status==0||$var->stock=0||$var==null)
                 {
-                    $cart->deleteItemCart($var->id);
+                    $cart->deleteItemCart($var!=null?$var->id:$item['variant_info']->id);
                     if($cart->totalQuantity==0)
                         $request->session()->forget('cart');
                     else
@@ -131,9 +131,9 @@ class CartController extends Controller
                 'message'=>'Sản phẩm không tồn tại'
             ]);
         }else{
-            $buyNow = ['quantity'=>$quantity,'product_info'=>$variant->product,'variant_info'=>$variant];
-            $request->session->put('buy_now',$buyNow);
+            $buyNow = ['quantity'=>$quantity,'totalPrice'=>$quantity*$variant->price,'product_info'=>$variant->product,'variant_info'=>$variant];
+            $request->session()->put('buy-now',$buyNow);
         }
-        return view('User.profile.payment');
+        return response()->json(route('user.payment'));
     }
 }

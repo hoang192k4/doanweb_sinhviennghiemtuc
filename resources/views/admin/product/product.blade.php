@@ -53,14 +53,11 @@
             </tbody>
         </table>
         <div class="pagination">
-            {{$danhSachSanPham->links()}}
-            <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">...</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
+            <a href="{{$danhSachSanPham->previousPageUrl()}}"><i class="fa-solid fa-chevron-left"></i></a>
+            @if($danhSachSanPham->currentPage()-1!=0) <a href="{{$danhSachSanPham->previousPageUrl()}}">{{$danhSachSanPham->currentPage()-1}}</i></a> @endif
+            <a href="{{$danhSachSanPham->currentPage()}}" class="active"> {{$danhSachSanPham->currentPage()}}</a>
+            @if($danhSachSanPham->currentPage()!= $danhSachSanPham->lastPage())<a href="{{$danhSachSanPham->nextPageUrl()}}">{{$danhSachSanPham->currentPage() + 1}}</a> @endif
+            <a href="{{$danhSachSanPham->nextPageUrl()}}"><i class="fa-solid fa-chevron-right"></i></a>
         </div>
         <div class="popup_admin" id="popupsp">
             <h3 style="color: white;">Bạn có thật sự muốn ẩn sản phẩm ... ?</h3>
