@@ -14,7 +14,7 @@ class AdminBrandController extends Controller
     public function getListBrand()
     {
         //
-        $danhSachThuongHieu = Brand::all();
+        $danhSachThuongHieu = Brand::where('status', 1)->get();
         $danhSachDanhMucLoc = Category::all();
         $danhSachDanhMuc = Category::all();
 
@@ -35,15 +35,34 @@ class AdminBrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function addBrand()
     {
+        $danhSachDanhMuc = Category::where('status', 1)->get();
+        return view('admin.category.addbrand')->with('danhSachDanhMuc', $danhSachDanhMuc);
+    }
+
+    public function storeBrand(Request $request)
+    {
+        $danhSachDanhMuc = Category::where('status', 1)->get();
+
+        $validate = $request->validate([
+            'nameBrand' => 'required|unique:brands,name,',
+            'imageBrand' => 'required',
+        ], [
+            'nameBrand.required' => 'Vui lòng nhập tên thương hiệu',
+            'nameBrand.unique' => 'Tên thương hiệu đã tồn tại',
+            'imageBrand.required' => 'Vui lòng chọn ảnh',
+        ]);
+
         Brand::create([
             'name' => $request->input('nameBrand'),
             'image' => $request->input('imageBrand'),
             'category_id' => $request->input('nameCategory'),
             'status' => $request->input('status'),
         ]);
-        return redirect()->route('admin.addbrand.index')->with('msg', 'Thêm thương hiệu thành công');
+
+        return redirect()->route('admin.category.addbrand')
+            ->with('message', 'Thêm thương hiệu thành công');
     }
 
     /**
@@ -94,9 +113,14 @@ class AdminBrandController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function deleteBrand($id)
     {
-        //
+        $thuongHieuTimKiem = Brand::find($id);
+        if ($thuongHieuTimKiem) {
+            $thuongHieuTimKiem->update(['status' => 0]);
+            return response()->json(['message' => 'Xóa thương hiệu thành công.'], 200);
+        }
+        return response()->json(['message' => 'Thương hiệu không tồn tại.'], 404);
     }
     public function filter(Request $request, string $opt)
     {

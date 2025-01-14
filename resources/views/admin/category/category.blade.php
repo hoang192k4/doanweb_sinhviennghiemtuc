@@ -28,7 +28,7 @@
             <div class="title">Quản Lý Danh Mục</div>
             <button><a href="{{ route('admin.category.addCategory') }}"> Danh Mục
                 </a></button>
-            <button><a href="{{ route('admin.addbrand.index') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
+            <button><a href="{{ route('admin.category.addbrand') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
                 <form action="{{ route('admin.category.searchCategory') }}" method="GET">
                     <input name="keySearchCategory">
@@ -72,7 +72,7 @@
                                     href="{{ route('admin.category.editbrand', ['id' => $item->id]) }}"><i
                                         class="fa-regular fa-pen-to-square"></i></a></td>
                             <td style="text-align: center;">
-                                <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
+                                <a onclick="popup('delete', {{ $item->id }})" data-id="{{ $item->id }}">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </a>
                             </td>
@@ -106,10 +106,11 @@
             const deleteButton = document.getElementById('deleteBtn');
             deleteButton.setAttribute('data-id', id);
         }
-        document.getElementById('deleteBtn').addEventListener('click', function() {
-            const categoryId = this.getAttribute('data-id');
 
-            fetch(`/admin/deletecategory/${categoryId}`, {
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            const brandId = this.getAttribute('data-id');
+
+            fetch(`/admin/deletebrand/${brandId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -117,17 +118,29 @@
                     }
                 })
                 .then(response => {
-                    if (response.ok) {
-                        alert('Xóa danh mục thành công');
+                    return response.json().then(data => {
+                        return {
+                            ok: response.ok,
+                            data: data
+                        }; // Trả về một đối tượng chứa cả ok và data
+                    });
+                })
+                .then(({
+                    ok,
+                    data
+                }) => {
+                    if (ok) {
+                        alertify.success(data.message);
                         window.location.href = '/admin/category';
                     } else {
-                        alert('Đã có lỗi xảy ra');
+                        alert('Đã có lỗi xảy ra: ' + data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         });
+
         document.getElementById('categoryFilter').addEventListener('change', function() {
             const categoryId = this.value;
 

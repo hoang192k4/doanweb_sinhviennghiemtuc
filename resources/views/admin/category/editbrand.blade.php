@@ -68,7 +68,7 @@
                     <div class="btn-goback">
                         @csrf
                         <button type="submit">Xác nhận thêm</button>
-                        <button>Hủy</button>
+                        <button type="button" id="cancelButton">Hủy</button>
                     </div>
                 </form>
                 @if (session('message'))
@@ -91,5 +91,10 @@
                 previewImage.src = URL.createObjectURL(file);
             }
         }
+        document.getElementById('cancelButton').addEventListener('click', function() {
+            document.getElementById('nameBrand').value = '';
+            document.getElementById('imageBrand').value = '';
+            document.getElementById('previewImage').src = '';
+        });
     </script>
 @endsection
