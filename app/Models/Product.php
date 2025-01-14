@@ -40,4 +40,8 @@ class Product extends Model
     {
         return $this->hasMany(Rating::class);
     }
+     public function like_products():HasMany
+    {
+        return $this->hasMany(LikeProduct::class);
+    }
 }

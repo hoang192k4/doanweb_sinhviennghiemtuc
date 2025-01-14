@@ -53,6 +53,7 @@
             </tbody>
         </table>
         <div class="pagination">
+            {{$danhSachSanPham->links()}}
             <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
             <a href="#" class="active">1</a>
             <a href="#">2</a>

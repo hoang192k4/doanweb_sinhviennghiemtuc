@@ -25,7 +25,7 @@ class AdminProductController extends Controller
     public function index()
     {
         //
-        $danhSachSanPham = Product::where('status',1)->get();
+        $danhSachSanPham = Product::where('status',1)->paginate(8);
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPham]);
     }
 
@@ -225,6 +225,7 @@ class AdminProductController extends Controller
             $product->product_specification()->forceDelete();
             $product->image_products()->forceDelete();
             $product->rating()->forceDelete();
+            $product->like_products()->forceDelete();
             $product->forceDelete();
 
             return 'Xóa sản phẩm '.$name.' thành công!';

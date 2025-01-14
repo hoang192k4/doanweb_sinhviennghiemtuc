@@ -440,6 +440,7 @@
                 list.innerHTML = thongTin.join('');
                 document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
                 document.getElementById('stock').innerHTML = danhSachMau[0].stock;
+                document.getElementById('add-to-cart').dataset.id = danhSachMau[0].id;
             });
     }
 </script>

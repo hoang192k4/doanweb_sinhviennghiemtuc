@@ -135,4 +135,19 @@ class CartController extends Controller
         ]);
 
     }
+
+    public function buyNow(Request $request){
+        $quantity = $request->quantity;
+        $variant = ProductVariant::find($request->id);
+        if($variant==null){
+            return response()->json([
+                'success'=>0,
+                'message'=>'Sản phẩm không tồn tại'
+            ]);
+        }else{
+            $buyNow = ['quantity'=>$quantity,'product_info'=>$variant->product,'variant_info'=>$variant];
+            $request->session->put('buy_now',$buyNow);
+        }
+        return view('User.profile.payment');
+    }
 }

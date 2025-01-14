@@ -10,11 +10,11 @@
             <button><a href="{{route('product_variant_hide',[$product->id])}}"><i class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
         </div>
         <div class="btn-goback">
-            <a href="{{ route('admin.product_variant.index',[$product->id]) }}" type="button"> <button>&laquo; Trở lại</button></a>
+            <a href="{{ route('admin.product.unapproved') }}" type="button"> <button>&laquo; Trở lại</button></a>
         </div>
         <div class="row">
             <div>
-                <button type="button" class="cursor" onclick="addVariant()">Thêm biến thể</button>
+                <button type="button" class="cursor" onclick="addVariant()" id="btn-add">Thêm biến thể</button>
             </div>
 
             <div class="col-lg-12">
@@ -125,19 +125,6 @@
         };
     </script>
     <script>
-        const msg = document.getElementById('msg');
-        if (msg !== null) {
-            setTimeout(() => {
-                msg.style.display = 'none';
-            }, 3000);
-        }
-
-        function notification() {
-            setTimeout(() => {
-                msg.style.display = 'none';
-            }, 3000);
-        }
-
         function reviewImage(event, id) {
             let reader = new FileReader();
             reader.onload = function() {
@@ -147,6 +134,50 @@
                 output.style.height = "50px";
             };
             reader.readAsDataURL(event.target.files[0]);
+        }
+        function addVariant(id) {
+            id++;
+            const variant = `  <form action="{{ route('product-variant.store') }}" method="POST" id="formAddProduct" class="form-product" enctype="multipart/form-data">
+                                        <tr>
+                                                <td>@csrf</td>
+                                                <td> <input class="input-variant" type="text" value="" id="color-${id}" name="color"></td>
+                                                <td> <input class="input-variant" type="text" value="" id="internal_memory-${id}" name="internal_memory"></td>
+                                                <td> <input class="input-variant" type="number" min="0" id="price-${id}" value="" name="price"></td>
+                                                <td> <input class="input-variant" type="number" min="0" id="stock-${id}" value="" name="stock"></td>
+                                                <td><img id="image"style="max-width:50px;"src="" alt=""> <input type="file" class="input-variant" name="image" id="image-input-${id}" onchange="reviewImage(event,'image');"></td>
+                                                <td  colspan="2"><button type="submit" class="cursor" data-id="${id}"onclick="addVariantProduct(this.dataset.id)">Thêm</button> </td>
+
+                                        </tr>
+                             </form> `;
+            document.getElementById('btn-add').dataset.id = id;
+            document.getElementById('table-variants').insertAdjacentHTML('beforeend', variant);
+        }
+        function addVariantProduct(id) {
+            const color = document.getElementById(`color-${id}`).value;
+            const price = document.getElementById(`price-${id}`).value;
+            const stock = document.getElementById(`stock-${id}`).value;
+            const internalMemory = document.getElementById(`internal_memory-${id}`).value;
+            const fileUpload = document.getElementById(`image-input-${id}`);
+            fileUpload.addEventListener('change',(event)=>{
+                const images = event.target.images;
+            })
+            $.ajax({
+                method: "POST",
+                url: '/admin/product-variant',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    color,
+                    price,
+                    stock,
+                    internal_memory: internalMemory,
+                    product_id: '{{$product->id}}',
+                }
+            }).done((data)=>{
+                alertify.alert(`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
+                setTimeout(()=>{ location.reload();},2000);
+
+            })
+
         }
     </script>
      <script>
