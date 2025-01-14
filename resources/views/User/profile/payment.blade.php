@@ -180,7 +180,7 @@
                         </div>
                     </div>
                 </form>
-                <button type="button" id="" onclick="order()"> Hoàn tất đơn hàng</button>
+                <button type="button" id="" onclick=""> Hoàn tất đơn hàng</button>
             </div>
         </div>
     </div>

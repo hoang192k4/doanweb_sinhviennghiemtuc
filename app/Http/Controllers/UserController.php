@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Blog;
 use App\Models\ProductUser;
 use App\Models\Brand;
@@ -191,22 +192,25 @@ class UserController extends Controller
     public function addContact(Request $req)
     {
         $validate=$req->validate([
-            'name'=>'required|string|max:50',
+            'name'=>'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
             'email'=>'required|email|max:25',
             'phone'=>'required|string|regex:/^[0-9]{10}$/',
-            'title'=>'required|max:255',
-            'content'=>'required|string',
+            'title'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:255',
+            'content'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|string',
         ],[
-            'name.required'=>'Họ và tên không được trống',
-            'name.max' =>'Chỉ được nhập tối đa chỉ 50 ký tự',
-            'email.required' => 'Email không được trống.',
-            'email.email' => 'Email không hợp lệ.',
-            'email.max' => 'Email không được vượt quá 255 ký tự.',
-            'phone.required'=>'Số điện thoại không được bỏ trống',
-            'phone.digits'=>'Số điện thoại chỉ đc nhập 10 ký tự số',
-            'title.required'=>'Tiêu đề không được bỏ trống',
+            'name.required'=>'Bạn chưa nhập họ tên',
+            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
+            'name.max' =>'Họ và tên vừa nhập đã vượt 50 ký tự.',
+            'email.required' => 'Bạn chưa nhập Email.',
+            'email.email' => 'Email vừa nhập chưa hợp lệ.',
+            'email.max' => 'Email vừa nhập đã vượt 25 ký tự.',
+            'phone.required'=>'Bạn chưa nhập số điện thoại.',
+            'phone.regex'=>'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
+            'title.required'=>'Bạn chưa nhập tiêu đề.',
+            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
             'title.max'=>'chỉ được nhập tối đã 255 ký tự',
-            'content.required'=>'Nội dung không được bỏ trống',
+            'content.required'=>'Bạn chưa nhập nội dung.',
+            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
         ]);
 
         $data = new Contact();
