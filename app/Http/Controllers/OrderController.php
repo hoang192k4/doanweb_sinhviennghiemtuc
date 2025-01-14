@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Voucher;
 use App\Models\VoucherUser;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -16,8 +17,6 @@ class OrderController extends Controller
     public function index()
     {
         //hiển thị các sản phẩm trong giỏ hàng
-        if(session('buy-now')!=null)
-            return view('User.profile.payment');
         if(session('cart')==null)
             return redirect()->route('user.index');
         return view('User.profile.payment');
@@ -85,10 +84,41 @@ class OrderController extends Controller
                 'wards.required' => 'Vui lòng chọn phường/xã.',
             ]
         );
+        //kiểm tra giá sản phẩm có bằng với lúc nhấn đặt hàng hay không
+        foreach(session('cart')->listProductVariants as $item){
+            $variant = ProductVariant::find($item['variant_info']->id);
+            if($item['variant_info']->price != $variant->price){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+        }
+        //kiểm tra số lượng của sản phẩm lúc đặt hàng và số lượng trong giỏ hàng
+        foreach(session('cart')->listProductVariants as $item){
+            $variant = ProductVariant::find($item['variant_info']->id);
+            if($item['quantity'] > $variant->stock){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+        }
 
+
+        //kiểm tra khách hàng có nhập voucher hay không
         if($req->voucher!=null){
             $voucher = Voucher::find($req->voucher);
-            $discount = $voucher->id;
+            //kiểm tra đã vc đã sử dụng chưa
+            if(VoucherUser::where('user_id',Auth::user()->id)->where('voucher_id',$voucher->id)->first()!=null){
+                return response()->json([
+                    'success'=>0,
+                    'message'=>'Voucher đã được sử dụng!'
+                ]);
+            }
+            $discount = $voucher->discount_value;
             VoucherUser::create([
                 'voucher_id'=>$voucher->id,
                 'user_id'=>Auth::user()->id
@@ -99,62 +129,35 @@ class OrderController extends Controller
             $methodId=1;
         else
             $methodId = 2;
-        if(session('buy-now')!=null){
-            $order = Order::create([
-                'order_code'=>Order::generateTimestamp(),
-                'full_name'=>$req->full_name,
-                'phone'=>$req->phone,
-                'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
-                'total_price'=>session('buy-now')['totalPrice'] -$discount,
-                'payment_method'=>$methodId,
-                'user_id'=>Auth::user()->id,
-                'voucher_id'=>$voucher->id,
-                'order_status_id'=>6
-            ]);
+        $order = Order::create([
+            'order_code'=>Order::generateTimestamp(),
+            'full_name'=>$req->full_name,
+            'phone'=>$req->phone,
+            'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
+            'total_price'=>session('cart')->totalPrice - $discount,
+            'payment_method'=>$methodId,
+            'user_id'=>Auth::user()->id,
+            'voucher_id'=> $req->voucher!=null? $voucher->id:null,
+            'order_status_id'=>2
+        ]);
+        foreach(session('cart')->listProductVariants as $item){
             OrderItem::create([
-                'product_variant_id'=>session('buy-now')['variant_info']->id,
-                'slug_product'=>session('buy-now')['product_info']->slug,
-                'name_product'=>session('buy-now')['product_info']->name,
-                'color'=>session('buy-now')['variant_info']->color,
-                'internal_memory'=>session('buy-now')['variant_info']->internal_memory,
-                'quantity'=>session('buy-now')['quantity'],
-                'price'=>session('buy-now')['variant_info']->price,
-                'total_price'=>session('buy-now')['price'],
+                'product_variant_id'=>$item['variant_info']->id,
+                'slug_product'=>$item['product_info']->slug,
+                'name_product'=>$item['product_info']->name,
+                'color'=>$item['variant_info']->color,
+                'internal_memory'=>$item['variant_info']->internal_memory,
+                'quantity'=>$item['quantity'],
+                'price'=>$item['variant_info']->price,
+                'total_price'=>$item['price'],
                 'order_id'=>$order->id
             ]);
-            $request->session()->forget('buy-now');
-        }else{
-            $order = Order::create([
-                'order_code'=>Order::generateTimestamp(),
-                'full_name'=>$req->full_name,
-                'phone'=>$req->phone,
-                'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
-                'total_price'=>session('cart')->totalPrice -$discount,
-                'payment_method'=>$methodId,
-                'user_id'=>Auth::user()->id,
-                'voucher_id'=>$voucher->id,
-                'order_status_id'=>6
-            ]);
-
-            foreach(session('cart')->listProductVariants as $item){
-                OrderItem::create([
-                    'product_variant_id'=>$item['variant_info']->id,
-                    'slug_product'=>$item['product_info']->slug,
-                    'name_product'=>$item['product_info']->name,
-                    'color'=>$item['variant_info']->color,
-                    'internal_memory'=>$item['variant_info']->internal_memory,
-                    'quantity'=>$item['quantity'],
-                    'price'=>$item['variant_info']->price,
-                    'total_price'=>$item['price'],
-                    'order_id'=>$order->id
-                ]);
-            }
-            $request->session()->forget('cart');
         }
 
         return response()->json([
             'success'=>1,
-            'message'=>'Đặt hàng thành công!'
+            'message'=>'Đặt hàng thành công!',
+            'url'=>route('user.index')
         ]);
     }
 }
