@@ -76,9 +76,83 @@
         </div>
     </section>
 
-    <!-- Điện thoại bán chạy -->
+        <!-- Sản phẩm bán chạy -->
+        <section class="container_css product_best_seller">
+            <h4>SẢN PHẨM BÁN CHẠY</h4>
+            <div id="carouselExampleIntervals" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="10000">
+                        <div class="product_best_seller_items">
+                            @if (isset($danhSachBanChay))
+                                @for ($i = 0; $i < count($danhSachBanChay); $i++)
+                                    @if ($i > 3)
+                                    @break
+                                @endif
+                                <div class="product_best_seller_item">
+                                    <a href="{{ route('detail', [$danhSachBanChay[$i]->slug]) }}"><img
+                                            src="{{ asset('images/' . DB::table('image_products')->select('image')->where('product_id',$danhSachBanChay[$i]->id)->first()->image ) }}" alt="Lỗi hiển thị"></a>
+                                    <div class="product_best_seller_item_info">
+                                        <ul>
+                                            <li><a
+                                                    href="{{ route('detail', [$danhSachBanChay[$i]->slug]) }}">{{ $danhSachBanChay[$i]->name }}</a>
+                                            </li>
+                                            <li>{{ number_format($danhSachBanChay[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                            </li>
+                                            <li>{{ $danhSachBanChay[$i]->rating }} <i class="fas fa-star"></i></li>
+                                            <li>
+                                                <a href=""><button>Mua ngay</button></a>
+                                                {{-- <div><a href=""><i class="fas fa-cart-plus"></i></a></div> --}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endfor
+                        @endif
+                    </div>
+                </div>
+                @if (isset($danhSachBanChay) && count($danhSachBanChay) > 4)
+                    <div class="carousel-item" data-bs-interval="1000">
+                        <div class="product_best_seller_items">
+                            @for ($i = 4; $i < count($danhSachBanChay); $i++)
+                                <div class="product_best_seller_item">
+                                    <a href="{{ route('detail', [$danhSachBanChay[$i]->slug]) }}"><img
+                                            src="{{ asset('images/' . DB::table('image_products')->select('image')->where('product_id',$danhSachBanChay[$i]->id)->first()->image ) }}"
+                                            alt="Lỗi hiển thị"></a>
+                                    <div class="product_best_seller_item_info">
+                                        <ul>
+                                            <li><a
+                                                    href="{{ route('detail', [$danhSachBanChay[$i]->slug]) }}">{{ $danhSachBanChay[$i]->name }}</a>
+                                            </li>
+                                            <li>{{ number_format($danhSachBanChay[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                            </li>
+                                            <li>{{ $danhSachBanChay[$i]->rating }} <i class="fas fa-star"></i></li>
+                                            <li>
+                                                <a href=""><button>Mua ngay</button></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIntervals"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIntervals"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                @else
+            </div>
+            @endif
+    </section>
+
+    <!-- Điện thoại mới nhất -->
     <section class="container_css product_best_seller">
-        <h4>ĐIỆN THOẠI NỔI BẬT NHẤT</h4>
+        <h4>ĐIỆN THOẠI MỚI NHẤT</h4>
         <div id="carouselExampleInterval" class="carousel slide carousel-dark" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="10000">
@@ -101,7 +175,6 @@
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
                                         <li>
                                             <a href=""><button>Mua ngay</button></a>
-                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -128,7 +201,6 @@
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
                                         <li>
                                             <a href=""><button>Mua ngay</button></a>
-                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -149,7 +221,6 @@
             @else
         </div>
         @endif
-    </div>
 </section>
 
 
@@ -180,7 +251,6 @@
                                     <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                     </li>
                                 </ul>
                             </div>
@@ -205,7 +275,6 @@
                                     <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                     </li>
                                 </ul>
                             </div>
@@ -226,7 +295,6 @@
         @else
     </div>
     @endif
-</div>
 </section>
 {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
 @include('user.partials.service')

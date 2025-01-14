@@ -93,10 +93,7 @@
                     let table = row.parentNode;
                     table.removeChild(row);
 
-                    alertify
-                        .alert(data, function(data) {
-                            alertify.message(data);
-                        });
+                    alertify.alert('Thông báo',data);
                 })
         }
     </script>
@@ -129,11 +126,8 @@
 
     <script>
         @if (session('msg'))
-
             alertify
-                .alert("{{ session('msg') }}", function() {
-                    alertify.message('{{ session('msg') }}');
-                });
+                .alert('Thông báo',"{{ session('msg') }}");
         @endif
     </script>
 @endsection

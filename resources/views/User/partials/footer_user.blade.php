@@ -2,7 +2,7 @@
     @php
          $lienKetWebsite = DB::table('about')->first();
          $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug')->get();
-         $danhSachPhanLoai = DB::table('brands')->select('brands.name')->distinct()->groupBy('brands.name')->take(6)->get();
+         $danhSachPhanLoai = DB::table('brands')->select('brands.name')->distinct()->groupBy('brands.name')->orderby('created_at','desc')->take(6)->get();
     @endphp
     <div class="footer_top container_css">
         <div class="footer_top_left_items">
@@ -47,7 +47,7 @@
                 </ul>
             </div>
             <div class="footer_top_item">
-                <p style="text-align: center;font-size: 19px; font-weight: bold;">Thương hiệu bán chạy</p>
+                <p style="text-align: center;font-size: 19px; font-weight: bold;">Thương hiệu mới nhất</p>
                 <ul>
                     @foreach ($danhSachPhanLoai as $item)
                         <li><a href="{{ route('timkiemsanpham', ['slug' => $item->name])}}"><i class="fas fa-angle-right"></i>{{ $item->name }}</a></li>
@@ -57,7 +57,7 @@
         </div>
         <div class="footer_top_right">
             <div class="footer_top_logo">
-                <a href=""><img src="{{asset('images/'.$lienKetWebsite->logo)}}" style="max-width: 100%" alt="Lỗi hiển thị"></a>
+                <a href="{{ route('user.index') }}"><img src="{{asset('images/'.$lienKetWebsite->logo)}}" style="max-width: 100%" alt="Lỗi hiển thị"></a>
             </div>
             <div class="footer_top_slogan">
                 <a href="">Slogan</a>

@@ -113,7 +113,7 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/trangcanhan/editInfo', 'editInfo')->name('profile.editInfo');
         Route::post('/trangcanhan/editImage', 'editImage')->name('profile.editImage');
         Route::get('/lichsudonhang', 'order_history')->name('profile.order_history');
-        Route::get('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
+        Route::put('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
         Route::get('/sanphamyeuthich', 'favourite_product')->name('profile.favourite_product');
         Route::get('/sanphamyeuthich/unLike/{id}', 'unLike')->name('profile.unLike');
         Route::get('/lichsudanhgia', 'review_history')->name('profile.review_history');

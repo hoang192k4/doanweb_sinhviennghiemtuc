@@ -24,10 +24,12 @@ class UserController extends Controller
         $thuongHieu = Brand::index();
         $danhSachDTHot = ProductUser::LayThongTinSanPham('Điện Thoại');
         $danhSachLapTopMoi = ProductUser::LayThongTinSanPham('Laptop');
+        $danhSachBanChay = ProductUser::SanPhamBanChay();
         return View('User.pages.index')->with([
             "thuongHieu" => $thuongHieu,
             "danhSachDTHot" => $danhSachDTHot,
-            "danhSachLapTopMoi" => $danhSachLapTopMoi
+            "danhSachLapTopMoi" => $danhSachLapTopMoi,
+            "danhSachBanChay" => $danhSachBanChay
         ]);
     }
 
