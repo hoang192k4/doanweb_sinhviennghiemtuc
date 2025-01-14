@@ -163,12 +163,24 @@ class ProductUser extends Model
         ->select('product_variants.id','product_variants.price','product_variants.image','product_variants.stock')
         ->first();
     }
-
+    public static function SanPhamBanChay(){
+        return DB::table('order_items')
+        ->select(
+            'products.id',
+            'products.name',
+            'order_items.slug_product as slug',
+            'products.rating',
+            DB::raw('MIN(product_variants.price) as price'),
+            DB::raw('COUNT("order_items.slug_product")as count')
+        )
+        ->join('product_variants','order_items.product_variant_id','=','product_variants.id')
+        ->join('products','product_variants.product_id','=','products.id')
+        ->groupBy('products.id', 'products.name', 'order_items.slug_product','products.rating','product_variants.product_id')
+        ->orderBy(DB::raw('COUNT("order_items.slug_product")'),'desc')
+        ->where('products.status',1)
+        ->take(8)->get();
+    }
     public static function LayThongTinSanPham($category){
-        if($category === 'Điện Thoại')
-             $tam = 'views';
-        else
-            $tam = 'created_at';
         return DB::table('products')
         ->select(
             'products.id',
@@ -186,7 +198,7 @@ class ProductUser extends Model
         ->join('categories', 'brands.category_id', '=', 'categories.id')
         ->where('products.status', 1)
         ->where('categories.name',$category)->groupBy('products.id', 'products.name', 'products.slug','products.rating', 'categories.name', 'brands.name')
-        ->orderBy('products.'.$tam,'desc')->take(8)->get();
+        ->orderBy('products.created_at','desc')->take(8)->get();
     }
     public static function SanPhamTuongDuong($category,$brand,$slug){
         return DB::table('products')
@@ -203,7 +215,6 @@ class ProductUser extends Model
         ->join('categories', 'brands.category_id', '=', 'categories.id')
         ->where('products.status', 1)
         ->where('brands.name',$brand)
-        ->where('products.status', 1)
         ->where('product_variants.status',1)
         ->where('products.slug','!=',$slug)
         ->where('categories.slug',$category)->groupBy( 'products.name', 'products.rating' ,'products.slug')

@@ -205,7 +205,7 @@
     </script>
     <script>
         @if(session('msg'))
-            alertify.alert('{{session('msg')}}');
+            alertify.alert('Thông báo','{{session('msg')}}');
         @endif
     </script>
 @endsection

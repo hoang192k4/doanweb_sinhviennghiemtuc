@@ -203,12 +203,12 @@
     </script>
     <script>
         @if (session('msg'))
-            alertify.alert('{{ session('msg') }}');
+            alertify.alert('Thông báo','{{ session('msg') }}');
         @endif
     </script>
     <script>
         @if ($errors->any())
-            alertify.alert('Vui lòng nhập đầy đủ các trường!');
+            alertify.alert('Thông báo','Vui lòng nhập đầy đủ các trường!');
         @endif
     </script>
 @endsection
