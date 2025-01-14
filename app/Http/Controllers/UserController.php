@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Blog;
+use App\Models\About;
 use App\Models\ProductUser;
 use App\Models\Brand;
 use App\Models\Product;
@@ -45,7 +46,10 @@ class UserController extends Controller
     public function GioiThieu()
     {
         $danhSachBaiViet = Blog::layTatCaBaiViet();
-        return view('user.pages.blog')->with('danhSachBaiViet', $danhSachBaiViet);
+        $danhSachThongTinBaiViet = About::all()->first();
+        return view('user.pages.blog')
+            ->with('danhSachBaiViet', $danhSachBaiViet)
+            ->with('danhSachThongTinBaiViet', $danhSachThongTinBaiViet);
     }
     public function timKiemBaiVietTheoTuKhoa(Request $request)
     {
@@ -101,7 +105,7 @@ class UserController extends Controller
     }
     public function DangNhap(Request $request)
     {
-         $request->validate(
+        $request->validate(
             [
                 'email_login' => 'required|email|string|max:255|exists:users,email',
                 'password_login' => 'required|string'
@@ -114,70 +118,71 @@ class UserController extends Controller
                 'password_login.required' => 'Bạn chưa nhập password',
             ]
         );
-         if(Auth::attempt(['email' => $request->email_login, 'password' =>$request->password_login]))
-        {
-            if(Auth::user()->role=="NV" || Auth::user()->role=="QL")
+        if (Auth::attempt(['email' => $request->email_login, 'password' => $request->password_login])) {
+            if (Auth::user()->role == "NV" || Auth::user()->role == "QL")
                 return redirect()->route('admin.index');
             return response()->json(['message' => 'Đăng nhập thành công']);
-        }
-        else {
-            return response()->json(['msg_error' => 'Mật khẩu chưa chính xác!'.'<br>'.' Vui lòng nhập lại mật khẩu'],401);
+        } else {
+            return response()->json(['msg_error' => 'Mật khẩu chưa chính xác!' . '<br>' . ' Vui lòng nhập lại mật khẩu'], 401);
         }
     }
-    public function Logout(){
+    public function Logout()
+    {
         Auth::logout();
         return redirect()->back();
     }
 
-    public function ChiTietSanPham($slug){
+    public function ChiTietSanPham($slug)
+    {
         ProductUser::UpdateView($slug);
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
-        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
-        $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
-        $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
+        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug, $thongTinSanPham[0]->brand, $slug);
+        $laySanPhamTheoDanhMuc = ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug, $slug);
+        $arr = array_merge($sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
+        $mauSanPham = ProductUser::MauSanPham($slug, $boNhoNhoNhat->internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$arr
+            'slug' => $slug,
+            "danhSachAnh" => $danhSachAnh,
+            "danhSachBoNho" => $danhSachBoNho,
+            "thongTinSanPham" => $thongTinSanPham[0],
+            "thongSoKiThuatSanPham" => $thongSoKiThuatSanPham[0],
+            "luotThichSanPham" => $luotThichSanPham,
+            "mauSanPham" => $mauSanPham,
+            "sanPhamTuongTu" => $arr
         ]);
     }
-    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
+    public function ChiTietSanPhamTheoBoNho($slug, $internal_memory)
+    {
 
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
+        $mauSanPham = ProductUser::MauSanPham($slug, $internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
+            'slug' => $slug,
+            "danhSachAnh" => $danhSachAnh,
+            "danhSachBoNho" => $danhSachBoNho,
+            "thongTinSanPham" => $thongTinSanPham[0],
+            "thongSoKiThuatSanPham" => $thongSoKiThuatSanPham[0],
+            "luotThichSanPham" => $luotThichSanPham,
+            "mauSanPham" => $mauSanPham,
         ]);
     }
-    public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
-        $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
+    public function LayThongTinSanPhamTheoMau($slug, $internal_memory, $color)
+    {
+        $data = ProductUser::LayThongTinSanPhamTheoMau($slug, $internal_memory, $color);
         return response()->json([
-            "variant_id"=>$data->id,
-            "image"=>$data->image,
-            "stock"=>$data->stock,
-            "price"=>$data->price
+            "variant_id" => $data->id,
+            "image" => $data->image,
+            "stock" => $data->stock,
+            "price" => $data->price
         ]);
     }
-
 }

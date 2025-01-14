@@ -78,13 +78,10 @@
                 @endforeach
             </tbody>
         </table>
-
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
             <p id="alert"></p>
-
-
 
             <div class="button">
                 <button id="deleteBtn">Đồng ý </button>
@@ -108,7 +105,6 @@
         }
         document.getElementById('deleteBtn').addEventListener('click', function() {
             const categoryId = this.getAttribute('data-id');
-
 
             fetch(`/admin/deletecategory/${categoryId}`, {
                     method: 'DELETE',

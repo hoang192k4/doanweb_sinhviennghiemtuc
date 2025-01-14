@@ -74,27 +74,22 @@ class AdminCategoryController extends Controller
     }
     public function updateCategory(Request $request, $id)
     {
-        $danhMucTimKiem = Category::find($id);
         $nameCategory = $request->input('nameCategory');
         $status = $request->input('status');
         $slug = Str::slug($request->input('nameCategory'));
         $nameSpecification = $request->input('nameSpecification');
-        // $thongSoKyThuat = $danhMucTimKiem->category_specifications;
-        // dd($nameSpecification);
         Category::where('id', $id)->update([
             'name' => $nameCategory,
             'slug' => $slug,
             'status' => $status
         ]);
+        for ($i = 0; $i < count($nameSpecification); $i++) {
+            CategorySpecification::where('category_id', $id)->update([
+                'name' => $nameSpecification[$i],
+            ]);
+        }
 
-        CategorySpecification::where('category_id', $id)->update([
-            'name' => $nameSpecification,
-        ]);
-
-        return view('admin.category.editCategory')
-            ->with('danhMucTimKiem', $danhMucTimKiem)
-            // ->with('thongSoKyThuat', $thongSoKyThuat)
-            ->with('msg', 'Cập nhật thành công');
+        return redirect()->route('admin.category')->with('msg', 'Cập nhật danh mục thành công');
     }
 
     public function filterCategory(Request $request)
