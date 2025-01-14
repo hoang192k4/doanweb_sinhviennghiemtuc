@@ -31,8 +31,7 @@
                         <form class="form_contact" action="/addContact" method="POST" style="padding-left: 30px;">
                             @csrf @method('POST')
                             <div class="col">
-                                <input type="text" name="name" placeholder="Họ và tên của bạn"
-                                    value="{{ $contact->name }}" />
+                                <input type="text" name="name" placeholder="Họ và tên của bạn"/>
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('name'){{$message}}@enderror
@@ -40,8 +39,7 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <input type="text" name="phone" placeholder="Số điện thoại "
-                                    value="{{ $contact->phone }}" />
+                                <input type="text" name="phone" placeholder="Số điện thoại "/>
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('phone'){{$message}}@enderror
@@ -49,8 +47,7 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <input type="text" name="email" placeholder="E-mail "
-                                    value="{{ $contact->email }}" />
+                                <input type="text" name="email" placeholder="E-mail " />
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('email'){{$message}}@enderror
@@ -58,8 +55,7 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <input type="text" name="title" placeholder="Tiêu đề "
-                                    value="{{ $contact->title }}" />
+                                <input type="text" name="title" placeholder="Tiêu đề "/>
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('title'){{$message}}@enderror
@@ -67,8 +63,7 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <textarea name="content" placeholder="Nội dung" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
-                                    value="{{ $contact->content }}">
+                                <textarea name="content" placeholder="Nội dung" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;">
                                 </textarea>
                                 <div class="alert_error_validate">
                                     <span style="color: red; font-size:12px;margin-left: 10px" >
