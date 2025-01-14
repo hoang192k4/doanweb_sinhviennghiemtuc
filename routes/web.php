@@ -92,8 +92,6 @@ Route::middleware(['role:QL,NV'])->group(function () {
 });
 
 
-
-
 //Phân quyền quản lý
 Route::middleware(['role:QL'])->group(function () {});
 
@@ -106,6 +104,7 @@ Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
+
 
         Route::post('/payment', 'completePayment')->name('complete-payment');
         Route::post('/add-voucher', 'addVoucher')->name('user.addvoucher');
