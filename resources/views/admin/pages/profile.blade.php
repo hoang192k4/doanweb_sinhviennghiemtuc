@@ -4,6 +4,7 @@
 <div class="content" id="dashboard">
     <div class="head">
         <div class="title">Thông Tin Cá Nhân</div>
+        <button><a href="{{route('admin.changepw')}}"><i class="fa-solid fa-lock"></i> Đổi mật khẩu</a></button>
     </div>
     <div class="separator_x"></div>
     <div class="area">
