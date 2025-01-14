@@ -41,7 +41,7 @@
             <select name="categoryFilter" id="categoryFilter">
                 <option value="all">Tất cả</option>
                 @foreach ($danhSachDanhMucLoc as $item)
-                    <option value="{{ $item->id }}">{{ $item->specification_name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
         </form>
@@ -153,13 +153,14 @@
 
                     if (data.length === 0) {
                         tbody.innerHTML =
-                            '<tr><td colspan="4" style="text-align: center;">Không có danh mục nào để hiển thị.</td></tr>';
+                            '<tr><td colspan="5" style="text-align: center;">Không có danh mục nào để hiển thị.</td></tr>';
                     } else {
                         data.forEach(item => {
                             const row = document.createElement('tr');
                             row.innerHTML = `
                             <td style="text-align: center;">${item.id}</td>
                             <td>${item.name}</td>
+                            <td>${item.image}</td>
                             <td style="text-align: center;">
                                 <a href="/admin/category/edit/${item.id}"><i class="fa-solid fa-check"></i></a>
                             </td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Brand;
 use App\Models\CategorySpecification;
 
 class AdminCategoryController extends Controller
@@ -13,7 +14,7 @@ class AdminCategoryController extends Controller
     public function index()
     {
         $danhSachDanhMuc = Category::all();
-        $danhSachDanhMucLoc = Category::all();
+        $danhSachDanhMucLoc = Category::where('status', 1)->get();
         if ($danhSachDanhMuc->isEmpty()) {
             return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
         }
@@ -111,9 +112,9 @@ class AdminCategoryController extends Controller
         $categoryId = $request->input('categoryFilter', 'all');
 
         if ($categoryId == 'all') {
-            $danhSachDanhMuc = CategorySpecification::all();
+            $danhSachDanhMuc = Brand::where('status', 1)->get();
         } else {
-            $danhSachDanhMuc = CategorySpecification::where('category_id', $categoryId)->get();
+            $danhSachDanhMuc = Brand::where('category_id', $categoryId)->get();
         }
 
         return response()->json($danhSachDanhMuc);
