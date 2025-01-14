@@ -127,7 +127,7 @@
                 })
                 .done((data) => {
                     console.log(data);
-                    alertify.alert(data.message);
+                    alertify.alert('Thông báo',data.message);
                     setTimeout(()=>{
                         location.reload();
                     },1500);
