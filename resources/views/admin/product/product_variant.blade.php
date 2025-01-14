@@ -131,18 +131,7 @@
         };
     </script>
     <script>
-        const msg = document.getElementById('msg');
-        if (msg !== null) {
-            setTimeout(() => {
-                msg.style.display = 'none';
-            }, 3000);
-        }
 
-        function notification() {
-            setTimeout(() => {
-                msg.style.display = 'none';
-            }, 3000);
-        }
 
         function addVariant(id) {
             id++;

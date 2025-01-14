@@ -105,7 +105,7 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/payment','completePayment')->name('complete-payment');
         Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
     });
-
+    Route::post('/buy-now',[CartController::class,'buyNow'])->name('buynow');
     //Route profile
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/trangcanhan', 'index')->name('profile.index');

@@ -122,7 +122,7 @@ class OrderController extends Controller
                 'order_id'=>$order->id
             ]);
         }
-
+        $request->session()->forget('cart');
         return response()->json([
             'success'=>1,
             'message'=>'Đặt hàng thành công!'
