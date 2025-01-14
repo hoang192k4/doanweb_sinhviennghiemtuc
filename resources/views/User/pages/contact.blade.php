@@ -1,6 +1,11 @@
 @extends('layouts.layouts_user')
 @section('title', 'Trang liên hệ')
 @section('content')
+    @php
+         $lienKetWebsite = DB::table('about')->first();
+         $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug')->get();
+         $danhSachPhanLoai = DB::table('brands')->select('brands.name')->distinct()->groupBy('brands.name')->take(6)->get();
+    @endphp
     <div class="container_css" style="padding: 0px 10px;">
         <div class="contact">
             <div class="row_contact">
@@ -15,13 +20,10 @@
                             style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                         <div style="text-align:center; width: 80%;margin-left: 40px; margin-top:5px;font-size: 13px;">
-                            Địa
-                            chỉ : 65 Huỳnh Thúc Kháng,
-                            P. Bến Nghé,
-                            Quận 1, TP. Hồ
-                            Chí Minh
-                            Số điện thoại : 1900 1234
-                            Email : cskh_svnt@gmail.com</div>
+                            <p>Địa chỉ: {{ $lienKetWebsite->address }} - Số điện thoại: {{ $lienKetWebsite->phone }} -
+                                Email : {{ $lienKetWebsite->email }}</p>
+                            <p>©2024 - Bản quyền thuộc về {{ $lienKetWebsite->name }}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col_contact">
@@ -30,7 +32,7 @@
                             @csrf @method('POST')
                             <div class="col">
                                 <input type="text" name="name" placeholder="Họ và tên của bạn"
-                                    value="@isset($contact){{ $contact->name }}@endisset" />
+                                    value="{{ $contact->name }}" />
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('name'){{$message}}@enderror
@@ -39,7 +41,7 @@
                             </div>
                             <div class="col">
                                 <input type="text" name="phone" placeholder="Số điện thoại "
-                                    value="@isset($contact){{ $contact->phone }}@endisset" />
+                                    value="{{ $contact->phone }}" />
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('phone'){{$message}}@enderror
@@ -48,7 +50,7 @@
                             </div>
                             <div class="col">
                                 <input type="text" name="email" placeholder="E-mail "
-                                    value="@isset($contact){{ $contact->email }}@endisset" />
+                                    value="{{ $contact->email }}" />
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('email'){{$message}}@enderror
@@ -57,7 +59,7 @@
                             </div>
                             <div class="col">
                                 <input type="text" name="title" placeholder="Tiêu đề "
-                                    value="@isset($contact){{ $contact->title }}@endisset" />
+                                    value="{{ $contact->title }}" />
                                     <div class="alert_error_validate">
                                         <span style="color: red; font-size:12px;margin-left: 10px" >
                                             @error('title'){{$message}}@enderror
@@ -65,8 +67,8 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <textarea name="content" placeholder="Nội dung " style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
-                                    value="@isset($contact){{ $contact->content }}@endisset">
+                                <textarea name="content" placeholder="Nội dung" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;"
+                                    value="{{ $contact->content }}">
                                 </textarea>
                                 <div class="alert_error_validate">
                                     <span style="color: red; font-size:12px;margin-left: 10px" >
@@ -88,7 +90,7 @@
         const message = "{{ session('msg') }}";
         console.log(message)
         if (message) {
-            alertify.success(message);
+            alertify.success('thông báo',message);
         }
     </script>
 

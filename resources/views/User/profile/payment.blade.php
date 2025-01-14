@@ -166,8 +166,8 @@
                                     <tr>
                                         <td colspan="3">
                                             <p>Thông tin thanh toán của Sinh Viên Nghiêm Túc</p>
-                                            <p>Ngân hàng : TECKCOMBANK</p>
-                                            <p>Số tài khoản : 999999999</p>
+                                            <p>Ngân hàng : SACOMBANK</p>
+                                            <p>Số tài khoản : 060277266401</p>
                                             <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
                                             <p style="margin-top: 8px;">Nội dung chuyển khoản : Số điện thoại đặt hàng + Mã
                                                 đơn
