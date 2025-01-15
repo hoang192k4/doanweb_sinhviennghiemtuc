@@ -10,53 +10,48 @@ use App\Models\CategorySpecification;
 
 class AdminCategoryController extends Controller
 {
-    //
-    // public function index()
-    // {
-    //     $danhSachDanhMuc = Category::all();
-    //     $danhSachDanhMucLoc = Category::where('status', 1)->get();
-    //     if ($danhSachDanhMuc->isEmpty()) {
-    //         return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
-    //     }
-    //     return view('admin.category.addcategory')
-    //         ->with('danhSachDanhMuc', $danhSachDanhMuc)
-    //         ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
-    // }
-
     //chuyển hướng trang thêm danh mục
     public function addCategory()
     {
-        $danhSachDanhMuc = Category::where('status', 1);
+        $danhSachDanhMuc = Category::where('status', 1)->get();
         return view('admin.category.addcategory')->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
-    //lưu trữ danh mục
-    public function store(Request $request)
+    // lưu trữ danh mục
+    public function storeCategory(Request $request)
     {
-        $nameCategory = $request->input('nameCategory');
-        $request->validate([
-            'nameCategory' => 'required|string|max:255',
-            'nameSpecifications' => 'required|array',
-            'nameSpecifications.*' => 'required|string|max:255',
+        $validate = $request->validate([
+            'nameCategory' => 'required|unique:categories,name|max:255',
+            'nameSpecifications' => 'required|unique:category_specifications,name|max:255',
+        ], [
+            'nameCategory.required' => 'Vui lòng nhập tên danh mục',
+            'nameCategory.unique' => 'Tên danh mục đã tồn tại',
+            'nameCategory.max' => 'Tên danh mục quá 255 ký tự',
+            'nameSpecifications.required' => 'Vui lòng nhập thông số',
+            'nameSpecifications.unique' => 'Tên thông số đã tồn tại',
+            'nameSpecifications.max' => 'Tên danh mục quá 255 ký tự',
         ]);
-        $slug = Str::slug($nameCategory);
 
+        $nameCategory = $request->input('nameCategory');
+        $slug = Str::slug($nameCategory);
         $category = Category::create([
             'name' => $nameCategory,
             'slug' => $slug,
             'status' => 1,
         ]);
+
         foreach ($request->input('nameSpecifications') as $specification) {
             CategorySpecification::create([
                 'name' => $specification,
                 'category_id' => $category->id,
             ]);
         }
+
         return redirect()->route('admin.category.addcategory')
-            ->with('msg', 'Thêm phân loại thành công');
+            ->with('message', 'Thêm phân loại thành công');
     }
 
     //tìm id và chuyển trang sửa danh mục
-    public function editCategory($id)
+    public function editCategory(string $id)
     {
         $danhMucTimKiem = Category::find($id);
         $thongSoKyThuat = $danhMucTimKiem->category_specifications;
@@ -77,7 +72,8 @@ class AdminCategoryController extends Controller
             'status' => $status
         ]);
 
-        return redirect()->route('admin.category.editcategory');
+        return redirect()->route('admin.category.editcategory')
+            ->with('message', 'Thêm phân loại thành công');;
     }
 
     public function loadCategorySpecification($category)

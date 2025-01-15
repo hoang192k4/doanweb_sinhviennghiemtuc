@@ -14,28 +14,28 @@
     <div class="separator"></div>
     <div class="content">
         <div class="head">
-            <div class="title">Thêm phân loại</div>
+            <div class="title">Thêm danh mục</div>
         </div>
         <div class="btn-goback">
             <button type="button"><a href="{{ route('admin.category') }}">&laquo; Trở lại</a></button>
         </div>
         <div class="separator_x">
-            @if (session('msg'))
-                <div class="alert alert-success">
-                    {{ session('msg') }}
-                </div>
+            @if (session('message'))
+                <script>
+                    alertify.success("{{ session('message') }}");
+                </script>
             @endif
             <div class="row">
-                <form action="{{ route('admin.category.store') }}" method="POST" id="formAddCategory">
+                <form action="{{ route('admin.category.storecategory') }}" method="POST" id="formAddCategory">
                     <div class="form-group">
                         <div class="col">
-                            <label>Tên phân loại:</label>
+                            <label>Tên danh mục:</label>
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="nameCategory" name="nameCategory">
-                            @if ($errors->has('nameCategory'))
-                                <span class="text-danger">{{ $errors->first('nameCategory') }}</span>
-                            @endif
+                            @error('nameCategory')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col">
                             <label> Thông số kĩ thuật: </label>
@@ -44,6 +44,9 @@
                             <button id="btn_addSpecifications" type="button"> Thêm thông số kĩ thuật</button>
                         </div>
                         <div class="col" id="inputContainer">
+                            @error('nameSpecifications')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="btn-goback">
@@ -67,7 +70,7 @@
                                 <td style="text-align: center;">{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td style="text-align: center;"><a
-                                        href="{{ route('admin.category.editCategory', ['id' => $item->id]) }}"><i
+                                        href="{{ route('admin.category.editcategory', ['id' => $item->id]) }}"><i
                                             class="fa-solid fa-check"></i></a></td>
                                 <td style="text-align: center;">
                                     <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
@@ -78,6 +81,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- {{ $danhSachDanhMuc->links() }} --}}
             </div>
         </div>
     </div>

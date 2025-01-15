@@ -15,7 +15,7 @@ class AdminBrandController extends Controller
     public function getListBrand()
     {
         //
-        $danhSachThuongHieu = Brand::where('status', 1)->get();
+        $danhSachThuongHieu = Brand::where('status', 1)->paginate(5);
         $danhSachDanhMucLoc = Category::all();
         $danhSachDanhMuc = Category::all();
 

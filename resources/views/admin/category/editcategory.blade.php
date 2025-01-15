@@ -22,8 +22,7 @@
                 </div>
             @endif
             <div class="row">
-                <form action="{{ route('admin.category.updateCategory', ['id' => $danhMucTimKiem->id]) }}" method="POST"
-                    id="formAddCategory" class="form-category">
+                <form action="" method="POST" id="formAddCategory" class="form-category">
                     <div class="form-group">
                         <div class="col">
                             <label>Tên phân loại:</label>

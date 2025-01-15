@@ -26,7 +26,7 @@
     <div class="content" id="danhmuc">
         <div class="head">
             <div class="title">Quản Lý Danh Mục</div>
-            <button><a href=""> Danh Mục
+            <button><a href="{{ route('admin.category.addcategory') }}"> Danh Mục
                 </a></button>
             <button><a href="{{ route('admin.category.addbrand') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
@@ -81,6 +81,7 @@
                 </tbody>
             </table>
         @endif
+        {{ $danhSachThuongHieu->links() }}
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
