@@ -13,7 +13,8 @@
             <div class="title">Sửa phân loại</div>
         </div>
         <div class="btn-goback">
-            <button type="button" class="btn-height"><a href="{{ route('admin.category') }}">&laquo; Trở lại</a></button>
+            <button type="button" class="btn-height"><a href="{{ route('admin.category.addcategory') }}">&laquo; Trở
+                    lại</a></button>
         </div>
         <div class="separator_x">
             @if (session('msg'))
@@ -22,7 +23,8 @@
                 </div>
             @endif
             <div class="row">
-                <form action="" method="POST" id="formAddCategory" class="form-category">
+                <form action="{{ route('admin.category.updatecategory', ['id' => $danhMucTimKiem->id]) }}" method="POST"
+                    id="formAddCategory" class="form-category">
                     <div class="form-group">
                         <div class="col">
                             <label>Tên phân loại:</label>

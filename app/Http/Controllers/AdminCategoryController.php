@@ -72,7 +72,7 @@ class AdminCategoryController extends Controller
             'status' => $status
         ]);
 
-        return redirect()->route('admin.category.editcategory')
+        return redirect()->route('admin.category.editcategory', ['id' => $id])
             ->with('message', 'Thêm phân loại thành công');;
     }
 
