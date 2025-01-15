@@ -38,24 +38,22 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
-                                            <div>
-                                                <button
-                                                    onclick="showPopup('{{ Auth::user()->id }}','{{ $order->order_code }}')">Đánh
-                                                    Giá</button>
-                                            </div>
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
                                             @if (in_array($order->order_status_id, [1, 2]))
-                                                <button class="rattingBtn" onclick=""><a
-                                                        href="{{ route('profile.cancel', ['id' => $order->id]) }}">Hủy đơn
-                                                        hàng</a></button>
+                                                <form action="{{ route('profile.cancel', ['id' => $order->id]) }}"
+                                                    method="POST" onsubmit="return confirmCancelOrder(event)">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="rattingBtn">Hủy đơn hàng</button>
+                                                </form>
                                             @endif
                                         </div>
                                     </div>
@@ -84,18 +82,21 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
-                                            <button class="rattingBtn" onclick=""><a
-                                                    href="{{ route('profile.cancel', ['id' => $order->id]) }}">Hủy đơn
-                                                    hàng</a></button>
+                                            <form action="{{ route('profile.cancel', ['id' => $order->id]) }}"
+                                                method="POST" onsubmit="return confirmCancelOrder(event)">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="rattingBtn">Hủy đơn hàng</button>
+                                            </form>
                                         </div>
                                     </div>
                                 @endforeach
@@ -123,19 +124,22 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
                                             @if ($order->order_status_id == 2)
-                                                <button class="rattingBtn" onclick=""><a
-                                                        href="{{ route('profile.cancel', ['id' => $order->id]) }}">Hủy đơn
-                                                        hàng</a></button>
+                                                <form action="{{ route('profile.cancel', ['id' => $order->id]) }}"
+                                                    method="POST" onsubmit="return confirmCancelOrder(event)">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="rattingBtn">Hủy đơn hàng</button>
+                                                </form>
                                             @endif
                                         </div>
                                     </div>
@@ -164,14 +168,14 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
                                         </div>
                                     </div>
@@ -200,15 +204,18 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
+                                            <button
+                                                onclick="showPopup('{{ Auth::user()->id }}','{{ $order->order_code }}')">Đánh
+                                                Giá</button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -236,14 +243,14 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
                                         </div>
                                     </div>
@@ -272,14 +279,14 @@
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
                                                         {{ $item->internal_memory }}
                                                     </div>
-                                                    <div>{{ $item->price }}đ</div>
+                                                    <div>{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></div>
                                                     <div style="font-size: 14px;">Số lượng: {{ $item->quantity }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="footer_order_table">
                                             <div class="table_item">Thành tiền:<span
-                                                    style="font-size: 25px;">{{ $order->total_price }}</span>đ
+                                                    style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
                                         </div>
                                     </div>
@@ -296,45 +303,55 @@
                 <div class="popup_content">
                     <span class="close_popup_rating">&times;</span>
                     <div class="popup_table" id="popup_table">
-
                     </div>
                 </div>
             </div>
         </div>
     @endsection
     @section('script')
-    <script>
-        function showPopup(user, code) {
-            const popupOrderHistory = document.getElementById("popup_order_history");
-            if (!popupOrderHistory) {
-                console.error("Popup element not found!");
-                return;
-            }
-            const closeBtn = document.querySelector(".close_popup_rating");
-            if (!closeBtn) {
-                console.error("Close button element not found!");
-                return;
+        <script>
+            function confirmCancelOrder(event) {
+                event.preventDefault();
+                alertify.confirm('Thông báo', 'Bạn có thật sự muốn hủy đơn hàng không?', function(isConfirmed) {
+                    if (isConfirmed) {
+                        event.target.submit();
+                    }
+                }, function() {
+                    alertify.error('Hủy đơn hàng thất bại')
+                });
             }
 
-            popupOrderHistory.style.display = "block";
-
-            // Fetch data using AJAX
-            $.ajax({
-                method: "GET",
-                url: `/get/${user}/${code}`,
-            })
-            .done((danhSach) => {
-                const popupTable = document.getElementById('popup_table');
-                if (!popupTable) {
-                    console.error("Popup table element not found!");
+            function showPopup(user, code) {
+                const popupOrderHistory = document.getElementById("popup_order_history");
+                if (!popupOrderHistory) {
+                    console.error("Popup element not found!");
+                    return;
+                }
+                const closeBtn = document.querySelector(".close_popup_rating");
+                if (!closeBtn) {
+                    console.error("Close button element not found!");
                     return;
                 }
 
-                const content = danhSach.map((item) => {
-                    const formatPrice = new Intl.NumberFormat('de-DE').format(item.price);
-                    const formatTotal = new Intl.NumberFormat('de-DE').format(item.price * item.quantity);
+                popupOrderHistory.style.display = "block";
 
-                    return `
+                // Fetch data using AJAX
+                $.ajax({
+                        method: "GET",
+                        url: `/get/${user}/${code}`,
+                    })
+                    .done((danhSach) => {
+                        const popupTable = document.getElementById('popup_table');
+                        if (!popupTable) {
+                            console.error("Popup table element not found!");
+                            return;
+                        }
+
+                        const content = danhSach.map((item) => {
+                            const formatPrice = new Intl.NumberFormat('de-DE').format(item.price);
+                            const formatTotal = new Intl.NumberFormat('de-DE').format(item.price * item.quantity);
+
+                            return `
                         <div class="popup_form" id="popup_form_${item.product_variant_id}">
                             <div class="table_item" style="padding-left: 5px;">
                                 <img src="/images/${item.image}" width="100px" alt="${item.name_product}">
@@ -371,91 +388,91 @@
                                 <button type="button" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 5px 20px;">Đánh giá</button>
                             </div>
                         </div>`;
-                });
-
-                popupTable.innerHTML = content.join('');
-                selectStar();
-
-            });
-
-            closeBtn.onclick = function () {
-                popupOrderHistory.style.display = "none";
-            };
-
-            window.onclick = function (event) {
-                if (event.target === popupOrderHistory) {
-                    popupOrderHistory.style.display = "none";
-                }
-            };
-        }
-
-        function selectStar() {
-            document.querySelectorAll('.star-rating').forEach(rating => {
-                const labels = Array.from(rating.querySelectorAll('.point')); // Lấy tất cả các sao
-                const reversedLabels = [...labels].reverse(); // Đảo ngược thứ tự các sao
-
-                reversedLabels.forEach((label, index) => {
-                    label.addEventListener('click', () => {
-                        // Đảo ngược màu sắc sao (sao đã chọn màu đỏ, sao chưa chọn màu đen)
-                        reversedLabels.forEach((l, i) => {
-                            l.style.color = i <= index ? "red" : "black";
                         });
 
-                        // Cập nhật giá trị cho input ẩn
-                        const hiddenInput = rating.querySelector('input[type="hidden"]');
-                        if (hiddenInput) {
-                            hiddenInput.value = index + 1; // Cập nhật giá trị từ 1 đến 5
-                            console.log(hiddenInput);
-                        }
+                        popupTable.innerHTML = content.join('');
+                        selectStar();
+
                     });
-                });
-            });
-        }
 
-        // Gọi hàm khởi tạo sao khi trang được tải
-        document.addEventListener('DOMContentLoaded', initializeStarRating);
+                closeBtn.onclick = function() {
+                    popupOrderHistory.style.display = "none";
+                };
 
-        function addImage(id, btn) {
-            if (!btn.dataset.idx) btn.dataset.idx = 0;
-            const idx = ++btn.dataset.idx;
-
-            const imageContainer = document.getElementById(`image-products-${id}`);
-            if (!imageContainer) {
-                console.error(`Image container for ${id} not found!`);
-                return;
+                window.onclick = function(event) {
+                    if (event.target === popupOrderHistory) {
+                        popupOrderHistory.style.display = "none";
+                    }
+                };
             }
 
-            const newImageInput = `
+            function selectStar() {
+                document.querySelectorAll('.star-rating').forEach(rating => {
+                    const labels = Array.from(rating.querySelectorAll('.point')); // Lấy tất cả các sao
+                    const reversedLabels = [...labels].reverse(); // Đảo ngược thứ tự các sao
+
+                    reversedLabels.forEach((label, index) => {
+                        label.addEventListener('click', () => {
+                            // Đảo ngược màu sắc sao (sao đã chọn màu đỏ, sao chưa chọn màu đen)
+                            reversedLabels.forEach((l, i) => {
+                                l.style.color = i <= index ? "red" : "black";
+                            });
+
+                            // Cập nhật giá trị cho input ẩn
+                            const hiddenInput = rating.querySelector('input[type="hidden"]');
+                            if (hiddenInput) {
+                                hiddenInput.value = index + 1; // Cập nhật giá trị từ 1 đến 5
+                                console.log(hiddenInput);
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Gọi hàm khởi tạo sao khi trang được tải
+            document.addEventListener('DOMContentLoaded', initializeStarRating);
+
+            function addImage(id, btn) {
+                if (!btn.dataset.idx) btn.dataset.idx = 0;
+                const idx = ++btn.dataset.idx;
+
+                const imageContainer = document.getElementById(`image-products-${id}`);
+                if (!imageContainer) {
+                    console.error(`Image container for ${id} not found!`);
+                    return;
+                }
+
+                const newImageInput = `
                 <div class="col">
                     <img id="${id}-${idx}" />
                     <input type="file" data-index="${idx}" onchange="loadFile('${id}', event, this)" class="form-control" name="${id}_image[${idx - 1}]" required>
                 </div>`;
-            imageContainer.insertAdjacentHTML('beforeend', newImageInput);
-        }
-
-        function loadFile(id, event, img) {
-            if (!event.target.files || !event.target.files[0]) {
-                console.error("No file selected!");
-                return;
+                imageContainer.insertAdjacentHTML('beforeend', newImageInput);
             }
 
-            const idx = img.dataset.index;
-            const output = document.getElementById(`${id}-${idx}`);
-            if (!output) {
-                console.error(`Output image element (${id}-${idx}) not found!`);
-                return;
-            }
+            function loadFile(id, event, img) {
+                if (!event.target.files || !event.target.files[0]) {
+                    console.error("No file selected!");
+                    return;
+                }
 
-            const reader = new FileReader();
-            reader.onload = function () {
-                output.src = reader.result;
-                output.style.width = "150px";
-                output.style.height = "150px";
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
-    <script>
+                const idx = img.dataset.index;
+                const output = document.getElementById(`${id}-${idx}`);
+                if (!output) {
+                    console.error(`Output image element (${id}-${idx}) not found!`);
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function() {
+                    output.src = reader.result;
+                    output.style.width = "150px";
+                    output.style.height = "150px";
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        </script>
+        <script>
             function ratings(id, internal_memory, color) {
                 const textarea = document.querySelector(`textarea[name="${id}_content"]`);
                 const content = textarea.value;
@@ -470,20 +487,22 @@
                     _token: '{{ csrf_token() }}',
                 };
                 $.ajax({
-                url: `/them-danh-gia`,
-                method: 'POST',
-                data: data, // Dữ liệu gửi đi
-                success: function(response) {
-                    alertify.success(`Thêm đánh giá sản phẩm ${response.tenSanPham} | ${response.boNho} | ${response.mau} thành công `);
-                    $('#popup_form_'+id).remove();
-                },
-                error: function(xhr, status, error) {
-                    // Xử lý lỗi nếu có
-                    console.error('Lỗi khi gửi đánh giá:', error);
-                    alert('Đã có lỗi xảy ra. Vui lòng thử lại!');
-                }
-        });
+                    url: `/them-danh-gia`,
+                    method: 'POST',
+                    data: data, // Dữ liệu gửi đi
+                    success: function(response) {
+                        alertify.success(
+                            `Thêm đánh giá sản phẩm ${response.tenSanPham} | ${response.boNho} | ${response.mau} thành công `
+                        );
+                        $('#popup_form_' + id).remove();
+                    },
+                    error: function(xhr, status, error) {
+                        // Xử lý lỗi nếu có
+                        console.error('Lỗi khi gửi đánh giá:', error);
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại!');
+                    }
+                });
 
-    }
-    </script>
+            }
+        </script>
     @endsection

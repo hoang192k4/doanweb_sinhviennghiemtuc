@@ -185,7 +185,7 @@
                     product_id: '{{$product->id}}',
                 }
             }).done((data)=>{
-                alertify.alert(`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
+                alertify.alert('Thông báo',`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
                 setTimeout(()=>{ location.reload();},2000);
 
             })
@@ -194,7 +194,7 @@
     </script>
     <script>
         @if(session('msg'))
-            alertify.alert('{{session('msg')}}');
+            alertify.alert('Thông báo','{{session('msg')}}');
         @endif
     </script>
 @endsection
