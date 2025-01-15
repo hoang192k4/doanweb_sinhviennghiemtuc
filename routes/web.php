@@ -34,6 +34,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
     Route::get('/get/{user}/{code}',  'GetDanhSachDanhGia');
+    Route::post('/them-danh-gia','ThemDanhGia');
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -105,7 +106,7 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/payment','completePayment')->name('complete-payment');
         Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
     });
-
+    Route::post('/buy-now',[CartController::class,'buyNow'])->name('buynow');
     //Route profile
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/trangcanhan', 'index')->name('profile.index');

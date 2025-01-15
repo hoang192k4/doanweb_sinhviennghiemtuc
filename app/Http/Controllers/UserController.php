@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ImageRating;
+use App\Models\ProductVariant;
 
 class UserController extends Controller
 {
@@ -40,7 +42,7 @@ class UserController extends Controller
     public function TimKiemTheoTuKhoa(Request $request)
     {
         $key = str_replace('$', '', $request->input('seachbykey'));
-        
+
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
@@ -245,4 +247,28 @@ class UserController extends Controller
         $danhSach=Rating::DanhGia($user,$code);
         return $danhSach;
     }
+
+
+    public function ThemDanhGia(Request $request) {
+       $variant = ProductVariant::find($request->id);
+
+        $rating = Rating::create([
+            'content' => $request->content,
+            'internal_memory' => $variant->internal_memory,
+            'point' => $request->point,
+            'color'=> $variant->color,
+            'product_id' => $variant->product->id,
+            'user_id' => Auth::user()->id,
+        ]);
+        
+        return response()->json([
+            'tenSanPham'=>$variant->product->name,
+            'boNho'=>$variant->internal_memory,
+            'mau'=>$variant->color,
+        ]);
+
+
+    }
+
+
 }
