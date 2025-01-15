@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
 
 class AdminBrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    //trang index
     public function getListBrand()
     {
         //
@@ -32,15 +33,14 @@ class AdminBrandController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //chuyển trang thêm thương hiệu
     public function addBrand()
     {
         $danhSachDanhMuc = Category::where('status', 1)->get();
         return view('admin.category.addbrand')->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
 
+    //lưu thương hiệu
     public function storeBrand(Request $request)
     {
         $danhSachDanhMuc = Category::where('status', 1)->get();
@@ -70,9 +70,7 @@ class AdminBrandController extends Controller
      */
     public function show($id) {}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //tìm và chuyển trang
     public function editBrand(string $id)
     {
         $thuongHieuTimKiem = Brand::find($id);
@@ -82,9 +80,7 @@ class AdminBrandController extends Controller
             ->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //Cập nhật
     public function updateBrand(Request $request, string $id)
     {
         $validate = $request->validate([
@@ -110,13 +106,13 @@ class AdminBrandController extends Controller
         return redirect()->route('admin.category.editbrand', ['id' => $id])->with('message', 'Cập nhật thương hiệu thành công');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    //xóa thương hiệu
     public function deleteBrand($id)
     {
         $thuongHieuTimKiem = Brand::find($id);
         if ($thuongHieuTimKiem) {
+            Product::where('brand_id', $thuongHieuTimKiem->id)->update(['status' => 0]);
+
             $thuongHieuTimKiem->update(['status' => 0]);
             return response()->json(['message' => 'Xóa thương hiệu thành công.'], 200);
         }
@@ -126,5 +122,25 @@ class AdminBrandController extends Controller
     {
         $brands = Brand::filter($opt);
         return $brands;
+    }
+    //tìm kiếm thương hiệu
+    public function searchBrand(Request $request)
+    {
+        $keyBrand = $request->input('keySearchBrand');
+        $keyBrand = str_replace('$', '', $keyBrand);
+        $danhSachDanhMucLoc = Category::where('status', 1)->get();
+
+        $danhSachThuongHieu = Brand::where('name', 'like', '%' . $keyBrand . '%')->where('status', 1)->get();
+
+        if ($danhSachThuongHieu->isEmpty()) {
+            return view('admin.category.category')
+                ->with('message', 'Không tìm thấy danh mục nào.')
+                ->with('danhSachThuongHieu', $danhSachThuongHieu)
+                ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
+        }
+
+        return view('admin.category.category')
+            ->with('danhSachThuongHieu', $danhSachThuongHieu)
+            ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
     }
 }

@@ -11,22 +11,22 @@ use App\Models\CategorySpecification;
 class AdminCategoryController extends Controller
 {
     //
-    public function index()
-    {
-        $danhSachDanhMuc = Category::all();
-        $danhSachDanhMucLoc = Category::where('status', 1)->get();
-        if ($danhSachDanhMuc->isEmpty()) {
-            return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
-        }
-        return view('admin.category.category')
-            ->with('danhSachDanhMuc', $danhSachDanhMuc)
-            ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
-    }
+    // public function index()
+    // {
+    //     $danhSachDanhMuc = Category::all();
+    //     $danhSachDanhMucLoc = Category::where('status', 1)->get();
+    //     if ($danhSachDanhMuc->isEmpty()) {
+    //         return view('admin.category.category')->with('message', 'Không tìm thấy danh mục nào.');
+    //     }
+    //     return view('admin.category.addcategory')
+    //         ->with('danhSachDanhMuc', $danhSachDanhMuc)
+    //         ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
+    // }
 
     //chuyển hướng trang thêm danh mục
     public function addCategory()
     {
-        $danhSachDanhMuc = Category::all();
+        $danhSachDanhMuc = Category::where('status', 1);
         return view('admin.category.addcategory')->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
     //lưu trữ danh mục
@@ -51,31 +51,10 @@ class AdminCategoryController extends Controller
                 'category_id' => $category->id,
             ]);
         }
-        return redirect()->route('admin.category.addCategory')
+        return redirect()->route('admin.category.addcategory')
             ->with('msg', 'Thêm phân loại thành công');
     }
-    //tìm kiếm danh mục
-    public function searchCategory(Request $request)
-    {
-        $keyCategory = $request->input('keySearchCategory');
 
-        $danhSachDanhMuc = Category::where('categories.name', 'like', '%' . $keyCategory . '%')
-            ->join('category_specifications', 'categories.id', '=', 'category_specifications.category_id')
-            ->select('category_specifications.*', 'category_specifications.name as specification_name')
-            ->get();
-        $danhSachDanhMucLoc = Category::all();
-
-        if ($danhSachDanhMuc->isEmpty()) {
-            return view('admin.category.category')
-                ->with('message', 'Không tìm thấy danh mục nào.')
-                ->with('danhSachDanhMuc', $danhSachDanhMuc)
-                ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
-        }
-
-        return view('admin.category.category')
-            ->with('danhSachDanhMuc', $danhSachDanhMuc)
-            ->with('danhSachDanhMucLoc', $danhSachDanhMucLoc);
-    }
     //tìm id và chuyển trang sửa danh mục
     public function editCategory($id)
     {

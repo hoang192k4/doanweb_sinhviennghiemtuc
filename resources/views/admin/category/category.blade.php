@@ -26,12 +26,12 @@
     <div class="content" id="danhmuc">
         <div class="head">
             <div class="title">Quản Lý Danh Mục</div>
-            <button><a href="{{ route('admin.category.addCategory') }}"> Danh Mục
+            <button><a href=""> Danh Mục
                 </a></button>
             <button><a href="{{ route('admin.category.addbrand') }}"><i class="fa-solid fa-plus"></i> Thương hiệu</a></button>
             <div class="search">
-                <form action="{{ route('admin.category.searchCategory') }}" method="GET">
-                    <input name="keySearchCategory">
+                <form action="{{ route('admin.category.searchbrand') }}" method="GET">
+                    <input name="keySearchBrand">
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
@@ -45,9 +45,9 @@
                 @endforeach
             </select>
         </form>
-        @if ($danhSachDanhMuc->isEmpty())
+        @if ($danhSachThuongHieu->isEmpty())
             @if (isset($message))
-                <div class="alert alert-warning">
+                <div class="alert alert-warning" style="font-size: 20px">
                     {{ $message }}
                 </div>
             @endif

@@ -129,12 +129,15 @@ Route::middleware(['role:KH'])->group(function () {
 });
 
 //Route quan li danh mục
-Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
-Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
-Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
-Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updateCategory');
-Route::get('/admin/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
-Route::delete('/admin/deletecategory/{id}', [AdminCategoryController::class, 'deleteCategory'])->name('admin.delete.category');
+Route::controller(AdminCategoryController::class)->group(
+    function () {
+        Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addcategory');
+        Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
+        Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updateCategory');
+        Route::get('/admin/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
+        Route::delete('/admin/deletecategory/{id}', [AdminCategoryController::class, 'deleteCategory'])->name('admin.delete.category');
+    }
+);
 
 //Route quan li danh mục con
 Route::controller(AdminBrandController::class)->group(
@@ -145,5 +148,6 @@ Route::controller(AdminBrandController::class)->group(
         Route::get('/admin/editbrand/{id}', [AdminBrandController::class, 'editBrand'])->name('admin.category.editbrand');
         Route::post('/admin/updatebrand/{id}', [AdminBrandController::class, 'updateBrand'])->name('admin.category.updatebrand');
         Route::delete('/admin/deletebrand/{id}', [AdminBrandController::class, 'deleteBrand'])->name('admin.brand.delete');
+        Route::get('/admin/searchbrand', [AdminBrandController::class, 'searchBrand'])->name('admin.category.searchbrand');
     }
 );
