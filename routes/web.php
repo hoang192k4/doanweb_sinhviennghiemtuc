@@ -31,7 +31,6 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
     Route::get('detail/{slug}/{internal_memory}', "LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
-    Route::post('/addContact', 'addContact');
     Route::get('/yeuthich/{sampham}/{user}', 'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
     Route::get('/get/{user}/{code}', 'GetDanhSachDanhGia');
 });
@@ -89,7 +88,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     //Route quan ly thuong hieu
     Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter']);
 
-    //Route quan li lien he
+    //Route quan li lien he trang quản trị
     Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
     Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
     Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
