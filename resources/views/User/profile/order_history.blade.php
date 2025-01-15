@@ -30,9 +30,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
@@ -74,9 +72,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
@@ -116,9 +112,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
@@ -160,9 +154,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
@@ -196,9 +188,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
@@ -235,9 +225,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
@@ -271,9 +259,7 @@
                                         </div>
                                         @foreach (App\Models\OrderItem::where('order_id', $order->id)->get() as $item)
                                             <div class="body_order_table">
-                                                <div class="table_item" style="padding-left: 5px;"><img
-                                                        src="{{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }}"
-                                                        width="100px" alt="image"></div>
+                                                <div class="table_item" style="padding-left: 5px;"> <a href="{{route('detail',['slug'=>$item->slug_product])}}"><img src="@if(App\Models\ProductVariant::find($item->product_variant_id)==null) {{asset('images/product-not-available.webp')}} @else {{ asset('images/' . App\Models\ProductVariant::find($item->product_variant_id)->image) }} @endif" width="100px" alt="image"></a> </div>
                                                 <div class="table_item" style="width: 85%;font-size: 16px;">
                                                     <div>{{ $item->name_product }}</div>
                                                     <div style="opacity: 0.7;font-size: 14px;">{{ $item->color }} -
