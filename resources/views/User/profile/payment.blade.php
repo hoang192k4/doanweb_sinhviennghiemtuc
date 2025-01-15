@@ -1,7 +1,7 @@
 @extends('layouts.layouts_user')
 @section('title', 'Thanh toán')
 @section('content')
-    <div class="popup_payment" id="popup-payment">
+    <div class="popup_payment">
         <div class="overflow_payment"></div>
         <div class="popup_payment_base payment_cod">
             <p><i class="fas fa-times"></i></p>
@@ -36,6 +36,7 @@
         <div class="payment">
             <div class="payment_left">
                 <div class="payment_products">
+                @if(session('buy-now')==null)
                     @if (session('cart') != null)
                         @foreach (session('cart')->listProductVariants as $item)
                             <div class="payment_product">
@@ -57,7 +58,27 @@
                             </div>
                         @endforeach
                     @endif
+
+                @else
+                <div class="payment_product">
+                    <a href=""><img src="{{ asset('images/'.session('buy-now')['variant_info']->image) }}"
+                            alt="Lỗi hiển thị"></a>
+                    <div>
+                        <div>
+                            <a href="">
+                                <h6>{{ session('buy-now')['product_info']->name }}</h6>
+                            </a>
+                            <p>{{ number_format(session('buy-now')['variant_info']->price, 0, ',', '.') }}<sup>đ</sup></p>
+                        </div>
+                        <div>
+                            <h6>{{ session('buy-now')['variant_info']->color }} {{ session('buy-now')['variant_info']->internal_memory }}
+                            </h6>
+                            <p>x{{ session('buy-now')['quantity'] }}</p>
+                        </div>
+                    </div>
                 </div>
+                @endif
+            </div>
                 <div class="payment_action">
                     <div class="voucher_payment">
                         <input type="text" placeholder="Mã giảm giá" id="voucher-code">
@@ -66,7 +87,7 @@
                     <div class="payment_action_temporary">
                         <div>
                             <p>Tạm tính </p>
-                            <p> {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}<sup>đ</sup></p>
+                            <p> @if(session('buy-now')==null) {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}@else {{ number_format(session('buy-now')['totalPrice'], 0, ',', '.') }} @endif<sup>đ</sup></p>
                         </div>
                         <div>
                             <p>Phí vận chuyển </p>
@@ -81,14 +102,14 @@
                     <div class="total_price">
                         <p>Tổng cộng </p>
                         <p><span>VNĐ </span><span
-                                id="total-price">{{ number_format(session('cart')->totalPrice, 0, ',', '.') }}</span>
+                                id="total-price">@if(session('buy-now')==null) {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}@else {{ number_format(session('buy-now')['totalPrice'], 0, ',', '.') }} @endif</span>
                             <sup>đ</sup></p>
                     </div>
                 </div>
             </div>
             <div class="payment_right">
-                <form action="/completePayment" class="form_payment" method="POST">@csrf
-                    <div class="logo_payment"><img src="" alt="Lỗi hiển thị"></div>
+                <form action="/completePayment" class="form_payment" method="POST">
+                    @csrf
                     <h4>Thông tin giao hàng</h4>
                     <div class="profile_payment">
                         <input type="text" name="full_name" id="full_name_payment"
@@ -166,8 +187,8 @@
                                     <tr>
                                         <td colspan="3">
                                             <p>Thông tin thanh toán của Sinh Viên Nghiêm Túc</p>
-                                            <p>Ngân hàng : TECKCOMBANK</p>
-                                            <p>Số tài khoản : 999999999</p>
+                                            <p>Ngân hàng : SACOMBANK</p>
+                                            <p>Số tài khoản : 060277266401</p>
                                             <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
                                             <p style="margin-top: 8px;">Nội dung chuyển khoản : Số điện thoại đặt hàng + Mã
                                                 đơn
@@ -180,7 +201,7 @@
                         </div>
                     </div>
                 </form>
-                <button type="button" id="" onclick=""> Hoàn tất đơn hàng</button>
+                <button type="button" id="" onclick="order()"> Hoàn tất đơn hàng</button>
             </div>
         </div>
     </div>
@@ -261,13 +282,6 @@
                     url: '/payment',
                     data: data
                 })
-                .done((data)=>{
-                    alertify.confirm(data.message,function(){
-                        window.location.href = data.url;
-                    },function(){
-                        window.location.href = data.url;
-                    });
-                })
                 .fail((data) => {
                     let errors = data.responseJSON.errors; // Lấy danh sách lỗi
 
@@ -299,6 +313,22 @@
                         $('#wards_error').text(errors.wards);
                         $('#wards').focus();
                     }
+                })
+                .done((data)=>{
+                    if(data.success==1){
+                        alertify.confirm('Thông báo',data.message,function(){
+                            window.location.href = data.url
+                        },function(){
+                            window.location.href = data.url
+                        })
+                    }else{
+                        alertify.confirm('Thông báo',data.message,function(){
+                            window.location.href = data.url
+                        },function(){
+                            window.location.href = data.url
+                        })
+                    }
+
                 })
         }
         const fullName = document.getElementById('full_name_payment');
@@ -341,7 +371,7 @@
                 url: '/add-voucher',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    orderValue: {{ session('cart')->totalPrice }},
+                    orderValue: @if(session('buy-now')==null) {{ session('cart')->totalPrice }} @else{{ session('buy-now')['totalPrice']}} @endif,
                     code
                 }
             }).done((data) => {
@@ -349,14 +379,10 @@
                     alertify.success(data.message);
                     $('#discount').text(new Intl.NumberFormat('vi-VN').format(data.voucher.discount_value));
                     $('#total-price').text(new Intl.NumberFormat('vi-VN').format(parseInt(
-                        {{ session('cart')->totalPrice }}) - data.voucher.discount_value));
+                        @if(session('buy-now')==null) {{ session('cart')->totalPrice }} @else session('buy-now')['totalPrice']@endif) - data.voucher.discount_value));
                     $('#voucher').val(data.voucher.id);
-                    totalPrice = parseInt({{ session('cart')->totalPrice }}) - data.voucher.discount_value;
+                    totalPrice = parseInt( @if(session('buy-now')==null) {{ session('cart')->totalPrice }} @else session('buy-now')['totalPrice']@endif) - data.voucher.discount_value;
                 } else {
-                    $('#voucher').val('');
-                    $('#discount').text(0);
-                    $('#total-price').text(new Intl.NumberFormat('vi-VN').format(parseInt(
-                        {{ session('cart')->totalPrice }})));
                     alertify.error(data.message);
                 }
             })

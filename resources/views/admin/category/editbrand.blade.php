@@ -24,7 +24,8 @@
                             <label>Tên thương hiệu:</label>
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" id="nameBrand" name="nameBrand" value="">
+                            <input type="text" class="form-control" id="nameBrand" name="nameBrand"
+                                value="{{ $thuongHieuTimKiem->name }}">
 
                             @error('nameBrand')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -57,13 +58,15 @@
                     <div class="form-group">
                         <div class="col"
                             style=" display: flex;justify-content: space-between;  align-items:flex-start  ;">
-                            <img id="previewImage" src="" alt="Hình ảnh sản phẩm" width="100px" height="100px">
+                            <img id="previewImage" src="{{ asset('/images/' . $thuongHieuTimKiem->image) }}"
+                                alt="Hình ảnh sản phẩm" width="100px" height="100px">
                             @error('imageBrand')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
                             @enderror
-                            <input type="file" name="imageBrand" id="imageBrand">
-
+                            <input type="file" name="imageBrand" id="imageBrand" accept="image/*"
+                                onchange="loadFile(event)">
                         </div>
+                        <p>{{ $thuongHieuTimKiem->image }}</p>
                     </div>
                     <div class="btn-goback">
                         @csrf
@@ -85,6 +88,7 @@
         const imageBrand = document.getElementById('imageBrand');
         let previewImage = document.getElementById('previewImage');
 
+        //preview ảnh khi thêm
         imageBrand.onchange = (evt) => {
             const [file] = imageBrand.files;
             if (file) {
@@ -96,5 +100,11 @@
             document.getElementById('imageBrand').value = '';
             document.getElementById('previewImage').src = '';
         });
+
+        //preview khi cập nhật
+        function loadFile(event) {
+            const preview = document.getElementById('previewImage');
+            preview.src = URL.createObjectURL(event.target.files[0]);
+        }
     </script>
 @endsection

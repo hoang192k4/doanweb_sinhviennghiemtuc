@@ -14,6 +14,8 @@ use App\Models\CategorySpecification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProductUser;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class AdminProductController extends Controller
 {
@@ -23,7 +25,7 @@ class AdminProductController extends Controller
     public function index()
     {
         //
-        $danhSachSanPham = Product::where('status',1)->get();
+        $danhSachSanPham = Product::where('status',1)->paginate(8);
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPham]);
     }
 
@@ -211,9 +213,19 @@ class AdminProductController extends Controller
                     File::delete(public_path('images/' . $image_product->image));
                 }
             }
+            foreach($product->product_variants as $variant){
+                $items = OrderItem::where('product_variant_id',$variant->id)->get();
+                foreach($items as $item){
+                    $item->product_variant_id = null;
+                    $item->save();
+                }
+            }
+
             $product->product_variants()->forceDelete();
             $product->product_specification()->forceDelete();
             $product->image_products()->forceDelete();
+            $product->rating()->forceDelete();
+            $product->like_products()->forceDelete();
             $product->forceDelete();
 
             return 'Xóa sản phẩm '.$name.' thành công!';
@@ -226,7 +238,7 @@ class AdminProductController extends Controller
         $validate = $request->validate([
             'key' => 'required'
         ]);
-        $key =  $key = str_replace('$', '', $request->input('seachbykey'));
+        $key = str_replace('$', '', $request->input('key'));
         $danhSachSanPhamDaTimKiem =ProductUser::TimKiemTheoTuKhoa($key);
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPhamDaTimKiem]);
     }

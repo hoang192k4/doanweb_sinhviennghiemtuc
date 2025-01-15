@@ -46,7 +46,7 @@
         <div class="content">
             <div class="header_content">
                 <h3>Chào mừng Quý khách!</h3>
-                <h4>{{ $danhSachThongTinBaiViet->name }} Shop</h4>
+                <h4>Sinh Viên Nghiêm Túc Shop</h4>
                 <p>Kinh doanh: Điện Thoại, Máy Tính Bảng, Laptop</p>
                 <p>Địa chỉ: 65 Huỳnh Thúc Kháng, P. Bến Nghé, Quận 1, TP. Hồ Chí Minh, Việt Nam</p>
                 <p>Chân thành cảm ơn và mong được phục vụ Quý khách!</p>
@@ -142,5 +142,6 @@
             </div>
         </div>
     </div>
+    {{-- Hiển thị thông tin dịch vụ bán hàng, vận chuyển --}}
     @include('user.partials.service')
 @endsection

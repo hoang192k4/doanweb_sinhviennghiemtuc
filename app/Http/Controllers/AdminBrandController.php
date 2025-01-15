@@ -47,10 +47,12 @@ class AdminBrandController extends Controller
 
         $validate = $request->validate([
             'nameBrand' => 'required|unique:brands,name,',
+            'nameBrand' => 'required|unique:brands,name|max:255',
             'imageBrand' => 'required',
         ], [
             'nameBrand.required' => 'Vui lòng nhập tên thương hiệu',
             'nameBrand.unique' => 'Tên thương hiệu đã tồn tại',
+            'nameBrand.max' => 'Tên thương hiệu quá 255 ký tự',
             'imageBrand.required' => 'Vui lòng chọn ảnh',
         ]);
 
@@ -86,9 +88,11 @@ class AdminBrandController extends Controller
         $validate = $request->validate([
             'nameBrand' => 'required|unique:brands,name,' . $id,
             'imageBrand' => 'required',
+            'nameBrand' => 'required|unique:brands,name|max:255',
         ], [
             'nameBrand.required' => 'Vui lòng nhập tên thương hiệu',
             'nameBrand.unique' => 'Tên thương hiệu đã tồn tại',
+            'nameBrand.max' => 'Tên thương hiệu quá 255 ký tự',
             'imageBrand' => 'Vui lòng chọn ảnh',
         ]);
 
@@ -118,11 +122,7 @@ class AdminBrandController extends Controller
         }
         return response()->json(['message' => 'Thương hiệu không tồn tại.'], 404);
     }
-    public function filter(Request $request, string $opt)
-    {
-        $brands = Brand::filter($opt);
-        return $brands;
-    }
+
     //tìm kiếm thương hiệu
     public function searchBrand(Request $request)
     {

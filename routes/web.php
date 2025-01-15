@@ -21,7 +21,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
     Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
-    Route::post('/addContact',  'addContact');
+    Route::post('/addContact', 'addContact');
     Route::get('/', "index")->name('user.index');
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
@@ -33,6 +33,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
+    Route::get('/get/{user}/{code}',  'GetDanhSachDanhGia');
+    Route::post('/them-danh-gia', 'ThemDanhGia');
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -46,6 +48,14 @@ Route::controller(CartController::class)->group(function () {
 Route::get('/admin/check-stock-variant/{id}', [AdminProductVariantController::class, 'checkStock']);
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
+    //Route profile
+    Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    Route::post('/admin/editProfile', [AdminController::class, 'editProfile'])->middleware(AdminRoleMiddleware::class)->name('admin.editProfile');
+    Route::post('/admin/editAvatar', [AdminController::class, 'editAvatar'])->middleware(AdminRoleMiddleware::class)->name('admin.editAvatar');
+    Route::get('/admin/changepw', [AdminController::class, 'changepw'])->name('admin.changepw');
+    Route::post('/checkpw', [AdminController::class, 'IsPasswordChange'])->name('profile.checkpw');
+    Route::post('/changepw', [AdminController::class, 'UpdatePassword'])->name('profile.changepw');
+
     //Route dashboard
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->middleware(AdminRoleMiddleware::class)->name('admin.editWebsite');
@@ -96,6 +106,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
 Route::middleware(['role:QL'])->group(function () {});
 
 
+
 //Phân quyền quản lý , nhân viên và khách hàng
 Route::middleware(['role:QL,NV,KH'])->group(function () {});
 
@@ -104,13 +115,11 @@ Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
-
-
         Route::post('/payment', 'completePayment')->name('complete-payment');
         Route::post('/add-voucher', 'addVoucher')->name('user.addvoucher');
-
-        Route::post('/payment', 'completePayment')->name('complete-payment');
     });
+
+    Route::post('/order/buy-now', [CartController::class, 'buyNow'])->name('buynow');
 
     //Route profile
     Route::controller(ProfileController::class)->group(function () {
@@ -118,7 +127,7 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/trangcanhan/editInfo', 'editInfo')->name('profile.editInfo');
         Route::post('/trangcanhan/editImage', 'editImage')->name('profile.editImage');
         Route::get('/lichsudonhang', 'order_history')->name('profile.order_history');
-        Route::get('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
+        Route::put('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
         Route::get('/sanphamyeuthich', 'favourite_product')->name('profile.favourite_product');
         Route::get('/sanphamyeuthich/unLike/{id}', 'unLike')->name('profile.unLike');
         Route::get('/lichsudanhgia', 'review_history')->name('profile.review_history');

@@ -80,8 +80,30 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="popup_admin" id="popupdm">
+                <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
+                <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
+                <p id="alert"></p>
+
+                <div class="button">
+                    <button type="button" id="deleteBtn">Đồng ý </button>
+                    <button onclick="cancel('dm')">Hủy</button>
+                </div>
+            </div>
         @endif
-        {{ $danhSachThuongHieu->links() }}
+        <div class="pagination">
+            <a href="{{ $danhSachThuongHieu->previousPageUrl() }}"><i class="fa-solid fa-chevron-left"></i></a>
+            @if ($danhSachThuongHieu->currentPage() - 1 != 0)
+                <a
+                    href="{{ $danhSachThuongHieu->previousPageUrl() }}">{{ $danhSachThuongHieu->currentPage() - 1 }}</i></a>
+            @endif
+            <a href="{{ $danhSachThuongHieu->currentPage() }}" class="active">
+                {{ $danhSachThuongHieu->currentPage() }}</a>
+            @if ($danhSachThuongHieu->currentPage() != $danhSachThuongHieu->lastPage())
+                <a href="{{ $danhSachThuongHieu->nextPageUrl() }}">{{ $danhSachThuongHieu->currentPage() + 1 }}</a>
+            @endif
+            <a href="{{ $danhSachThuongHieu->nextPageUrl() }}"><i class="fa-solid fa-chevron-right"></i></a>
+        </div>
     </div>
 @endsection
 @section('script')
@@ -121,5 +143,76 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        const btnAddSpecifications = document.getElementById('btn_addSpecifications');
+        const inputContainer = document.getElementById('inputContainer');
+
+        btnAddSpecifications.addEventListener('click', function() {
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.className = 'form-control';
+            newInput.name = 'nameSpecifications[]';
+            newInput.placeholder = 'Nhập thông số kĩ thuật';
+
+            // Thêm ô input mới vào container
+            inputContainer.appendChild(newInput);
+        });
+
+
+        function popup(action, id) {
+            console.log('ID nhận được:', id);
+
+            // Hiển thị popup
+            const popupElement = document.getElementById('popupdm');
+            popupElement.style.display = 'block';
+
+            // Lưu ID vào nút "Đồng ý"
+            const deleteButton = document.getElementById('deleteBtn');
+            deleteButton.setAttribute('data-id', id);
+
+            // Gán sự kiện click cho nút "Đồng ý" khi popup được mở
+            deleteButton.onclick = function() {
+                console.log('Nút Đồng ý đã được nhấn');
+                const brandId = this.getAttribute('data-id');
+
+                fetch(`/admin/deletebrand/${brandId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => {
+                        return response.json().then(data => {
+                            return {
+                                ok: response.ok,
+                                data: data
+                            }; // Trả về một đối tượng chứa cả ok và data
+                        });
+                    })
+                    .then(({
+                        ok,
+                        data
+                    }) => {
+                        if (ok) {
+                            alertify.success(data.message);
+                            window.location.href = '/admin/category';
+                        } else {
+                            alert('Đã có lỗi xảy ra: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            };
+        }
+
+        // Hàm hủy bỏ popup
+        function cancel(action) {
+            const popupElement = document.getElementById('popupdm');
+            popupElement.style.display = 'none';
+        }
     </script>
 @endsection

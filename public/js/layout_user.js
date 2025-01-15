@@ -132,11 +132,9 @@ tabs.forEach(tab => {
     tab.addEventListener('click', () => {
         histories.forEach(history => {
             history.style.display = 'none'
-            history.classList.remove('checked');
         })
         if (tab.textContent === 'Tất cả') {
-            document.getElementById('all').style.display = 'block';
-            document.getElementById('all-order').classList.add('checked');
+            document.getElementById('all').style.display = 'block'
         } else if (tab.textContent === 'Chờ thanh toán') {
             document.getElementById('thanhtoan').style.display = 'block'
         } else if (tab.textContent === 'Đang chuẩn bị') {

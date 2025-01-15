@@ -13,10 +13,13 @@
             )
             ->where('products.slug', $slug)
             ->first();
-        $yeuthich = DB::table('like_products')
+        if(Auth::check()){
+            $yeuthich = DB::table('like_products')
         ->where('product_id',$thongTinSanPham->id)
         ->where('user_id',Auth::user()->id)
         ->count();
+        }
+
     @endphp
     <div style="background-color: rgb(241, 240, 241);">
         <div class="container_css product_detail_top_url">
@@ -73,8 +76,10 @@
             <div class="product_detail_right">
                 <div class="product_detail_right_interact">
                     @auth
+                        @if(Auth::user()->role=='KH')
                         <p id="button_like"  onclick="CapNhatYeuThich('{{$thongTinSanPham->id}}','{{Auth::user()->id}}')" style="color: {{$yeuthich == 1 ? 'red' : 'grey'}}"><i class="fas fa-heart" id="icon_like"></i>Yêu thích
                         </p>
+                        @endif
                     @endauth
                     <p><i class="fas fa-thumbs-up"></i><span id="number_like">{{ $luotThichSanPham }}</span> lượt thích</p>
                     <p><i class="fas fa-eye"></i>{{ $thongTinSanPham->views }}</p>
@@ -92,7 +97,7 @@
                         <button class="{{ $index == 0 ? 'color_active' : '' }}"
                             onclick="DanhSachMau('{{ Route('LayMauSanPhamTheoBoNho', ['slug' => $slug, 'internal_memory' => $boNho->internal_memory]) }}',this)">
                             <span>{{ $boNho->internal_memory }}</span>
-                            <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p>
+                            {{-- <p> {{ number_format($boNho->price, 0, ',', '.') }}<sup>đ</sup></p> --}}
                         </button>
                     @endforeach
                 </div>
@@ -100,8 +105,9 @@
                 <div class="product_detail_right_color" id="product_detail_right_color">
                     @foreach ($mauSanPham as $index => $mau)
                         <button
+                            class="{{ $index == 0 ? 'color_active' : '' }}"
                             onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)"
-                            class="{{ $index == 0 ? 'color_active' : '' }}">
+                           >
                             <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
                             <span>
                                 <p>{{ $mau->color }}</p>
@@ -123,7 +129,7 @@
                 </div>
                 @endif
                 <div class="product_detail_right_buy">
-                    <div><button>Mua ngay</button></div>
+                    <div><button id="buy-now" data-id="@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif" onclick="buyNow(this.dataset.id)">Mua ngay</button></div>
                     <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)" data-id="@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif">
                             Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
@@ -249,7 +255,6 @@
                                         <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
                                         <li>
                                             <a href=""><button>Mua ngay</button></a>
-                                            <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -279,7 +284,6 @@
                                     <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
                                     <li>
                                         <a href=""><button>Mua ngay</button></a>
-                                        <div><a href=""><i class="fas fa-cart-plus"></i></a></div>
                                     </li>
                                 </ul>
                             </div>
@@ -323,6 +327,31 @@
             alertify.alert('Hiện tại sản phẩm này chưa thể thêm vào giỏ hàng!')
         })
     }
+    function buyNow(variantId){
+        const quantity = parseInt($('#number_input').val());
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variantId}`
+            })
+            .done((data) => {
+                if (data < quantity) {
+                    alertify.alert('Thông báo','Sản phẩm không đủ số lượng!');
+                }else{
+                    $.ajax({
+                        method:"POST",
+                        url:'/order/buy-now',
+                        data:{
+                            id:variantId,
+                            quantity,
+                            _token:'{{csrf_token()}}'
+                        }
+                    }).done((data)=>{
+                        window.location.href = data;
+                    })
+
+                }
+            })
+    }
 </script>
 <script>
     const input_number = document.getElementById('number_input');
@@ -355,7 +384,6 @@
     };
 
     function checkStock(variant_id, quantity) {
-        console.log(quantity);
         $.ajax({
                 method: "GET",
                 url: `/admin/check-stock-variant/${variant_id}`
@@ -365,7 +393,7 @@
                     $('#quantity-limit').text('Số lượng đã đạt giới hạn');
                     $('#number_input').val(data);
                     $('#button_plus_value').attr('disabled', true);
-                    console.log(parseInt($('#number_input').val()));
+
                     if (parseInt($('#number_input').val()) <= 0) {
                         $('#number_input').val(1);
                     }
@@ -374,7 +402,6 @@
                     $('#quantity-limit').text('');
                 }
             })
-
     }
 </script>
 <script>
@@ -402,8 +429,9 @@
                     $('#status').text('(Hết hàng)');
                 }
                 $('#price').text(price);
-                // $('.carousel-item.active img.d-block').attr('src', '/image/'.response.image);
+                checkStock(response.variant_id,parseInt($('#number_input').val()));
                 document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
+                document.getElementById('buy-now').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
             }
@@ -427,7 +455,7 @@
             .done((danhSachMau) => {
                 const thongTin = danhSachMau.map((mau, index) => {
                     const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
-                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index === 0 ? 'color_active' : ''}">
+                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index===0?'color_active':''}">
                                     <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
                                     <span>
                                         <p>${mau.color}</p>
@@ -438,8 +466,14 @@
                 });
                 const list = document.getElementById('product_detail_right_color');
                 list.innerHTML = thongTin.join('');
+                checkStock(danhSachMau[0].id,parseInt($('#number_input').val()));
                 document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
                 document.getElementById('stock').innerHTML = danhSachMau[0].stock;
+                document.getElementById('add-to-cart').dataset.id = danhSachMau[0].id;
+                document.getElementById('buy-now').dataset.id = danhSachMau[0].id;
+                document.getElementById('button_plus_value').dataset.id = `${danhSachMau[0].id}`;
+                document.getElementById('button_minus_value').dataset.id = `${danhSachMau[0].id}`;
+
             });
     }
 </script>

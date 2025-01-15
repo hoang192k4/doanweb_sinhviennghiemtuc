@@ -91,6 +91,19 @@
                         <button onclick="cancel('dm')">Hủy</button>
                     </div>
                 </div>
+                <div class="pagination">
+                    <a href="{{ $danhSachDanhMuc->previousPageUrl() }}"><i class="fa-solid fa-chevron-left"></i></a>
+                    @if ($danhSachDanhMuc->currentPage() - 1 != 0)
+                        <a
+                            href="{{ $danhSachDanhMuc->previousPageUrl() }}">{{ $danhSachDanhMuc->currentPage() - 1 }}</i></a>
+                    @endif
+                    <a href="{{ $danhSachDanhMuc->currentPage() }}" class="active">
+                        {{ $danhSachDanhMuc->currentPage() }}</a>
+                    @if ($danhSachDanhMuc->currentPage() != $danhSachDanhMuc->lastPage())
+                        <a href="{{ $danhSachDanhMuc->nextPageUrl() }}">{{ $danhSachDanhMuc->currentPage() + 1 }}</a>
+                    @endif
+                    <a href="{{ $danhSachDanhMuc->nextPageUrl() }}"><i class="fa-solid fa-chevron-right"></i></a>
+                </div>
             </div>
         </div>
     </div>

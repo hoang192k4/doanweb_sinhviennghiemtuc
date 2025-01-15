@@ -55,7 +55,9 @@ class ProfileController extends Controller
     }
     public function order_history()
     {
-        return view('user.profile.order_history')->with('orders', Order::where('user_id', Auth::user()->id)->get());
+        return view('user.profile.order_history')->with([
+            'orders'=> Order::where('user_id', Auth::user()->id)->get(),
+        ]);
     }
     public function cancel($id)
     {

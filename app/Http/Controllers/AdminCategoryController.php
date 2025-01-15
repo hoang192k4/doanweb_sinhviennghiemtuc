@@ -14,7 +14,7 @@ class AdminCategoryController extends Controller
     //chuyển hướng trang thêm danh mục
     public function addCategory()
     {
-        $danhSachDanhMuc = Category::where('status', 1)->get();
+        $danhSachDanhMuc = Category::where('status', 1)->paginate(5);
         return view('admin.category.addcategory')->with('danhSachDanhMuc', $danhSachDanhMuc);
     }
     // lưu trữ danh mục

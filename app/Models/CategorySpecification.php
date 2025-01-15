@@ -20,5 +20,6 @@ class CategorySpecification extends Model
 
     protected $table = 'category_specifications';
     protected $fillable = ['id', 'category_id', 'name'];
+
     public $timestamps = false;
 }

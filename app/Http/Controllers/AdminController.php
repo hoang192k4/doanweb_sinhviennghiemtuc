@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\About;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -44,6 +47,75 @@ class AdminController extends Controller
             $about->logo = $filename;
             $about->save();
             return redirect()->back();
+        }
+    }
+    public function profile()
+    {
+        return view('admin.pages.profile')->with('user',Auth::user());
+    }
+    public function editProfile(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:50',
+            'fullname' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:10',
+            'gender' => 'required|string',
+            'birthday' => 'required|date',
+        ]);
+        $user = Auth::user();
+        $user->username = $request->input('username');
+        $user->full_name = $request->input('fullname');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->gender = $request->input('gender') == 'male' ? 'Nam' : 'Nữ';
+        $user->date_of_birth = $request->input('birthday');
+        $user->save();
+        return redirect()->back();
+    }
+    public function editAvatar(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = 'image.' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+            $user = Auth::user();
+            $user->image = $filename;
+            $user->save();
+            return redirect()->back();
+        }
+    }
+    public function changepw()
+    {
+        return view('admin.pages.changepw')->with('user',Auth::user());
+    }
+    public function IsPasswordChange(Request $request)
+    {
+        if (!Hash::check($request->oldpassword, Auth::user()->password)) {
+            return response()->json(['error' => 'Mật khẩu hiện tại không đúng'], 401);
+        }
+        return response()->json(['success' => 'Mật khẩu hiện tại chính xác'], 200);
+    }
+    public function UpdatePassword(Request $request)
+    {
+        $request->validate(
+            [
+                'oldpassword' => 'required|string',
+                'newPassword' => 'required|string',
+            ],
+            [
+                'oldpassword.required' => 'Bạn chưa nhập password hiện tại',
+                'newPassword.required' => 'Bạn chưa nhập password mới'
+            ]
+        );
+        if (Hash::check($request->oldpassword, Auth::user()->password)) {
+            DB::table('users')
+                ->where('id', Auth::id())
+                ->update(['password' => Hash::make($request->newPassword)]);
+            return response()->json(['success' => 'Mật khẩu đã được thay đổi thành công'], 200);
         }
     }
 }

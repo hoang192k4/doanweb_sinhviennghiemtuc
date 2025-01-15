@@ -36,4 +36,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductSpecification::class);
     }
+
+    public function rating():HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+     public function like_products():HasMany
+    {
+        return $this->hasMany(LikeProduct::class);
+    }
+
 }
