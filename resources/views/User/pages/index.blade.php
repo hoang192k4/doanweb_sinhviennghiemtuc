@@ -81,7 +81,7 @@
             <h4>SẢN PHẨM BÁN CHẠY</h4>
             <div id="carouselExampleIntervals" class="carousel slide carousel-dark" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
+                    <div class="carousel-item active" data-bs-interval="1000">
                         <div class="product_best_seller_items">
                             @if (isset($danhSachBanChay))
                                 @for ($i = 0; $i < count($danhSachBanChay); $i++)
