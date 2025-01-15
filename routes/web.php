@@ -21,7 +21,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/gioithieu', "GioiThieu")->name('user.blog');
     Route::get('/gioithieu/timkiem', 'timKiemBaiVietTheoTuKhoa')->name('searchBlog');
     Route::get('/contact', "LienHe")->name('user.contact');
-    Route::post('/addContact',  'addContact');
+    Route::post('/addContact', 'addContact');
     Route::get('/', "index")->name('user.index');
     Route::get('seach/{slug}/{id?}', "TimKiemSanPhamFH")->name('timkiemsanpham');
     Route::get('seach', "TimKiemTheoTuKhoa")->name('timkiemtheotukhoa');
@@ -29,7 +29,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/dangnhap', "DangNhap")->name('dangnhap');
     Route::get('/logout', "Logout")->name('logout');
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
-    Route::get('detail/{slug}/{internal_memory}',"LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
+    Route::get('detail/{slug}/{internal_memory}', "LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
     Route::post('/addContact',  'addContact');
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
@@ -45,9 +45,17 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/cart-minus-one-variant/{id}', 'minusOnQuantity');
 });
 
-Route::get('/admin/check-stock-variant/{id}',[AdminProductVariantController::class,'checkStock']);
+Route::get('/admin/check-stock-variant/{id}', [AdminProductVariantController::class, 'checkStock']);
 //Phân quyền quản lý và nhân viên
 Route::middleware(['role:QL,NV'])->group(function () {
+    //Route profile
+    Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    Route::post('/admin/editProfile', [AdminController::class, 'editProfile'])->middleware(AdminRoleMiddleware::class)->name('admin.editProfile');
+    Route::post('/admin/editAvatar', [AdminController::class, 'editAvatar'])->middleware(AdminRoleMiddleware::class)->name('admin.editAvatar');
+    Route::get('/admin/changepw', [AdminController::class, 'changepw'])->name('admin.changepw');
+    Route::post('/checkpw', [AdminController::class, 'IsPasswordChange'])->name('profile.checkpw');
+    Route::post('/changepw', [AdminController::class, 'UpdatePassword'])->name('profile.changepw');
+
     //Route dashboard
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/admin/editWebsite', [AdminController::class, 'editWebsite'])->middleware(AdminRoleMiddleware::class)->name('admin.editWebsite');
@@ -63,7 +71,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     //Route quan li thong ke
     Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
 
-    Route::get('/admin/category-specification/{id}',[AdminCategoryController::class,'loadCategorySpecification']);
+    Route::get('/admin/category-specification/{id}', [AdminCategoryController::class, 'loadCategorySpecification']);
 
     //Route quan ly san pham
     Route::get('/admin/product/active/{id}', [AdminProductController::class, 'active'])->middleware(AdminRoleMiddleware::class)->name('admin.product.active');
@@ -103,10 +111,12 @@ Route::middleware(['role:KH'])->group(function () {
     //xác nhận đặt hàng và thanh toán
     Route::controller(OrderController::class)->group(function () {
         Route::get('/payment', 'index')->name('user.payment');
-        Route::post('/payment','completePayment')->name('complete-payment');
-        Route::post('/add-voucher','addVoucher')->name('user.addvoucher');
+        Route::post('/payment', 'completePayment')->name('complete-payment');
+        Route::post('/add-voucher', 'addVoucher')->name('user.addvoucher');
     });
-    Route::post('/buy-now',[CartController::class,'buyNow'])->name('buynow');
+
+    Route::post('/order/buy-now',[CartController::class,'buyNow'])->name('buynow');
+
     //Route profile
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/trangcanhan', 'index')->name('profile.index');

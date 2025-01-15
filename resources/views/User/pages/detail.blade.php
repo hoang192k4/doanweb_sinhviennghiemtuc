@@ -105,6 +105,7 @@
                 <div class="product_detail_right_color" id="product_detail_right_color">
                     @foreach ($mauSanPham as $index => $mau)
                         <button
+                            class="{{ $index == 0 ? 'color_active' : '' }}"
                             onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)"
                            >
                             <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
@@ -128,7 +129,7 @@
                 </div>
                 @endif
                 <div class="product_detail_right_buy">
-                    <div><button>Mua ngay</button></div>
+                    <div><button id="buy-now" data-id="@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif" onclick="buyNow(this.dataset.id)">Mua ngay</button></div>
                     <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)" data-id="@if(isset($mauSanPham[0])){{$mauSanPham[0]->id}}@endif">
                             Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
@@ -328,6 +329,31 @@
             alertify.alert('Hiện tại sản phẩm này chưa thể thêm vào giỏ hàng!')
         })
     }
+    function buyNow(variantId){
+        const quantity = parseInt($('#number_input').val());
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variantId}`
+            })
+            .done((data) => {
+                if (data < quantity) {
+                    alertify.alert('Thông báo','Sản phẩm không đủ số lượng!');
+                }else{
+                    $.ajax({
+                        method:"POST",
+                        url:'/order/buy-now',
+                        data:{
+                            id:variantId,
+                            quantity,
+                            _token:'{{csrf_token()}}'
+                        }
+                    }).done((data)=>{
+                        window.location.href = data;
+                    })
+
+                }
+            })
+    }
 </script>
 <script>
     const input_number = document.getElementById('number_input');
@@ -360,7 +386,6 @@
     };
 
     function checkStock(variant_id, quantity) {
-        console.log(quantity);
         $.ajax({
                 method: "GET",
                 url: `/admin/check-stock-variant/${variant_id}`
@@ -370,7 +395,7 @@
                     $('#quantity-limit').text('Số lượng đã đạt giới hạn');
                     $('#number_input').val(data);
                     $('#button_plus_value').attr('disabled', true);
-                    console.log(parseInt($('#number_input').val()));
+
                     if (parseInt($('#number_input').val()) <= 0) {
                         $('#number_input').val(1);
                     }
@@ -379,7 +404,6 @@
                     $('#quantity-limit').text('');
                 }
             })
-
     }
 </script>
 <script>
@@ -407,8 +431,9 @@
                     $('#status').text('(Hết hàng)');
                 }
                 $('#price').text(price);
-
+                checkStock(response.variant_id,parseInt($('#number_input').val()));
                 document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
+                document.getElementById('buy-now').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
             }
@@ -432,7 +457,7 @@
             .done((danhSachMau) => {
                 const thongTin = danhSachMau.map((mau, index) => {
                     const formatprice = new Intl.NumberFormat('de-DE').format(mau.price);
-                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" >
+                    return `    <button onclick="LayThongTinSanPhamTheoMau('${mau.slug}','${mau.internal_memory}','${mau.color}',this)" class="${index===0?'color_active':''}">
                                     <img src="{{ asset('images/${mau.image}') }}" alt="Lỗi hiển thị">
                                     <span>
                                         <p>${mau.color}</p>
@@ -443,10 +468,13 @@
                 });
                 const list = document.getElementById('product_detail_right_color');
                 list.innerHTML = thongTin.join('');
-
+                checkStock(danhSachMau[0].id,parseInt($('#number_input').val()));
                 document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0].price);
                 document.getElementById('stock').innerHTML = danhSachMau[0].stock;
                 document.getElementById('add-to-cart').dataset.id = danhSachMau[0].id;
+                document.getElementById('buy-now').dataset.id = danhSachMau[0].id;
+                document.getElementById('button_plus_value').dataset.id = `${danhSachMau[0].id}`;
+                document.getElementById('button_minus_value').dataset.id = `${danhSachMau[0].id}`;
 
             });
     }

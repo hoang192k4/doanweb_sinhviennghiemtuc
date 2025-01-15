@@ -71,6 +71,11 @@
 
 @endsection
 @section('script')
+<script>
+    function payment(){
+        window.location.href = "{{route('user.payment')}}";
+    }
+</script>
     <script>
         //xóa một sản phẩm
         function deleteItemCart(id) {
@@ -191,7 +196,7 @@
                 const begin = (page - 1) * itemsPage;
                 const end = begin + itemsPage;
                 products.slice(begin, end).forEach(product => {
-                    container.appendChild(product); 
+                    container.appendChild(product);
                 });
                 LoadPageButton(countPage, page);
             }
