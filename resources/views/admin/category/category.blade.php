@@ -14,13 +14,6 @@
         margin-right: 10px;
         margin-top: 1px;
     }
-
-    .filter {
-        margin-top: 3px;
-        margin-right: 5px;
-        padding: 7px 30px;
-        border-radius: 5px;
-    }
 </style>
 @section('content')
     <div class="content" id="danhmuc">
@@ -37,15 +30,12 @@
             </div>
         </div>
         <div class="separator_x"></div>
-        <form action="{{ route('filter.category', ['id' => 'all']) }}" method="GET">
-            <select name="categoryFilter" id="categoryFilter">
-                <option value="all">Tất cả</option>
-                @foreach ($danhSachDanhMucLoc as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                @endforeach
-            </select>
-            <button class="filter" style="float: inline-end;" type="submit">Lọc</button>
-        </form>
+        <select name="categoryFilter" id="categoryFilter" onchange="filter()">
+            <option value="all">Tất cả</option>
+            @foreach ($danhSachDanhMuc as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
         @if (session('message'))
             <h1>hello</h1>
             <div class="alert alert-warning">
@@ -69,61 +59,26 @@
                         <td style="text-align: center;"><a
                                 href="{{ route('admin.category.editCategory', ['id' => $item->id]) }}"><i
                                     class="fa-solid fa-check"></i></a></td>
-                        <td style="text-align: center;">
-                            <a onclick="popup('dm', {{ $item->id }})" data-id="{{ $item->id }}">
-                                <i class="fa-solid fa-x"></i>
-                            </a>
+                        <td style="text-align: center;"><a onclick="popup('dm')"><i class="fa-solid fa-x"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        {{-- <div>{{ $danhSachDanhMuc->links() }}</div> --}}
+
         <div class="popup_admin" id="popupdm">
             <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
             <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
+            <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
             <p id="alert"></p>
-
             <div class="button">
-                <button id="deleteBtn">Đồng ý </button>
-                <button onclick="cancel('dm')">Hủy</button>
+                <button onclick="submit()">Submit</button>
+                <button onclick="cancel('dm')">Cancel</button>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
-    <script>
-        function popup(action, id) {
-            console.log('ID nhận được:', id);
 
-            // Hiển thị popup
-            const popupElement = document.getElementById('popupdm');
-            popupElement.style.display = 'block';
-
-            // Lưu ID vào nút "Đồng ý"
-            const deleteButton = document.getElementById('deleteBtn');
-            deleteButton.setAttribute('data-id', id);
-        }
-        document.getElementById('deleteBtn').addEventListener('click', function() {
-            const categoryId = this.getAttribute('data-id');
-
-            fetch(`/admin/deletecategory/${categoryId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Xóa danh mục thành công');
-                        window.location.href = '/admin/category';
-                    } else {
-                        alert('Đã có lỗi xảy ra');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    </script>
 @endsection

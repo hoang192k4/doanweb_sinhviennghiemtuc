@@ -9,9 +9,9 @@
     </div>
     <div class="right">
         <div class="account">
-            <a href=""><i class="fa-regular fa-user"></i> nguyenthuyanhthu</a>
+            <a href=""><i class="fa-regular fa-user"></i> {{Auth::user()->username}}</a>
             <div class="dropbox">
-                <p><a href="">Trang cá nhân</a></p>
+                <p><a href="{{route('admin.profile')}}">Trang cá nhân</a></p>
                 <p><a href="{{route('logout')}}">Đăng xuất</a></p>
             </div>
         </div>

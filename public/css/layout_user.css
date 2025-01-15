@@ -1,6 +1,7 @@
 *{
     padding: 0;
     margin: 0;
+    justify-content: ce;
 }
 body{
     font-family: 'Roboto', sans-serif;
@@ -151,9 +152,9 @@ p{
 .navbar-bottom > .navbar_item_second > ul li:first-child form{
     display: flex;
     align-items: center;
-    width: 400px; 
-    overflow: hidden; 
-    border-radius: 20px; 
+    width: 400px;
+    overflow: hidden;
+    border-radius: 20px;
 }
 .navbar-bottom .navbar_item_second .cart__header_mb_tl{
         display: none;
@@ -165,10 +166,10 @@ p{
     border: none;;
     outline: none;
     padding: 10px 0 10px 15px;
-    flex: 1; 
+    flex: 1;
     font-size: 13px;
-    border-top-left-radius: 20px; 
-    border-bottom-left-radius: 20px; 
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 .navbar-bottom > .navbar_item_second > ul > li:first-child form button{
     color: black;
@@ -177,7 +178,7 @@ p{
     background-color: white;
     cursor: pointer;
     border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px; 
+    border-bottom-right-radius: 20px;
 }
 .navbar-bottom > div > ul > li:nth-child(2):hover .popup__category{
     display: block;
@@ -264,11 +265,11 @@ p{
     display: none;
 }
 .navbar_hidden_mb_tl > label{
-    display: inline-block; 
+    display: inline-block;
     position: absolute;
-    top: 0; 
-    right: 10px; 
-    padding: 10px 15px; 
+    top: 0;
+    right: 10px;
+    padding: 10px 15px;
 }
 .navbar_item_second .navbar_hidden_mb_tl{
     display: block;
@@ -327,7 +328,7 @@ p{
     footer{
         width: 100%;
     }
-  
+
     .navbar-top, .navbar-bottom .navbar_item_first ul {
         display: none;
     }
@@ -351,17 +352,17 @@ p{
         justify-content: space-between;
     }
     .navbar-bottom > .navbar_item_second > ul li:first-child form{
-        width: 270px; 
+        width: 270px;
         margin-right: 10px;
     }
     .navbar-bottom > .navbar_item_second > ul > li:first-child form input{
         border: none;;
         outline: none;
         padding: 10px 0 10px 10px;
-        flex: 1; 
+        flex: 1;
         font-size: 12px;
-        border-top-left-radius: 20px; 
-        border-bottom-left-radius: 20px; 
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
     }
     .navbar-bottom > .navbar_item_second > ul > li:first-child form button{
         color: black;
@@ -370,7 +371,7 @@ p{
         background-color: white;
         cursor: pointer;
         border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px; 
+        border-bottom-right-radius: 20px;
     }
     .navbar-bottom .navbar_item_second .cart__header_desktop
     {

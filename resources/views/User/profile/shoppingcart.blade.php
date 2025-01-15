@@ -60,7 +60,7 @@
                         <div class="shopping_cart_bottom_price">
                             <h4>Tổng cộng</h4>
                             <p id="total-price"> {{ number_format(session('cart')->totalPrice) }}<sup>đ</sup></p>
-                            <button onclick="payment()"><a href="{{route('user.payment')}}">Thanh toán</a></button>
+                            <button><a href="{{route('user.payment')}}">Thanh toán</a></button>
                         </div>
 
                     </div>
