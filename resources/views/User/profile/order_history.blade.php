@@ -385,7 +385,7 @@
                                     <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control" name="${item.product_variant_id}_image[0]" required>
                                 </div>
                                 <textarea name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
-                                <button type="button" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 5px 20px;">Đánh giá</button>
+                                <button type="button" class="button_rating" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 5px 20px;">Đánh giá</button>
                             </div>
                         </div>`;
                         });
