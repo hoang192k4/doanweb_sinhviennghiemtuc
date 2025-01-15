@@ -314,6 +314,22 @@
                         $('#wards').focus();
                     }
                 })
+                .done((data)=>{
+                    if(data.success==1){
+                        alertify.confirm('Thông báo',data.message,function(){
+                            window.location.href = data.url
+                        },function(){
+                            window.location.href = data.url
+                        })
+                    }else{
+                        alertify.confirm('Thông báo',data.message,function(){
+                            window.location.href = data.url
+                        },function(){
+                            window.location.href = data.url
+                        })
+                    }
+
+                })
         }
         const fullName = document.getElementById('full_name_payment');
         fullName.addEventListener('input', () => {
