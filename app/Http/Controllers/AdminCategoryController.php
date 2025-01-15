@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Product;
 use App\Models\CategorySpecification;
 
 class AdminCategoryController extends Controller
@@ -100,6 +101,7 @@ class AdminCategoryController extends Controller
     {
         $danhMucTimKiem = Category::find($id);
         if ($danhMucTimKiem) {
+            Product::where('brand_id', $danhMucTimKiem->id)->update(['status' => 0]);
             $danhMucTimKiem->update(['status' => 0]);
             return response()->json(['message' => 'Xóa danh mục thành công.'], 200);
         }

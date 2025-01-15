@@ -81,7 +81,16 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {{ $danhSachDanhMuc->links() }} --}}
+                <div class="popup_admin" id="popupdm">
+                    <h3 style="color: white;">Bạn có thật sự muốn xóa danh mục ... ?</h3>
+                    <p style="color: white;">* Danh mục bị xóa sẽ không thể khôi phục nữa *</p>
+                    <p id="alert"></p>
+
+                    <div class="button">
+                        <button id="deleteBtn">Đồng ý </button>
+                        <button onclick="cancel('dm')">Hủy</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -103,5 +112,50 @@
             inputContainer.appendChild(newInput);
         });
         // });
+        function popup(action, id) {
+            console.log('ID nhận được:', id);
+
+            // Hiển thị popup
+            const popupElement = document.getElementById('popupdm');
+            popupElement.style.display = 'block';
+
+            // Lưu ID vào nút "Đồng ý"
+            const deleteButton = document.getElementById('deleteBtn');
+            deleteButton.setAttribute('data-id', id);
+        }
+
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            const categoryId = this.getAttribute('data-id');
+
+            fetch(`/admin/deletecategory/${categoryId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => {
+                    return response.json().then(data => {
+                        return {
+                            ok: response.ok,
+                            data: data
+                        }; // Trả về một đối tượng chứa cả ok và data
+                    });
+                })
+                .then(({
+                    ok,
+                    data
+                }) => {
+                    if (ok) {
+                        alertify.success(data.message);
+                        window.location.href = '/admin/addcategory';
+                    } else {
+                        alert('Đã có lỗi xảy ra: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
     </script>
 @endsection
