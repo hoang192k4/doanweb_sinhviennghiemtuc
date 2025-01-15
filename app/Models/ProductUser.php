@@ -175,9 +175,11 @@ class ProductUser extends Model
         )
         ->join('product_variants','order_items.product_variant_id','=','product_variants.id')
         ->join('products','product_variants.product_id','=','products.id')
+        ->join('orders','order_items.order_id', '=' ,'orders.id')
         ->groupBy('products.id', 'products.name', 'order_items.slug_product','products.rating','product_variants.product_id')
         ->orderBy(DB::raw('COUNT("order_items.slug_product")'),'desc')
         ->where('products.status',1)
+        ->where('order_status_id',6)
         ->take(8)->get();
     }
     public static function LayThongTinSanPham($category){

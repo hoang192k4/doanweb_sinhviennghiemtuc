@@ -60,7 +60,7 @@
                 <a href="{{ route('user.index') }}"><img src="{{asset('images/'.$lienKetWebsite->logo)}}" style="max-width: 100%" alt="Lỗi hiển thị"></a>
             </div>
             <div class="footer_top_slogan">
-                <a href="">Slogan</a>
+                <h1 class="slogan">Công nghệ đỉnh cao <br> <span>sinh viên tự hào</span></h1>
             </div>
         </div>
     </div>
