@@ -31,9 +31,10 @@ Route::controller(UserController::class)->group(function () {
     Route::get('detail/{slug}', "ChiTietSanPham")->name("detail");
     Route::get('detail/{slug}/{internal_memory}', "LayMauSanPhamTheoBoNho")->name("LayMauSanPhamTheoBoNho");
     Route::get('detail/{slug}/{internal_memory}/{color}', "LayThongTinSanPhamTheoMau")->name("LayThongTinSanPhamTheoMau");
-    Route::post('/addContact', 'addContact');
-    Route::get('/yeuthich/{sampham}/{user}', 'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
-    Route::get('/get/{user}/{code}', 'GetDanhSachDanhGia');
+    Route::post('/addContact',  'addContact');
+    Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
+    Route::get('/get/{user}/{code}',  'GetDanhSachDanhGia');
+    Route::post('/them-danh-gia', 'ThemDanhGia');
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -101,9 +102,13 @@ Route::middleware(['role:QL,NV'])->group(function () {
 });
 
 
+//Phân quyền quản lý
+Route::middleware(['role:QL'])->group(function () {});
+
+
 
 //Phân quyền quản lý , nhân viên và khách hàng
-Route::middleware(['role:QL,NV,KH'])->group(function () { });
+Route::middleware(['role:QL,NV,KH'])->group(function () {});
 
 //phân quyền khách hàng
 Route::middleware(['role:KH'])->group(function () {
@@ -114,7 +119,7 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/add-voucher', 'addVoucher')->name('user.addvoucher');
     });
 
-    Route::post('/order/buy-now',[CartController::class,'buyNow'])->name('buynow');
+    Route::post('/order/buy-now', [CartController::class, 'buyNow'])->name('buynow');
 
     //Route profile
     Route::controller(ProfileController::class)->group(function () {
@@ -122,7 +127,7 @@ Route::middleware(['role:KH'])->group(function () {
         Route::post('/trangcanhan/editInfo', 'editInfo')->name('profile.editInfo');
         Route::post('/trangcanhan/editImage', 'editImage')->name('profile.editImage');
         Route::get('/lichsudonhang', 'order_history')->name('profile.order_history');
-        Route::get('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
+        Route::put('/lichsudonhang/cancel/{id}', 'cancel')->name('profile.cancel');
         Route::get('/sanphamyeuthich', 'favourite_product')->name('profile.favourite_product');
         Route::get('/sanphamyeuthich/unLike/{id}', 'unLike')->name('profile.unLike');
         Route::get('/lichsudanhgia', 'review_history')->name('profile.review_history');

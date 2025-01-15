@@ -16,6 +16,9 @@ class OrderController extends Controller
     //
     public function index()
     {
+        if(session('buy-now')!=null) {
+            return view('User.profile.payment');
+        }
         //hiển thị các sản phẩm trong giỏ hàng
         if(session('cart')==null)
             return redirect()->route('user.index');
@@ -64,7 +67,9 @@ class OrderController extends Controller
                 'full_name'=>'required|string|max:255|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/',
                 'phone' => 'required|string|regex:/^[0-9]{10}$/',
                 'email' => 'required|email|max:50',
-                'address'=>'required|string|max:255',
+
+                //'address'=>'required|string|max:255|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,./-]+$/',
+
                 'provinces' => 'required|string', // Tỉnh/Thành bắt buộc
                 'districts' => 'required|string', // Quận/Huyện bắt buộc
                 'wards' => 'required|string', // Phường/Xã bắt buộc
@@ -87,27 +92,6 @@ class OrderController extends Controller
             ]
         );
         //kiểm tra giá sản phẩm có bằng với lúc nhấn đặt hàng hay không
-        foreach(session('cart')->listProductVariants as $item){
-            $variant = ProductVariant::find($item['variant_info']->id);
-            if($item['variant_info']->price != $variant->price){
-                return response()->json([
-                    'success' => 0,
-                    'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn hàng!',
-                    'url'=>route('user.shoppingcart')
-                ]);
-            }
-        }
-        //kiểm tra số lượng của sản phẩm lúc đặt hàng và số lượng trong giỏ hàng
-        foreach(session('cart')->listProductVariants as $item){
-            $variant = ProductVariant::find($item['variant_info']->id);
-            if($item['quantity'] > $variant->stock){
-                return response()->json([
-                    'success' => 0,
-                    'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
-                    'url'=>route('user.shoppingcart')
-                ]);
-            }
-        }
 
 
         //kiểm tra khách hàng có nhập voucher hay không
@@ -131,31 +115,90 @@ class OrderController extends Controller
             $methodId=1;
         else
             $methodId = 2;
-        $order = Order::create([
-            'order_code'=>Order::generateTimestamp(),
-            'full_name'=>$req->full_name,
-            'phone'=>$req->phone,
-            'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
-            'total_price'=>session('cart')->totalPrice - $discount,
-            'payment_method'=>$methodId,
-            'user_id'=>Auth::user()->id,
-            'voucher_id'=> $req->voucher!=null? $voucher->id:null,
-            'order_status_id'=>2
-        ]);
-        foreach(session('cart')->listProductVariants as $item){
+        if(session('buy-now')!=null){
+            $order = Order::create([
+                'order_code'=>Order::generateTimestamp(),
+                'full_name'=>$req->full_name,
+                'phone'=>$req->phone,
+                'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
+                'total_price'=>session('buy-now')['totalPrice'] - $discount,
+                'payment_method'=>$methodId,
+                'user_id'=>Auth::user()->id,
+                'voucher_id'=> $req->voucher!=null? $voucher->id:null,
+                'order_status_id'=>2
+            ]);
             OrderItem::create([
-                'product_variant_id'=>$item['variant_info']->id,
-                'slug_product'=>$item['product_info']->slug,
-                'name_product'=>$item['product_info']->name,
-                'color'=>$item['variant_info']->color,
-                'internal_memory'=>$item['variant_info']->internal_memory,
-                'quantity'=>$item['quantity'],
-                'price'=>$item['variant_info']->price,
-                'total_price'=>$item['price'],
+                'product_variant_id'=>session('buy-now')['variant_info']->id,
+                'slug_product'=>session('buy-now')['product_info']->slug,
+                'name_product'=>session('buy-now')['product_info']->name,
+                'color'=>session('buy-now')['variant_info']->color,
+                'internal_memory'=>session('buy-now')['variant_info']->internal_memory,
+                'quantity'=>session('buy-now')['quantity'],
+                'price'=>session('buy-now')['variant_info']->price,
+                'total_price'=>session('buy-now')['totalPrice'],
                 'order_id'=>$order->id
             ]);
+        }else{
+            foreach(session('cart')->listProductVariants as $item){
+                $variant = ProductVariant::find($item['variant_info']->id);
+                if($item['variant_info']->price != $variant->price){
+                    return response()->json([
+                        'success' => 0,
+                        'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn hàng!',
+                        'url'=>route('user.shoppingcart')
+                    ]);
+                }
+            }
+
+             //kiểm tra số lượng của sản phẩm lúc đặt hàng và số lượng trong giỏ hàng
+        foreach(session('cart')->listProductVariants as $item){
+            $variant = ProductVariant::find($item['variant_info']->id);
+            //kiểm tra sản phẩm có bị ẩn đi hay xóa trong lúc đặt k
+            if($variant==null||$variant->status==0){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Sản phẩm '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') có thể đã bị xóa! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+            if($item['quantity'] > $variant->stock){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
         }
-        $request->session()->forget('cart');
+
+
+            $order = Order::create([
+                'order_code'=>Order::generateTimestamp(),
+                'full_name'=>$req->full_name,
+                'phone'=>$req->phone,
+                'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
+                'total_price'=>session('cart')->totalPrice - $discount,
+                'payment_method'=>$methodId,
+                'user_id'=>Auth::user()->id,
+                'voucher_id'=> $req->voucher!=null? $voucher->id:null,
+                'order_status_id'=>2
+            ]);
+            foreach(session('cart')->listProductVariants as $item){
+                OrderItem::create([
+                    'product_variant_id'=>$item['variant_info']->id,
+                    'slug_product'=>$item['product_info']->slug,
+                    'name_product'=>$item['product_info']->name,
+                    'color'=>$item['variant_info']->color,
+                    'internal_memory'=>$item['variant_info']->internal_memory,
+                    'quantity'=>$item['quantity'],
+                    'price'=>$item['variant_info']->price,
+                    'total_price'=>$item['price'],
+                    'order_id'=>$order->id
+                ]);
+            }
+            $req->session()->forget('cart');
+        }
+
+
         return response()->json([
             'success'=>1,
             'message'=>'Đặt hàng thành công!',

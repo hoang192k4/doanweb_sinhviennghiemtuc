@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class Rating extends Model
 {
-    //
+    protected $fillable=['id','content','point','color','internal_memory','product_id','user_id'];
     use HasFactory;
     public static function DanhGia($user,$code){
         return DB::table('orders')
@@ -23,19 +23,8 @@ class Rating extends Model
         ->where('order_status.name','=','Giao hàng thành công')
         ->where('orders.user_id',$user)
         ->where('orders.order_code',$code)
-        ->select('order_items.*','brands.name')
+        ->select('order_items.*','brands.name','product_variants.image')
         ->distinct()
         ->get();
-    }
-    public static function ThemDanhGia($arr){
-        return DB::table('ratings')
-        ->insert([
-            "content"=>$arr['content'],
-            "internal_memory"=>$arr['internal_memory'],
-            "color"=>$arr['color'],
-            "point"=>$arr['point'],
-            "product_id"=>$arr['product_id'],
-            "user_id"=>$arr['user_id'],
-        ]);
     }
 }

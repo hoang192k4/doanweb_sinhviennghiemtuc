@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ImageRating;
+use App\Models\ProductVariant;
 
 class UserController extends Controller
 {
@@ -25,10 +27,12 @@ class UserController extends Controller
         $thuongHieu = Brand::index();
         $danhSachDTHot = ProductUser::LayThongTinSanPham('Điện Thoại');
         $danhSachLapTopMoi = ProductUser::LayThongTinSanPham('Laptop');
+        $danhSachBanChay = ProductUser::SanPhamBanChay();
         return View('User.pages.index')->with([
             "thuongHieu" => $thuongHieu,
             "danhSachDTHot" => $danhSachDTHot,
-            "danhSachLapTopMoi" => $danhSachLapTopMoi
+            "danhSachLapTopMoi" => $danhSachLapTopMoi,
+            "danhSachBanChay" => $danhSachBanChay
         ]);
     }
 
@@ -247,4 +251,28 @@ class UserController extends Controller
         $danhSach=Rating::DanhGia($user,$code);
         return $danhSach;
     }
+
+
+    public function ThemDanhGia(Request $request) {
+       $variant = ProductVariant::find($request->id);
+
+        $rating = Rating::create([
+            'content' => $request->content,
+            'internal_memory' => $variant->internal_memory,
+            'point' => $request->point,
+            'color'=> $variant->color,
+            'product_id' => $variant->product->id,
+            'user_id' => Auth::user()->id,
+        ]);
+        
+        return response()->json([
+            'tenSanPham'=>$variant->product->name,
+            'boNho'=>$variant->internal_memory,
+            'mau'=>$variant->color,
+        ]);
+
+
+    }
+
+
 }
