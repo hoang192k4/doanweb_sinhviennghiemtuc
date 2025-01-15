@@ -80,7 +80,7 @@
             <h4>SẢN PHẨM BÁN CHẠY</h4>
             <div id="carouselExampleIntervals" class="carousel slide carousel-dark" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="1000">
+                    <div class="carousel-item active" data-bs-interval="10000">
                         <div class="product_best_seller_items">
                             @if (isset($danhSachBanChay))
                                 @for ($i = 0; $i < count($danhSachBanChay); $i++)
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 @if (isset($danhSachBanChay) && count($danhSachBanChay) > 4)
-                    <div class="carousel-item" data-bs-interval="1000">
+                    <div class="carousel-item" data-bs-interval="2000">
                         <div class="product_best_seller_items">
                             @for ($i = 4; $i < count($danhSachBanChay); $i++)
                                 <div class="product_best_seller_item">
@@ -228,10 +228,9 @@
 <!-- Laptop mới nhất -->
 <section class="container_css product_lt_new">
     <h4>LAPTOP MỚI NHẤT</h4>
-    <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-dark" data-bs-touch="false"
-        data-bs-interval="false">
+    <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-dark" data-bs-touch="false">
         <div class="carousel-inner">
-            <div class="carousel-item active">
+            <div class="carousel-item active" data-bs-interval="10000">
                 <div class="product_lt_new_items">
                     @if (isset($danhSachLapTopMoi))
                         @for ($i = 0; $i < count($danhSachLapTopMoi); $i++)
@@ -260,7 +259,7 @@
             </div>
         </div>
         @if (isset($danhSachLapTopMoi) && count($danhSachLapTopMoi) > 4)
-            <div class="carousel-item">
+            <div class="carousel-item" data-bs-interval="2000">
                 <div class="product_lt_new_items">
                     @for ($i = 4; $i < count($danhSachLapTopMoi); $i++)
                         <div class="product_lt_new_item">

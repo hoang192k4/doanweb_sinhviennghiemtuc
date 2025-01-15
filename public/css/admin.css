@@ -325,16 +325,18 @@ table tr td {
 .infor div {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .infor p {
-    margin: 10px 0px;
-    margin-right: 12px;
+    margin: 0;
 }
 
 .infor input {
     width: 476px;
-    margin-bottom: 12px;
+    margin-top: 12px;
+    outline: none;
+    padding-right: 30px;
 }
 
 .infor button {
@@ -506,4 +508,19 @@ table tr td {
 .button-delete{
     background-color: white;
     color:rgb(19, 93, 102)
+}
+.alert_error_validate {
+    color: red;
+    font-size: 14px;
+    margin-left: 175px;
+    padding: 3px;
+}
+.changepwd_admin {
+    position: relative;
+}
+.changepwd_admin > span {
+    position: absolute;
+    right: 5px;
+    top: 22px;
+    display: none;
 }
