@@ -159,7 +159,7 @@ class UserController extends Controller
             "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$arr
+            "sanPhamTuongTu"=>$sanPhamTuongTu
         ]);
     }
     public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
@@ -264,7 +264,7 @@ class UserController extends Controller
             'product_id' => $variant->product->id,
             'user_id' => Auth::user()->id,
         ]);
-        
+
         return response()->json([
             'tenSanPham'=>$variant->product->name,
             'boNho'=>$variant->internal_memory,
