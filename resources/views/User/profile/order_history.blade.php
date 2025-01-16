@@ -369,7 +369,7 @@
                                 </div>
                                 <div class="col" id="image-products-${item.product_variant_id}">
                                     <img id="${item.product_variant_id}-1" />
-                                    <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control" name="${item.product_variant_id}_image[0]" required>
+                                    <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control input_${item.product_variant_id}" name="${item.product_variant_id}_image[0]" required>
                                 </div>
                                 <textarea name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
 
@@ -398,20 +398,16 @@
 
             function selectStar() {
                 document.querySelectorAll('.star-rating').forEach(rating => {
-                    const labels = Array.from(rating.querySelectorAll('.point')); // Lấy tất cả các sao
-                    const reversedLabels = [...labels].reverse(); // Đảo ngược thứ tự các sao
-
+                    const labels = Array.from(rating.querySelectorAll('.point'));
+                    const reversedLabels = [...labels].reverse();
                     reversedLabels.forEach((label, index) => {
                         label.addEventListener('click', () => {
-                            // Đảo ngược màu sắc sao (sao đã chọn màu đỏ, sao chưa chọn màu đen)
                             reversedLabels.forEach((l, i) => {
                                 l.style.color = i <= index ? "red" : "black";
                             });
-
-                            // Cập nhật giá trị cho input ẩn
                             const hiddenInput = rating.querySelector('input[type="hidden"]');
                             if (hiddenInput) {
-                                hiddenInput.value = index + 1; // Cập nhật giá trị từ 1 đến 5
+                                hiddenInput.value = index + 1;
                                 console.log(hiddenInput);
                             }
                         });
@@ -425,19 +421,19 @@
             function addImage(id, btn) {
                 if (!btn.dataset.idx) btn.dataset.idx = 0;
                 const idx = ++btn.dataset.idx;
-
-                const imageContainer = document.getElementById(`image-products-${id}`);
-                if (!imageContainer) {
-                    console.error(`Image container for ${id} not found!`);
-                    return;
+                if(idx <=5 ){
+                    const imageContainer = document.getElementById(`image-products-${id}`);
+                    const newImageInput = `
+                    <div class="col">
+                        <img id="${id}-${idx}" />
+                        <input type="file" data-index="${idx}" onchange="loadFile('${id}', event, this)" class="form-control input_${id}" name="${id}_image[${idx - 1}]" required>
+                    </div>`;
+                    imageContainer.insertAdjacentHTML('beforeend', newImageInput);
+                }
+                else{
+                    alertify.error("Bạn chỉ có thể thêm tối đa 5 hình ảnh trong 1 bình luận");
                 }
 
-                const newImageInput = `
-                <div class="col">
-                    <img id="${id}-${idx}" />
-                    <input type="file" data-index="${idx}" onchange="loadFile('${id}', event, this)" class="form-control" name="${id}_image[${idx - 1}]" required>
-                </div>`;
-                imageContainer.insertAdjacentHTML('beforeend', newImageInput);
             }
 
             function loadFile(id, event, img) {
@@ -468,16 +464,22 @@
             const content = textarea.value;
             const hiddenInput = document.querySelector(`input[name="${id}_point"]`);
             const pointValue = hiddenInput.value;
-            const image = document.querySelector(`input[name="${id}_image[0]"]`);
-            const load_image = image.files[0]; // Lấy file từ input
-
+            const total_input = document.querySelectorAll( `input.input_${id}`);
             let formData = new FormData();
+            for(let i=0;i<total_input.length;i++){
+                const img = total_input[i];
+                if(img.type ==="file" && img.files.length>0){
+                    const load_image = img.files[0];
+                    formData.append('file[]', load_image);
+                }
+
+            }
             formData.append('id', id);
             formData.append('internal_memory', internal_memory);
             formData.append('color', color);
             formData.append('content', content);
             formData.append('point', pointValue);
-            formData.append('file', load_image); // Đính kèm file
+
             formData.append('_token', '{{ csrf_token() }}'); // CSRF token
 
             $.ajax({
@@ -493,10 +495,18 @@
                     $('#popup_form_' + id).remove();
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
-                    console.log(xhr.responseJSON.errors.content);
-                    console.log(status);
-                    $(`#${id}_content`).text(xhr.responseJSON.errors.content);
+                            if (xhr.status === 422 && xhr.responseJSON) {
+                    const errors = xhr.responseJSON.errors;
+
+                    // Hiển thị từng lỗi qua Alertify
+                    for (const [field, messages] of Object.entries(errors)) {
+                        messages.forEach(message => {
+                            alertify.error(message); // Thông báo lỗi
+                        });
+                    }
+                } else {
+                    alertify.error('Đã xảy ra lỗi không xác định. Vui lòng thử lại.');
+                }
                 }
             });
         }

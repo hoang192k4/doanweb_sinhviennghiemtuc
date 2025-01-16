@@ -189,7 +189,7 @@
                 <div class="product_detail_bottom_left_comments">
                     <div class="product_detail_bottom_left_comment">
                         <div>
-                            <button><img src="images/user_commet1.jpg" alt=""></button>
+                            <button><img src="{{asset('images/404.png')}}" alt=""></button>
                             <div>Nguyễn Thùy Anh thư
                                 <p>
                                     <i class="fas fa-star"></i>
@@ -204,8 +204,14 @@
                         <div>
                             <p>Điện thoại khá đẹp tôi sẽ quay lại mua nữa</p>
                             <div>
-                                <img src="images/detail2.png" alt="">
-                                <img src="images/detail3.png" alt="">
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">  
+                                <img src="{{asset('images/product_01736584291.jpg')}}" alt="">
+
                             </div>
                         </div>
                     </div>
