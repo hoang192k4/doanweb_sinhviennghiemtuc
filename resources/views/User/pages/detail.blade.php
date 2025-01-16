@@ -43,12 +43,25 @@
             <div class="product_detail_left">
                 <div id="carouselExampleIndicators" class="carousel slide carousel-dark" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach ($danhSachAnh as $index => $anh)
-                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        @php
+                            $index = 0;
+                        @endphp
+                        @foreach ($danhSachAnh as $anh)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}"  >
                                 <img src="{{ asset('images/' . $anh->image) }}" class="d-block" alt="Lỗi hiển thị">
                             </div>
+                            @php
+                                $index++;
+                            @endphp
                         @endforeach
-
+                        @foreach ($danhSachAnhVariant as $anh)
+                            <div class="carousel-item" id="{{$anh->id}}">
+                                <img  src="{{ asset('images/' . $anh->image) }}" class="d-block" alt="Lỗi hiển thị" >
+                            </div>
+                            @php
+                                $index++;
+                            @endphp
+                        @endforeach
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                         data-bs-slide="prev">
@@ -61,16 +74,30 @@
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
-                <div class="product_detail_left_img" style="border-radius: 5px  ">
-                    @foreach ($danhSachAnh as $index => $anh)
+                <div class="product_detail_left_img" style="border-radius: 5px;">
+                    @php
+                        $index_2 = 0;
+                    @endphp
+                    @foreach ($danhSachAnh as $anh)
                         <div>
-                            <img id="img" src="{{ asset('images/' . $anh->image) }}"alt="Lỗi hiển thị" type="button"
-                                class="{{ $index === 0 ? 'active' : '' }}" data-bs-target="#carouselExampleIndicators"
-                                data-bs-slide-to="{{ $index }}" aria-label="Slide {{ $index + 1 }}">
+                            <img id="img" src="{{ asset('images/' . $anh->image) }}" alt="Lỗi hiển thị" type="button"
+                                class="{{$index_2 ===0 ? 'active' : ''}}"  data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide-to="{{ $index_2 }}" aria-label="Slide {{ $index_2 + 1 }}">
                         </div>
+                        @php
+                            $index_2++;
+                        @endphp
                     @endforeach
-                    <div>
-                    </div>
+                    @foreach ($danhSachAnhVariant as $anh)
+                        <div>
+                            <img id="{{$anh->id}}" src="{{ asset('images/' . $anh->image) }}" alt="Lỗi hiển thị" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index_2 }}"
+                                aria-label="Slide {{ $index_2 + 1 }}" >
+                        </div>
+                        @php
+                            $index_2++;
+                        @endphp
+                    @endforeach
                 </div>
             </div>
             <div class="product_detail_right">
@@ -404,6 +431,7 @@
             })
     }
 </script>
+{{-- long --}}
 <script>
     function LayThongTinSanPhamTheoMau(slug, internal_memory, color, btn) {
         const button_color = document.querySelectorAll('.product_detail_right_color button')
@@ -430,10 +458,14 @@
                 }
                 $('#price').text(price);
                 checkStock(response.variant_id,parseInt($('#number_input').val()));
+                const variantElement = document.getElementById(`anh_${response.variant_id}`);
                 document.getElementById('add-to-cart').dataset.id = `${response.variant_id}`;
                 document.getElementById('buy-now').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_plus_value').dataset.id = `${response.variant_id}`;
                 document.getElementById('button_minus_value').dataset.id = `${response.variant_id}`;
+                const active = document.querySelectorAll('.carousel-item');
+                active.forEach(item=>item.classList.remove('active'));
+                document.getElementById(`${response.variant_id}`).classList.add('active');
             }
         });
     }

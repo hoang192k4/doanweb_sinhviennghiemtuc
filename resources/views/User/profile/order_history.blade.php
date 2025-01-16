@@ -372,7 +372,10 @@
                                     <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control" name="${item.product_variant_id}_image[0]" required>
                                 </div>
                                 <textarea name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
-                                <button type="button" class="button_rating" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 5px 20px;">Đánh giá</button>
+
+                                <p  id="${item.product_variant_id}_content"></p>
+                                <button type="button" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 5px 20px;">Đánh giá</button>
+
                             </div>
                         </div>`;
                         });
@@ -460,36 +463,43 @@
             }
         </script>
         <script>
-            function ratings(id, internal_memory, color) {
-                const textarea = document.querySelector(`textarea[name="${id}_content"]`);
-                const content = textarea.value;
-                const hiddenInput = document.querySelector(`input[name="${id}_point"]`);
-                const pointValue = hiddenInput.value;
-                const data = {
-                    id: id,
-                    internal_memory: internal_memory,
-                    color: color,
-                    content: content,
-                    point: pointValue,
-                    _token: '{{ csrf_token() }}',
-                };
-                $.ajax({
-                    url: `/them-danh-gia`,
-                    method: 'POST',
-                    data: data, // Dữ liệu gửi đi
-                    success: function(response) {
-                        alertify.success(
-                            `Thêm đánh giá sản phẩm ${response.tenSanPham} | ${response.boNho} | ${response.mau} thành công `
-                        );
-                        $('#popup_form_' + id).remove();
-                    },
-                    error: function(xhr, status, error) {
-                        // Xử lý lỗi nếu có
-                        console.error('Lỗi khi gửi đánh giá:', error);
-                        alert('Đã có lỗi xảy ra. Vui lòng thử lại!');
-                    }
-                });
+        function ratings(id, internal_memory, color) {
+            const textarea = document.querySelector(`textarea[name="${id}_content"]`);
+            const content = textarea.value;
+            const hiddenInput = document.querySelector(`input[name="${id}_point"]`);
+            const pointValue = hiddenInput.value;
+            const image = document.querySelector(`input[name="${id}_image[0]"]`);
+            const load_image = image.files[0]; // Lấy file từ input
 
-            }
+            let formData = new FormData();
+            formData.append('id', id);
+            formData.append('internal_memory', internal_memory);
+            formData.append('color', color);
+            formData.append('content', content);
+            formData.append('point', pointValue);
+            formData.append('file', load_image); // Đính kèm file
+            formData.append('_token', '{{ csrf_token() }}'); // CSRF token
+
+            $.ajax({
+                url: `/them-danh-gia`,
+                method: 'POST',
+                data: formData, // Gửi FormData
+                processData: false, // Không xử lý dữ liệu
+                contentType: false, // Không thiết lập kiểu Content-Type
+                success: function(response) {
+                    alertify.success(
+                        `Thêm đánh giá sản phẩm ${response.tenSanPham} | ${response.boNho} | ${response.mau} thành công`
+                    );
+                    $('#popup_form_' + id).remove();
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    console.log(xhr.responseJSON.errors.content);
+                    console.log(status);
+                    $(`#${id}_content`).text(xhr.responseJSON.errors.content);
+                }
+            });
+        }
+
         </script>
     @endsection

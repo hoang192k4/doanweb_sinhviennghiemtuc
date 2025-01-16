@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class ImageRating extends Model
 {
     //
-    public $fillable = ['image','product_id'];
+    protected $fillable = ['image','rating_id'];
     public $timestamps = false;
 }

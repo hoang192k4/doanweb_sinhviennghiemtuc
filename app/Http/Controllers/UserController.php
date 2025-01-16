@@ -141,18 +141,19 @@ class UserController extends Controller
     }
 
     public function ChiTietSanPham($slug){
+
         $product = Product::where('slug',$slug)->first();
         if($product==null){
             return view('User.pages.404');
         }
         ProductUser::UpdateView($slug);
+
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
         $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
-        $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug);
+        $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug,$thongTinSanPham[0]->brand);
         $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
-        //thông số kỹ thuậnthuận
         $thongSoKiThuatSanPham = $product->product_specification;
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
         $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
@@ -160,12 +161,13 @@ class UserController extends Controller
         return View('user.pages.detail')->with([
             'slug'=>$slug,
             "danhSachAnh"=>$danhSachAnh,
+            "danhSachAnhVariant"=>$product->product_variants,
             "danhSachBoNho"=>$danhSachBoNho,
             "thongTinSanPham"=>$thongTinSanPham[0],
             "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$sanPhamTuongTu
+            "sanPhamTuongTu"=>$arr
         ]);
     }
     public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
@@ -260,25 +262,56 @@ class UserController extends Controller
 
 
     public function ThemDanhGia(Request $request) {
-       $variant = ProductVariant::find($request->id);
+         // Kiểm tra định dạng file
+         $request->validate([
+            'file' => 'file|mimes:jpg,jpeg,png|max:2048',
+            'content'=>'required',
+         ],[
+            'content.required'=>"Vui lòng nhập nội dung đánh giá ",
+         ]);
 
+        // Lấy thông tin variant
+        $variant = ProductVariant::findOrFail($request->id);
+
+        // Tạo đánh giá
         $rating = Rating::create([
             'content' => $request->content,
             'internal_memory' => $variant->internal_memory,
             'point' => $request->point,
-            'color'=> $variant->color,
+            'color' => $variant->color,
             'product_id' => $variant->product->id,
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
         ]);
+
+
+        // Kiểm tra và xử lý ảnh
+        if ($request->hasFile('file')) {
+            $image = $request->file('file');
+
+
+
+
+            // Lưu file vào thư mục images
+            $extension = $image->getClientOriginalExtension();
+            $fileName = 'rating_' . time() . '.' . $extension;
+            $image->move(public_path('images'), $fileName);
+
+            // Lưu thông tin ảnh vào bảng ImageRating
+            ImageRating::create([
+                'image' => $fileName,
+                'rating_id' => $rating->id,
+            ]);
+        }
+
+        // Trả về phản hồi JSON
 
         return response()->json([
-            'tenSanPham'=>$variant->product->name,
-            'boNho'=>$variant->internal_memory,
-            'mau'=>$variant->color,
+            'tenSanPham' => $variant->product->name,
+            'boNho' => $variant->internal_memory,
+            'mau' => $variant->color,
         ]);
-
-
     }
+
 
 
 }

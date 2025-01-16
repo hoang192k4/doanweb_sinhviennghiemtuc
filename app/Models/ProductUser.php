@@ -221,10 +221,11 @@ class ProductUser extends Model
         ->where('products.status', 1)
         ->where('product_variants.status',1)
         ->where('products.slug','!=',$slug)
-        ->where('categories.slug',$category)->groupBy( 'products.name', 'products.rating' ,'products.slug')
+        ->where('categories.slug',$category)
+        ->groupBy( 'products.name', 'products.rating' ,'products.slug')
         ->take(8)->get();
     }
-    public static function LayDanhSachSanPhamTheoDanhMuc($category,$slug){
+    public static function LayDanhSachSanPhamTheoDanhMuc($category,$slug,$brand){
         return DB::table('products')
         ->select(
             'products.name',
@@ -240,6 +241,7 @@ class ProductUser extends Model
         ->where('products.status', 1)
         ->where('products.slug','!=',$slug)
         ->where('products.status', 1)
+        ->where('brands.name','!=',$brand)
         ->where('product_variants.status',1)
         ->where('categories.slug',$category)->groupBy( 'products.name', 'products.rating' ,'products.slug')
         ->take(8)->get();
@@ -251,5 +253,6 @@ class ProductUser extends Model
         ->select('name')
         ->get();
     }
+
 }
 
