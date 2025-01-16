@@ -253,6 +253,6 @@ class ProductUser extends Model
         ->select('name')
         ->get();
     }
-    
+
 }
 
