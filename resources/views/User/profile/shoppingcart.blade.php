@@ -1,7 +1,7 @@
 @extends('layouts.layouts_user')
 @section('title', 'Trang giỏ hàng')
 @section('content')
-    <div class="shopping_cart container_css">
+    <div class="shopping_cart container_css" id="shopping_cart">
         @if (session('cart') == null)
             <h3 style="height:150px; text-align:center; margin-top:69px">Giỏ hàng chưa có sản phẩm</h3>
         @else
@@ -112,7 +112,9 @@
         function afterDeleteAll() {
             $('#cart-quantity').text(0);
             $('#cart-main #cart-bottom').remove();
-            $('#list-product-variant')
+            $('#cart-main #page').remove();
+            $('#shopping_cart').empty();
+            $('#shopping_cart')
                 .append($('<h3>')
                     .text('Giỏ hàng chưa có sản phẩm')
                     .css({

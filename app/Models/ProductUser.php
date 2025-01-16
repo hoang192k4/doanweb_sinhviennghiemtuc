@@ -172,13 +172,13 @@ class ProductUser extends Model
             'order_items.slug_product as slug',
             'products.rating',
             DB::raw('MIN(product_variants.price) as price'),
-            DB::raw('COUNT("order_items.slug_product")as count')
+            DB::raw('SUM(order_items.quantity) as total')
         )
         ->join('product_variants','order_items.product_variant_id','=','product_variants.id')
         ->join('products','product_variants.product_id','=','products.id')
         ->join('orders','order_items.order_id', '=' ,'orders.id')
         ->groupBy('products.id', 'products.name', 'order_items.slug_product','products.rating','product_variants.product_id')
-        ->orderBy(DB::raw('COUNT("order_items.slug_product")'),'desc')
+        ->orderBy(DB::raw('SUM(order_items.quantity)'),'desc')
         ->where('products.status',1)
         ->where('order_status_id',6)
         ->take(8)->get();
@@ -221,10 +221,11 @@ class ProductUser extends Model
         ->where('products.status', 1)
         ->where('product_variants.status',1)
         ->where('products.slug','!=',$slug)
-        ->where('categories.slug',$category)->groupBy( 'products.name', 'products.rating' ,'products.slug')
+        ->where('categories.slug',$category)
+        ->groupBy( 'products.name', 'products.rating' ,'products.slug')
         ->take(8)->get();
     }
-    public static function LayDanhSachSanPhamTheoDanhMuc($category,$slug){
+    public static function LayDanhSachSanPhamTheoDanhMuc($category,$slug,$brand){
         return DB::table('products')
         ->select(
             'products.name',
@@ -240,6 +241,7 @@ class ProductUser extends Model
         ->where('products.status', 1)
         ->where('products.slug','!=',$slug)
         ->where('products.status', 1)
+        ->where('brands.name','!=',$brand)
         ->where('product_variants.status',1)
         ->where('categories.slug',$category)->groupBy( 'products.name', 'products.rating' ,'products.slug')
         ->take(8)->get();
@@ -251,5 +253,6 @@ class ProductUser extends Model
         ->select('name')
         ->get();
     }
+
 }
 

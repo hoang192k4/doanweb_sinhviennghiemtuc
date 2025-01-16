@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (App\Models\Order::whereIn('order_status_id', [1, 2, 3])->get() as $order)
+                @foreach (App\Models\Order::whereIn('order_status_id', [1, 2, 3])->orderBy('updated_at','desc')->get() as $order)
                     <tr>
                         <td style="text-align: center;">{{ $order->id }}</td>
                         <td style="text-align: center;">{{ $order->order_code }}</td>
@@ -74,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (App\Models\Order::whereIn('order_status_id', [4, 5])->get() as $order)
+                @foreach (App\Models\Order::whereIn('order_status_id', [4, 5])->orderBy('updated_at','desc')->get() as $order)
                     <tr>
                         <td style="text-align: center;">{{ $order->id }}</td>
                         <td style="text-align: center;">{{ $order->order_code }}</td>
@@ -115,7 +115,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (App\Models\Order::where('order_status_id', 6)->get() as $order)
+                @foreach (App\Models\Order::where('order_status_id', 6)->orderBy('updated_at','desc')->get() as $order)
                     <tr>
                         <td style="text-align: center;">{{ $order->id }}</td>
                         <td style="text-align: center;">{{ $order->order_code }}</td>
@@ -152,7 +152,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (App\Models\Order::where('order_status_id', 7)->get() as $order)
+                @foreach (App\Models\Order::where('order_status_id', 7)->orderBy('updated_at','desc')->get() as $order)
                     <tr>
                         <td style="text-align: center;">{{ $order->id }}</td>
                         <td style="text-align: center;">{{ $order->order_code }}</td>
@@ -188,7 +188,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (App\Models\Order::where('order_status_id', 8)->get() as $order)
+                @foreach (App\Models\Order::where('order_status_id', 8)->orderBy('updated_at','desc')->get() as $order)
                     <tr>
                         <td style="text-align: center;">{{ $order->id }}</td>
                         <td style="text-align: center;">{{ $order->order_code }}</td>

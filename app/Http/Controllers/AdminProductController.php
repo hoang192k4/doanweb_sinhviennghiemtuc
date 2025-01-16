@@ -25,7 +25,7 @@ class AdminProductController extends Controller
     public function index()
     {
         //
-        $danhSachSanPham = Product::where('status',1)->paginate(8);
+        $danhSachSanPham = Product::where('status',1)->orderBy('created_at','desc')->paginate(8);
         return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPham]);
     }
 
