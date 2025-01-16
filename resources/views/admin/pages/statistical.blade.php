@@ -60,6 +60,8 @@
                 </select>
             </div>
 
+
+
             <button type="submit" style="padding: 10px; margin 5px;" id="btn"> Chọn</button>
         </form>
     </div>
@@ -96,6 +98,7 @@
         // Nhận dữ liệu từ controller
         const sum = @json($sum);
         const count = @json($count);
+
 
         // Tạo biểu đồ doanh thu
         const sumChart = document.getElementById('sumChart').getContext('2d');
