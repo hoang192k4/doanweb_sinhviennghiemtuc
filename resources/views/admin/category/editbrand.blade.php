@@ -1,6 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang cập nhật thương hiệu')
-@section('active','active')
+@section('active-category','active')
 @section('content')
     <div class="separator"></div>
     <div class="content">

@@ -92,14 +92,14 @@ class AdminProductController extends Controller
         }
 
         //Thêm nhiều variant
-        foreach($request->variants as $variant){
+        foreach($request->variants as $index=>$variant){
             ProductVariant::create([
                 'color'=>$variant['color'],
                 'stock'=>$variant['stock'],
                 'price'=>$variant['price'],
                 'internal_memory'=>$variant['internal_memory'],
                 'product_id'=>$product->id,
-                'image'=> ProductVariant::uploadImageVariant($variant['image_variant'])
+                'image'=> ProductVariant::uploadImageVariant($variant['image_variant'],$index)
                 ]);
         }
 
@@ -203,13 +203,13 @@ class AdminProductController extends Controller
         if($product){
             $variants = $product->product_variants;
             foreach($variants as $variant){
-                if ($variant->image && File::exists(public_path('images/' . $variant->image))) {
-                    File::delete(public_path('images/' . $variant->image));
+                if ($variant->image && File::exists(public_path('images/'.$variant->image))) {
+                    File::delete(public_path('images/'.$variant->image));
                 }
             }
             $image_products = $product->image_products;
             foreach( $image_products as $image_product){
-                if ($image_product->image && File::exists(public_path('images/' . $image_product->image))) {
+                if ($image_product->image && File::exists(public_path('images/'.$image_product->image))) {
                     File::delete(public_path('images/' . $image_product->image));
                 }
             }

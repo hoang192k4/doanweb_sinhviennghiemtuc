@@ -38,12 +38,22 @@ class AdminProductVariantController extends Controller
     public function store(Request $request)
     {
         //
+        $validate = [
+            'color'=>'required',
+            'stock'=>'required',
+            'internal_memory'=>'required',
+            'price'=>'required',
+            'file'=>'required|image|mimes:jpeg,png,jpg,webp|max:2048'
+        ];
+        if($request->has('file')){
+            $fileName = ProductVariant::uploadImageVariant($request->file,1);
+        }
         $variant = ProductVariant::create([
             'color'=>$request->color,
             'stock'=>$request->stock,
             'internal_memory'=>$request->internal_memory,
             'price'=>$request->price,
-            'image'=>'default.jpg',
+            'image'=>$fileName,
             'product_id'=>$request->product_id,
         ]);
         return $variant;
@@ -80,7 +90,7 @@ class AdminProductVariantController extends Controller
         $variant = ProductVariant::find($id);
 
         if(isset($request->image)){
-            $variant->update(['image'=>ProductVariant::uploadImageVariant($request->image)]);
+            $variant->update(['image'=>ProductVariant::uploadImageVariant($request->image,1)]);
         }
         $variant->update([
             'color'=>$request->color,

@@ -1,6 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang cập nhật danh mục')
-@section('active', 'active')
+@section('active-category', 'active')
 <style>
     .btn-goback>button>a {
         color: white;
