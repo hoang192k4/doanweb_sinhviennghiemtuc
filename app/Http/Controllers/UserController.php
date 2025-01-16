@@ -262,18 +262,19 @@ class UserController extends Controller
 
 
     public function ThemDanhGia(Request $request) {
-         // Kiểm tra định dạng file
-         $request->validate([
-            'file' => 'file|mimes:jpg,jpeg,png|max:2048',
-            'content'=>'required',
-         ],[
-            'content.required'=>"Vui lòng nhập nội dung đánh giá ",
-         ]);
 
-        // Lấy thông tin variant
+        $validatedData = $request->validate(
+            [
+                'file.*' => 'file|mimes:jpg,png,jpeg,gif,webp|max:2048',
+                'content' => 'required',
+            ],
+            [
+                'content.required' => "Vui lòng nhập nội dung đánh giá",
+                'file.*.mimes' => "Vui lòng nhập hình ảnh có định dạng jpg, png, jpeg, gif, webp",
+                'file.*.max' => "Vui lòng nhập hình ảnh có kích thước không vượt quá 2Mb",
+            ]
+        );
         $variant = ProductVariant::findOrFail($request->id);
-
-        // Tạo đánh giá
         $rating = Rating::create([
             'content' => $request->content,
             'internal_memory' => $variant->internal_memory,
@@ -282,28 +283,19 @@ class UserController extends Controller
             'product_id' => $variant->product->id,
             'user_id' => Auth::id(),
         ]);
-
-
-        // Kiểm tra và xử lý ảnh
-        if ($request->hasFile('file')) {
-            $image = $request->file('file');
-
-
-
-
-            // Lưu file vào thư mục images
-            $extension = $image->getClientOriginalExtension();
-            $fileName = 'rating_' . time() . '.' . $extension;
-            $image->move(public_path('images'), $fileName);
-
-            // Lưu thông tin ảnh vào bảng ImageRating
-            ImageRating::create([
-                'image' => $fileName,
-                'rating_id' => $rating->id,
-            ]);
+        if ($request->has('file') && count($request->file('file')) > 0) {
+            $idx = 1;
+            foreach($request->file as $file){
+                $extension = $file->getClientOriginalExtension();
+                $fileName = 'ratings_'.$idx.time().'.'.$extension;
+                $file->move(public_path('images'), $fileName);
+                ImageRating::create([
+                    'image' => $fileName,
+                    'rating_id' => $rating->id,
+                ]);
+                $idx++;
+            }
         }
-
-        // Trả về phản hồi JSON
 
         return response()->json([
             'tenSanPham' => $variant->product->name,
