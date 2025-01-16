@@ -283,7 +283,7 @@
                     data: data
                 })
                 .fail((data) => {
-                    let errors = data.responseJSON.errors; // Lấy danh sách lỗi
+                    let errors = data. .errors; // Lấy danh sách lỗi
 
                     if (errors.full_name !== undefined) {
                         $('#full_name_payment_error').text(errors.full_name);
