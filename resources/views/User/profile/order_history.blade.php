@@ -87,12 +87,17 @@
                                             <div class="table_item">Thành tiền:<span
                                                     style="font-size: 25px;">{{ number_format($order->total_price, 0, ',', '.') }}</span><sup>đ</sup>
                                             </div>
-                                            <form action="{{ route('profile.cancel', ['id' => $order->id]) }}"
-                                                method="POST" onsubmit="return confirmCancelOrder(event)">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="rattingBtn">Hủy đơn hàng</button>
-                                            </form>
+                                            <div>
+                                                <span> <button type="button" class="rattingBtn" onclick="showPayment({{$order->order_code}})"> Thanh toán </button></span>
+                                                <span><form action="{{ route('profile.cancel', ['id' => $order->id]) }}"
+                                                    method="POST" onsubmit="return confirmCancelOrder(event)">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="rattingBtn">Hủy đơn hàng</button>
+                                                </form></span>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 @endforeach
@@ -295,6 +300,11 @@
         </div>
     @endsection
     @section('script')
+        <script>
+            function showPayment(code){
+                alertify.alert('Thông báo thanh toán','Vui lòng thanh toán đơn hàng! <br> Ngân hàng: Sacombank <br> Số tài khoản: 060277266401 <br> Chủ tài khoản: NGUYEN THUY ANH THU <br> Nội dung chuyển khoản: ' + code);
+            }
+        </script>
         <script>
             function confirmCancelOrder(event) {
                 event.preventDefault();

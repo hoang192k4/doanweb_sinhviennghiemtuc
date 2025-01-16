@@ -207,10 +207,8 @@
                                             <p>Ngân hàng : SACOMBANK</p>
                                             <p>Số tài khoản : 060277266401</p>
                                             <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
-                                            <p style="margin-top: 8px;">Nội dung chuyển khoản : Số điện thoại đặt hàng + Mã
-                                                đơn
-                                                hàng</p>
-                                            <p>(Sẽ có nội dung mẫu sau khi hoàn tất đơn hàng)</p>
+                                            <p>Nội dung chuyển khoản: {{$code}}</p>
+
                                         </td>
                                     </tr>
                                 </tbody>
@@ -294,6 +292,7 @@
                     wards: localStorage.getItem('ward'),
                     voucher: $('#voucher').val(),
                     method: $('input[name="method_payment"]:checked').val(),
+                    code: {{$code}},
                     _token: '{{ csrf_token() }}'
                 }
                 $.ajax({
@@ -333,7 +332,9 @@
                         }
                     })
                     .done((data) => {
+                        console.log(data);
                         if (data.success == 1) {
+
                             alertify.confirm('Thông báo', data.message, function() {
                                 window.location.href = data.url
                             }, function() {
