@@ -99,11 +99,14 @@ class ProfileController extends Controller
         $request->validate(
             [
                 'oldpassword' => 'required|string',
-                'newPassword' => 'required|string',
+                'newPassword' => 'required|string
+                |regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+                |regex:/^[a-zA-Z0-9@$!%*?&]+$/',
             ],
             [
-                'oldpassword.required' => 'Bạn chưa nhập password hiện tại',
-                'newPassword.required' => 'Bạn chưa nhập password mới'
+                'oldpassword.required' => 'Vui lòng nhập password hiện tại',
+                'newPassword.required' => 'Vui lòng nhập password mới',
+                'newPassword.regex' => 'Password không chứa dấu phải có tối thiểu 8 kí tự bao gồm chữ hoa, chữ thường, kí tự số và kí tự đặt biệt'
             ]
         );
         if (Hash::check($request->oldpassword, Auth::user()->password)) {

@@ -1,5 +1,6 @@
 @extends('layouts.layouts_user')
 @section('title', 'Lịch sử đánh giá')
+@section('active_review_history','active_button')
 @section('content')
 <div class="container_css" style="padding: 0px 10px;">
     <div class="ratting">

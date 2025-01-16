@@ -1,5 +1,6 @@
 @extends('layouts.layouts_user')
 @section('title', 'Trang cá nhân')
+@section('active_profile', 'active_button')
 @section('content')
 <div class="container_css" style="padding: 0px 10px;">
     <div class="profile">

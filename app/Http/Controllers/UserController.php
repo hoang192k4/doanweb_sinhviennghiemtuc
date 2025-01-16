@@ -76,22 +76,25 @@ class UserController extends Controller
                 'full_name' => 'required|string|max:255',
                 'phone' => 'required|string|regex:/^[0-9]{10}$/|unique:users,phone',
                 'email_register' => 'required|email|max:255|unique:users,email',
-                'password_register' => 'required|string'
+                'password_register' => 'required|string
+                |regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+                |regex:/^[a-zA-Z0-9@$!%*?&]+$/'
             ],
             [
-                'username.required' => 'Bạn chưa nhập username',
+                'username.required' => 'Vui lòng nhập username',
                 'username.max' => 'Username không được quá 50 ký tự',
                 'username.unique' => 'Username đã tồn tại',
-                'full_name.required' => 'Bạn chưa nhập họ và tên',
+                'full_name.required' => 'Vui lòng nhập họ và tên',
                 'full_name.max' => 'Họ và tên không được quá 255 ký tự',
-                'email_register.required' => 'Bạn chưa nhập email',
-                'email_register.email' => 'Bạn chưa nhập đúng định đạng email',
+                'email_register.required' => 'Vui lòng nhập email',
+                'email_register.email' => 'Vui lòng nhập đúng định đạng email',
                 'email_register.max' => 'Email không được quá 255 ký tự',
                 'email_register.unique' => 'Email đã được sử dụng',
-                'phone.required' => 'Bạn chưa nhập số điện thoại',
+                'phone.required' => 'Vui lòng nhập số điện thoại',
                 'phone.unique' => 'Số điện thoại đã được sử dụng',
                 'phone.regex' => 'Vui lòng nhập ký tự số ( 0 đến 9 ) không quá 10 kí tự',
-                'password_register.required' => 'Bạn chưa nhập password',
+                'password_register.required' => 'Vui lòng nhập password',
+                'password_register.regex' => 'Password không chứa dấu phải có tối thiểu 8 kí tự bao gồm chữ hoa, chữ thường, kí tự số và kí tự đặt biệt'
             ]
         );
         DB::table('users')->insert([
@@ -115,11 +118,11 @@ class UserController extends Controller
                 'password_login' => 'required|string'
             ],
             [
-                'email_login.required' => 'Bạn chưa nhập email',
+                'email_login.required' => 'Vui lòng nhập email',
                 'email_login.exists' => 'Email chưa được đăng ký',
                 'email_login.email' => 'Bạn chưa nhập đúng định đạng email',
                 'email_login.max' => 'Email không được quá 255 ký tự',
-                'password_login.required' => 'Bạn chưa nhập password',
+                'password_login.required' => 'Vui lòng nhập password',
             ]
         );
          if(Auth::attempt(['email' => $request->email_login, 'password' =>$request->password_login]))
@@ -129,7 +132,7 @@ class UserController extends Controller
             return response()->json(['message' => 'Đăng nhập thành công']);
         }
         else {
-            return response()->json(['msg_error' => 'Mật khẩu chưa chính xác!'.'<br>'.' Vui lòng nhập lại mật khẩu'],401);
+            return response()->json(['msg_error' => 'Password chưa chính xác!'.'<br>'.' Vui lòng nhập lại password'],401);
         }
     }
     public function Logout(){

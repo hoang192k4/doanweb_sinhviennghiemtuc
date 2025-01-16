@@ -1,5 +1,6 @@
 @extends('layouts.layouts_user')
 @section('title', 'Trang sản phẩm yêu thích')
+@section('active_favourite_product', 'active_button')
 @section('content')
 <div class="container_css" style="padding: 0px 10px;">
     <div class="favourite_product">

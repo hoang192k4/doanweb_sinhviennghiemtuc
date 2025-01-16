@@ -1,5 +1,6 @@
 @extends('layouts.layouts_user')
 @section('title', 'Đổi mật khẩu')
+@section('active_changepassword', 'active_button')
 @section('content')
     <div class="container_css" style="padding: 0px 10px;">
         <div class="change_password">

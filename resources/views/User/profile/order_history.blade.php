@@ -1,5 +1,6 @@
 @extends('layouts.layouts_user')
 @section('title', 'Lịch sử đơn hàng')
+@section('active_order_history' ,'active_button')
 @section('content')
     <div class="container_css order">
         <div class="order_history">
