@@ -99,6 +99,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
 
     //quản lý đánh giá
     Route::get('/admin/review', [AdminReviewController::class, 'showListReviews'])->name('admin.review');
+    Route::get('/admin/review/point-review', [AdminReviewController::class, 'pointRivew'])->name('admin.point.review');
     Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
 });
 

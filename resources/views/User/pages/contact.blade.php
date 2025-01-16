@@ -3,8 +3,6 @@
 @section('content')
     @php
          $lienKetWebsite = DB::table('about')->first();
-         $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug')->get();
-         $danhSachPhanLoai = DB::table('brands')->select('brands.name')->distinct()->groupBy('brands.name')->take(6)->get();
     @endphp
     <div class="container_css" style="padding: 0px 10px;">
         <div class="contact">

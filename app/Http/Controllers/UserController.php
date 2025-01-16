@@ -203,7 +203,7 @@ class UserController extends Controller
             'content'=>'required|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,\.\/-]+$/u|string',
         ],[
             'name.required'=>'Bạn chưa nhập họ tên',
-            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
+            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt và số ở họ và tên',
             'name.max' =>'Họ và tên vừa nhập đã vượt 50 ký tự.',
             'email.required' => 'Bạn chưa nhập Email.',
             'email.email' => 'Email vừa nhập chưa hợp lệ.',
@@ -211,10 +211,10 @@ class UserController extends Controller
             'phone.required'=>'Bạn chưa nhập số điện thoại.',
             'phone.regex'=>'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
             'title.required'=>'Bạn chưa nhập tiêu đề.',
-            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
+            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt khác ngoài ,./-',
             'title.max'=>'chỉ được nhập tối đã 255 ký tự',
             'content.required'=>'Bạn chưa nhập nội dung.',
-            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
+            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt khoác ngoài ,./-',
         ]);
 
         $data = new Contact();
