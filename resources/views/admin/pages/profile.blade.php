@@ -14,15 +14,27 @@
                 <div>
                     <p>Tài khoản : </p><input name="username" value="{{$user->username}}">
                 </div>
+                @error('username')
+                    <div class="alert_error_validate" style="margin-left: 15%">{{ $message }}</div>
+                @enderror
                 <div>
                     <p>Họ và tên : </p><input name="fullname" value="{{$user->full_name}}">
                 </div>
+                @error('fullname')
+                    <div class="alert_error_validate" style="margin-left: 15%">{{ $message }}</div>
+                @enderror
                 <div>
                     <p>Email : </p><input name="email" value="{{$user->email}}">
                 </div>
+                @error('email')
+                    <div class="alert_error_validate" style="margin-left: 15%">{{ $message }}</div>
+                @enderror
                 <div>
                     <p>Số điện thoại : </p><input name="phone" value="{{$user->phone}}">
                 </div>
+                @error('phone')
+                    <div class="alert_error_validate" style="margin-left: 15%">{{ $message }}</div>
+                @enderror
                 <div style="justify-content: start;">
                     <p>Giới tính :
                         <input type="radio" name="gender" value="male" {{($user->gender == 'Nam') ? 'checked' : ''}}
@@ -30,12 +42,17 @@
                         <input type="radio" name="gender" value="female" {{($user->gender == 'Nữ') ? 'checked' : ''}}
                             style="width: 15px; margin-left: 55px;"> Nữ
                     </p>
-
                 </div>
+                @error('gender')
+                    <div class="alert_error_validate" style="margin-left: 15%">{{ $message }}</div>
+                @enderror
                 <div>
                     <p>Ngày sinh : </p><input type="date" name="birthday" value="{{$user->date_of_birth}}">
                 </div>
-                <button type="submit">Lưu thông tin</button>
+                @error('birthday')
+                    <div class="alert_error_validate" style="margin-left: 15%">{{ $message }}</div>
+                @enderror
+                <button type="submit" style="margin-top: 12px;">Lưu thông tin</button>
             </form>
         </div>
         <div class="separator"></div>
