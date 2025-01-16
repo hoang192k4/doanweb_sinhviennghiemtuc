@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -20,14 +21,45 @@ class ProfileController extends Controller
     }
     public function editInfo(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:50',
-            'fullname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:10',
-            'gender' => 'required|string',
-            'birthday' => 'required|date',
-        ]);
+        $request->validate(
+            [
+                'username' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    Rule::unique('users')->ignore(Auth::user()->id),
+                ],
+                'fullname' => 'required|string|max:255',
+                'phone' => [
+                    'required',
+                    'string',
+                    'regex:/^[0-9]{10}$/',
+                    Rule::unique('users')->ignore(Auth::user()->id),
+                ],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    Rule::unique('users')->ignore(Auth::user()->id),
+                ],
+                'gender' => 'required|string',
+                'birthday' => 'required|date',
+            ],
+            [
+                'username.required' => 'Vui lòng nhập username',
+                'username.max' => 'Username không được quá 50 ký tự',
+                'username.unique' => 'Username đã tồn tại',
+                'fullname.required' => 'Vui lòng nhập họ và tên',
+                'fullname.max' => 'Họ và tên không được quá 255 ký tự',
+                'email.required' => 'Vui lòng nhập email',
+                'email.email' => 'Vui lòng nhập đúng định đạng email',
+                'email.max' => 'Email không được quá 255 ký tự',
+                'email.unique' => 'Email đã được sử dụng',
+                'phone.required' => 'Vui lòng nhập số điện thoại',
+                'phone.unique' => 'Số điện thoại đã được sử dụng',
+                'phone.regex' => 'Vui lòng nhập ký tự số ( 0 đến 9 ) không quá 10 kí tự',
+            ]
+        );
         $user = Auth::user();
         $user->username = $request->input('username');
         $user->full_name = $request->input('fullname');
@@ -56,13 +88,13 @@ class ProfileController extends Controller
     public function order_history()
     {
         return view('user.profile.order_history')->with([
-            'orders'=> Order::where('user_id', Auth::user()->id)->get(),
+            'orders' => Order::where('user_id', Auth::user()->id)->orderBy('updated_at', 'desc')->get(),
         ]);
     }
     public function cancel($id)
     {
         $order = Order::where('user_id', Auth::user()->id)->find($id);
-        if ($order){
+        if ($order) {
             $order->order_status_id = 7;
             $order->save();
         }
@@ -70,7 +102,7 @@ class ProfileController extends Controller
     }
     public function favourite_product()
     {
-        return view('user.profile.favourite_product')->with('products', Product::whereIn('id', LikeProduct::where('user_id', Auth::user()->id)->pluck('product_id'))->get());
+        return view('user.profile.favourite_product')->with('products', Product::whereIn('id', LikeProduct::where('user_id', Auth::user()->id)->pluck('product_id'))->orderBy('updated_at', 'desc')->get());
     }
     public function unLike($id)
     {
@@ -81,7 +113,7 @@ class ProfileController extends Controller
     }
     public function review_history()
     {
-        return view('user.profile.review_history')->with('reviews', Rating::where('user_id', Auth::user()->id)->get());
+        return view('user.profile.review_history')->with('reviews', Rating::where('user_id', Auth::user()->id)->orderBy('updated_at', 'desc')->get());
     }
     public function ChangePwd()
     {
