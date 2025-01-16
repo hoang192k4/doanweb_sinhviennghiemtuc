@@ -13,11 +13,12 @@ class CategorySpecification extends Model
     //
     use HasFactory;
 
-    public function product_specifications(): HasMany
+    public function category(): HasMany
     {
-        return $this->hasMany(ProductSpecification::class);
+        return $this->hasMany(CategorySpecification::class);
     }
 
+    protected $table = 'category_specifications';
     protected $fillable = ['id', 'category_id', 'name'];
 
     public $timestamps = false;

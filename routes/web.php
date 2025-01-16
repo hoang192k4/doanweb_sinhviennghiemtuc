@@ -70,6 +70,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
 
     //Route quan li thong ke
     Route::get('/admin/static', [AdminStaticController::class, 'index'])->name('admin.static');
+    Route::get('/admin/statistic', [AdminStaticController::class, 'statistics'])->name('admin.statistic');
 
     Route::get('/admin/category-specification/{id}', [AdminCategoryController::class, 'loadCategorySpecification']);
 
@@ -138,13 +139,26 @@ Route::middleware(['role:KH'])->group(function () {
 });
 
 //Route quan li danh mục
-Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
-Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addCategory');
-Route::get('/admin/searchcategory', [AdminCategoryController::class, 'searchCategory'])->name('admin.category.searchCategory');
-Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editCategory');
-Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updateCategory');
-Route::get('/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
+Route::controller(AdminCategoryController::class)->group(
+    function () {
+        Route::get('/admin/addcategory', [AdminCategoryController::class, 'addCategory'])->name('admin.category.addcategory');
+        Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'storeCategory'])->name('admin.category.storecategory');
+        Route::get('/admin/editcategory/{id}', [AdminCategoryController::class, 'editCategory'])->name('admin.category.editcategory');
+        Route::post('/admin/updatecategory//{id}', [AdminCategoryController::class, 'updateCategory'])->name('admin.category.updatecategory');
+        Route::get('/admin/filter-category/{id}', [AdminCategoryController::class, 'filterCategory'])->name('filter.category');
+        Route::delete('/admin/deletecategory/{id}', [AdminCategoryController::class, 'deleteCategory'])->name('admin.delete.category');
+    }
+);
 
-Route::post('/admin/addcategory/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
-Route::get('/admin/addbrand', [AdminBrandController::class, 'index'])->name('admin.addbrand.index');
-Route::post('/admin/addbrand/store', [AdminBrandController::class, 'store'])->name('admin.addbrand.store');
+//Route quan li danh mục con
+Route::controller(AdminBrandController::class)->group(
+    function () {
+        Route::get('/admin/category', [AdminBrandController::class, 'getListBrand'])->name('admin.category');
+        Route::get('/admin/addbrand', [AdminBrandController::class, 'addBrand'])->name('admin.category.addbrand');
+        Route::post('/admin/brandStore', [AdminBrandController::class, 'storeBrand'])->name('admin.category.storebrand');
+        Route::get('/admin/editbrand/{id}', [AdminBrandController::class, 'editBrand'])->name('admin.category.editbrand');
+        Route::post('/admin/updatebrand/{id}', [AdminBrandController::class, 'updateBrand'])->name('admin.category.updatebrand');
+        Route::delete('/admin/deletebrand/{id}', [AdminBrandController::class, 'deleteBrand'])->name('admin.brand.delete');
+        Route::get('/admin/searchbrand', [AdminBrandController::class, 'searchBrand'])->name('admin.category.searchbrand');
+    }
+);

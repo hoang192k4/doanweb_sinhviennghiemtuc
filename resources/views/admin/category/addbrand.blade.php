@@ -22,7 +22,7 @@
                 </div>
             @endif
             <div class="row">
-                <form action="{{ route('admin.addbrand.store') }}" method="POST" id="formAddCategory"
+                <form action="{{ route('admin.category.storebrand') }}" method="POST" id="formAddCategory"
                     class="form-category">
                     <div class="form-group">
                         <div class="col">
@@ -30,9 +30,15 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="nameBrand" name="nameBrand">
+                            @error('nameBrand')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col">
                             <input type="file" name="imageBrand" id="imageBrand">
+                            @error('imageBrand')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
                             <img id="previewImage" src="" alt="Hình ảnh sản phẩm" width="100px" height="100px">
                         </div>
                     </div>
@@ -42,7 +48,7 @@
                         </div>
                         <div class="col">
                             <select name="nameCategory" class="form-control">
-                                @foreach ($danhSachTenDanhMuc as $item)
+                                @foreach ($danhSachDanhMuc as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
@@ -63,7 +69,7 @@
                     <div class="btn-goback">
                         @csrf
                         <button type="submit">Xác nhận thêm</button>
-                        <button>Hủy</button>
+                        <button type="button" id="cancelButton">Hủy</button>
                     </div>
                 </form>
             </div>
@@ -81,5 +87,11 @@
                 previewImage.src = URL.createObjectURL(file);
             }
         }
+
+        document.getElementById('cancelButton').addEventListener('click', function() {
+            document.getElementById('nameBrand').value = '';
+            document.getElementById('imageBrand').value = '';
+            document.getElementById('previewImage').src = '';
+        });
     </script>
 @endsection
