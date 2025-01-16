@@ -16,13 +16,14 @@ class OrderController extends Controller
     //
     public function index()
     {
+        $code = Order::generateTimestamp();
         if(session('buy-now')!=null) {
-            return view('User.profile.payment');
+            return view('User.profile.payment',['code'=>$code]);
         }
         //hiển thị các sản phẩm trong giỏ hàng
         if(session('cart')==null)
             return redirect()->route('user.index');
-        return view('User.profile.payment');
+        return view('User.profile.payment',['code'=>$code]);
     }
 
     public function addVoucher(Request $request){
@@ -91,8 +92,6 @@ class OrderController extends Controller
                 'wards.required' => 'Vui lòng chọn phường/xã!',
             ]
         );
-        //kiểm tra giá sản phẩm có bằng với lúc nhấn đặt hàng hay không
-
 
         //kiểm tra khách hàng có nhập voucher hay không
         if($req->voucher!=null){
@@ -116,8 +115,32 @@ class OrderController extends Controller
         else
             $methodId = 2;
         if(session('buy-now')!=null){
+            $variant = ProductVariant::find(session('buy-now')['variant_info']->id);
+                if(session('buy-now')['variant_info']->price != $variant->price){
+                    return response()->json([
+                        'success' => 0,
+                        'message'=> 'Giá của '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') đã thay đổi! Vui lòng đặt lại đơn hàng!',
+                        'url'=>route('user.shoppingcart')
+                    ]);
+                }
+            //kiểm tra sản phẩm có bị ẩn đi hay xóa trong lúc đặt k
+            if($variant==null||$variant->status==0){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Sản phẩm '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') có thể đã bị xóa! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+            if(session('buy-now')['quantity'] > $variant->stock){
+                return response()->json([
+                    'success' => 0,
+                    'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
+                    'url'=>route('user.shoppingcart')
+                ]);
+            }
+
             $order = Order::create([
-                'order_code'=>Order::generateTimestamp(),
+                'order_code'=>$req->code,
                 'full_name'=>$req->full_name,
                 'phone'=>$req->phone,
                 'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
@@ -125,7 +148,7 @@ class OrderController extends Controller
                 'payment_method'=>$methodId,
                 'user_id'=>Auth::user()->id,
                 'voucher_id'=> $req->voucher!=null? $voucher->id:null,
-                'order_status_id'=>2
+                'order_status_id'=> $methodId == 1?2:1
             ]);
             OrderItem::create([
                 'product_variant_id'=>session('buy-now')['variant_info']->id,
@@ -138,7 +161,11 @@ class OrderController extends Controller
                 'total_price'=>session('buy-now')['totalPrice'],
                 'order_id'=>$order->id
             ]);
+            $req->session()->forget('buy-now');
         }else{
+
+        //kiểm tra giá sản phẩm có bằng với lúc nhấn đặt hàng hay không
+
             foreach(session('cart')->listProductVariants as $item){
                 $variant = ProductVariant::find($item['variant_info']->id);
                 if($item['variant_info']->price != $variant->price){
@@ -151,28 +178,28 @@ class OrderController extends Controller
             }
 
              //kiểm tra số lượng của sản phẩm lúc đặt hàng và số lượng trong giỏ hàng
-        foreach(session('cart')->listProductVariants as $item){
-            $variant = ProductVariant::find($item['variant_info']->id);
-            //kiểm tra sản phẩm có bị ẩn đi hay xóa trong lúc đặt k
-            if($variant==null||$variant->status==0){
-                return response()->json([
-                    'success' => 0,
-                    'message'=> 'Sản phẩm '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') có thể đã bị xóa! Vui lòng đặt lại đơn hàng!',
-                    'url'=>route('user.shoppingcart')
-                ]);
+            foreach(session('cart')->listProductVariants as $item){
+                $variant = ProductVariant::find($item['variant_info']->id);
+                //kiểm tra sản phẩm có bị ẩn đi hay xóa trong lúc đặt k
+                if($variant==null||$variant->status==0){
+                    return response()->json([
+                        'success' => 0,
+                        'message'=> 'Sản phẩm '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') có thể đã bị xóa! Vui lòng đặt lại đơn hàng!',
+                        'url'=>route('user.shoppingcart')
+                    ]);
+                }
+                if($item['quantity'] > $variant->stock){
+                    return response()->json([
+                        'success' => 0,
+                        'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
+                        'url'=>route('user.shoppingcart')
+                    ]);
+                }
             }
-            if($item['quantity'] > $variant->stock){
-                return response()->json([
-                    'success' => 0,
-                    'message'=> 'Số lượng '.$variant->product->name.' ('.$variant->color.','.$variant->internal_memory.') không đủ! Vui lòng đặt lại đơn hàng!',
-                    'url'=>route('user.shoppingcart')
-                ]);
-            }
-        }
 
 
             $order = Order::create([
-                'order_code'=>Order::generateTimestamp(),
+                'order_code'=>$req->code,
                 'full_name'=>$req->full_name,
                 'phone'=>$req->phone,
                 'address'=>$req->address.', '.$req->wards.', '.$req->districts.', '.$req->provinces,
@@ -180,7 +207,7 @@ class OrderController extends Controller
                 'payment_method'=>$methodId,
                 'user_id'=>Auth::user()->id,
                 'voucher_id'=> $req->voucher!=null? $voucher->id:null,
-                'order_status_id'=>2
+                'order_status_id'=>$methodId == 1?2:1
             ]);
             foreach(session('cart')->listProductVariants as $item){
                 OrderItem::create([
@@ -195,13 +222,12 @@ class OrderController extends Controller
                     'order_id'=>$order->id
                 ]);
             }
-            $req->session()->forget('cart');
         }
 
 
         return response()->json([
             'success'=>1,
-            'message'=>'Đặt hàng thành công!',
+            'message'=>$methodId==2?'Đặt hàng thành công! <br> Cảm ơn bạn đã mua hàng! <br> Vui lòng thanh toán ở mục chờ thanh toán trong lịch sử đơn hàng!':'Đặt hàng thành công! <br> Cảm ơn bạn đã mua hàng!',
             'url'=>route('user.index')
         ]);
     }
