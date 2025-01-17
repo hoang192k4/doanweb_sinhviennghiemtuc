@@ -36,49 +36,52 @@
         <div class="payment">
             <div class="payment_left">
                 <div class="payment_products">
-                @if(session('buy-now')==null)
-                    @if (session('cart') != null)
-                        @foreach (session('cart')->listProductVariants as $item)
-                            <div class="payment_product">
-                                <a href=""><img src="{{ asset('images/' . $item['variant_info']->image) }}"
-                                        alt="Lỗi hiển thị"></a>
-                                <div>
+                    @if (session('buy-now') == null)
+                        @if (session('cart') != null)
+                            @foreach (session('cart')->listProductVariants as $item)
+                                <div class="payment_product">
+                                    <a href=""><img src="{{ asset('images/' . $item['variant_info']->image) }}"
+                                            alt="Lỗi hiển thị"></a>
                                     <div>
-                                        <a href="">
-                                            <h6>{{ $item['product_info']->name }}</h6>
-                                        </a>
-                                        <p>{{ number_format($item['variant_info']->price, 0, ',', '.') }}<sup>đ</sup></p>
-                                    </div>
-                                    <div>
-                                        <h6>{{ $item['variant_info']->color }} {{ $item['variant_info']->internal_memory }}
-                                        </h6>
-                                        <p>x{{ $item['quantity'] }}</p>
+                                        <div>
+                                            <a href="">
+                                                <h6>{{ $item['product_info']->name }}</h6>
+                                            </a>
+                                            <p>{{ number_format($item['variant_info']->price, 0, ',', '.') }}<sup>đ</sup>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <h6>{{ $item['variant_info']->color }}
+                                                {{ $item['variant_info']->internal_memory }}
+                                            </h6>
+                                            <p>x{{ $item['quantity'] }}</p>
+                                        </div>
                                     </div>
                                 </div>
+                            @endforeach
+                        @endif
+                    @else
+                        <div class="payment_product">
+                            <a href=""><img src="{{ asset('images/' . session('buy-now')['variant_info']->image) }}"
+                                    alt="Lỗi hiển thị"></a>
+                            <div>
+                                <div>
+                                    <a href="">
+                                        <h6>{{ session('buy-now')['product_info']->name }}</h6>
+                                    </a>
+                                    <p>{{ number_format(session('buy-now')['variant_info']->price, 0, ',', '.') }}<sup>đ</sup>
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6>{{ session('buy-now')['variant_info']->color }}
+                                        {{ session('buy-now')['variant_info']->internal_memory }}
+                                    </h6>
+                                    <p>x{{ session('buy-now')['quantity'] }}</p>
+                                </div>
                             </div>
-                        @endforeach
+                        </div>
                     @endif
-
-                @else
-                <div class="payment_product">
-                    <a href=""><img src="{{ asset('images/'.session('buy-now')['variant_info']->image) }}"
-                            alt="Lỗi hiển thị"></a>
-                    <div>
-                        <div>
-                            <a href="">
-                                <h6>{{ session('buy-now')['product_info']->name }}</h6>
-                            </a>
-                            <p>{{ number_format(session('buy-now')['variant_info']->price, 0, ',', '.') }}<sup>đ</sup></p>
-                        </div>
-                        <div>
-                            <h6>{{ session('buy-now')['variant_info']->color }} {{ session('buy-now')['variant_info']->internal_memory }}
-                            </h6>
-                            <p>x{{ session('buy-now')['quantity'] }}</p>
-                        </div>
-                    </div>
                 </div>
-                @endif
-            </div>
                 <div class="payment_action">
                     <div class="voucher_payment">
                         <input type="text" placeholder="Mã giảm giá" id="voucher-code">
@@ -87,7 +90,14 @@
                     <div class="payment_action_temporary">
                         <div>
                             <p>Tạm tính </p>
-                            <p> @if(session('buy-now')==null) {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}@else {{ number_format(session('buy-now')['totalPrice'], 0, ',', '.') }} @endif<sup>đ</sup></p>
+                            <p>
+                                @if (session('buy-now') == null)
+                                    {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}
+                                @else
+                                    {{ number_format(session('buy-now')['totalPrice'], 0, ',', '.') }}
+                                @endif
+                                <sup>đ</sup>
+                            </p>
                         </div>
                         <div>
                             <p>Phí vận chuyển </p>
@@ -101,9 +111,15 @@
                     </div>
                     <div class="total_price">
                         <p>Tổng cộng </p>
-                        <p><span>VNĐ </span><span
-                                id="total-price">@if(session('buy-now')==null) {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}@else {{ number_format(session('buy-now')['totalPrice'], 0, ',', '.') }} @endif</span>
-                            <sup>đ</sup></p>
+                        <p><span>VNĐ </span><span id="total-price">
+                                @if (session('buy-now') == null)
+                                    {{ number_format(session('cart')->totalPrice, 0, ',', '.') }}
+                                @else
+                                    {{ number_format(session('buy-now')['totalPrice'], 0, ',', '.') }}
+                                @endif
+                            </span>
+                            <sup>đ</sup>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -142,7 +158,8 @@
                                 onchange=hadelChangeDistrict(this)>
                                 <option required value="">Quận Huyện</option>
                             </select>
-                            <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã" onchange="handleChangePosition(this)">
+                            <select class="css_select" id="wards" name="wards" title="Chọn Phường Xã"
+                                onchange="handleChangePosition(this)">
                                 <option required value="">Phường Xã</option>
                             </select>
                         </div>
@@ -190,10 +207,8 @@
                                             <p>Ngân hàng : SACOMBANK</p>
                                             <p>Số tài khoản : 060277266401</p>
                                             <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
-                                            <p style="margin-top: 8px;">Nội dung chuyển khoản : Số điện thoại đặt hàng + Mã
-                                                đơn
-                                                hàng</p>
-                                            <p>(Sẽ có nội dung mẫu sau khi hoàn tất đơn hàng)</p>
+                                            <p>Nội dung chuyển khoản: {{$code}}</p>
+
                                         </td>
                                     </tr>
                                 </tbody>
@@ -259,109 +274,117 @@
                     }
                 });
         }
-        function handleChangePosition(ward){
+
+        function handleChangePosition(ward) {
             let selectedWardName = ward.options[ward.selectedIndex].text;
             localStorage.setItem("ward", selectedWardName);
         }
 
         function order() {
-            const data = {
-                full_name: $('#full_name_payment').val(),
-                email: $('#email_payment').val(),
-                phone: $('#phone_payment').val(),
-                address: $('#address').val(),
-                provinces: localStorage.getItem('province'),
-                districts: localStorage.getItem('district'),
-                wards: localStorage.getItem('ward'),
-                voucher:  $('#voucher').val(),
-                method: $('input[name="method_payment"]:checked').val(),
-                _token: '{{ csrf_token() }}'
+            try {
+                const data = {
+                    full_name: $('#full_name_payment').val(),
+                    email: $('#email_payment').val(),
+                    phone: $('#phone_payment').val(),
+                    address: $('#address').val(),
+                    provinces: localStorage.getItem('province'),
+                    districts: localStorage.getItem('district'),
+                    wards: localStorage.getItem('ward'),
+                    voucher: $('#voucher').val(),
+                    method: $('input[name="method_payment"]:checked').val(),
+                    code: {{$code}},
+                    _token: '{{ csrf_token() }}'
+                }
+                $.ajax({
+                        method: "POST",
+                        url: '/payment',
+                        data: data
+                    })
+                    .fail((response) => {
+                        let errors = response.responseJSON.errors; // Lấy danh sách lỗi
+                        if (errors.full_name !== undefined) {
+                            $('#full_name_payment_error').text(errors.full_name);
+                            $('#full_name_payment').focus();
+                        }
+                        if (errors.phone !== undefined) {
+                            $('#phone_payment_error').text(errors.phone);
+                            $('#phone_payment').focus();
+                        }
+                        if (errors.email !== undefined) {
+                            $('#email_payment_error').text(errors.email);
+                            $('#email_payment').focus();
+                        }
+                        if (errors.address !== undefined) {
+                            $('#address_payment_error').text(errors.address);
+                            $('#address_payment').focus();
+                        }
+                        if (errors.provinces !== undefined) {
+                            $('#provinces_error').text(errors.provinces);
+                            $('#provinces').focus();
+                        }
+                        if (errors.districts !== undefined) {
+                            $('#districts_error').text(errors.districts);
+                            $('#districts').focus();
+                        }
+                        if (errors.wards !== undefined) {
+                            $('#wards_error').text(errors.wards);
+                            $('#wards').focus();
+                        }
+                    })
+                    .done((data) => {
+                        console.log(data);
+                        if (data.success == 1) {
+
+                            alertify.confirm('Thông báo', data.message, function() {
+                                window.location.href = data.url
+                            }, function() {
+                                window.location.href = data.url
+                            })
+                        } else {
+                            alertify.confirm('Thông báo', data.message, function() {
+                                window.location.href = data.url
+                            }, function() {
+                                window.location.href = data.url
+                            })
+                        }
+
+                    });
+            } catch (errors) {
+                console.log(errors);
             }
-            $.ajax({
-                    method: "POST",
-                    url: '/payment',
-                    data: data
-                })
-                .fail((data) => {
-                    let errors = data.responseJSON.errors; // Lấy danh sách lỗi
-
-                    if (errors.full_name !== undefined) {
-                        $('#full_name_payment_error').text(errors.full_name);
-                        $('#full_name_payment').focus();
-                    }
-                    if (errors.phone !== undefined) {
-                        $('#phone_payment_error').text(errors.phone);
-                        $('#phone_payment').focus();
-                    }
-                    if (errors.email !== undefined) {
-                        $('#email_payment_error').text(errors.email);
-                        $('#email_payment').focus();
-                    }
-                    if (errors.address !== undefined) {
-                        $('#address_payment_error').text(errors.address);
-                        $('#address_payment').focus();
-                    }
-                    if (errors.provinces !== undefined) {
-                        $('#provinces_error').text(errors.provinces);
-                        $('#provinces').focus();
-                    }
-                    if (errors.districts !== undefined) {
-                        $('#districts_error').text(errors.districts);
-                        $('#districts').focus();
-                    }
-                    if (errors.wards !== undefined) {
-                        $('#wards_error').text(errors.wards);
-                        $('#wards').focus();
-                    }
-                })
-                .done((data)=>{
-                    if(data.success==1){
-                        alertify.confirm('Thông báo',data.message,function(){
-                            window.location.href = data.url
-                        },function(){
-                            window.location.href = data.url
-                        })
-                    }else{
-                        alertify.confirm('Thông báo',data.message,function(){
-                            window.location.href = data.url
-                        },function(){
-                            window.location.href = data.url
-                        })
-                    }
-
-                })
         }
-        const fullName = document.getElementById('full_name_payment');
-        fullName.addEventListener('input', () => {
-            $('#full_name_payment_error').text('');
-        })
-        const email = document.getElementById('email_payment');
-        email.addEventListener('input', () => {
-            $('#email_payment_error').text('');
-        })
-        const phone = document.getElementById('phone_payment');
-        phone.addEventListener('input', () => {
-            $('#phone_payment_error').text('');
-        })
-        const address = document.getElementById('address');
-        address.addEventListener('input', () => {
-            $('#address_payment_error').text('');
-        })
-        const provinces = document.getElementById('provinces');
-        provinces.addEventListener('input', () => {
-            $('#provinces_error').text('');
-        })
-        const districts = document.getElementById('districts');
-        provinces.addEventListener('input', () => {
-            $('#districts_error').text('');
-        })
-        const wards = document.getElementById('wards');
-        provinces.addEventListener('input', () => {
-            $('#wards_error').text('');
-        })
+
+
+            const fullName = document.getElementById('full_name_payment');
+            fullName.addEventListener('input', () => {
+                $('#full_name_payment_error').text('');
+            })
+            const email = document.getElementById('email_payment');
+            email.addEventListener('input', () => {
+                $('#email_payment_error').text('');
+            })
+            const phone = document.getElementById('phone_payment');
+            phone.addEventListener('input', () => {
+                $('#phone_payment_error').text('');
+            })
+            const address = document.getElementById('address');
+            address.addEventListener('input', () => {
+                $('#address_payment_error').text('');
+            })
+            const provinces = document.getElementById('provinces');
+            provinces.addEventListener('input', () => {
+                $('#provinces_error').text('');
+            })
+            const districts = document.getElementById('districts');
+            provinces.addEventListener('input', () => {
+                $('#districts_error').text('');
+            })
+            const wards = document.getElementById('wards');
+            provinces.addEventListener('input', () => {
+                $('#wards_error').text('');
+            })
     </script>
     <script>
-
         const btn = document.getElementById('btn-submit-voucher');
         btn.addEventListener('click', (event) => {
             const code = $('#voucher-code').val().trim();
@@ -371,7 +394,11 @@
                 url: '/add-voucher',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    orderValue: @if(session('buy-now')==null) {{ session('cart')->totalPrice }} @else{{ session('buy-now')['totalPrice']}} @endif,
+                    orderValue: @if (session('buy-now') == null)
+                        {{ session('cart')->totalPrice }}
+                    @else
+                        {{ session('buy-now')['totalPrice'] }}
+                    @endif ,
                     code
                 }
             }).done((data) => {
@@ -379,14 +406,22 @@
                     alertify.success(data.message);
                     $('#discount').text(new Intl.NumberFormat('vi-VN').format(data.voucher.discount_value));
                     $('#total-price').text(new Intl.NumberFormat('vi-VN').format(parseInt(
-                        @if(session('buy-now')==null) {{ session('cart')->totalPrice }} @else session('buy-now')['totalPrice']@endif) - data.voucher.discount_value));
+                        @if (session('buy-now') == null)
+                            {{ session('cart')->totalPrice }}
+                        @else
+                            session('buy-now')['totalPrice']
+                        @endif ) - data.voucher.discount_value));
                     $('#voucher').val(data.voucher.id);
-                    totalPrice = parseInt( @if(session('buy-now')==null) {{ session('cart')->totalPrice }} @else session('buy-now')['totalPrice']@endif) - data.voucher.discount_value;
+                    totalPrice = parseInt(
+                        @if (session('buy-now') == null)
+                            {{ session('cart')->totalPrice }}
+                        @else
+                            session('buy-now')['totalPrice']
+                        @endif ) - data.voucher.discount_value;
                 } else {
                     alertify.error(data.message);
                 }
             })
         })
-
     </script>
 @endsection

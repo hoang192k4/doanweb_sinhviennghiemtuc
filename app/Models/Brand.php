@@ -32,6 +32,6 @@ class Brand extends Model
     }
     public static function index()
     {
-        return Db::table('brands')->where('status', 1)->select('name', 'image');
+        return Db::table('brands')->where('status', 1)->select('name', 'image')->get();
     }
 }

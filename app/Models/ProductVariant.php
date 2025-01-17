@@ -15,9 +15,8 @@ class ProductVariant extends Model
     {
         return $this->beLongsTo(Product::class);
     }
-    static public function uploadImageVariant($file){
-        $extension = $file->getClientOriginalExtension();
-        $fileName = 'product_variant_'.time().'.'.$extension;
+    static public function uploadImageVariant($file,$index){
+        $fileName = 'product_variant_'.$index.time().'.png';
         $file->move(public_path('images'), $fileName);
         return $fileName;
     }

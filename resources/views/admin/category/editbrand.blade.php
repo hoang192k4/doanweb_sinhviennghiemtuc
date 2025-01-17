@@ -1,11 +1,14 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang cập nhật thương hiệu')
-@section('active', 'active')
+
+{{-- ai chỉ viết style kiểu vầy dị --}}
 <style>
     .btn-goback>button>a {
         color: white;
     }
 </style>
+
+@section('active-category','active')
 @section('content')
     <div class="separator"></div>
     <div class="content">

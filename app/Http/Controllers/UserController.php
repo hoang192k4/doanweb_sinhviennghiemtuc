@@ -58,6 +58,7 @@ class UserController extends Controller
     public function timKiemBaiVietTheoTuKhoa(Request $request)
     {
         $key = $request->input('keyBlog');
+        $key = str_replace('$', '', $key);
         $danhSachBaiViet = Blog::timKiemBaiViet($key);
         return view('user.pages.blog')->with('danhSachBaiViet', $danhSachBaiViet);
     }
@@ -112,7 +113,7 @@ class UserController extends Controller
     }
     public function DangNhap(Request $request)
     {
-         $request->validate(
+        $request->validate(
             [
                 'email_login' => 'required|email|string|max:255|exists:users,email',
                 'password_login' => 'required|string'
@@ -125,25 +126,25 @@ class UserController extends Controller
                 'password_login.required' => 'Vui lòng nhập password',
             ]
         );
-         if(Auth::attempt(['email' => $request->email_login, 'password' =>$request->password_login]))
-        {
-            if(Auth::user()->role=="NV" || Auth::user()->role=="QL")
+        if (Auth::attempt(['email' => $request->email_login, 'password' => $request->password_login])) {
+            if (Auth::user()->role == "NV" || Auth::user()->role == "QL")
                 return redirect()->route('admin.index');
             return response()->json(['message' => 'Đăng nhập thành công']);
-        }
-        else {
-            return response()->json(['msg_error' => 'Password chưa chính xác!'.'<br>'.' Vui lòng nhập lại password'],401);
+        } else {
+            return response()->json(['msg_error' => 'Password chưa chính xác!' . '<br>' . ' Vui lòng nhập lại password'], 401);
         }
     }
-    public function Logout(){
+    public function Logout()
+    {
         Auth::logout();
         return redirect()->back();
     }
 
-    public function ChiTietSanPham($slug){
+    public function ChiTietSanPham($slug)
+    {
 
-        $product = Product::where('slug',$slug)->first();
-        if($product==null){
+        $product = Product::where('slug', $slug)->first();
+        if ($product == null || $product->status != 1) {
             return view('User.pages.404');
         }
         ProductUser::UpdateView($slug);
@@ -151,129 +152,136 @@ class UserController extends Controller
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
-        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug,$thongTinSanPham[0]->brand,$slug);
-        $laySanPhamTheoDanhMuc=ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug,$slug,$thongTinSanPham[0]->brand);
-        $arr = array_merge( $sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
+        $sanPhamTuongTu = ProductUser::SanPhamTuongDuong($thongTinSanPham[0]->slug, $thongTinSanPham[0]->brand, $slug);
+        $laySanPhamTheoDanhMuc = ProductUser::LayDanhSachSanPhamTheoDanhMuc($thongTinSanPham[0]->slug, $slug, $thongTinSanPham[0]->brand);
+        $arr = array_merge($sanPhamTuongTu->toArray(), $laySanPhamTheoDanhMuc->toArray());
         $thongSoKiThuatSanPham = $product->product_specification;
         $boNhoNhoNhat = ProductUser::LayBoNhoNhoNhat($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$boNhoNhoNhat->internal_memory);
+        $mauSanPham = ProductUser::MauSanPham($slug, $boNhoNhoNhat->internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachAnhVariant"=>$product->product_variants,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$arr
+            'slug' => $slug,
+            "danhSachAnh" => $danhSachAnh,
+            "danhSachAnhVariant" => $product->product_variants,
+            "danhSachBoNho" => $danhSachBoNho,
+            "thongTinSanPham" => $thongTinSanPham[0],
+            "thongSoKiThuatSanPham" => $thongSoKiThuatSanPham,
+            "luotThichSanPham" => $luotThichSanPham,
+            "mauSanPham" => $mauSanPham,
+            "sanPhamTuongTu" => $arr
         ]);
     }
-    public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
-        $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);
+    public function LayMauSanPhamTheoBoNho($slug, $internal_memory)
+    {
+        $danhSachMau = ProductUser::MauSanPham($slug, $internal_memory);
         return $danhSachMau;
     }
-    public function ChiTietSanPhamTheoBoNho($slug,$internal_memory){
+    public function ChiTietSanPhamTheoBoNho($slug, $internal_memory)
+    {
 
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
         $thongSoKiThuatSanPham = ProductUser::ThongSoKiThuatSanPham($slug);
-        $mauSanPham = ProductUser::MauSanPham($slug,$internal_memory);
+        $mauSanPham = ProductUser::MauSanPham($slug, $internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
-            'slug'=>$slug,
-            "danhSachAnh"=>$danhSachAnh,
-            "danhSachBoNho"=>$danhSachBoNho,
-            "thongTinSanPham"=>$thongTinSanPham[0],
-            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham[0],
-            "luotThichSanPham"=>$luotThichSanPham,
-            "mauSanPham"=>$mauSanPham,
+            'slug' => $slug,
+            "danhSachAnh" => $danhSachAnh,
+            "danhSachBoNho" => $danhSachBoNho,
+            "thongTinSanPham" => $thongTinSanPham[0],
+            "thongSoKiThuatSanPham" => $thongSoKiThuatSanPham[0],
+            "luotThichSanPham" => $luotThichSanPham,
+            "mauSanPham" => $mauSanPham,
         ]);
     }
-    public function LayThongTinSanPhamTheoMau($slug,$internal_memory,$color){
-        $data = ProductUser::LayThongTinSanPhamTheoMau($slug,$internal_memory,$color);
+    public function LayThongTinSanPhamTheoMau($slug, $internal_memory, $color)
+    {
+        $data = ProductUser::LayThongTinSanPhamTheoMau($slug, $internal_memory, $color);
         return response()->json([
-            "variant_id"=>$data->id,
-            "image"=>$data->image,
-            "stock"=>$data->stock,
-            "price"=>$data->price
+            "variant_id" => $data->id,
+            "image" => $data->image,
+            "stock" => $data->stock,
+            "price" => $data->price
         ]);
     }
     public function addContact(Request $req)
     {
-        $validate=$req->validate([
-            'name'=>'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',            'email'=>'required|email|max:25',
-            'phone'=>'required|string|regex:/^[0-9]{10}$/',
-            'title'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:255',
-            'content'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|string',
-        ],[
-            'name.required'=>'Bạn chưa nhập họ tên',
-            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
-            'name.max' =>'Họ và tên vừa nhập đã vượt 50 ký tự.',
+        $validate = $req->validate([
+            'name' => 'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
+            'email' => 'required|email|max:25',
+            'phone' => 'required|string|regex:/^[0-9]{10}$/',
+            'title' => 'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:255',
+            'content' => 'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|string',
+        ], [
+            'name.required' => 'Bạn chưa nhập họ tên',
+            'name.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
+            'name.max' => 'Họ và tên vừa nhập đã vượt 50 ký tự.',
             'email.required' => 'Bạn chưa nhập Email.',
             'email.email' => 'Email vừa nhập chưa hợp lệ.',
             'email.max' => 'Email vừa nhập đã vượt 25 ký tự.',
-            'phone.required'=>'Bạn chưa nhập số điện thoại.',
-            'phone.regex'=>'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
-            'title.required'=>'Bạn chưa nhập tiêu đề.',
-            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
-            'title.max'=>'chỉ được nhập tối đã 255 ký tự',
-            'content.required'=>'Bạn chưa nhập nội dung.',
-            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
+            'phone.required' => 'Bạn chưa nhập số điện thoại.',
+            'phone.regex' => 'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
+            'title.required' => 'Bạn chưa nhập tiêu đề.',
+            'title.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
+            'title.max' => 'chỉ được nhập tối đã 255 ký tự',
+            'content.required' => 'Bạn chưa nhập nội dung.',
+            'content.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
         ]);
 
         $data = new Contact();
-        $data->id=$req['id'];
-        $data->name=$req['name'];
-        $data->title=$req['title'];
-        $data->content=$req['content'];
-        $data->email=$req['email'];
-        $data->phone=$req['phone'];
+        $data->id = $req['id'];
+        $data->name = $req['name'];
+        $data->title = $req['title'];
+        $data->content = $req['content'];
+        $data->email = $req['email'];
+        $data->phone = $req['phone'];
         $data->save();
-        return redirect()->route('user.contact')->with('msg','Gửi liên hệ thành công!');
+        return redirect()->route('user.contact')->with('msg', 'Gửi liên hệ thành công!');
     }
-    public function CapNhapSanPhamYeuThich($sanpham,$user){
+    public function CapNhapSanPhamYeuThich($sanpham, $user)
+    {
         $luotThich = LikeProduct::TongLuotThichSanPham($sanpham);
-        $tenSanPham =ProductUser::LayTenSanPhamTheoId($sanpham);
-        $status = LikeProduct::TrangThai($sanpham,$user);
-        if($status > 0 ){
-            LikeProduct::XoaSanPhamYeuThich($sanpham,$user);
+        $tenSanPham = ProductUser::LayTenSanPhamTheoId($sanpham);
+        $status = LikeProduct::TrangThai($sanpham, $user);
+        if ($status > 0) {
+            LikeProduct::XoaSanPhamYeuThich($sanpham, $user);
             return response()->json([
-                'status'=>0,
-                'tenSanPham'=>$tenSanPham,
-                'luotThich'=>$luotThich,
+                'status' => 0,
+                'tenSanPham' => $tenSanPham,
+                'luotThich' => $luotThich,
             ]);
-        }
-        else{
-            LikeProduct::ThemSanPhamYeuThich($sanpham,$user);
+        } else {
+            LikeProduct::ThemSanPhamYeuThich($sanpham, $user);
             return response()->json([
-                'status'=>1,
-                'tenSanPham'=>$tenSanPham,
-                'luotThich'=>$luotThich,
+                'status' => 1,
+                'tenSanPham' => $tenSanPham,
+                'luotThich' => $luotThich,
             ]);
         }
     }
-    public function GetDanhSachDanhGia($user,$code){
-        $danhSach=Rating::DanhGia($user,$code);
+    public function GetDanhSachDanhGia($user, $code)
+    {
+        $danhSach = Rating::DanhGia($user, $code);
         return $danhSach;
     }
 
 
-    public function ThemDanhGia(Request $request) {
-         // Kiểm tra định dạng file
-         $request->validate([
-            'file' => 'file|mimes:jpg,jpeg,png|max:2048',
-            'content'=>'required',
-         ],[
-            'content.required'=>"Vui lòng nhập nội dung đánh giá ",
-         ]);
+    public function ThemDanhGia(Request $request)
+    {
 
-        // Lấy thông tin variant
+        $validatedData = $request->validate(
+            [
+                'file.*' => 'file|mimes:jpg,png,jpeg,gif,webp|max:2048',
+                'content' => 'required',
+            ],
+            [
+                'content.required' => "Vui lòng nhập nội dung đánh giá",
+                'file.*.mimes' => "Vui lòng nhập hình ảnh có định dạng jpg, png, jpeg, gif, webp",
+                'file.*.max' => "Vui lòng nhập hình ảnh có kích thước không vượt quá 2Mb",
+            ]
+        );
         $variant = ProductVariant::findOrFail($request->id);
-
-        // Tạo đánh giá
         $rating = Rating::create([
             'content' => $request->content,
             'internal_memory' => $variant->internal_memory,
@@ -282,28 +290,19 @@ class UserController extends Controller
             'product_id' => $variant->product->id,
             'user_id' => Auth::id(),
         ]);
-
-
-        // Kiểm tra và xử lý ảnh
-        if ($request->hasFile('file')) {
-            $image = $request->file('file');
-
-
-
-
-            // Lưu file vào thư mục images
-            $extension = $image->getClientOriginalExtension();
-            $fileName = 'rating_' . time() . '.' . $extension;
-            $image->move(public_path('images'), $fileName);
-
-            // Lưu thông tin ảnh vào bảng ImageRating
-            ImageRating::create([
-                'image' => $fileName,
-                'rating_id' => $rating->id,
-            ]);
+        if ($request->has('file') && count($request->file('file')) > 0) {
+            $idx = 1;
+            foreach ($request->file as $file) {
+                $extension = $file->getClientOriginalExtension();
+                $fileName = 'ratings_' . $idx . time() . '.' . $extension;
+                $file->move(public_path('images'), $fileName);
+                ImageRating::create([
+                    'image' => $fileName,
+                    'rating_id' => $rating->id,
+                ]);
+                $idx++;
+            }
         }
-
-        // Trả về phản hồi JSON
 
         return response()->json([
             'tenSanPham' => $variant->product->name,
@@ -311,7 +310,4 @@ class UserController extends Controller
             'mau' => $variant->color,
         ]);
     }
-
-
-
 }

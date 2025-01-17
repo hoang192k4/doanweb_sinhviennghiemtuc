@@ -10,7 +10,7 @@
             <button><a href="{{route('product_variant_hide',[$product->id])}}"><i class="fa-solid fa-lock"></i></i>Biến thể bị ẩn</a></button>
         </div>
         <div class="btn-goback">
-            <a href="{{ route('admin.product.unapproved') }}" type="button"> <button>&laquo; Trở lại</button></a>
+            <a href="{{ route('admin.product_variant.index',['id'=>$product->id]) }}" type="button"> <button>&laquo; Trở lại</button></a>
         </div>
         <div class="row">
             <div>
@@ -157,21 +157,23 @@
             const price = document.getElementById(`price-${id}`).value;
             const stock = document.getElementById(`stock-${id}`).value;
             const internalMemory = document.getElementById(`internal_memory-${id}`).value;
-            const fileUpload = document.getElementById(`image-input-${id}`);
-            fileUpload.addEventListener('change',(event)=>{
-                const images = event.target.images;
-            })
+            const fileUpload = document.getElementById(`image-input-${id}`).files[0];
+
+            data = new FormData();
+            data.append('color',color);
+            data.append('price',price);
+            data.append('stock',stock);
+            data.append('internal_memory',internalMemory);
+            data.append('file',fileUpload);
+            data.append('product_id',{{$product->id}});
+            data.append('_token','{{csrf_token()}}');
+
             $.ajax({
                 method: "POST",
                 url: '/admin/product-variant',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    color,
-                    price,
-                    stock,
-                    internal_memory: internalMemory,
-                    product_id: '{{$product->id}}',
-                }
+                data: data,
+                processData: false, // Quan trọng: Ngăn jQuery xử lý `FormData`
+                contentType: false,
             }).done((data)=>{
                 alertify.alert('Thông báo',`Thêm thành công variant có id là ${data.id}! Trạng thái variant đang ẩn!!`);
                 setTimeout(()=>{ location.reload();},2000);
@@ -183,6 +185,9 @@
      <script>
         @if(session('msg'))
             alertify.alert('Thông báo','{{session('msg')}}');
+        @endif
+        @if($errors->any())
+            alertify.alert('Thông báo','Vui lòng nhập đầy đủ thông tin biến thể');
         @endif
     </script>
 @endsection

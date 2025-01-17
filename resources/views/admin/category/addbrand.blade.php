@@ -1,6 +1,6 @@
 @extends('layouts.layouts_admin')
 @section('title', 'Trang thêm thương hiệu')
-@section('active', 'active')
+@section('active-category', 'active')
 <style>
     .btn-goback>button>a {
         color: white;
