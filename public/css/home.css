@@ -489,7 +489,7 @@
     flex-wrap: wrap;
 }
 .product_detail_bottom_left_rating > div:nth-child(2) > button{
-    padding:5px 10px;
+    padding:5px 22px;
     font-size: 13px;
     margin:2px;
     background-color: white;
@@ -509,6 +509,17 @@
     padding:3px;
 }
 .product_detail_bottom_left_comments > button{
+    color: #ee4d2d;
+    border: 1px solid #ee4d2d;
+    padding:4px 10px;
+    background-color: white;
+    width: 30%;
+    font-size: 14px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+
+}
+.button{
     color: #ee4d2d;
     border: 1px solid #ee4d2d;
     padding:4px 10px;

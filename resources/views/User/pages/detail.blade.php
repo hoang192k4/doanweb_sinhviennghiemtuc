@@ -173,7 +173,7 @@
                     <div class="product_detail_bottom_left_rating">
                         <div>
                             <a href="">
-                                <p>4.9 / 5</p>
+                                <p>{{ number_format($diemDanhGia, 1)}} / 5</p>
                                 <p>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -184,15 +184,87 @@
                             </a>
                         </div>
                         <div id="button_rating">
-                            <button class="click_active_border">Tất cả</button>
-                            <button onclick="loadRating(5,{{$thongTinSanPham->id}})">5 sao (248)</button>
-                            <button onclick="loadRating(4,{{$thongTinSanPham->id}})" >4 sao (515)</button>
-                            <button onclick="loadRating(3,{{$thongTinSanPham->id}})" >3 sao (211)</button>
-                            <button onclick="loadRating(2,{{$thongTinSanPham->id}})">2 sao (85)</button>
-                            <button onclick="loadRating(1,{{$thongTinSanPham->id}})">1 sao (3)</button>
+                            <button onclick="loadRating(0,{{$thongTinSanPham->id}},this)" class="click_active_border">Tất cả</button>
+                            <button onclick="loadRating(5,{{$thongTinSanPham->id}},this)">5 sao </button>
+                            <button onclick="loadRating(4,{{$thongTinSanPham->id}},this)" >4 sao </button>
+                            <button onclick="loadRating(3,{{$thongTinSanPham->id}},this)" >3 sao </button>
+                            <button onclick="loadRating(2,{{$thongTinSanPham->id}},this)">2 sao </button>
+                            <button onclick="loadRating(1,{{$thongTinSanPham->id}},this)">1 sao </button>
                         </div>
                     </div>
 
+                <div>
+                    <div class="product_detail_bottom_left_comments" id="ratings">
+                        @php
+                            $index = 0;
+                        @endphp
+                        @foreach ($danhSachDanhGia as $danhGia)
+                            <div class="product_detail_bottom_left_comment">
+                                <div>
+                                    <button>
+                                        <img src="{{ asset('images/' . $danhGia->user->image) }}" alt="">
+                                    </button>
+                                    <div>
+                                        {{$danhGia->user->full_name}}
+                                        <p>
+                                            @for ($i = 0; $i < $danhGia->point; $i++)
+                                                <i class="fas fa-star"></i>
+                                            @endfor
+                                        </p>
+                                    </div>
+                                    <p><i class="fas fa-clock"></i> {{$danhGia->created_at}}</p>
+                                </div>
+                                <div>
+                                    <p style="color:#C7C7C7">
+                                        {{$danhGia->color}} | {{$danhGia->internal_memory}}
+                                    </p>
+                                    <p>{{$danhGia->content}}</p>
+                                    <div>
+                                        @foreach ($danhGia->image_ratings as $image)
+                                            <img src="{{ asset('images/' . $image->image) }}" alt="">
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            @php
+                                $index++;
+                            @endphp
+                            @if ($index == 2)
+                                @break
+                            @endif
+                        @endforeach
+                    </div>
+
+                    @if(count($danhSachDanhGia) > 2)
+                    <button onclick="showPopup()" class="button">Xem thêm</button>
+                @endif
+
+
+                </div>
+                <div class="product_detail_bottom_left_desription">
+                    <h6>Mô tả sản phẩm</h6>
+                    <p>{{ $thongTinSanPham->description }}</p>
+                </div>
+            </div>
+
+            <div class="product_detail_bottom_right">
+                <h4><a href="">Thông Số Kỹ Thuật</a></h4>
+                <ul>
+                    @foreach ($thongSoKiThuatSanPham as $thongSo)
+                        <li>
+                            <div> {{ $thongSo->category_specification->name }}</div>
+                            <div>{{ $thongSo->value }}</div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    </section>
+    {{-- popup đánh giá  --}}
+    <div id="popup_order_history" class="popup_order_history">
+        <div class="popup_content">
+            <span class="close_popup_rating">&times;</span>
+            <div class="popup_table" id="popup_table">
                 <div class="product_detail_bottom_left_comments" id ="ratings">
                     @foreach ($danhSachDanhGia as $danhGia)
                     <div class="product_detail_bottom_left_comment">
@@ -220,29 +292,10 @@
                         </div>
                     </div>
                     @endforeach
-
-                    <button>Xem thêm</button>
                 </div>
-                <div class="product_detail_bottom_left_desription">
-                    <h6>Mô tả sản phẩm</h6>
-                    <p>{{ $thongTinSanPham->description }}</p>
-                </div>
-            </div>
-
-            <div class="product_detail_bottom_right">
-                <h4><a href="">Thông Số Kỹ Thuật</a></h4>
-                <ul>
-                    @foreach ($thongSoKiThuatSanPham as $thongSo)
-                        <li>
-                            <div> {{ $thongSo->category_specification->name }}</div>
-                            <div>{{ $thongSo->value }}</div>
-                        </li>
-                    @endforeach
-                </ul>
             </div>
         </div>
-    </section>
-
+    </div>
     <!-- Sản phẩm tương tự -->
     <section class="container_css product_best_seller">
         <h4>SẢN PHẨM TƯƠNG TỰ </h4>
@@ -269,7 +322,7 @@
                                         </li>
                                         <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
                                         <li>
-                                            <a href=""><button>Mua ngay</button></a>
+                                            <button onclick="buyNowSame('{{$sanPhamTuongTu[$i]->variants}}')" >Mua ngay</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -298,7 +351,7 @@
                                     </li>
                                     <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
                                     <li>
-                                        <a href=""><button>Mua ngay</button></a>
+                                        <button onclick="buyNowSame('{{$sanPhamTuongTu[$i]->variants}}')">Mua ngay</button>
                                     </li>
                                 </ul>
                             </div>
@@ -311,7 +364,7 @@
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+            <button  class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
                 data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
@@ -325,15 +378,57 @@
 @section('script')
 
 <script>
-    function loadRating(sao,id){
-        $.ajax({
-            method:"GET",
-            url:`/get-rating/${id}/${sao}`
-        })
-        .done((data)=>{
-            $('#ratings').innerHTML = "haha";
-        })
+ function loadRating(sao, id,btn) {
+    const button_rating = document.querySelectorAll('#button_rating button');
+    if (button_rating) {
+        button_rating.forEach((element) => {
+           element.classList.remove('click_active_border')
+        });
     }
+    btn.classList.add('click_active_border')
+    $.ajax({
+        method: "GET",
+        url: `/get-rating/${id}/${sao}`
+    })
+    .done((data) => {
+        console.log(data);
+        const content = data.data.map((item) => {
+            const images = item.images.split(','); // Tách chuỗi ảnh thành một mảng
+            return `
+                <div class="product_detail_bottom_left_comment">
+                    <div>
+                        <button><img src="/images/${item.user_image}" alt=""></button>
+                        <div> ${item.full_name}
+                            <p>
+                                 ${(() => {
+                                    let stars = '';
+                                    for (let i = 0; i < item.point; i++) {
+                                        stars += '<i class="fas fa-star"></i>';
+                                    }
+                                    return stars;
+                                })()}
+                            </p>
+                        </div>
+                        <p><i class="fas fa-clock"></i> ${item.created_at}</p>
+                    </div>
+                    <div>
+                        <p style="color:#C7C7C7">${item.color} | ${item.internal_memory}</p>
+                        <p>${item.content}</p>
+                        <div>
+                            ${images.map(image => `<img src="/images/${image}" alt="">`).join('')}
+                        </div>
+                    </div>
+
+                </div>
+            `;
+        }).join('');
+        // Chèn nội dung vào container trong HTML
+        ratings = document.getElementById('ratings').innerHTML = content;
+        if(data.data.length === 0 ){
+            document.getElementById('ratings').innerHTML =` <h4> Hiện tại chưa có đánh giá !</h4> `
+        }
+    });
+}
 </script>
 <script>
     function addToCart(id) {
@@ -431,6 +526,33 @@
                 } else {
                     $('#button_plus_value').attr('disabled', false);
                     $('#quantity-limit').text('');
+                }
+            })
+    }
+</script>
+<script>
+     function buyNowSame(variantId) {
+        const quantity = 1;
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variantId}`
+            })
+            .done((data) => {
+                if (data < quantity) {
+                    alertify.alert('Thông báo', 'Sản phẩm không đủ số lượng!');
+                } else {
+                    $.ajax({
+                        method: "POST",
+                        url: '/order/buy-now',
+                        data: {
+                            id: variantId,
+                            quantity,
+                            _token: '{{ csrf_token() }}'
+                        }
+                    }).done((data) => {
+                        window.location.href = data;
+                    })
+
                 }
             })
     }
@@ -540,5 +662,31 @@
         });
     }
 </script>
+<script>
+     function showPopup() {
+                const popupOrderHistory = document.getElementById("popup_order_history");
+                if (!popupOrderHistory) {
+                    console.error("Popup element not found!");
+                    return;
+                }
+                const closeBtn = document.querySelector(".close_popup_rating");
+                if (!closeBtn) {
+                    console.error("Close button element not found!");
+                    return;
+                }
 
+                popupOrderHistory.style.display = "block";
+
+
+                closeBtn.onclick = function() {
+                    popupOrderHistory.style.display = "none";
+                };
+
+                window.onclick = function(event) {
+                    if (event.target === popupOrderHistory) {
+                        popupOrderHistory.style.display = "none";
+                    }
+                };
+            }
+</script>
 @endsection

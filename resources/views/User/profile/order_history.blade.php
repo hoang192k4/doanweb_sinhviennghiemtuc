@@ -330,7 +330,7 @@
                     return;
                 }
 
-                popupOrderHistory.style.display = "block";
+
 
                 // Fetch data using AJAX
                 $.ajax({
@@ -378,8 +378,7 @@
                                     <button type="button" data-idx="1" onclick="addImage('${item.product_variant_id}', this)">Thêm hình ảnh</button>
                                 </div>
                                 <div class="col" id="image-products-${item.product_variant_id}">
-                                    <img id="${item.product_variant_id}-1" />
-                                    <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control input_${item.product_variant_id}" name="${item.product_variant_id}_image[0]" required>
+
                                 </div>
                                 <textarea name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
 
@@ -391,6 +390,12 @@
                         });
 
                         popupTable.innerHTML = content.join('');
+                        popupOrderHistory.style.display = "block";
+                        if(danhSach.length ===0){
+                            alertify.error("Đơn hàng đã được đánh giá")
+                            popupOrderHistory.style.display = "none";
+
+                        }
                         selectStar();
 
                     });
@@ -476,7 +481,7 @@
             const pointValue = hiddenInput.value;
             const total_input = document.querySelectorAll( `input.input_${id}`);
             let formData = new FormData();
-            for(let i=0;i<total_input.length;i++){
+            for(let i=1;i<total_input.length;i++){
                 const img = total_input[i];
                 if(img.type ==="file" && img.files.length>0){
                     const load_image = img.files[0];
