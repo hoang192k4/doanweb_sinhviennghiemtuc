@@ -60,19 +60,24 @@
                 </select>
             </div>
 
-            <button type="submit" style="padding: 10px; margin 5px;" id="btn"> Chọn</button>
+            <button type="submit" style="padding: 10px; margin 5px;" id="btnChon"> Chọn</button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        console.log('btn');
-        document.addEventListener('DOMContentLoaded', function() {
+        let chart1;
+        let chart2;
 
-            let chart1;
+        // Lấy nút và thêm sự kiện click
+        const button = document.getElementById('btnChon');
+        button.addEventListener('click', function() {
+            console.log('đã chọn'); // Ghi log khi nút được click
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
             const statisticTypeSelect = document.getElementById('statistic_type');
             const yearInput = document.getElementById('year_input');
             const monthInput = document.getElementById('month_input');
-            const monthSelect = document.getElementById('month');
             const yearInputField = document.getElementById('year');
 
             // Lắng nghe sự kiện thay đổi của select
@@ -91,109 +96,129 @@
                     yearInputField.value = "{{ date('Y') }}";
                 }
             });
-        });
 
-        // Nhận dữ liệu từ controller
-        const sum = @json($sum);
-        const count = @json($count);
+            document.querySelector('form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn form gửi đi để xử lý trước
 
-        // Tạo biểu đồ doanh thu
-        const sumChart = document.getElementById('sumChart').getContext('2d');
+                const selectedValue = document.getElementById('statistic_type').value;
+                const yearInputValue = document.getElementById('year').value;
+                const monthInputValue = document.getElementById('month').value;
 
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Ngăn chặn form gửi đi để xử lý trước
+                // Gọi API để lấy dữ liệu thống kê
+                fetch(
+                        `/your-api-endpoint?year=${yearInputValue}&month=${monthInputValue}&statistic_type=${selectedValue}`
+                    )
+                    .then(response => response.json())
+                    .then(data => {
+                        const sum = data.sum;
+                        const count = data.count;
 
-            const selectedValue = document.getElementById('statistic_type').value;
-            const yearInputValue = document.getElementById('year').value;
-            const monthInputValue = document.getElementById('month').value;
-
-            let sumData;
-
-            if (selectedValue === 'year') {
-                // Dữ liệu cho biểu đồ theo năm
-                sumData = {
-                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7',
-                        'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
-                    ],
-                    datasets: [{
-                        label: 'Doanh thu năm ' + yearInputValue + ' (VNĐ)',
-                        data: sum, // Dữ liệu doanh thu theo năm
-                        backgroundColor: 'rgba(19, 93, 102, 0.5)',
-                        borderColor: 'rgba(19, 93, 102, 1)',
-                        borderWidth: 1
-                    }]
-                };
-            } else if (selectedValue === 'month') {
-                // Dữ liệu cho biểu đồ theo tháng
-                sumData = {
-                    labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
-                    datasets: [{
-                        label: 'Doanh thu tháng ' + monthInputValue + ' (VNĐ)',
-                        data: sum, // Dữ liệu doanh thu theo tháng
-                        backgroundColor: 'rgba(19, 93, 102, 0.5)',
-                        borderColor: 'rgba(19, 93, 102, 1)',
-                        borderWidth: 1
-                    }]
-                };
-            } else {
-                alert('Vui lòng chọn loại thống kê!');
-                return; // Ngăn chặn việc tạo biểu đồ nếu không có lựa chọn
-            }
-
-            if (chart1) {
-                chart1.destroy();
-            }
-
-            // Tạo biểu đồ
-            const chart1 = new Chart(sumChart, {
-                type: 'bar', // Hoặc loại biểu đồ bạn muốn
-                data: sumData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                        // Tạo dữ liệu cho biểu đồ doanh thu
+                        let sumData;
+                        if (selectedValue === 'year') {
+                            sumData = {
+                                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5',
+                                    'Tháng 6',
+                                    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11',
+                                    'Tháng 12'
+                                ],
+                                datasets: [{
+                                    label: 'Doanh thu năm ' + yearInputValue + ' (VNĐ)',
+                                    data: sum, // Dữ liệu doanh thu theo năm
+                                    backgroundColor: 'rgba(19, 93, 102, 0.5)',
+                                    borderColor: 'rgba(19, 93, 102, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        } else if (selectedValue === 'month') {
+                            sumData = {
+                                labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
+                                datasets: [{
+                                    label: 'Doanh thu tháng ' + monthInputValue + ' (VNĐ)',
+                                    data: sum, // Dữ liệu doanh thu theo tháng
+                                    backgroundColor: 'rgba(19, 93, 102, 0.5)',
+                                    borderColor: 'rgba(19, 93, 102, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        } else {
+                            alert('Vui lòng chọn loại thống kê!');
+                            return; // Ngăn chặn việc tạo biểu đồ nếu không có lựa chọn
                         }
-                    }
-                }
+
+                        // Hủy biểu đồ cũ nếu đã tồn tại
+                        if (chart1) {
+                            chart1.destroy();
+                        }
+
+                        // Tạo biểu đồ mới cho doanh thu
+                        chart1 = new Chart(sumChart, {
+                            type: 'bar',
+                            data: sumData,
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+
+                        // Tạo dữ liệu cho biểu đồ lượt mua
+                        let countData;
+                        if (selectedValue === 'year') {
+                            countData = {
+                                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5',
+                                    'Tháng 6',
+                                    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11',
+                                    'Tháng 12'
+                                ],
+                                datasets: [{
+                                    label: 'Lượt mua năm ' + yearInputValue,
+                                    data: count, // Dữ liệu lượt mua theo năm
+                                    backgroundColor: 'rgba(19, 93, 102, 0.5)',
+                                    borderColor: 'rgba(19, 93, 102, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        } else if (selectedValue === 'month') {
+                            countData = {
+                                labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
+                                datasets: [{
+                                    label: 'Lượt mua tháng ' + monthInputValue,
+                                    data: count, // Dữ liệu lượt mua theo tháng
+                                    backgroundColor: 'rgba(19, 93, 102, 0.5)',
+                                    borderColor: 'rgba(19, 93, 102, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        } else {
+                            alert('Vui lòng chọn loại thống kê!');
+                            return; // Ngăn chặn việc tạo biểu đồ nếu không có lựa chọn
+                        }
+
+                        // Hủy biểu đồ cũ nếu đã tồn tại
+                        if (chart2) {
+                            chart2.destroy();
+                        }
+
+                        // Tạo biểu đồ mới cho lượt mua
+                        chart2 = new Chart(countChart, {
+                            type: 'bar',
+                            data: countData,
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
             });
-        });
-
-        // Tạo biểu đồ lượt mua
-        const countChart = document.getElementById('countChart').getContext('2d');
-        const countData = {
-            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9',
-                'Tháng 10', 'Tháng 11', 'Tháng 12'
-            ],
-            datasets: [{
-                label: 'Lượt mua năm 2024',
-                data: count,
-                backgroundColor: 'rgba(19, 93, 102, 0.5)',
-                borderColor: 'rgba(19, 93, 102, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        // const countData = {
-        //     labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
-        //     datasets: [{
-        //         label: 'Lượt mua tháng' + monthInput,
-        //         data: count,
-        //         backgroundColor: 'rgba(19, 93, 102, 0.5)',
-        //         borderColor: 'rgba(19, 93, 102, 1)',
-        //         borderWidth: 1
-        //     }]
-        // };
-
-        const chart2 = new Chart(countChart, {
-            type: 'bar',
-            data: countData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
         });
     </script>
 

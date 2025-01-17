@@ -16,8 +16,8 @@ class AdminBrandController extends Controller
     {
         //
         $danhSachThuongHieu = Brand::where('status', 1)->paginate(5);
-        $danhSachDanhMucLoc = Category::all();
-        $danhSachDanhMuc = Category::all();
+        $danhSachDanhMucLoc = Category::where('status', 1)->get();
+        $danhSachDanhMuc = Category::where('status', 1)->get();
 
         return view('admin.category.category')
             ->with('danhSachThuongHieu', $danhSachThuongHieu)

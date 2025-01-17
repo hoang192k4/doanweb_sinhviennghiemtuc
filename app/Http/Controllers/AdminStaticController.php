@@ -26,7 +26,6 @@ class AdminStaticController extends Controller
         $year = $request->input('year', date('Y'));
         $month = $request->input('month', date('m'));
         $statisticType = $request->input('statistic_type');
-        dd($request->all());
 
         // Khởi tạo mảng để lưu tổng giá trị đơn hàng và số lượng đơn hàng
         $sum = 0;
@@ -47,10 +46,6 @@ class AdminStaticController extends Controller
                 ->count('order_code');
         }
 
-        // Đảm bảo rằng nếu không có dữ liệu, sum và count sẽ là 0
-        $sum = $sum ?: 0; // Nếu $sum là null hoặc 0, giữ nguyên
-        $count = $count ?: 0; // Nếu $count là null hoặc 0, giữ nguyên
-
-        return redirect()->route('/admin/static')->with('sum', $sum)->with('count', $count);
+        return response()->json(['sum' => $sum, 'count' => $count]);
     }
 }
