@@ -6,20 +6,20 @@
         <div class="head">
             <div class="title">Quản Lý Đánh Giá</div>
             <div class="search">
-                <form>
-                    <input>
+                <form action="{{ route('admin.review.search') }} " method="GET">
+                    <input type="text" name="keyword_review" placeholder="Tìm kiếm đánh giá...">
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
         </div>
         <div class="separator_x"></div>
-        <select>
-            <option value="">Tất cả</option>
-            <option value="">5 sao</option>
-            <option value="">4 sao</option>
-            <option value="">3 sao</option>
-            <option value="">2 sao</option>
-            <option value="">1 sao</option>
+        <select onchange="hanlePointReview(this)">
+            <option value="Tất cả">Tất cả</option>
+            <option value="5 sao">5 sao</option>
+            <option value="4 sao">4 sao</option>
+            <option value="3 sao">3 sao</option>
+            <option value="2 sao">2 sao</option>
+            <option value="1 sao">1 sao</option>
         </select>
         <div>
             <table>
@@ -30,6 +30,8 @@
                         <th>Content</th>
                         <th>Product</th>
                         <th>Point</th>
+                        <th>Color</th>
+                        <th>internal_memory</th>
                         <th style="width: 48px;">Xóa</th>
                     </tr>
                 </thead>
@@ -37,30 +39,25 @@
                     @foreach ($listReview as $review)
                         <tr>
                             <td style="text-align: center;">{{ $review->id }}</td>
-                            <td>{{ App\Models\User::find($review->user_id)->full_name }}</td>
+                            <td>{{ $review->username }}</td>
                             <td>{{ $review->content }}</td>
-                            <td>{{ App\Models\Product::find($review->product_id)->name }}</td>
+                            <td>{{ $review->product_name }}</td>
                             <td>{{ $review->point }}</td>
+                            <td>{{ $review->color }}</td>
+                            <td>{{ $review->internal_memory }}</td>
                             <td style="text-align: center;">
                                 <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
-                                    onclick="showDeletePopup({{ $review->id }},'{{ App\Models\User::find($review->user_id)->full_name }}')"><i
+                                    onclick="showDeletePopup({{ $review->id }},'{{ $review->username }}')"><i
                                         class="fa-regular fa-trash-can"></i>
                                 </button>
                             </td>
                         </tr>
                     @endforeach
+                    @if (!$listReview->isNotEmpty())
+                        <td colspan="8" style="text-align:center">Không có đánh giá tương tự</td>
+                    @endif
                 </tbody>
             </table>
-        </div>
-
-        <div class="pagination">
-            <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">...</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
         </div>
         <div class="popup_admin" id="popupdg">
             <h3 style="color: white;">Bạn có thật sự muốn xóa đánh giá ... ?</h3>
@@ -76,6 +73,43 @@
 @endsection
 @section('script')
     <script>
+        function hanlePointReview(element) {
+            $.ajax({
+                'url': '{{ route('admin.review.pointreview') }}',
+                'type': "POST",
+                'data': {
+                    _token: '{{ csrf_token() }}',
+                    point: element.value
+                }
+            }).done((response) => {
+                const tbody = $('tbody');
+                var tpm = '';
+                if (!response.listReview.length > 0) {
+                    tpm = `<tr><td colspan="8" style="text-align:center">Chưa có đánh giá với point là ${element.value}</td></tr>`
+                    tbody.html(tpm);
+                } else {
+                    tmp = response.listReview.map(data => {
+                        return ` <tr>
+                            <td style="text-align: center;">${data.id}</td>
+                            <td>${data.username}</td>
+                            <td>${data.content}</td>
+                            <td>${data.product_name}</td>
+                            <td>${data.point}</td>
+                            <td>${data.color}</td>
+                            <td>${data.internal_memory}</td>
+                            <td style="text-align: center;">
+                                <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
+                                    onclick="showDeletePopup(${data.id},'${data.username}')"><i
+                                        class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </td>
+                        </tr>`
+                    });
+                    tbody.html(tmp);
+                }
+            })
+        }
+
         function showDeletePopup(id, full_name) {
             let popup = document.getElementById('popupdg');
             popup.children[0].textContent = `Bạn có thật sự muốn xóa đánh giá của khách hàng ${full_name} ?`;
@@ -93,10 +127,10 @@
                     }
                 })
                 .done((data) => {
-                    alertify.alert(data.message);
-                    setTimeout(()=>{
+                    alertify.alert('Thông báo', data.message);
+                    setTimeout(() => {
                         location.reload();
-                    },1500);
+                    }, 1500);
                 })
             document.getElementById('popupdg').style.display = "none";
         }

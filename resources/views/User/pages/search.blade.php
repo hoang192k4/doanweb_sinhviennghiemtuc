@@ -62,7 +62,7 @@
                                         <li class = "price">{{ number_format($item->price, 0, ',', '.') }}<sup>đ</sup></li>
                                         <li>{{ $item->rating }} <i class="fas fa-star"></i></li>
                                         <li>
-                                            <a href=""><button>Mua ngay</button></a>
+                                            <button onclick="buyNowSearch({{$item->variants}})">Mua ngay</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -81,6 +81,33 @@
     </section>
 @endsection
 @section('script')
+<script>
+         function buyNowSearch(variantId){
+        const quantity = 1;
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variantId}`
+            })
+            .done((data) => {
+                if (data < quantity) {
+                    alertify.alert('Thông báo','Sản phẩm không đủ số lượng!');
+                }else{
+                    $.ajax({
+                        method:"POST",
+                        url:'/order/buy-now',
+                        data:{
+                            id:variantId,
+                            quantity,
+                            _token:'{{csrf_token()}}'
+                        }
+                    }).done((data)=>{
+                        window.location.href = data;
+                    })
+
+                }
+            })
+    }
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         kt(); // Khởi tạo danh sách sản phẩm

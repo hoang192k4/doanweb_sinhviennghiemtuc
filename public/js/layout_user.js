@@ -105,14 +105,17 @@ room_chat.onclick = function (event) {
 
 const tabs = document.querySelectorAll('.tablinks');
 const rates = document.querySelectorAll('.rating');
-
 tabs.forEach(tab => {
     tab.addEventListener('click', () => {
+        tabs.forEach(element => {
+            element.classList.remove('active_tab');
+        })
+        tab.classList.add('active_tab');
         rates.forEach(rate => {
             rate.style.display = 'none'
         })
         if (tab.textContent === 'Tất cả') {
-            document.getElementById('all').style.display = 'block'
+            document.getElementById('all').style.display = 'block';
         } else if (tab.textContent === '5 sao') {
             document.getElementById('5sao').style.display = 'block'
         } else if (tab.textContent === '4 sao') {
