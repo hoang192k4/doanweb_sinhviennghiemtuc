@@ -20,6 +20,7 @@ class ProductUser extends Model
                     'products.rating',
                     'categories.name as category_name',
                     'brands.name as brand_name',
+                    DB::raw('MIN(product_variants.id) as variants'),
                     DB::raw('MIN(image_products.image) as image'),
                     DB::raw('MIN(product_variants.price) as price')
                 )
@@ -41,6 +42,7 @@ class ProductUser extends Model
                     'products.rating',
                     'categories.name as category_name',
                     'brands.name as brand_name',
+                    DB::raw('MIN(product_variants.id) as variants'),
                     DB::raw('MIN(image_products.image) as image'),
                     DB::raw('MIN(product_variants.price) as price')
                 )
@@ -171,6 +173,7 @@ class ProductUser extends Model
             'products.name',
             'order_items.slug_product as slug',
             'products.rating',
+            DB::raw('MIN(product_variants.id) as variants'),
             DB::raw('MIN(product_variants.price) as price'),
             DB::raw('SUM(order_items.quantity) as total')
         )
@@ -192,6 +195,7 @@ class ProductUser extends Model
             'products.rating',
             'categories.name as category_name',
             'brands.name as brand_name',
+            DB::raw('MIN(product_variants.id) as variants'),
             DB::raw('MIN(image_products.image) as image'),
             DB::raw('MIN(product_variants.price) as price')
         )
