@@ -130,7 +130,7 @@ class AdminBrandController extends Controller
         $keyBrand = str_replace('$', '', $keyBrand);
         $danhSachDanhMucLoc = Category::where('status', 1)->get();
 
-        $danhSachThuongHieu = Brand::where('name', 'like', '%' . $keyBrand . '%')->where('status', 1)->get();
+        $danhSachThuongHieu = Brand::where('name', 'like', '%' . $keyBrand . '%')->where('status', 1)->paginate(8);
 
         if ($danhSachThuongHieu->isEmpty()) {
             return view('admin.category.category')
