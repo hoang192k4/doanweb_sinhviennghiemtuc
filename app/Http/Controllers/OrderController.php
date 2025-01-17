@@ -220,6 +220,7 @@ class OrderController extends Controller
                     'order_id'=>$order->id
                 ]);
             }
+            $req->session()->forget('cart');
         }
 
 
