@@ -366,19 +366,21 @@
     justify-content: space-around;
     width: 100%;
     margin-bottom: 10px;
-
 }
 
 .ratting .row_ratting .col_ratting .col_ratting_2 .tab>button {
     background-color: white;
+    width: 16%;
     padding: 10px;
     border: none;
+    transition: all linear 0.3s;
 }
 
 
 .ratting .row_ratting .col_ratting .col_ratting_2 .tab>button:hover {
-    color: rgb(22, 66, 60);
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: rgb(22, 66, 60);
+    color: white;
+    border-radius: 5px;
 }
 
 .ratting_table {

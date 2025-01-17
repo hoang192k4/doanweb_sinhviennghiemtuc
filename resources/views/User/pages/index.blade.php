@@ -17,19 +17,19 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <a href=""><img src="images/banner1.png" class="d-block w-100" style="height: 305px"
+                        <a href="{{ route('timkiemsanpham', ['slug' => 'laptop', 'id' => 'Asus'])}}"><img src="images/banner1.png" class="d-block w-100" style="height: 305px"
                                 alt="Lỗi hiển thị"></a>
                     </div>
                     <div class="carousel-item">
-                        <a href=""><img src="images/banner2.png" class="d-block w-100" style="height: 305px;"
+                        <a href="{{ route('timkiemsanpham', ['slug' => 'dien-thoai', 'id' => 'Apple'])}}"><img src="images/banner2.png" class="d-block w-100" style="height: 305px;"
                                 alt="Lỗi hiển thị"></a>
                     </div>
                     <div class="carousel-item">
-                        <a href=""><img src="images/banner3.png" class="d-block w-100" style="height: 305px;"
+                        <a href="{{ route('timkiemsanpham', ['slug' => 'dien-thoai', 'id' => 'Samsung'])}}"><img src="images/banner3.png" class="d-block w-100" style="height: 305px;"
                                 alt="Lỗi hiển thị"></a>
                     </div>
                     <div class="carousel-item">
-                        <a href=""><img src="images/banner4.png" class="d-block w-100" style="height: 305px;"
+                        <a href="{{ route('timkiemsanpham', ['slug' => 'laptop'])}}"><img src="images/banner4.png" class="d-block w-100" style="height: 305px;"
                                 alt="Lỗi hiển thị"></a>
                     </div>
                 </div>
@@ -44,21 +44,21 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
+        </div>  
         <div class="main_slideshow_right">
             <div class="main_slideshow_right_items">
                 <div class="main_slideshow_right_item">
                     <div class="main_slideshow_right_item_img">
-                        <a href=""><img src="images/slider_right1.png" alt="Lỗi hiển thị"></a>
+                        <a ><img src="images/slider_right1.png" alt="Lỗi hiển thị"></a>
                     </div>
                     <div class="main_slideshow_right_item_img">
-                        <a href=""><img src="images/slide_right_2.png" alt="Lỗi hiển thị"></a>
+                        <a ><img src="images/slide_right_2.png" alt="Lỗi hiển thị"></a>
                     </div>
                     <div class="main_slideshow_right_item_img">
-                        <a href=""><img src="images/slider_right3.png" alt="Lỗi hiển thị"></a>
+                        <a ><img src="images/slider_right3.png" alt="Lỗi hiển thị"></a>
                     </div>
                     <div class="main_slideshow_right_item_img">
-                        <a href=""><img src="images/slider_right4.png" alt="Lỗi hiển thị"></a>
+                        <a ><img src="images/slider_right4.png" alt="Lỗi hiển thị"></a>
                     </div>
                 </div>
             </div>
@@ -99,8 +99,7 @@
                                             </li>
                                             <li>{{ $danhSachBanChay[$i]->rating }} <i class="fas fa-star"></i></li>
                                             <li>
-                                                <a href=""><button>Mua ngay</button></a>
-                                                {{-- <div><a href=""><i class="fas fa-cart-plus"></i></a></div> --}}
+                                                <button onclick="buyNow({{$danhSachBanChay[$i]->variants}})" >Mua ngay</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -126,7 +125,7 @@
                                             </li>
                                             <li>{{ $danhSachBanChay[$i]->rating }} <i class="fas fa-star"></i></li>
                                             <li>
-                                                <a href=""><button>Mua ngay</button></a>
+                                                <button onclick="buyNow({{$danhSachBanChay[$i]->variants}})">Mua ngay</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -173,7 +172,7 @@
                                         </li>
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
                                         <li>
-                                            <a href=""><button>Mua ngay</button></a>
+                                            <button onclick="buyNow({{$danhSachDTHot[$i]->variants}})">Mua ngay</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -199,7 +198,7 @@
                                         </li>
                                         <li>{{ $danhSachDTHot[$i]->rating }} <i class="fas fa-star"></i></li>
                                         <li>
-                                            <a href=""><button>Mua ngay</button></a>
+                                            <button onclick="buyNow({{$danhSachDTHot[$i]->variants}})">Mua ngay</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -249,7 +248,7 @@
                                     </li>
                                     <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                     <li>
-                                        <a href=""><button>Mua ngay</button></a>
+                                        <button onclick="buyNow({{$danhSachLapTopMoi[$i]->variants}})">Mua ngay</button>
                                     </li>
                                 </ul>
                             </div>
@@ -273,10 +272,10 @@
                                     </li>
                                     <li>{{ $danhSachLapTopMoi[$i]->rating }}<i class="fas fa-star"></i></li>
                                     <li>
-                                        <a href=""><button>Mua ngay</button></a>
+                                       <button onclick="buyNow({{$danhSachLapTopMoi[$i]->variants}})" >Mua ngay</button>
                                     </li>
                                 </ul>
-                            </div>
+                            </div>  
                         </div>
                     @endfor
                 </div>
@@ -307,4 +306,33 @@
     </script>
 @endif
 @endguest
+@endsection
+@section('script')
+    <script>
+        function buyNow(variantId){
+        const quantity = 1;
+        $.ajax({
+                method: "GET",
+                url: `/admin/check-stock-variant/${variantId}`
+            })
+            .done((data) => {
+                if (data < quantity) {
+                    alertify.alert('Thông báo','Sản phẩm không đủ số lượng!');
+                }else{
+                    $.ajax({
+                        method:"POST",
+                        url:'/order/buy-now',
+                        data:{
+                            id:variantId,
+                            quantity,
+                            _token:'{{csrf_token()}}'
+                        }
+                    }).done((data)=>{
+                        window.location.href = data;
+                    })
+
+                }
+            })
+    }
+    </script>
 @endsection

@@ -298,7 +298,7 @@
                         $('#email_payment').focus();
                     }
                     if (errors.address !== undefined) {
-                        $('#address_payment_error').text(errors.address);
+                        $('#address_payment_error').html(errors.address);
                         $('#address_payment').focus();
                     }
                     if (errors.provinces !== undefined) {

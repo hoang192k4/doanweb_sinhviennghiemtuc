@@ -9,7 +9,7 @@
             <div class="col_ratting" style="padding-left: 20px; width: 79%;">
                 <div class="col_ratting_2">
                     <div class="tab">
-                        <button class="tablinks">Tất cả</button>
+                        <button class="tablinks active_tab">Tất cả</button>
                         <button class="tablinks">5 sao</button>
                         <button class="tablinks">4 sao</button>
                         <button class="tablinks">3 sao</button>
