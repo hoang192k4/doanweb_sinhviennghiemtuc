@@ -21,16 +21,15 @@ class AdminReviewController extends Controller
     public function pointReview($point){
         $reviews = Review::where('point', $point)->get();
         
-    // Chuẩn bị dữ liệu trả về
         $data = $reviews->map(function ($review) {
             return [
                 'id' => $review->id,
-                'user_name' => $review->user->full_name, // Giả sử có quan hệ 'user'
+                'user_name' => $review->user_id->full_name, // ten khach hang
                 'content' => $review->content,
-                'product_name' => $review->product->name, // Giả sử có quan hệ 'product'
+                'product_name' => $review->product_id->name, // ten san pham
                 'color' => $review->color,
                 'internal_memory' => $review->internal_memory,
-                'created_at' => $review->created_at->format('Y-m-d H:i:s'),
+                'created_at' => $review->created_at,
                 'point' => $review->point,
             ];
         });
