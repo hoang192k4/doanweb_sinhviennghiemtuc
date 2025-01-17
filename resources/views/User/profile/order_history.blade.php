@@ -520,6 +520,5 @@
                 }
             });
         }
-
         </script>
     @endsection

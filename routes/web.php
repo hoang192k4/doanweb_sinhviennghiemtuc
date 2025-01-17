@@ -35,6 +35,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
     Route::get('/get/{user}/{code}',  'GetDanhSachDanhGia');
     Route::post('/them-danh-gia', 'ThemDanhGia');
+    Route::get('/get-rating/{id}/{sao?}','getRating');
 });
 
 Route::controller(CartController::class)->group(function () {

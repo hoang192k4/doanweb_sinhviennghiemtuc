@@ -140,7 +140,7 @@ class ProductUser extends Model
         return DB::table('products')
         ->join('brands','brand_id','=','brands.id')
         ->join('categories','category_id','=','categories.id')
-        ->select('products.name','views','description','brands.name as brand','categories.slug','products.id')
+        ->select('products.id','products.name','views','description','brands.name as brand','categories.slug','products.id')
         ->where('products.slug',$slug)->get();
     }
     public static function UpdateView($slug){

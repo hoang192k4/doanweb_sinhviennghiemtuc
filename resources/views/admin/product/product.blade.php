@@ -34,7 +34,9 @@
                 </tr>
             </thead>
             <tbody id="table">
+
                 @foreach ($danhSachSanPham as $sanPham)
+
                     <tr id="product-{{ $sanPham->id }}">
                         <td style="text-align: center;"> {{ $sanPham->id }}</td>
                         <td>{{ $sanPham->name }}</td>
@@ -45,20 +47,20 @@
                                 href="{{ route('product.edit', ['product' => $sanPham->id]) }}"><i
                                     class="fa-regular fa-pen-to-square"></i></a>
                         </td>
-                        <td style="text-align: center;"><a onclick="showPopupProduct({{ $sanPham }})" class="cursor"><i
+                        <td style="text-align: center;"><a onclick="showPopupProduct({id:{{$sanPham->id}},name:'{{$sanPham->name}}'})" class="cursor"><i
                                     class="fa-regular fa-trash-can"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="pagination">
+        {{-- <div class="pagination">
             <a href="{{$danhSachSanPham->previousPageUrl()}}"><i class="fa-solid fa-chevron-left"></i></a>
             @if($danhSachSanPham->currentPage()-1!=0) <a href="{{$danhSachSanPham->previousPageUrl()}}">{{$danhSachSanPham->currentPage()-1}}</i></a> @endif
             <a href="{{$danhSachSanPham->currentPage()}}" class="active"> {{$danhSachSanPham->currentPage()}}</a>
             @if($danhSachSanPham->currentPage()!= $danhSachSanPham->lastPage())<a href="{{$danhSachSanPham->nextPageUrl()}}">{{$danhSachSanPham->currentPage() + 1}}</a> @endif
             <a href="{{$danhSachSanPham->nextPageUrl()}}"><i class="fa-solid fa-chevron-right"></i></a>
-        </div>
+        </div> --}}
         <div class="popup_admin" id="popupsp">
             <h3 style="color: white;">Bạn có thật sự muốn ẩn sản phẩm ... ?</h3>
             <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>
@@ -105,6 +107,8 @@
                     url: `/admin/product/filter?opt=${opt.value}`
                 })
                 .done((danhSachSanPham) => {
+                    console.log(danhSachSanPham);
+
                     const table = document.getElementById('table');
                     const danhSach = danhSachSanPham.map((sanpham) => {
 

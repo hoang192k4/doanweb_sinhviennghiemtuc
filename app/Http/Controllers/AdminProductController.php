@@ -239,8 +239,11 @@ class AdminProductController extends Controller
             'key' => 'required'
         ]);
         $key = str_replace('$', '', $request->input('key'));
-        $danhSachSanPhamDaTimKiem =ProductUser::TimKiemTheoTuKhoa($key);
-        return view('admin.product.product',['danhSachSanPham'=>$danhSachSanPhamDaTimKiem]);
+        $danhSachSanPhamDaTimKiem =Product::TimKiemTheoTuKhoa($key);
+
+        return view('admin.product.product')->with(
+            'danhSachSanPham',$danhSachSanPhamDaTimKiem
+        );
     }
     public function filter(Request $req){
         if($req->opt=='all'){

@@ -31,6 +31,6 @@ class Brand extends Model
                                                 WHERE categories.id = ? and brands.status = 1',[$category]);
     }
     public static function index(){
-        return Db::table('brands')->where('status',1)->select('name','image')->get();
+        return Db::table('brands')->where('status',1)->select('name','image')->distinct('name')->take(8)->get();
     }
 }

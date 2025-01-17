@@ -43,8 +43,12 @@ class UserController extends Controller
     }
     public function TimKiemTheoTuKhoa(Request $request)
     {
+        $request->validate([
+            'seachbykey'=>'required',
+        ],[
+            'seachbykey.required'=>"Vui lòng nhập từ khóa tìm kiếm",
+        ]);
         $key = str_replace('$', '', $request->input('seachbykey'));
-
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
@@ -147,6 +151,8 @@ class UserController extends Controller
             return view('User.pages.404');
         }
         ProductUser::UpdateView($slug);
+       // $danhSachDanhGia = Rating::HienThiRating($slug);
+        $danhSachDanhGia = $product->ratings;
 
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
@@ -167,8 +173,13 @@ class UserController extends Controller
             "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
-            "sanPhamTuongTu"=>$arr
+            "sanPhamTuongTu"=>$arr,
+            "danhSachDanhGia"=>$danhSachDanhGia
         ]);
+    }
+
+    public function getRating($id,$sao=null){
+
     }
     public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
         $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);

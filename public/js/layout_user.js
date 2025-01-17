@@ -56,15 +56,15 @@ backToTopButton.addEventListener("click", function () {
 
 
 
-const button_rating = document.querySelectorAll('#button_rating button');
-if (button_rating) {
-    button_rating.forEach((element) => {
-        element.onclick = function () {
-            button_rating.forEach(element => element.classList.remove('click_active_border'));
-            this.classList.add('click_active_border');
-        }
-    });
-}
+// const button_rating = document.querySelectorAll('#button_rating button');
+// if (button_rating) {
+//     button_rating.forEach((element) => {
+//         element.onclick = function () {
+//             button_rating.forEach(element => element.classList.remove('click_active_border'));
+//             this.classList.add('click_active_border');
+//         }
+//     });
+// }
 
 const category_search = document.querySelector('.product_search_list_category p');
 if (category_search) {
