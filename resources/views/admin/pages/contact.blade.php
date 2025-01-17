@@ -45,7 +45,8 @@
                                     <i class="fa-solid fa-check"></i>
                                 </a>
                             </td>
-                            <td style="text-align: center;"><button class="cursor" style="background-color: white;color:rgb(19, 93, 102)";
+                            <td style="text-align: center;"><button class="cursor"
+                                    style="background-color: white;color:rgb(19, 93, 102)";
                                     onclick="showDeletePopup('{{ $lienHe->name }}',{{ $lienHe->id }})"><i
                                         class="fa-solid fa-x"></i></button></td>
                         </tr>
@@ -78,7 +79,8 @@
                             <td>{{ $lienHe->title }} </td>
                             <td>{{ $lienHe->content }} </td>
                             <td style="text-align: center;">
-                                <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)" onclick="showDeletePopup('{{ $lienHe->name }}',{{ $lienHe->id }})"><i
+                                <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
+                                    onclick="showDeletePopup('{{ $lienHe->name }}',{{ $lienHe->id }})"><i
                                         class="fa-solid fa-x"></i></button>
                             </td>
                         </tr>
@@ -127,10 +129,10 @@
                 })
                 .done((data) => {
                     console.log(data);
-                    alertify.alert('Thông báo',data.message);
-                    setTimeout(()=>{
+                    alertify.alert('Thông báo', data.message);
+                    setTimeout(() => {
                         location.reload();
-                    },1500);
+                    }, 1500);
                 })
             document.getElementById('popuplh').style.display = "none";
         }

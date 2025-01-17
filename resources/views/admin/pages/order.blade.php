@@ -70,6 +70,7 @@
                     <th>Total</th>
                     <th>Payment</th>
                     <th style="width: 48px;">Xong</th>
+                    <th style="width: 48px;">Hủy</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,6 +89,11 @@
                             <a href="{{route('admin.updateVanChuyen', ['id' => $order->id])}}" class="btnVanChuyen" data-id="{{ $order->id }}">
                                 <i class="fa-solid fa-check"></i>
                             </a>
+                        </td>
+                        <td style="text-align: center;">
+                            <button onclick="showCancelPopup('{{ $order->full_name }}',{{ $order->id }})"><i
+                                    class="fa-solid fa-x"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -203,15 +209,7 @@
             </tbody>
         </table>
     </div>
-    <div class="pagination">
-        <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">...</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
-    </div>
+
     <div class="popup_admin" id="popuphuy">
         <h3 style="color: white;">Bạn có thật sự muốn hủy đơn hàng ... ?</h3>
         <p style="color: white;">* Đơn hàng bị hủy sẽ không thể khôi phục nữa *</p>

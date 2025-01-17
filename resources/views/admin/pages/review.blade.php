@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="separator_x"></div>
-        <select id="point" name="point">
-            <option value="">Tất cả</option>
+        <select id="point" name="point" onchange="pointReview(this)">
+            <option value="all">Tất cả</option>
             <option value="5">5 sao</option>
             <option value="4">4 sao</option>
             <option value="3">3 sao</option>
@@ -56,16 +56,6 @@
                 </tbody>
             </table>
         </div>
-
-        {{-- <div class="pagination">
-            <a href="#" class="active"><i class="fa-solid fa-chevron-left"></i></a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">...</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#" class="active"><i class="fa-solid fa-chevron-right"></i></a>
-        </div> --}}
         <div class="popup_admin" id="popupdg">
             <h3 style="color: white;">Bạn có thật sự muốn xóa đánh giá ... ?</h3>
             <p style="color: white;">* Đánh giá bị xóa sẽ không thể khôi phục nữa *</p>
@@ -106,48 +96,37 @@
         }
     </script>
     <script>
-        //select thay đổi
-        $(document).ready(function() {
-            $('#point').on('change', function() {
-                const point = $(this).val(); // Lấy số sao từ dropdown
-
-                $.ajax({
-                    url: "{{ route('admin.point.review') }}", // Route xử lý AJAX
-                    method: "GET",
-                    data: {
-                        point: point
-                    },
-                    success: function(response) {
-                        $('#review-list').html(''); // Xóa nội dung cũ
-
-                        if (response.review.length > 0) {
-                            response.review.forEach(function(review) {
-                                $('#review-list').append(`
-                            <tr id="review-{{ $review->id }}">
-                                <td style="text-align: center;">{{ $review->id }}</td>
-                                <td>{{ App\Models\User::find($review->user_id)->full_name }}</td>
-                                <td>{{ $review->content }}</td>
-                                <td>{{ App\Models\Product::find($review->product_id)->name }}
-                                    ({{ $review->color }} | {{ $review->internal_memory }})
-                                </td>
-                                <td>{{ $review->created_at }}</td>
-                                <td>{{ $review->point }}</td>
+        function pointReview(opt) {
+            $.ajax({
+                    url: `/admin/review/point-review?opt=${opt.value}`,
+                    method: "GET"
+                })
+                .done((listReview) => {
+                    const reviewList = document.getElementById('review-list');
+                    const list = listReview.map((review) => {
+                        return `
+                            <tr id="review-${review.id}">
+                                <td style="text-align: center;">${review.id}</td>
+                                <td>${review.user_name}</td>
+                                <td>${review.content}</td>
+                                <td>${review.product_name} (${review.color} | ${review.internal_memory})</td>
+                                <td>${review.created_at}</td>
+                                <td>${review.point}</td>
                                 <td style="text-align: center;">
                                     <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
-                                        onclick="showDeletePopup({{ $review->id }},'{{ App\Models\User::find($review->user_id)->full_name }}')"><i
-                                            class="fa-regular fa-trash-can"></i>
+                                        onclick="showDeletePopup(${review.id}, '${review.user_name}')">
+                                        <i class="fa-regular fa-trash-can"></i>
                                     </button>
                                 </td>
                             </tr>
-                            `);
-                            });
-                        } else {
-                            $('#review-list').html('<li>Không có bài đánh giá nào.</li>');
-                        }
-                    },
-                   
+                        `;
+                    })
+                    reviewList.innerHTML = list.join('');
+                })
+                .fail((xhr, status, error) => {
+                    console.error("Lỗi Ajax:", status, error);
+                    alert("Không thể tải danh sách bài đánh giá. Vui lòng thử lại.");
                 });
-            });
-        });
+        }
     </script>
 @endsection
