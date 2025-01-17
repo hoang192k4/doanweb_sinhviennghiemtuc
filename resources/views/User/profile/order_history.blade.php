@@ -329,10 +329,6 @@
                     console.error("Close button element not found!");
                     return;
                 }
-
-                popupOrderHistory.style.display = "block";
-
-                // Fetch data using AJAX
                 $.ajax({
                         method: "GET",
                         url: `/get/${user}/${code}`,
@@ -378,8 +374,7 @@
                                     <button type="button" data-idx="1" style="border:none; background-color:rgb(22,66,60);color:white;padding:3px 8px; border-radius:5px" onclick="addImage('${item.product_variant_id}', this)">Thêm hình ảnh</button>
                                 </div>
                                 <div class="col" id="image-products-${item.product_variant_id}">
-                                    <img id="${item.product_variant_id}-1" />
-                                    <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control input_${item.product_variant_id}" name="${item.product_variant_id}_image[0]" required>
+
                                 </div>
                                 <textarea style ="outline:none; padding:5px;margin-top:5px;border:1px solid #C7C7C7" name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
 
@@ -391,6 +386,12 @@
                         });
 
                         popupTable.innerHTML = content.join('');
+                        popupOrderHistory.style.display = "block";
+                        if(danhSach.length ===0){
+                            alertify.error("Đơn hàng đã được đánh giá")
+                            popupOrderHistory.style.display = "none";
+
+                        }
                         selectStar();
 
                     });
@@ -489,9 +490,7 @@
             formData.append('color', color);
             formData.append('content', content);
             formData.append('point', pointValue);
-
             formData.append('_token', '{{ csrf_token() }}'); // CSRF token
-
             $.ajax({
                 url: `/them-danh-gia`,
                 method: 'POST',
@@ -511,8 +510,6 @@
                 error: function(xhr, status, error) {
                             if (xhr.status === 422 && xhr.responseJSON) {
                     const errors = xhr.responseJSON.errors;
-
-                    // Hiển thị từng lỗi qua Alertify
                     for (const [field, messages] of Object.entries(errors)) {
                         messages.forEach(message => {
                             alertify.error(message); // Thông báo lỗi

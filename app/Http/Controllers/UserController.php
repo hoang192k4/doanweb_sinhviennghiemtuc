@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ImageRating;
+use App\Models\Order;
 use App\Models\ProductVariant;
 
 class UserController extends Controller
@@ -151,9 +152,9 @@ class UserController extends Controller
             return view('User.pages.404');
         }
         ProductUser::UpdateView($slug);
-       // $danhSachDanhGia = Rating::HienThiRating($slug);
-        $danhSachDanhGia = $product->ratings;
 
+        $danhSachDanhGia = $product->ratings;
+        $diemDanhGia = ProductUser::DiemDanhGia($slug);
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
@@ -174,12 +175,16 @@ class UserController extends Controller
             "luotThichSanPham"=>$luotThichSanPham,
             "mauSanPham"=>$mauSanPham,
             "sanPhamTuongTu"=>$arr,
-            "danhSachDanhGia"=>$danhSachDanhGia
+            "danhSachDanhGia"=>$danhSachDanhGia,
+            "diemDanhGia"=>$diemDanhGia,
         ]);
     }
 
     public function getRating($id,$sao=null){
-
+        $rating = Rating::HienThiRating($id,$sao);
+        return response()->json([
+            'data'=>$rating,
+        ]);
     }
     public function LayMauSanPhamTheoBoNho($slug,$internal_memory){
         $danhSachMau = ProductUser::MauSanPham($slug,$internal_memory);
@@ -307,6 +312,12 @@ class UserController extends Controller
                 $idx++;
             }
         }
+        DB::table('order_items')
+        ->where('product_variant_id',$request->id)
+        ->update([
+            'status'=>1,
+        ]);
+
 
         return response()->json([
             'tenSanPham' => $variant->product->name,

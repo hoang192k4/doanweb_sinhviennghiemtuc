@@ -44,7 +44,7 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>  
+        </div>
         <div class="main_slideshow_right">
             <div class="main_slideshow_right_items">
                 <div class="main_slideshow_right_item">
@@ -275,7 +275,7 @@
                                        <button onclick="buyNow({{$danhSachLapTopMoi[$i]->variants}})" >Mua ngay</button>
                                     </li>
                                 </ul>
-                            </div>  
+                            </div>
                         </div>
                     @endfor
                 </div>
