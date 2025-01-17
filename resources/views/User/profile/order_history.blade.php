@@ -11,7 +11,7 @@
                 <div class="col_order_history" style="padding-left: 20px;width: 79%;">
                     <div class="col_order_history_2">
                         <div class="tab">
-                            <button class="tablinks">Tất cả</button>
+                            <button class="tablinks active_tab">Tất cả</button>
                             <button class="tablinks">Chờ thanh toán</button>
                             <button class="tablinks">Đang chuẩn bị</button>
                             <button class="tablinks">Đang giao</button>
@@ -329,10 +329,6 @@
                     console.error("Close button element not found!");
                     return;
                 }
-
-                popupOrderHistory.style.display = "block";
-
-                // Fetch data using AJAX
                 $.ajax({
                         method: "GET",
                         url: `/get/${user}/${code}`,
@@ -360,14 +356,14 @@
                                     <span>${item.color}</span>
                                 </div>
                                 <div style="opacity: 0.7; font-size: 14px;">Thương hiệu: <span>${item.name}</span></div>
-                                <div style="font-size: 14px;">x<span>${item.quantity}</span></div>
-                                <div style="font-size: 14px;">Giá: ${formatPrice}</div>
-                                <div style="font-size: 14px;">Tổng Tiền: ${formatTotal}</div>
+                                <div style="font-size: 14px;">Số lượng: <span>${item.quantity}</span></div>
+                                <div style="font-size: 14px;font-weight:400">Giá: ${formatPrice}</div>
+                                <div style="font-size: 16px;font-weight:600">Tổng Tiền: ${formatTotal}</div>
                                 <div class="star-rating">
                                    <input type="hidden" name="${item.product_variant_id}_point" value="5">
                                     <div class="star-ratting">
                                         ${[...Array(5)].map((_, i) =>
-                                            `<label  class="fa-solid fa-star point" data-id="${i+1}"></label>`
+                                            `<label style="color:red; font-size:16px"  class="fa-solid fa-star point" data-id="${i+1}"></label>`
                                         ).join('')}
                                     </div>
                                 </div>
@@ -375,22 +371,27 @@
                                     <label>Hình ảnh:</label>
                                 </div>
                                 <div>
-                                    <button type="button" data-idx="1" onclick="addImage('${item.product_variant_id}', this)">Thêm hình ảnh</button>
+                                    <button type="button" data-idx="1" style="border:none; background-color:rgb(22,66,60);color:white;padding:3px 8px; border-radius:5px" onclick="addImage('${item.product_variant_id}', this)">Thêm hình ảnh</button>
                                 </div>
                                 <div class="col" id="image-products-${item.product_variant_id}">
-                                    <img id="${item.product_variant_id}-1" />
-                                    <input type="file" data-index="1" onchange="loadFile('${item.product_variant_id}', event, this)" class="form-control input_${item.product_variant_id}" name="${item.product_variant_id}_image[0]" required>
+
                                 </div>
-                                <textarea name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
+                                <textarea style ="outline:none; padding:5px;margin-top:5px;border:1px solid #C7C7C7" name="${item.product_variant_id}_content" style="padding: 5px 7px;" placeholder="Nhập ý kiến của bạn..."></textarea>
 
                                 <p  id="${item.product_variant_id}_content"></p>
-                                <button type="button" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 5px 20px;">Đánh giá</button>
+                                <button type="button" onclick="ratings('${item.product_variant_id}', '${item.internal_memory}', '${item.color}')" style="padding: 8px 30px;border:none; background-color:rgb(22,66,60);color:white;border-radius:5px">Đánh giá</button>
 
                             </div>
                         </div>`;
                         });
 
                         popupTable.innerHTML = content.join('');
+                        popupOrderHistory.style.display = "block";
+                        if(danhSach.length ===0){
+                            alertify.error("Đơn hàng đã được đánh giá")
+                            popupOrderHistory.style.display = "none";
+
+                        }
                         selectStar();
 
                     });
@@ -462,8 +463,8 @@
                 const reader = new FileReader();
                 reader.onload = function() {
                     output.src = reader.result;
-                    output.style.width = "150px";
-                    output.style.height = "150px";
+                    output.style.width = "120px";
+                    output.style.padding = "10px 0";
                 };
                 reader.readAsDataURL(event.target.files[0]);
             }
@@ -489,9 +490,7 @@
             formData.append('color', color);
             formData.append('content', content);
             formData.append('point', pointValue);
-
             formData.append('_token', '{{ csrf_token() }}'); // CSRF token
-
             $.ajax({
                 url: `/them-danh-gia`,
                 method: 'POST',
@@ -503,12 +502,14 @@
                         `Thêm đánh giá sản phẩm ${response.tenSanPham} | ${response.boNho} | ${response.mau} thành công`
                     );
                     $('#popup_form_' + id).remove();
+                    if($('#popup_table').children().length === 0)
+                {
+                    $('#popup_order_history').hide();
+                }
                 },
                 error: function(xhr, status, error) {
                             if (xhr.status === 422 && xhr.responseJSON) {
                     const errors = xhr.responseJSON.errors;
-
-                    // Hiển thị từng lỗi qua Alertify
                     for (const [field, messages] of Object.entries(errors)) {
                         messages.forEach(message => {
                             alertify.error(message); // Thông báo lỗi
@@ -520,6 +521,5 @@
                 }
             });
         }
-
         </script>
     @endsection

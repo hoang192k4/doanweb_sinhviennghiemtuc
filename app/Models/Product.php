@@ -37,7 +37,7 @@ class Product extends Model
         return $this->hasMany(ProductSpecification::class);
     }
 
-    public function rating():HasMany
+    public function ratings():HasMany
     {
         return $this->hasMany(Rating::class);
     }
@@ -45,5 +45,21 @@ class Product extends Model
     {
         return $this->hasMany(LikeProduct::class);
     }
+    public static  function TimKiemTheoTuKhoa($key){
+        $keywords = preg_split('/\s+/', trim($key));
+        $danhSachSanPham = DB::table('products')
+        ->select('products.*')
+        ->where('products.status', 1)
+        ->where(function ($query) use ($keywords) {
+            foreach ($keywords as $word) {
+                $query->orWhereRaw('LOWER(products.name COLLATE utf8mb4_unicode_ci) LIKE ?', ["%{$word}%"])
+                      ->orWhereRaw('LOWER(products.description COLLATE utf8mb4_unicode_ci) LIKE ?', ["%{$word}%"]);
+            }
+        })
+        ->orderBy('products.name')
+        ->get();
 
+    return $danhSachSanPham;
+    }
 }
+

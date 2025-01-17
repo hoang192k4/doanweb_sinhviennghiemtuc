@@ -20,6 +20,7 @@ class ProductUser extends Model
                     'products.rating',
                     'categories.name as category_name',
                     'brands.name as brand_name',
+                    DB::raw('MIN(product_variants.id) as variants'),
                     DB::raw('MIN(image_products.image) as image'),
                     DB::raw('MIN(product_variants.price) as price')
                 )
@@ -41,6 +42,7 @@ class ProductUser extends Model
                     'products.rating',
                     'categories.name as category_name',
                     'brands.name as brand_name',
+                    DB::raw('MIN(product_variants.id) as variants'),
                     DB::raw('MIN(image_products.image) as image'),
                     DB::raw('MIN(product_variants.price) as price')
                 )
@@ -140,7 +142,7 @@ class ProductUser extends Model
         return DB::table('products')
         ->join('brands','brand_id','=','brands.id')
         ->join('categories','category_id','=','categories.id')
-        ->select('products.name','views','description','brands.name as brand','categories.slug','products.id')
+        ->select('products.id','products.name','views','description','brands.name as brand','categories.slug','products.id')
         ->where('products.slug',$slug)->get();
     }
     public static function UpdateView($slug){
@@ -171,6 +173,7 @@ class ProductUser extends Model
             'products.name',
             'order_items.slug_product as slug',
             'products.rating',
+            DB::raw('MIN(product_variants.id) as variants'),
             DB::raw('MIN(product_variants.price) as price'),
             DB::raw('SUM(order_items.quantity) as total')
         )
@@ -192,6 +195,7 @@ class ProductUser extends Model
             'products.rating',
             'categories.name as category_name',
             'brands.name as brand_name',
+            DB::raw('MIN(product_variants.id) as variants'),
             DB::raw('MIN(image_products.image) as image'),
             DB::raw('MIN(product_variants.price) as price')
         )
@@ -209,6 +213,7 @@ class ProductUser extends Model
             'products.name',
             'products.rating',
             'products.slug',
+            DB::raw('MIN(product_variants.id) as variants'),
             DB::raw('MIN(image_products.image) as image'),
             DB::raw('MIN(product_variants.price) as price')
         )
@@ -231,6 +236,7 @@ class ProductUser extends Model
             'products.name',
             'products.rating',
             'products.slug',
+            DB::raw('MIN(product_variants.id) as variants'),
             DB::raw('MIN(image_products.image) as image'),
             DB::raw('MIN(product_variants.price) as price')
         )
@@ -252,6 +258,12 @@ class ProductUser extends Model
         ->where('id',$id)
         ->select('name')
         ->get();
+    }
+    public static function DiemDanhGia($slug){
+        return DB::table('products')
+        ->join('ratings','products.id','=','product_id')
+        ->where('products.slug',$slug)
+        ->avg('ratings.point');
     }
 
 }

@@ -3,8 +3,6 @@
 @section('content')
     @php
          $lienKetWebsite = DB::table('about')->first();
-         $danhSachDanhMuc = DB::table('categories')->select('categories.name','categories.slug')->get();
-         $danhSachPhanLoai = DB::table('brands')->select('brands.name')->distinct()->groupBy('brands.name')->take(6)->get();
     @endphp
     <div class="container_css" style="padding: 0px 10px;">
         <div class="contact">
@@ -29,7 +27,7 @@
                 <div class="col_contact">
                     <div class="col_contact_2">
                         <form class="form_contact" action="/addContact" method="POST" style="padding-left: 30px;">
-                            @csrf @method('POST')
+                            @csrf
                             <div class="col">
                                 <input type="text" name="name" placeholder="Họ và tên của bạn"/>
                                     <div class="alert_error_validate">
@@ -63,8 +61,7 @@
                                     </div>
                             </div>
                             <div class="col">
-                                <textarea name="content" placeholder="Nội dung" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px;">
-                                </textarea>
+                                <textarea name="content" placeholder="Nội dung" style="width: 500px;height: 250px;margin-left: 10px; padding-left: 5px; outline:none"></textarea>
                                 <div class="alert_error_validate">
                                     <span style="color: red; font-size:12px;margin-left: 10px" >
                                         @error('content'){{$message}}@enderror
@@ -85,7 +82,7 @@
         const message = "{{ session('msg') }}";
         console.log(message)
         if (message) {
-            alertify.success('thông báo',message);
+            alertify.success(message);
         }
     </script>
 

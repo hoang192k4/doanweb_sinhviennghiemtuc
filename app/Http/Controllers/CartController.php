@@ -16,6 +16,7 @@ class CartController extends Controller
             $request->session()->forget('buy-now');
         }
         $cart = session('cart')?session('cart'):null;
+
         if($cart!=null)
         {
             //kiểm tra lại các sp trong giỏ, nếu sp có trong giỏ so với db có status là 0 thì xóa sp khỏi giỏ

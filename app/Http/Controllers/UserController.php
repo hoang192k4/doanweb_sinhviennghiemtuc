@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ImageRating;
+use App\Models\Order;
 use App\Models\ProductVariant;
 
 class UserController extends Controller
@@ -43,8 +44,12 @@ class UserController extends Controller
     }
     public function TimKiemTheoTuKhoa(Request $request)
     {
+        $request->validate([
+            'seachbykey'=>'required',
+        ],[
+            'seachbykey.required'=>"Vui lòng nhập từ khóa tìm kiếm",
+        ]);
         $key = str_replace('$', '', $request->input('seachbykey'));
-
         $danhSachSanPham = ProductUser::TimKiemTheoTuKhoa($key);
         return view('user.pages.search')->with('danhSachSanPham', $danhSachSanPham);
     }
@@ -149,6 +154,8 @@ class UserController extends Controller
         }
         ProductUser::UpdateView($slug);
 
+        $danhSachDanhGia = $product->ratings;
+        $diemDanhGia = ProductUser::DiemDanhGia($slug);
         $danhSachAnh = ProductUser::HinhAnhSamPham($slug);
         $danhSachBoNho = ProductUser::BoNhoTrongSanPham($slug);
         $thongTinSanPham = ProductUser::ThongTinSanPham($slug);
@@ -160,6 +167,7 @@ class UserController extends Controller
         $mauSanPham = ProductUser::MauSanPham($slug, $boNhoNhoNhat->internal_memory);
         $luotThichSanPham = ProductUser::LuotThichSanPham($slug);
         return View('user.pages.detail')->with([
+<<<<<<< HEAD
             'slug' => $slug,
             "danhSachAnh" => $danhSachAnh,
             "danhSachAnhVariant" => $product->product_variants,
@@ -169,6 +177,26 @@ class UserController extends Controller
             "luotThichSanPham" => $luotThichSanPham,
             "mauSanPham" => $mauSanPham,
             "sanPhamTuongTu" => $arr
+=======
+            'slug'=>$slug,
+            "danhSachAnh"=>$danhSachAnh,
+            "danhSachAnhVariant"=>$product->product_variants,
+            "danhSachBoNho"=>$danhSachBoNho,
+            "thongTinSanPham"=>$thongTinSanPham[0],
+            "thongSoKiThuatSanPham"=>$thongSoKiThuatSanPham,
+            "luotThichSanPham"=>$luotThichSanPham,
+            "mauSanPham"=>$mauSanPham,
+            "sanPhamTuongTu"=>$arr,
+            "danhSachDanhGia"=>$danhSachDanhGia,
+            "diemDanhGia"=>$diemDanhGia,
+        ]);
+    }
+
+    public function getRating($id,$sao=null){
+        $rating = Rating::HienThiRating($id,$sao);
+        return response()->json([
+            'data'=>$rating,
+>>>>>>> 8a8d41a3fa45ecc96327f646eb81df106ee58383
         ]);
     }
     public function LayMauSanPhamTheoBoNho($slug, $internal_memory)
@@ -207,6 +235,7 @@ class UserController extends Controller
     }
     public function addContact(Request $req)
     {
+<<<<<<< HEAD
         $validate = $req->validate([
             'name' => 'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
             'email' => 'required|email|max:25',
@@ -227,6 +256,28 @@ class UserController extends Controller
             'title.max' => 'chỉ được nhập tối đã 255 ký tự',
             'content.required' => 'Bạn chưa nhập nội dung.',
             'content.regex' => 'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
+=======
+        $validate=$req->validate([
+            'name'=>'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
+            'email'=>'required|email|max:25',
+            'phone'=>'required|string|regex:/^[0-9]{10}$/',
+            'title'=>'required|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,\.\/-]+$/u|max:255',
+            'content'=>'required|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,\.\/-]+$/u|string',
+        ],[
+            'name.required'=>'Bạn chưa nhập họ tên',
+            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt và số ở họ và tên',
+            'name.max' =>'Họ và tên vừa nhập đã vượt 50 ký tự.',
+            'email.required' => 'Bạn chưa nhập Email.',
+            'email.email' => 'Email vừa nhập chưa hợp lệ.',
+            'email.max' => 'Email vừa nhập đã vượt 25 ký tự.',
+            'phone.required'=>'Bạn chưa nhập số điện thoại.',
+            'phone.regex'=>'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
+            'title.required'=>'Bạn chưa nhập tiêu đề.',
+            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt khác ngoài ,./-',
+            'title.max'=>'chỉ được nhập tối đã 255 ký tự',
+            'content.required'=>'Bạn chưa nhập nội dung.',
+            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt khoác ngoài ,./-',
+>>>>>>> 8a8d41a3fa45ecc96327f646eb81df106ee58383
         ]);
 
         $data = new Contact();
@@ -303,6 +354,12 @@ class UserController extends Controller
                 $idx++;
             }
         }
+        DB::table('order_items')
+        ->where('product_variant_id',$request->id)
+        ->update([
+            'status'=>1,
+        ]);
+
 
         return response()->json([
             'tenSanPham' => $variant->product->name,

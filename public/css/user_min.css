@@ -200,19 +200,21 @@
     justify-content: space-around;
     width: 100%;
     margin-bottom: 10px;
-
 }
-
+.order_history .row_order_history .col_order_history .col_order_history_2 .tab>button {
+    transition: all linear 0.3s;
+}
 .order_history .row_order_history .col_order_history .col_order_history_2 .tab>button {
     background-color: white;
-    padding: 10px;
+    padding: 10px 20px;
     border: none;
+    border-radius: 5px;
 }
 
 
 .order_history .row_order_history .col_order_history .col_order_history_2 .tab>button:hover {
-    color: rgb(22, 66, 60);
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: rgb(22, 66, 60);
+    color: white;
 }
 
 .order_history .row_order_history .col_order_history .col_order_history_2 .tab>button>a {
@@ -425,9 +427,7 @@
 .table_item .star-rating {
     direction: rtl;
     display: inline-block;
-    font-size: 30px;
-    color: gold;
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 
 .table_item .star-rating input {
@@ -466,6 +466,13 @@
 
 /* mobile */
 @media only screen and (max-width: 768px) {
+    .order_history .row_order_history .col_order_history .col_order_history_2 .tab>button:nth-child(1){
+        width: 100%;
+    }
+    .order_history .row_order_history .col_order_history .col_order_history_2 .tab>button {
+        width: 50%;
+        border: 1px solid #C7C7C7;
+    }
     .col_change_password {
         width: 100% !important;
     }

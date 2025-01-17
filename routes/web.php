@@ -35,6 +35,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/yeuthich/{sampham}/{user}',  'CapNhapSanPhamYeuThich')->name("SanPhamYeuThich");
     Route::get('/get/{user}/{code}',  'GetDanhSachDanhGia');
     Route::post('/them-danh-gia', 'ThemDanhGia');
+    Route::get('/get-rating/{id}/{sao?}','getRating');
+
 });
 
 Route::controller(CartController::class)->group(function () {
@@ -91,7 +93,7 @@ Route::middleware(['role:QL,NV'])->group(function () {
     //Route quan ly thuong hieu
     Route::get('/admin/brand/filter/{opt}', [AdminBrandController::class, 'filter']);
 
-    //Route quan li lien he
+    //Route quan li lien he trang quản trị
     Route::get('/admin/contact', [AdminContactController::class, 'showListContacts'])->name('admin.contact');
     Route::delete('/admin/contact/delete/{id}', [AdminContactController::class, 'deleteContact'])->name('contact.delete');
     Route::get('/admin/contact/update/{id}', [AdminContactController::class, 'updateContact'])->name('contact.update');
@@ -99,7 +101,10 @@ Route::middleware(['role:QL,NV'])->group(function () {
 
     //quản lý đánh giá
     Route::get('/admin/review', [AdminReviewController::class, 'showListReviews'])->name('admin.review');
+    Route::get('/admin/review/point-review/{opt}', [AdminReviewController::class, 'pointReview']);
     Route::delete('/admin/review/delete/{id}', [AdminReviewController::class, 'deleteReviews'])->name('admin.review.delete');
+    Route::get('/admin/review/search' , [AdminReviewController::class, 'searchReview'])->name('admin.review.search');
+    Route::post('/admin/review/pointreview', [AdminReviewController::class, 'pointReview'])->name('admin.review.pointreview');
 });
 
 

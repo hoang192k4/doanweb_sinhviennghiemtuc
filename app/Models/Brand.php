@@ -30,8 +30,13 @@ class Brand extends Model
                                                 FROM categories inner join brands on categories.id = brands.category_id
                                                 WHERE categories.id = ? and brands.status = 1', [$category]);
     }
+<<<<<<< HEAD
     public static function index()
     {
         return Db::table('brands')->where('status', 1)->select('name', 'image')->get();
+=======
+    public static function index(){
+        return Db::table('brands')->where('status',1)->select('name','image')->distinct('name')->take(8)->get();
+>>>>>>> 8a8d41a3fa45ecc96327f646eb81df106ee58383
     }
 }

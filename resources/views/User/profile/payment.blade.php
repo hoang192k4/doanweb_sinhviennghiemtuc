@@ -207,7 +207,7 @@
                                             <p>Ngân hàng : SACOMBANK</p>
                                             <p>Số tài khoản : 060277266401</p>
                                             <p>Chủ tài khoản : NGUYEN THUY ANH THU</p>
-                                            <p>Nội dung chuyển khoản: {{$code}}</p>
+                                            <p>Nội dung chuyển khoản: {{ $code }}</p>
 
                                         </td>
                                     </tr>
@@ -292,7 +292,7 @@
                     wards: localStorage.getItem('ward'),
                     voucher: $('#voucher').val(),
                     method: $('input[name="method_payment"]:checked').val(),
-                    code: {{$code}},
+                    code: {{ $code }},
                     _token: '{{ csrf_token() }}'
                 }
                 $.ajax({
@@ -355,34 +355,34 @@
         }
 
 
-            const fullName = document.getElementById('full_name_payment');
-            fullName.addEventListener('input', () => {
-                $('#full_name_payment_error').text('');
-            })
-            const email = document.getElementById('email_payment');
-            email.addEventListener('input', () => {
-                $('#email_payment_error').text('');
-            })
-            const phone = document.getElementById('phone_payment');
-            phone.addEventListener('input', () => {
-                $('#phone_payment_error').text('');
-            })
-            const address = document.getElementById('address');
-            address.addEventListener('input', () => {
-                $('#address_payment_error').text('');
-            })
-            const provinces = document.getElementById('provinces');
-            provinces.addEventListener('input', () => {
-                $('#provinces_error').text('');
-            })
-            const districts = document.getElementById('districts');
-            provinces.addEventListener('input', () => {
-                $('#districts_error').text('');
-            })
-            const wards = document.getElementById('wards');
-            provinces.addEventListener('input', () => {
-                $('#wards_error').text('');
-            })
+        const fullName = document.getElementById('full_name_payment');
+        fullName.addEventListener('input', () => {
+            $('#full_name_payment_error').text('');
+        })
+        const email = document.getElementById('email_payment');
+        email.addEventListener('input', () => {
+            $('#email_payment_error').text('');
+        })
+        const phone = document.getElementById('phone_payment');
+        phone.addEventListener('input', () => {
+            $('#phone_payment_error').text('');
+        })
+        const address = document.getElementById('address');
+        address.addEventListener('input', () => {
+            $('#address_payment_error').text('');
+        })
+        const provinces = document.getElementById('provinces');
+        provinces.addEventListener('input', () => {
+            $('#provinces_error').text('');
+        })
+        const districts = document.getElementById('districts');
+        provinces.addEventListener('input', () => {
+            $('#districts_error').text('');
+        })
+        const wards = document.getElementById('wards');
+        provinces.addEventListener('input', () => {
+            $('#wards_error').text('');
+        })
     </script>
     <script>
         const btn = document.getElementById('btn-submit-voucher');
