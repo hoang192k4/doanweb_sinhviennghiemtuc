@@ -6,13 +6,19 @@
         <div class="head">
             <div class="title">Quản Lý Đánh Giá</div>
             <div class="search">
+<<<<<<< HEAD
                 <form action="{{ route('admin.review.search') }} " method="GET">
                     <input type="text" name="keyword_review" placeholder="Tìm kiếm đánh giá...">
+=======
+                <form>
+                    <input type="text" name="key" id="key">
+>>>>>>> giang
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
         </div>
         <div class="separator_x"></div>
+<<<<<<< HEAD
         <select onchange="hanlePointReview(this)">
             <option value="Tất cả">Tất cả</option>
             <option value="5 sao">5 sao</option>
@@ -20,6 +26,15 @@
             <option value="3 sao">3 sao</option>
             <option value="2 sao">2 sao</option>
             <option value="1 sao">1 sao</option>
+=======
+        <select id="point" name="point" onchange="pointReview(this)">
+            <option value="all">Tất cả</option>
+            <option value="5">5 sao</option>
+            <option value="4">4 sao</option>
+            <option value="3">3 sao</option>
+            <option value="2">2 sao</option>
+            <option value="1">1 sao</option>
+>>>>>>> giang
         </select>
         <div>
             <table>
@@ -29,19 +44,27 @@
                         <th>User name</th>
                         <th>Content</th>
                         <th>Product</th>
+                        <th>Date</th>
                         <th>Point</th>
                         <th>Color</th>
                         <th>internal_memory</th>
                         <th style="width: 48px;">Xóa</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="review-list">
                     @foreach ($listReview as $review)
-                        <tr>
+                        <tr id="review-{{ $review->id }}">
                             <td style="text-align: center;">{{ $review->id }}</td>
                             <td>{{ $review->username }}</td>
                             <td>{{ $review->content }}</td>
+<<<<<<< HEAD
                             <td>{{ $review->product_name }}</td>
+=======
+                            <td>{{ App\Models\Product::find($review->product_id)->name }}
+                                ({{ $review->color }} | {{ $review->internal_memory }})
+                            </td>
+                            <td>{{ $review->created_at }}</td>
+>>>>>>> giang
                             <td>{{ $review->point }}</td>
                             <td>{{ $review->color }}</td>
                             <td>{{ $review->internal_memory }}</td>
@@ -135,5 +158,38 @@
             document.getElementById('popupdg').style.display = "none";
         }
     </script>
-
+    <script>
+        function pointReview(opt) {
+            $.ajax({
+                    url: `/admin/review/point-review?opt=${opt.value}`,
+                    method: "GET"
+                })
+                .done((listReview) => {
+                    const reviewList = document.getElementById('review-list');
+                    const list = listReview.map((review) => {
+                        return `
+                            <tr id="review-${review.id}">
+                                <td style="text-align: center;">${review.id}</td>
+                                <td>${review.user_name}</td>
+                                <td>${review.content}</td>
+                                <td>${review.product_name} (${review.color} | ${review.internal_memory})</td>
+                                <td>${review.created_at}</td>
+                                <td>${review.point}</td>
+                                <td style="text-align: center;">
+                                    <button class="cursor" style="background-color: white;color:rgb(19, 93, 102)"
+                                        onclick="showDeletePopup(${review.id}, '${review.user_name}')">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    })
+                    reviewList.innerHTML = list.join('');
+                })
+                .fail((xhr, status, error) => {
+                    console.error("Lỗi Ajax:", status, error);
+                    alert("Không thể tải danh sách bài đánh giá. Vui lòng thử lại.");
+                });
+        }
+    </script>
 @endsection

@@ -8,6 +8,7 @@ class AdminReviewController extends Controller
 {
     public function showListReviews(){
         $listReview=Rating::ShowListReview();
+       
         return view('admin.pages.review')->with('listReview',$listReview);
     }
     public function deleteReviews($id){
@@ -27,5 +28,6 @@ class AdminReviewController extends Controller
     {
         $listReview = Rating::PointReview($request->point);
         return response()->json(['listReview' => $listReview]);
+
     }
 }

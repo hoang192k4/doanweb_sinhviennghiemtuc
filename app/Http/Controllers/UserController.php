@@ -220,13 +220,14 @@ class UserController extends Controller
     public function addContact(Request $req)
     {
         $validate=$req->validate([
-            'name'=>'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',            'email'=>'required|email|max:25',
+            'name'=>'required|string|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:50',
+            'email'=>'required|email|max:25',
             'phone'=>'required|string|regex:/^[0-9]{10}$/',
-            'title'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|max:255',
-            'content'=>'required|regex:/^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/|string',
+            'title'=>'required|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,\.\/-]+$/u|max:255',
+            'content'=>'required|regex:/^[a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s,\.\/-]+$/u|string',
         ],[
             'name.required'=>'Bạn chưa nhập họ tên',
-            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở họ và tên',
+            'name.regex'=>'Bạn không được phép nhập ký tự đặc biệt và số ở họ và tên',
             'name.max' =>'Họ và tên vừa nhập đã vượt 50 ký tự.',
             'email.required' => 'Bạn chưa nhập Email.',
             'email.email' => 'Email vừa nhập chưa hợp lệ.',
@@ -234,10 +235,10 @@ class UserController extends Controller
             'phone.required'=>'Bạn chưa nhập số điện thoại.',
             'phone.regex'=>'Số điện thoại chỉ được nhập là số và chỉ được 10 ký tự',
             'title.required'=>'Bạn chưa nhập tiêu đề.',
-            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở tiêu đề',
+            'title.regex'=>'Bạn không được phép nhập ký tự đặc biệt khác ngoài ,./-',
             'title.max'=>'chỉ được nhập tối đã 255 ký tự',
             'content.required'=>'Bạn chưa nhập nội dung.',
-            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt ở nội dung',
+            'content.regex'=>'Bạn không được phép nhập ký tự đặc biệt khoác ngoài ,./-',
         ]);
 
         $data = new Contact();
