@@ -24,8 +24,7 @@
                             @foreach ($danhSachDanhMuc as $danhMuc)
                                 <p>{{ $danhMuc->name }}</p>
                                 @foreach (DB::table('brands')->select('brands.name')->join('categories', 'brands.category_id', '=', 'categories.id')->where('categories.id', $danhMuc->id)->get() as $brand)
-                                    <a
-                                        href="{{ route('timkiemsanpham', ['slug' => $danhMuc->slug, 'id' => $brand->name]) }}">{{ $brand->name }}</a>
+                                    <a href="{{ route('timkiemsanpham', ['slug' => $danhMuc->slug, 'id' => $brand->name]) }}">{{ $brand->name }}</a>
                                 @endforeach
                             @endforeach
                         </div>

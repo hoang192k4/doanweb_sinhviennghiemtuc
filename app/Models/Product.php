@@ -57,7 +57,7 @@ class Product extends Model
             }
         })
         ->orderBy('products.name')
-        ->get();
+        ->paginate(8);
 
     return $danhSachSanPham;
     }

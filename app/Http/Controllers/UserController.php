@@ -180,8 +180,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function getRating($id,$sao=null){
+    public function getRating($id,$sao=0){
+        
         $rating = Rating::HienThiRating($id,$sao);
+        dd($rating);
         return response()->json([
             'data'=>$rating,
         ]);

@@ -54,13 +54,13 @@
                 @endforeach
             </tbody>
         </table>
-        {{-- <div class="pagination">
+        <div class="pagination">
             <a href="{{$danhSachSanPham->previousPageUrl()}}"><i class="fa-solid fa-chevron-left"></i></a>
             @if($danhSachSanPham->currentPage()-1!=0) <a href="{{$danhSachSanPham->previousPageUrl()}}">{{$danhSachSanPham->currentPage()-1}}</i></a> @endif
             <a href="{{$danhSachSanPham->currentPage()}}" class="active"> {{$danhSachSanPham->currentPage()}}</a>
             @if($danhSachSanPham->currentPage()!= $danhSachSanPham->lastPage())<a href="{{$danhSachSanPham->nextPageUrl()}}">{{$danhSachSanPham->currentPage() + 1}}</a> @endif
             <a href="{{$danhSachSanPham->nextPageUrl()}}"><i class="fa-solid fa-chevron-right"></i></a>
-        </div> --}}
+        </div>
         <div class="popup_admin" id="popupsp">
             <h3 style="color: white;">Bạn có thật sự muốn ẩn sản phẩm ... ?</h3>
             <div class="g-recaptcha" data-sitekey="6LcK2IwqAAAAAEvD9EBnJT6kQd6KBrAC7NyGUzWT"></div>

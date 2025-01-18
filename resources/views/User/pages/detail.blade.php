@@ -136,7 +136,7 @@
                     <h5 style="margin-top:10px; font-weight: 100;color:#a7a7a7">Màu sắc</h5>
                     <div class="product_detail_right_color" id="product_detail_right_color">
                         @foreach ($mauSanPham as $index => $mau)
-                            <button class="{{$index == 0 ? 'color_active' : ''}}"
+                            <button class="{{ $index == 0 ? 'color_active' : '' }}"
                                 onclick="LayThongTinSanPhamTheoMau('{{ $slug }}','{{ $mau->internal_memory }}','{{ $mau->color }}',this)">
                                 <img src="{{ asset('images/' . $mau->image) }}" alt="Lỗi hiển thị">
                                 <span>
@@ -162,7 +162,7 @@
                     <div><button id="buy-now" data-id="@if (isset($mauSanPham[0])) {{ $mauSanPham[0]->id }} @endif"
                             onclick="buyNow(this.dataset.id)">Mua ngay</button></div>
                     <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)"
-                            data-id="@if (isset($mauSanPham[0])) {{ $mauSanPham[0]->id }} @endif">
+                            data-id="@if (isset($mauSanPham[0])){{ $mauSanPham[0]->id }} @endif">
                             Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
             </div>
@@ -170,28 +170,29 @@
         <div class="product_detail detail_bottom">
             <div class="product_detail_bottom_left">
 
-                    <div class="product_detail_bottom_left_rating">
-                        <div>
-                            <a href="">
-                                <p>{{ number_format($diemDanhGia, 1)}} / 5</p>
-                                <p>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </p>
-                            </a>
-                        </div>
-                        <div id="button_rating">
-                            <button onclick="loadRating(0,{{$thongTinSanPham->id}},this)" class="click_active_border">Tất cả</button>
-                            <button onclick="loadRating(5,{{$thongTinSanPham->id}},this)">5 sao </button>
-                            <button onclick="loadRating(4,{{$thongTinSanPham->id}},this)" >4 sao </button>
-                            <button onclick="loadRating(3,{{$thongTinSanPham->id}},this)" >3 sao </button>
-                            <button onclick="loadRating(2,{{$thongTinSanPham->id}},this)">2 sao </button>
-                            <button onclick="loadRating(1,{{$thongTinSanPham->id}},this)">1 sao </button>
-                        </div>
+                <div class="product_detail_bottom_left_rating">
+                    <div>
+                        <a href="">
+                            <p>{{ number_format($diemDanhGia, 1) }} / 5</p>
+                            <p>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </p>
+                        </a>
                     </div>
+                    <div id="button_rating">
+                        <button onclick="loadRating(0,{{ $thongTinSanPham->id }},this)" class="click_active_border">Tất
+                            cả</button>
+                        <button onclick="loadRating(5,{{ $thongTinSanPham->id }},this)">5 sao </button>
+                        <button onclick="loadRating(4,{{ $thongTinSanPham->id }},this)">4 sao </button>
+                        <button onclick="loadRating(3,{{ $thongTinSanPham->id }},this)">3 sao </button>
+                        <button onclick="loadRating(2,{{ $thongTinSanPham->id }},this)">2 sao </button>
+                        <button onclick="loadRating(1,{{ $thongTinSanPham->id }},this)">1 sao </button>
+                    </div>
+                </div>
 
                 <div>
                     <div class="product_detail_bottom_left_comments" id="ratings">
@@ -205,20 +206,20 @@
                                         <img src="{{ asset('images/' . $danhGia->user->image) }}" alt="">
                                     </button>
                                     <div>
-                                        {{$danhGia->user->full_name}}
+                                        {{ $danhGia->user->full_name }}
                                         <p>
                                             @for ($i = 0; $i < $danhGia->point; $i++)
                                                 <i class="fas fa-star"></i>
                                             @endfor
                                         </p>
                                     </div>
-                                    <p><i class="fas fa-clock"></i> {{$danhGia->created_at}}</p>
+                                    <p><i class="fas fa-clock"></i> {{ $danhGia->created_at }}</p>
                                 </div>
                                 <div>
                                     <p style="color:#C7C7C7">
-                                        {{$danhGia->color}} | {{$danhGia->internal_memory}}
+                                        {{ $danhGia->color }} | {{ $danhGia->internal_memory }}
                                     </p>
-                                    <p>{{$danhGia->content}}</p>
+                                    <p>{{ $danhGia->content }}</p>
                                     <div>
                                         @foreach ($danhGia->image_ratings as $image)
                                             <img src="{{ asset('images/' . $image->image) }}" alt="">
@@ -230,58 +231,58 @@
                                 $index++;
                             @endphp
                             @if ($index == 2)
-                                @break
-                            @endif
-                        @endforeach
-                    </div>
+                            @break
+                        @endif
+                    @endforeach
+                </div>
 
-                    @if(count($danhSachDanhGia) > 2)
+                @if (count($danhSachDanhGia) > 2)
                     <button onclick="showPopup()" class="button">Xem thêm</button>
                 @endif
 
 
-                </div>
-                <div class="product_detail_bottom_left_desription">
-                    <h6>Mô tả sản phẩm</h6>
-                    <p>{{ $thongTinSanPham->description }}</p>
-                </div>
             </div>
-
-            <div class="product_detail_bottom_right">
-                <h4><a href="">Thông Số Kỹ Thuật</a></h4>
-                <ul>
-                    @foreach ($thongSoKiThuatSanPham as $thongSo)
-                        <li>
-                            <div> {{ $thongSo->category_specification->name }}</div>
-                            <div>{{ $thongSo->value }}</div>
-                        </li>
-                    @endforeach
-                </ul>
+            <div class="product_detail_bottom_left_desription">
+                <h6>Mô tả sản phẩm</h6>
+                <p>{{ $thongTinSanPham->description }}</p>
             </div>
         </div>
-    </section>
-    {{-- popup đánh giá  --}}
-    <div id="popup_order_history" class="popup_order_history">
-        <div class="popup_content">
-            <span class="close_popup_rating">&times;</span>
-            <div class="popup_table" id="popup_table">
-                <div class="product_detail_bottom_left_comments" id ="ratings">
-                    @foreach ($danhSachDanhGia as $danhGia)
+
+        <div class="product_detail_bottom_right">
+            <h4><a href="">Thông Số Kỹ Thuật</a></h4>
+            <ul>
+                @foreach ($thongSoKiThuatSanPham as $thongSo)
+                    <li>
+                        <div> {{ $thongSo->category_specification->name }}</div>
+                        <div>{{ $thongSo->value }}</div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</section>
+{{-- popup đánh giá  --}}
+<div id="popup_order_history" class="popup_order_history">
+    <div class="popup_content">
+        <span class="close_popup_rating">&times;</span>
+        <div class="popup_table" id="popup_table">
+            <div class="product_detail_bottom_left_comments" id ="ratings">
+                @foreach ($danhSachDanhGia as $danhGia)
                     <div class="product_detail_bottom_left_comment">
                         <div>
-                            <button><img src="{{ asset('images/'.$danhGia->user->image) }}" alt=""></button>
-                            <div> {{$danhGia->user->full_name}}
+                            <button><img src="{{ asset('images/' . $danhGia->user->image) }}" alt=""></button>
+                            <div> {{ $danhGia->user->full_name }}
                                 <p>
-                                @for($i = 0; $i < $danhGia->point; $i++)
-                                    <i class="fas fa-star"></i>
-                                @endfor
+                                    @for ($i = 0; $i < $danhGia->point; $i++)
+                                        <i class="fas fa-star"></i>
+                                    @endfor
                                 </p>
                             </div>
-                            <p><i class="fas fa-clock"></i> {{$danhGia->created_at}}</p>
+                            <p><i class="fas fa-clock"></i> {{ $danhGia->created_at }}</p>
                         </div>
                         <div>
-                            <p style="color:#C7C7C7"> {{$danhGia->color}}|{{$danhGia->internal_memory}}</p>
-                            <p> {{$danhGia->content}}</p>
+                            <p style="color:#C7C7C7"> {{ $danhGia->color }}|{{ $danhGia->internal_memory }}</p>
+                            <p> {{ $danhGia->content }}</p>
                             <div>
 
                                 @foreach ($danhGia->image_ratings as $image)
@@ -291,51 +292,22 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
-    <!-- Sản phẩm tương tự -->
-    <section class="container_css product_best_seller">
-        <h4>SẢN PHẨM TƯƠNG TỰ </h4>
-        <div id="carouselExampleInterval" class="carousel slide carousel-dark" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <div class="product_best_seller_items">
+</div>
+<!-- Sản phẩm tương tự -->
+<section class="container_css product_best_seller">
+    <h4>SẢN PHẨM TƯƠNG TỰ </h4>
+    <div id="carouselExampleInterval" class="carousel slide carousel-dark" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <div class="product_best_seller_items">
 
-                        @if (isset($sanPhamTuongTu))
-                            @for ($i = 0; $i < count($sanPhamTuongTu); $i++)
-                                @if ($i > 3)
-                                @break
-                            @endif
-                            <div class="product_best_seller_item">
-                                <a href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}"><img
-                                        src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
-                                        alt="Lỗi hiển thị"></a>
-                                <div class="product_best_seller_item_info">
-                                    <ul>
-                                        <li><a
-                                                href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}">{{ $sanPhamTuongTu[$i]->name }}</a>
-                                        </li>
-                                        <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup>
-                                        </li>
-                                        <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
-                                        <li>
-                                            <button onclick="buyNowSame('{{$sanPhamTuongTu[$i]->variants}}')" >Mua ngay</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        @endfor
-                    @endif
-                </div>
-            </div>
-            @if (isset($sanPhamTuongTu) && count($sanPhamTuongTu) > 4)
-                <div class="carousel-item" data-bs-interval="2000">
-                    <div class="product_best_seller_items">
-                        @for ($i = 4; $i < count($sanPhamTuongTu); $i++)
-                            @if ($i > 7)
+                    @if (isset($sanPhamTuongTu))
+                        @for ($i = 0; $i < count($sanPhamTuongTu); $i++)
+                            @if ($i > 3)
                             @break
                         @endif
                         <div class="product_best_seller_item">
@@ -351,50 +323,81 @@
                                     </li>
                                     <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
                                     <li>
-                                        <button onclick="buyNowSame('{{$sanPhamTuongTu[$i]->variants}}')">Mua ngay</button>
+                                        <button onclick="buyNowSame('{{ $sanPhamTuongTu[$i]->variants }}')">Mua
+                                            ngay</button>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     @endfor
-                </div>
+                @endif
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button  class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        @else
-    </div>
-    @endif
+        </div>
+        @if (isset($sanPhamTuongTu) && count($sanPhamTuongTu) > 4)
+            <div class="carousel-item" data-bs-interval="2000">
+                <div class="product_best_seller_items">
+                    @for ($i = 4; $i < count($sanPhamTuongTu); $i++)
+                        @if ($i > 7)
+                        @break
+                    @endif
+                    <div class="product_best_seller_item">
+                        <a href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}"><img
+                                src="{{ asset('images/' . $sanPhamTuongTu[$i]->image) }}"
+                                alt="Lỗi hiển thị"></a>
+                        <div class="product_best_seller_item_info">
+                            <ul>
+                                <li><a
+                                        href="{{ route('detail', [$sanPhamTuongTu[$i]->slug]) }}">{{ $sanPhamTuongTu[$i]->name }}</a>
+                                </li>
+                                <li>{{ number_format($sanPhamTuongTu[$i]->price, 0, ',', '.') }}<sup>đ</sup>
+                                </li>
+                                <li>{{ $sanPhamTuongTu[$i]->rating }} <i class="fas fa-star"></i></li>
+                                <li>
+                                    <button onclick="buyNowSame('{{ $sanPhamTuongTu[$i]->variants }}')">Mua
+                                        ngay</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    @else
+</div>
+@endif
 </div>
 </section>
 @endsection
 @section('script')
 
 <script>
- function loadRating(sao, id,btn) {
-    const button_rating = document.querySelectorAll('#button_rating button');
-    if (button_rating) {
-        button_rating.forEach((element) => {
-           element.classList.remove('click_active_border')
-        });
-    }
-    btn.classList.add('click_active_border')
-    $.ajax({
-        method: "GET",
-        url: `/get-rating/${id}/${sao}`
-    })
-    .done((data) => {
-        console.log(data);
-        const content = data.data.map((item) => {
-            const images = item.images.split(','); // Tách chuỗi ảnh thành một mảng
-            return `
+    function loadRating(sao, id, btn) {
+        const button_rating = document.querySelectorAll('#button_rating button');
+        if (button_rating) {
+            button_rating.forEach((element) => {
+                element.classList.remove('click_active_border')
+            });
+        }
+        btn.classList.add('click_active_border')
+        $.ajax({
+                method: "GET",
+                url: `/get-rating/${id}/${sao}`
+            })
+            .done((data) => {
+                console.log(data);
+                const content = data.data.map((item) => {
+                    const images = item.images.split(','); // Tách chuỗi ảnh thành một mảng
+                    return `
                 <div class="product_detail_bottom_left_comment">
                     <div>
                         <button><img src="/images/${item.user_image}" alt=""></button>
@@ -421,14 +424,14 @@
 
                 </div>
             `;
-        }).join('');
-        // Chèn nội dung vào container trong HTML
-        ratings = document.getElementById('ratings').innerHTML = content;
-        if(data.data.length === 0 ){
-            document.getElementById('ratings').innerHTML =` <h4> Hiện tại chưa có đánh giá !</h4> `
-        }
-    });
-}
+                }).join('');
+                // Chèn nội dung vào container trong HTML
+                ratings = document.getElementById('ratings').innerHTML = content;
+                if (data.data.length === 0) {
+                    document.getElementById('ratings').innerHTML = ` <h4> Hiện tại chưa có đánh giá !</h4> `
+                }
+            });
+    }
 </script>
 <script>
     function addToCart(id) {
@@ -531,7 +534,7 @@
     }
 </script>
 <script>
-     function buyNowSame(variantId) {
+    function buyNowSame(variantId) {
         const quantity = 1;
         $.ajax({
                 method: "GET",
@@ -627,7 +630,7 @@
                 list.innerHTML = thongTin.join('');
                 checkStock(danhSachMau[0].id, parseInt($('#number_input').val()));
                 document.getElementById('price').innerHTML = Intl.NumberFormat('de-DE').format(danhSachMau[0]
-                .price);
+                    .price);
                 document.getElementById('stock').innerHTML = danhSachMau[0].stock;
                 document.getElementById('add-to-cart').dataset.id = danhSachMau[0].id;
                 document.getElementById('buy-now').dataset.id = danhSachMau[0].id;
@@ -648,13 +651,13 @@
                 if (response.status == 1) {
                     alertify.success(
                         `Thêm sản phẩm ${response.tenSanPham[0].name} vào danh sách yêu thích thành công `
-                        );
+                    );
                     $("#button_like").css("color", "red");
                     $("#number_like").text(response.luotThich + 1);
                 } else {
                     alertify.error(
                         `Bỏ sản phẩm ${response.tenSanPham[0].name} ra khỏi danh sách yêu thích thành công `
-                        );
+                    );
                     $("#button_like").css("color", "grey");
                     $("#number_like").text(response.luotThich - 1); // Giảm số nếu bỏ thích
                 }
@@ -663,30 +666,30 @@
     }
 </script>
 <script>
-     function showPopup() {
-                const popupOrderHistory = document.getElementById("popup_order_history");
-                if (!popupOrderHistory) {
-                    console.error("Popup element not found!");
-                    return;
-                }
-                const closeBtn = document.querySelector(".close_popup_rating");
-                if (!closeBtn) {
-                    console.error("Close button element not found!");
-                    return;
-                }
+    function showPopup() {
+        const popupOrderHistory = document.getElementById("popup_order_history");
+        if (!popupOrderHistory) {
+            console.error("Popup element not found!");
+            return;
+        }
+        const closeBtn = document.querySelector(".close_popup_rating");
+        if (!closeBtn) {
+            console.error("Close button element not found!");
+            return;
+        }
 
-                popupOrderHistory.style.display = "block";
+        popupOrderHistory.style.display = "block";
 
 
-                closeBtn.onclick = function() {
-                    popupOrderHistory.style.display = "none";
-                };
+        closeBtn.onclick = function() {
+            popupOrderHistory.style.display = "none";
+        };
 
-                window.onclick = function(event) {
-                    if (event.target === popupOrderHistory) {
-                        popupOrderHistory.style.display = "none";
-                    }
-                };
+        window.onclick = function(event) {
+            if (event.target === popupOrderHistory) {
+                popupOrderHistory.style.display = "none";
             }
+        };
+    }
 </script>
 @endsection

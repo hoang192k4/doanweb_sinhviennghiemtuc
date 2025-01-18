@@ -196,8 +196,6 @@ class AdminProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-
         $product = Product::find($id);
         $name = $product->name;
         if($product){
@@ -224,7 +222,7 @@ class AdminProductController extends Controller
             $product->product_variants()->forceDelete();
             $product->product_specification()->forceDelete();
             $product->image_products()->forceDelete();
-            $product->rating()->forceDelete();
+            $product->ratings()->forceDelete();
             $product->like_products()->forceDelete();
             $product->forceDelete();
 

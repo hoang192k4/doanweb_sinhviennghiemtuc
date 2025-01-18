@@ -6,19 +6,13 @@
         <div class="head">
             <div class="title">Quản Lý Đánh Giá</div>
             <div class="search">
-<<<<<<< HEAD
                 <form action="{{ route('admin.review.search') }} " method="GET">
                     <input type="text" name="keyword_review" placeholder="Tìm kiếm đánh giá...">
-=======
-                <form>
-                    <input type="text" name="key" id="key">
->>>>>>> giang
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
         </div>
         <div class="separator_x"></div>
-<<<<<<< HEAD
         <select onchange="hanlePointReview(this)">
             <option value="Tất cả">Tất cả</option>
             <option value="5 sao">5 sao</option>
@@ -26,15 +20,6 @@
             <option value="3 sao">3 sao</option>
             <option value="2 sao">2 sao</option>
             <option value="1 sao">1 sao</option>
-=======
-        <select id="point" name="point" onchange="pointReview(this)">
-            <option value="all">Tất cả</option>
-            <option value="5">5 sao</option>
-            <option value="4">4 sao</option>
-            <option value="3">3 sao</option>
-            <option value="2">2 sao</option>
-            <option value="1">1 sao</option>
->>>>>>> giang
         </select>
         <div>
             <table>
@@ -57,14 +42,8 @@
                             <td style="text-align: center;">{{ $review->id }}</td>
                             <td>{{ $review->username }}</td>
                             <td>{{ $review->content }}</td>
-<<<<<<< HEAD
                             <td>{{ $review->product_name }}</td>
-=======
-                            <td>{{ App\Models\Product::find($review->product_id)->name }}
-                                ({{ $review->color }} | {{ $review->internal_memory }})
-                            </td>
                             <td>{{ $review->created_at }}</td>
->>>>>>> giang
                             <td>{{ $review->point }}</td>
                             <td>{{ $review->color }}</td>
                             <td>{{ $review->internal_memory }}</td>
@@ -77,7 +56,7 @@
                         </tr>
                     @endforeach
                     @if (!$listReview->isNotEmpty())
-                        <td colspan="8" style="text-align:center">Không có đánh giá tương tự</td>
+                        <td colspan="9" style="text-align:center">Không có đánh giá tương tự</td>
                     @endif
                 </tbody>
             </table>
@@ -108,7 +87,7 @@
                 const tbody = $('tbody');
                 var tpm = '';
                 if (!response.listReview.length > 0) {
-                    tpm = `<tr><td colspan="8" style="text-align:center">Chưa có đánh giá với point là ${element.value}</td></tr>`
+                    tpm = `<tr><td colspan="9" style="text-align:center">Chưa có đánh giá với point là ${element.value}</td></tr>`
                     tbody.html(tpm);
                 } else {
                     tmp = response.listReview.map(data => {
@@ -117,6 +96,7 @@
                             <td>${data.username}</td>
                             <td>${data.content}</td>
                             <td>${data.product_name}</td>
+                            <td>${data.created_at}</td>
                             <td>${data.point}</td>
                             <td>${data.color}</td>
                             <td>${data.internal_memory}</td>
