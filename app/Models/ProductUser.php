@@ -72,6 +72,7 @@ class ProductUser extends Model
                 'products.rating',
                 'categories.name as category_name',
                 'brands.name as brand_name',
+                DB::raw('MIN(product_variants.id) as variants'),
                 DB::raw('MIN(image_products.image) as image'), // Lấy hình ảnh đầu tiên
                 DB::raw('MIN(product_variants.price) as price') // Lấy giá thấp nhất
             )
