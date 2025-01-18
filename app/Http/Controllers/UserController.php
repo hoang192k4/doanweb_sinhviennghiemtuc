@@ -183,7 +183,7 @@ class UserController extends Controller
     }
 
     public function getRating($id,$sao=0){
-        
+
         $rating = Rating::HienThiRating($id,$sao);
         return response()->json([
             'data'=>$rating
@@ -300,12 +300,13 @@ class UserController extends Controller
             ]
         );
         $variant = ProductVariant::findOrFail($request->id);
+
         $rating = Rating::create([
             'content' => $request->content,
             'internal_memory' => $variant->internal_memory,
             'point' => $request->point,
             'color' => $variant->color,
-            'product_id' => $variant->product->id,
+            'product_id' => $variant->product_id,
             'user_id' => Auth::id(),
         ]);
         if ($request->has('file') && count($request->file('file')) > 0) {
