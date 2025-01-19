@@ -59,7 +59,11 @@ class CartController extends Controller
         }else{
             $buyNow = ['quantity'=>$quantity,'totalPrice'=>$quantity*$variant->price,'product_info'=>$variant->product,'variant_info'=>$variant];
             $request->session()->put('buy-now',$buyNow);
-            return response()->json(route('user.payment'));
+            return response()->json([
+                'url'=>route('user.payment'),
+                'success' =>1
+            ]);
+
         }
     }
     public function addToCart(Request $request, string $variant_id, $quantity)

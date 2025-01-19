@@ -342,7 +342,15 @@
                             _token: '{{ csrf_token() }}'
                         }
                     }).done((data) => {
-                        window.location.href = data;
+                        if(data.success===1){
+                            window.location.href = data.url;
+                        }else{
+                            alertify.alert('Vui lòng đăng nhập để mua ngay');
+                        }
+
+                    })
+                    .fail((data)=>{
+                        console.log(data);
                     })
 
                 }

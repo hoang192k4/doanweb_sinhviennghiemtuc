@@ -159,10 +159,10 @@
                     </div>
                 @endif
                 <div class="product_detail_right_buy">
-                    <div><button id="buy-now" data-id="@if (isset($mauSanPham[0])) {{ $mauSanPham[0]->id }} @endif"
+                    <div><button id="buy-now" data-id="@if(isset($mauSanPham[0])){{ $mauSanPham[0]->id}}@endif"
                             onclick="buyNow(this.dataset.id)">Mua ngay</button></div>
                     <div><button id="add-to-cart" onclick="addToCart(this.dataset.id)"
-                            data-id="@if (isset($mauSanPham[0])){{ $mauSanPham[0]->id }} @endif">
+                            data-id="@if (isset($mauSanPham[0])){{ $mauSanPham[0]->id }}@endif">
                             Thêm giỏ hàng<i class="fas fa-cart-plus" style="margin-left:5px;"></i></button></div>
                 </div>
             </div>
@@ -435,10 +435,10 @@
 </script>
 <script>
     function addToCart(id) {
-        const quantity = $('#number_input').val();
+        const quantity = $('#number_input').val().trim();
         $.ajax({
                 method: "GET",
-                url: `/add-to-cart/${id}/${quantity}`
+                url: `/add-to-cart/${id.trim()}/${quantity}`
             }).done((data) => {
                 if (data.success == true) {
                     $('#cart-quantity').text(`${data.cart.totalQuantity}`);
@@ -454,10 +454,10 @@
     }
 
     function buyNow(variantId) {
-        const quantity = parseInt($('#number_input').val());
+        const quantity = parseInt($('#number_input').val().trim());
         $.ajax({
                 method: "GET",
-                url: `/admin/check-stock-variant/${variantId}`
+                url: `/admin/check-stock-variant/${variantId.trim()}`
             })
             .done((data) => {
                 if (data < quantity) {
@@ -472,7 +472,15 @@
                             _token: '{{ csrf_token() }}'
                         }
                     }).done((data) => {
-                        window.location.href = data;
+                        if(data.success===1){
+                            window.location.href = data.url;
+                        }else{
+                            alertify.alert('Vui lòng đăng nhập để mua ngay');
+                        }
+
+                    })
+                    .fail((data)=>{
+                        console.log(data);
                     })
 
                 }
@@ -538,7 +546,7 @@
         const quantity = 1;
         $.ajax({
                 method: "GET",
-                url: `/admin/check-stock-variant/${variantId}`
+                url: `/admin/check-stock-variant/${variantId.trim()}`
             })
             .done((data) => {
                 if (data < quantity) {
@@ -553,7 +561,15 @@
                             _token: '{{ csrf_token() }}'
                         }
                     }).done((data) => {
-                        window.location.href = data;
+                        if(data.success===1){
+                            window.location.href = data.url;
+                        }else{
+                            alertify.alert('Vui lòng đăng nhập để mua ngay');
+                        }
+
+                    })
+                    .fail((data)=>{
+                        console.log(data);
                     })
 
                 }
@@ -692,4 +708,6 @@
         };
     }
 </script>
+
+
 @endsection

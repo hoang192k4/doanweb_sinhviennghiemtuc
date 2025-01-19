@@ -71,7 +71,7 @@ class OrderController extends Controller
 
                 'address'=>'required|string|max:255',
 
-               
+
                 'provinces' => 'required|string', // Tỉnh/Thành bắt buộc
                 'districts' => 'required|string', // Quận/Huyện bắt buộc
                 'wards' => 'required|string', // Phường/Xã bắt buộc
