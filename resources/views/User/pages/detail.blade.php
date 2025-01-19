@@ -527,7 +527,7 @@
             })
             .done((data) => {
                 if (data <= quantity) {
-                    $('#quantity-limit').text('Số lượng đã đạt giới hạn');
+                    $('#quantity-limit').text('Số lượng đã đạt giới hạn số lượng tồn kho của sản phẩm này');
                     $('#number_input').val(data);
                     $('#button_plus_value').attr('disabled', true);
 

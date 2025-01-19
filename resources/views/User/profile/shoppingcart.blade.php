@@ -83,16 +83,14 @@
                 method: "GET",
                 url: `/cart-delete-item/${id}`
             }).done((data) => {
-                alertify.success(data.message);
                 $(`#list-product-variant #variant-${id}`).remove();
-
-                console.log($('#list-product-variant').children().length)
                 if ($('#list-product-variant').children().length == 0)
                     afterDeleteAll();
                 else
                 {
                     console.log(data);
                     $(`#total-price`).text(formatNumber(data.cart.totalPrice)).append($('<sup>').text('đ'));
+                    $(`cart-quantity`).text(data.totalPrice);
                 }
 
             })
